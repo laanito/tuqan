@@ -26,6 +26,7 @@ require_once 'Classes/Manejador_De_Respuestas.php';
 require_once 'Pages/LoginEmpresa.php';
 require_once 'Pages/LoginUsuario.php';
 require_once 'Pages/IndexPage.php';
+require_once 'Pages/MainPage.php';
 require_once 'Classes/Auth.php';
 
 use Phroute\Phroute\RouteCollector;
@@ -42,6 +43,7 @@ $router->post('/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'ProcesaPagina']);
 $router->get('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
 $router->post('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
 $router->get('/', ['Tuqan\Pages\IndexPage', 'MuestraPagina']);
+$router->get('/main/', ['Tuqan\Pages\MainPage', 'ShowPage']);
 
 $dispatcher =  new Dispatcher($router->getData());
 

@@ -3,13 +3,10 @@ namespace Tuqan;
 /**
  * Created on 17-oct-2005
  *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
  * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
-
+ *
  * @version 0.5.0a
  *
- * @author Alejandra J Garca Romero <u>ajgarcia@islanda.es</u>
  * Esta es la pagina principal desde la cual mostramos los menus y navegamos por todas las opciones
  * Se compone de una cabecera con el logo, un submenu bajo esta desde el que accedemos a los menus
  * laterales.
