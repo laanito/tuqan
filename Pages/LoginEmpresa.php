@@ -168,14 +168,14 @@ class LoginEmpresa
                 $_SESSION['pass'] = $css->decrypt(trim($aIteradorInterno[2]), $clave);
                 $_SESSION['empresa'] = $aIteradorInterno[3];
 
-                $this->Redirect($_SERVER['DOCUMENT_ROOT'].$this->base_path .
+                $this->Redirect($this->base_path .
                     "/login/usuario/", false);
             }
         } else {
-            $this->Redirect($_SERVER['DOCUMENT_ROOT'].$this->base_path .
+            $this->Redirect($this->base_path .
                 "/index.php?error=1", false);
         }
-        $this->Redirect($_SERVER['DOCUMENT_ROOT'].$this->base_path .
+        $this->Redirect($this->base_path .
             "/index.php?error=1", false);
     }
 
