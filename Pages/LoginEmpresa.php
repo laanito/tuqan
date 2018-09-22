@@ -56,7 +56,7 @@ class LoginEmpresa
         } else {
             $_SESSION['idiomaid'] = 1;
         }
-        $config= new Config();
+        $config = new Config();
         $loader = new Twig_Loader_Filesystem($config->template_path);
         $twig = new Twig_Environment($loader, array(
             'cache' => $config->cache_path,
@@ -83,20 +83,20 @@ class LoginEmpresa
         try {
             $template = $twig->load('login.twig');
         } catch (\Exception $e) {
-            return ("Error al cargar plantilla: ".$e->getMessage());
+            return ("Error al cargar plantilla: " . $e->getMessage());
         }
-        $FormTitle=gettext("sIdentEmpresa");
+        $FormTitle = gettext("sIdentEmpresa");
 
 
-        $Formulario=$oFormulario2->__toString();
+        $Formulario = $oFormulario2->__toString();
         if (isset($_GET['error'])) {
-            $FormTitle.="<p class=\"error\">" . gettext('sIdIncorrecta') . "</p>";
+            $FormTitle .= "<p class=\"error\">" . gettext('sIdIncorrecta') . "</p>";
         }
         return $template->render(
             array(
                 'FormTitle' => $FormTitle,
                 'FormContent' => $Formulario
-                )
+            )
         );
 
     }
@@ -168,25 +168,22 @@ class LoginEmpresa
                 $_SESSION['pass'] = $css->decrypt(trim($aIteradorInterno[2]), $clave);
                 $_SESSION['empresa'] = $aIteradorInterno[3];
 
-                $this->Redirect($this->base_path.
+                $this->Redirect($_SERVER['DOCUMENT_ROOT'].$this->base_path .
                     "/login/usuario/", false);
             }
         } else {
-            $this->Redirect($this->base_path.
+            $this->Redirect($_SERVER['DOCUMENT_ROOT'].$this->base_path .
                 "/index.php?error=1", false);
         }
-        $this->Redirect($this->base_path.
+        $this->Redirect($_SERVER['DOCUMENT_ROOT'].$this->base_path .
             "/index.php?error=1", false);
     }
 
     function Redirect($url, $permanent = false)
     {
-        if (headers_sent() === false)
-        {
+        if (headers_sent() === false) {
             header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
         }
-
         exit();
     }
-
 }

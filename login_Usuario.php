@@ -284,7 +284,7 @@ if ($_SESSION['loginempresa'] == 1) {
     }
 
     $oPagina->addBodyContent("</center></div>");
-    $oPagina->addBodyContent("<div id=\"logos\"><A class=\"pulsia\" HREF=http://www.pulsia.es target=_new><img class=\"logo_pulsia\" src=\"images/pulsia.svg\"></A>");
+    $oPagina->addBodyContent("<div id=\"logos\">");
 
     $oPagina->addBodyContent("<div id=\"BordeDer\"></div>");
 

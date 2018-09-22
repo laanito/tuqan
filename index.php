@@ -36,11 +36,11 @@ if (!isset($_SESSION)) {
 
 $router = new RouteCollector();
 
-$router->get('/qnova/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'MuestraPagina']);
-$router->post('/qnova/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'ProcesaPagina']);
-$router->get('/qnova/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
-$router->post('/qnova/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
-$router->get('/qnova/', ['Tuqan\Pages\IndexPage', 'MuestraPagina']);
+$router->get('/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'MuestraPagina']);
+$router->post('/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'ProcesaPagina']);
+$router->get('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
+$router->post('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
+$router->get('/', ['Tuqan\Pages\IndexPage', 'MuestraPagina']);
 
 $dispatcher =  new Dispatcher($router->getData());
 

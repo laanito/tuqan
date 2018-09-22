@@ -45,7 +45,10 @@ class Config
     public $template_path;
 
     public $cache_path;
-    
+
+    /**
+     * Config constructor.
+     */
 public function __construct()
 {
     $this->sServidorEtc = "localhost";
@@ -71,15 +74,15 @@ public function __construct()
     $this->sIdioma = '1';
     $this->sIdiomaInicial = "castellano";
     $this->sLogo = 'logo-islanda.png';
-    $this->sPathUploadEditor = "/var/www/html/qnova/userfiles/";
-    $this->sPathUploadURL = "/var/www/html/qnova/userfiles/";
+    $this->sPathUploadEditor = $_SERVER['DOCUMENT_ROOT'].$this->base_path."/userfiles/";
+    $this->sPathUploadURL = $_SERVER['DOCUMENT_ROOT'].$this->base_path."/userfiles/";
     $this->sPathXls = "/tmp/";
 
     $this->aCharset = array('ISO-8859-15' => 'LATIN1',
         'ISO-8859-1' => 'LATIN1',
         'utf-8' => 'UNICODE'
     );
-    $this->base_path='/qnova';
+    $this->base_path='';
 
     $this->template_path = $_SERVER['DOCUMENT_ROOT'].$this->base_path.'/templates/';
 

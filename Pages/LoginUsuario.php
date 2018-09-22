@@ -87,7 +87,5 @@ class LoginUsuario
             return ("Error al cargar plantilla: ".$e->getMessage());
         }
         return $template->render($this->Formulario());
-
-
     }
 }

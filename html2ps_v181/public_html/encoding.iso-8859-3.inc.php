@@ -1,5 +1,4 @@
 <?php
-// $Header: /home/cvs/qnovaunidoCVS/html2ps_v181/public_html/encoding.iso-8859-3.inc.php,v 1.1 2006-08-31 08:36:05 jmartinez Exp $
 
 $g_iso_8859_3 = array(
     "\x00" => code_to_utf8(0x0000),    //    NULL

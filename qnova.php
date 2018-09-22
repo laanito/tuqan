@@ -190,7 +190,7 @@ if (isset($altura)) {
 }
 $oPagina->addBodyContent("</div>");
 $oPagina->addBodyContent("<div id=\"ficheros\">");
-$oPagina->addBodyContent("<div id=\"logos\"><A class=\"pulsia\" HREF=http://www.pulsia.es target=_new><img class=\"logo_pulsia\" src=\"images/pulsia.svg\"></A>");
+$oPagina->addBodyContent("<div id=\"logos\">");
 
 $oPagina->addBodyContent("</div>");
 $oPagina->display();

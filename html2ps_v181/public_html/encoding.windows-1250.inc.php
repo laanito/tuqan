@@ -1,5 +1,4 @@
 <?php
-// $Header: /home/cvs/qnovaunidoCVS/html2ps_v181/public_html/encoding.windows-1250.inc.php,v 1.1 2006-08-31 08:36:05 jmartinez Exp $
 
 $g_windows_1250 = array(
     "\x00" => code_to_utf8(0x0000), // NULL
