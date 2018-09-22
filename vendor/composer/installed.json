@@ -1,0 +1,417 @@
+[
+    {
+        "name": "setasign/fpdf",
+        "version": "1.8.1",
+        "version_normalized": "1.8.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Setasign/FPDF.git",
+            "reference": "2c68c9e6c034ac3187d25968790139a73184cdb1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Setasign/FPDF/zipball/2c68c9e6c034ac3187d25968790139a73184cdb1",
+            "reference": "2c68c9e6c034ac3187d25968790139a73184cdb1",
+            "shasum": ""
+        },
+        "time": "2016-01-01T17:47:15+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "fpdf.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "no usage restriction"
+        ],
+        "authors": [
+            {
+                "name": "Olivier Plathey",
+                "email": "oliver@fpdf.org",
+                "homepage": "http://fpdf.org/"
+            }
+        ],
+        "description": "FPDF is a PHP class which allows to generate PDF files with pure PHP. F from FPDF stands for Free: you may use it for any kind of usage and modify it to suit your needs.",
+        "homepage": "http://www.fpdf.org",
+        "keywords": [
+            "fpdf",
+            "pdf"
+        ]
+    },
+    {
+        "name": "pear/pear_exception",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear/PEAR_Exception.git",
+            "reference": "8c18719fdae000b690e3912be401c76e406dd13b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear/PEAR_Exception/zipball/8c18719fdae000b690e3912be401c76e406dd13b",
+            "reference": "8c18719fdae000b690e3912be401c76e406dd13b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=4.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2015-02-10T20:07:52+00:00",
+        "type": "class",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PEAR": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "include-path": [
+            "."
+        ],
+        "license": [
+            "BSD-2-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Helgi Thormar",
+                "email": "dufuz@php.net"
+            },
+            {
+                "name": "Greg Beaver",
+                "email": "cellog@php.net"
+            }
+        ],
+        "description": "The PEAR Exception base class.",
+        "homepage": "https://github.com/pear/PEAR_Exception",
+        "keywords": [
+            "exception"
+        ]
+    },
+    {
+        "name": "pear/html_common2",
+        "version": "v2.1.1",
+        "version_normalized": "2.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear/HTML_Common2.git",
+            "reference": "3dd2e0364f564f0912c439aac4463585cd949faf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear/HTML_Common2/zipball/3dd2e0364f564f0912c439aac4463585cd949faf",
+            "reference": "3dd2e0364f564f0912c439aac4463585cd949faf",
+            "shasum": ""
+        },
+        "require": {
+            "pear/pear_exception": "*"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2014-06-18T15:06:53+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "HTML": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "include-path": [
+            "./"
+        ],
+        "license": [
+            "BSD License"
+        ],
+        "authors": [
+            {
+                "name": "Alexey Borzov",
+                "email": "avb@php.net",
+                "role": "Lead"
+            },
+            {
+                "name": "Klaus Guenther",
+                "email": "thesaur@php.net",
+                "role": "Lead"
+            }
+        ],
+        "description": "More info available on: http://pear.php.net/package/HTML_Common2"
+    },
+    {
+        "name": "pear/html_quickform2",
+        "version": "v2.0.2",
+        "version_normalized": "2.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear/HTML_QuickForm2.git",
+            "reference": "0b6a807807ec67bf04b5f12eab8c71f54c15ac0b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear/HTML_QuickForm2/zipball/0b6a807807ec67bf04b5f12eab8c71f54c15ac0b",
+            "reference": "0b6a807807ec67bf04b5f12eab8c71f54c15ac0b",
+            "shasum": ""
+        },
+        "require": {
+            "pear/html_common2": "*",
+            "pear/pear_exception": "*"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2014-06-28T07:44:13+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "HTML": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "include-path": [
+            "./"
+        ],
+        "license": [
+            "BSD"
+        ],
+        "authors": [
+            {
+                "name": "Alexey Borzov",
+                "email": "avb@php.net",
+                "role": "Lead"
+            },
+            {
+                "name": "Bertrand Mansion",
+                "email": "golgote@mamasam.com",
+                "role": "Lead"
+            }
+        ],
+        "description": "Provides methods to create, validate and render HTML forms in PHP."
+    },
+    {
+        "name": "phroute/phroute",
+        "version": "v2.1.0",
+        "version_normalized": "2.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mrjgreen/phroute.git",
+            "reference": "dbe2b986f9ee1dd33dc956fcc35d1fa22e8e196c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mrjgreen/phroute/zipball/dbe2b986f9ee1dd33dc956fcc35d1fa22e8e196c",
+            "reference": "dbe2b986f9ee1dd33dc956fcc35d1fa22e8e196c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-07-22T20:46:43+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Phroute\\Phroute\\": "src/Phroute"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Joe Green",
+                "email": "joe.green.0991@gmail.com"
+            }
+        ],
+        "description": "Fast, fully featured restful request router for PHP",
+        "keywords": [
+            "router",
+            "routing"
+        ]
+    },
+    {
+        "name": "psr/http-message",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/http-message.git",
+            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2016-08-06T14:39:51+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\Http\\Message\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interface for HTTP messages",
+        "homepage": "https://github.com/php-fig/http-message",
+        "keywords": [
+            "http",
+            "http-message",
+            "psr",
+            "psr-7",
+            "request",
+            "response"
+        ]
+    },
+    {
+        "name": "jasny/auth",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jasny/auth.git",
+            "reference": "05b25f1441c87a9e1e5e5f05ae61d623ac46c3f7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jasny/auth/zipball/05b25f1441c87a9e1e5e5f05ae61d623ac46c3f7",
+            "reference": "05b25f1441c87a9e1e5e5f05ae61d623ac46c3f7",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6.0",
+            "psr/http-message": "^1.0"
+        },
+        "require-dev": {
+            "hashids/hashids": "~2.0.0",
+            "jasny/php-code-quality": "^2.1.2"
+        },
+        "suggest": {
+            "hashids/hashids": "For generating confirmation tokens"
+        },
+        "time": "2016-12-28T23:01:51+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Jasny\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Arnold Daniels",
+                "email": "arnold@jasny.net",
+                "homepage": "http://www.jasny.net"
+            }
+        ],
+        "description": "Authentication and authorization",
+        "homepage": "http://jasny.github.com/auth",
+        "keywords": [
+            "auth"
+        ]
+    },
+    {
+        "name": "twig/twig",
+        "version": "v1.35.2",
+        "version_normalized": "1.35.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/twigphp/Twig.git",
+            "reference": "9c24f2cd39dc1906b76879e099970b7e53724601"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/9c24f2cd39dc1906b76879e099970b7e53724601",
+            "reference": "9c24f2cd39dc1906b76879e099970b7e53724601",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "psr/container": "^1.0",
+            "symfony/debug": "~2.7",
+            "symfony/phpunit-bridge": "~3.3@dev"
+        },
+        "time": "2018-03-03T16:21:29+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.35-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Twig_": "lib/"
+            },
+            "psr-4": {
+                "Twig\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Armin Ronacher",
+                "email": "armin.ronacher@active-4.com",
+                "role": "Project Founder"
+            },
+            {
+                "name": "Twig Team",
+                "homepage": "http://twig.sensiolabs.org/contributors",
+                "role": "Contributors"
+            }
+        ],
+        "description": "Twig, the flexible, fast, and secure template language for PHP",
+        "homepage": "http://twig.sensiolabs.org",
+        "keywords": [
+            "templating"
+        ]
+    }
+]

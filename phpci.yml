@@ -1,0 +1,105 @@
+build_settings:
+    ignore:
+        - "fpdf153"
+        - "html2ps_v181"
+        - "images"
+        - "javascript"
+        - "scripts"
+        - "userfiles"
+        - "Auth"
+        - "Date"
+        - "DB"
+        - "HTML"
+        - "Pager"
+        - "Image"
+test:
+    php_mess_detector:
+        ignore:
+            - "fpdf153"
+            - "html2ps_v181"
+            - "images"
+            - "javascript"
+            - "scripts"
+            - "userfiles"
+            - "Auth"
+            - "Date"
+            - "DB"
+            - "HTML"
+            - "Pager"
+            - "Image"
+        allow_failures: true
+        allowed_errors: -1
+        allowed_warnings: -1
+        zero_config: true
+    php_code_sniffer:
+        standard: "PSR2"
+        ignore:
+            - "fpdf153"
+            - "html2ps_v181"
+            - "images"
+            - "javascript"
+            - "scripts"
+            - "userfiles"
+            - "Auth"
+            - "Date"
+            - "DB"
+            - "HTML"
+            - "Pager"
+            - "Image"
+        allowed_errors: -1
+        allowed_warnings: -1
+    php_cpd:
+        standard: "PSR2"
+        ignore:
+            - "fpdf153"
+            - "html2ps_v181"
+            - "images"
+            - "javascript"
+            - "scripts"
+            - "userfiles"
+            - "Auth"
+            - "Date"
+            - "DB"
+            - "HTML"
+            - "Pager"
+            - "Image"
+    php_loc:
+        ignore:
+            - "fpdf153"
+            - "html2ps_v181"
+            - "images"
+            - "javascript"
+            - "scripts"
+            - "userfiles"
+            - "Auth"
+            - "Date"
+            - "DB"
+            - "HTML"
+            - "Pager"
+            - "Image"
+#    pdepend:
+#        ignore:
+#            - "vendor"
+#    php_docblock_checker:
+#        ignore:
+#            - "vendor"
+#        allowed_warnings: 10
+    technical_debt:
+        ignore:
+            - "fpdf153"
+            - "html2ps_v181"
+            - "images"
+            - "javascript"
+            - "scripts"
+            - "userfiles"
+            - "Auth"
+            - "Date"
+            - "DB"
+            - "HTML"
+            - "Pager"
+            - "Image"
+success:
+    shell:
+        - "rm -rf /var/www/phpci/public/reports/%PROJECT%/"
+        - "mkdir /var/www/phpci/public/reports/%PROJECT%/"
+        - "/var/www/phpci/vendor/bin/phpqa --report --analyzedDirs %BUILD_PATH% --ignoredDirs %BUILD_PATH%/fpdf153,%BUILD_PATH%/html2ps_v181  --tools phpmetrics:0,phploc,pdepend"

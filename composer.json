@@ -1,0 +1,20 @@
+{
+  "name": "praderas/phpiso",
+  "description": "Quality Management app",
+  "minimum-stability": "beta",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Luis Amigo",
+      "email": "lamigo@praderas.org"
+    }
+  ],
+  "require": {
+    "setasign/fpdf": "1.8.1",
+    "pear/html_quickform2": "v2.0.2",
+    "phroute/phroute": "v2.1.0",
+    "jasny/auth": "v1.0.1",
+    "twig/twig": "~1.35",
+    "ext-gettext": "*"
+  }
+}

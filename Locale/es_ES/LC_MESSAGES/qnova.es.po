@@ -1,0 +1,5215 @@
+# Luis <lamiguete@gmail.com>, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-18 14:49+0200\n"
+"PO-Revision-Date: 2018-02-19 09:19+0200\n"
+"Last-Translator: Luis <lamiguete@gmail.com>\n"
+"Language-Team: lamigo\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#
+msgid "sEntrar"
+msgstr "Entrar"
+
+msgid "sWelcome"
+msgstr ""
+"Para acceder, introduzca nombre de Empresa, Clave y pulse el boton Aceptar."
+
+msgid "sIdentEmpresa"
+msgstr "Identificacion de la empresa"
+
+msgid "sIdentUsuario"
+msgstr "Identificacion de usuario de la empresa:"
+
+msgid "sWelcome2"
+msgstr "Para acceder, introduzca nombre de Usuario, Clave y pulse el boton Aceptar"
+
+msgid "sIdIncorrecta"
+msgstr "Identificacion incorrecta"
+
+msgid "sEmpresa"
+msgstr "Empresa:"
+
+msgid "sClave"
+msgstr "Clave:"
+
+msgid "sUsuario"
+msgstr "Usuario:"
+
+msgid "sIdioma"
+msgstr "Castellano"
+
+msgid "sSelecIdioma"
+msgstr "Seleccionar idioma"
+
+msgid "sSelecEmpresa"
+msgstr "Seleccionar empresa"
+
+msgid "formNom"
+msgstr "Nombre"
+
+msgid "formDir"
+msgstr "Direccion"
+
+msgid "formTel"
+msgstr "Telefono"
+
+msgid "formPriTel"
+msgstr "Primer Telefono"
+
+msgid "formSegTel"
+msgstr "Segundo Telefono"
+
+msgid "formWeb"
+msgstr "Web"
+
+msgid "formCif"
+msgstr "Cif"
+
+msgid "formFechHomo"
+msgstr "Fecha Homologacion"
+
+msgid "formUltRev"
+msgstr "Ultima Revision"
+
+msgid "formFechDesho"
+msgstr "Fecha Deshomologacion"
+
+msgid "formAct"
+msgstr "Activo"
+
+msgid "formCod"
+msgstr "Codigo"
+
+msgid "formFech"
+msgstr "Fecha"
+
+msgid "formNumPed"
+msgstr "Numero Pedido"
+
+msgid "formCom"
+msgstr "Comentario"
+
+msgid "formAccMej"
+msgstr "Accion Mejora"
+
+msgid "formProv"
+msgstr "Proveedor"
+
+msgid "sFalloConexion"
+msgstr "Error Al conectar a la base de datos"
+
+msgid "sFalloConsulta"
+msgstr "Error al realizar la búsqueda"
+
+msgid "sFalloResultado"
+msgstr "Error al recuperar los datos"
+
+msgid "sFalloCerrar"
+msgstr "Error al cerrar la conexión con la base de datos"
+
+msgid "sFalloAuditoria"
+msgstr "Debe estar realizada la auditoria"
+
+msgid "sErrores"
+msgstr "Errores"
+
+msgid "sSinAcceso"
+msgstr "ACCESO PROHIBIDO, NECESARIO LOGEARSE"
+
+msgid "sNoAcceso"
+msgstr "No tiene permisos para acceder a esta seccion"
+
+msgid "sNoPermisoDoc"
+msgstr "No tiene permisos para ver el documento"
+
+msgid "sOpcionError"
+msgstr "Opción errónea"
+
+msgid "sYaManual"
+msgstr "Ya existe un Manual"
+
+msgid "sInicio"
+msgstr "INICIO"
+
+msgid "sDocumentacion"
+msgstr "DOCUMENTACION"
+
+msgid "sProveedores"
+msgstr "PROVEEDORES"
+
+msgid "sMejora"
+msgstr "ACC. MEJORA"
+
+msgid "sFormacion"
+msgstr "FORMACION"
+
+msgid "sEquipos"
+msgstr "EQUIPOS"
+
+msgid "sAuditoria"
+msgstr "AUDITORIAS"
+
+msgid "sProcesos"
+msgstr "PROCESOS"
+
+msgid "sIndicadores"
+msgstr "INDICADORES"
+
+msgid "sEditor"
+msgstr "EDITOR"
+
+msgid "sAspectos"
+msgstr "A. AMBIENTALES"
+
+msgid "sLogout"
+msgstr "CERRAR SESION"
+
+msgid "sIrAdmin"
+msgstr "Administracion"
+
+msgid "sSalir"
+msgstr "Volver"
+
+msgid "sBotonAceptar"
+msgstr "Aceptar"
+
+msgid "sBotonBusqueda"
+msgstr "Busqueda"
+
+msgid "sBotonVolver"
+msgstr "Volver"
+
+msgid "sBotonRevisar"
+msgstr "Revisar"
+
+msgid "sBotonEditaFicha"
+msgstr "Editar Ficha"
+
+msgid "sBotonEditar"
+msgstr "Editar"
+
+msgid "sBotonNuevo"
+msgstr "Nuevo"
+
+msgid "sBotonMatriz"
+msgstr "Ver Matriz"
+
+msgid "sBotonDocAx"
+msgstr "Documentos Anexos"
+
+msgid "sBotonVerFicha"
+msgstr "Ver Ficha"
+
+msgid "sBotonIndicador"
+msgstr "Indicadores"
+
+msgid "sBotonFlujog"
+msgstr "Flujograma"
+
+msgid "sBotonLimpia"
+msgstr "Limpiar"
+
+msgid "sBotonArea"
+msgstr "Areas"
+
+msgid "sBotonEqAud"
+msgstr "Equipo Auditor"
+
+msgid "sBotonPrint"
+msgstr "Imprimir"
+
+msgid "sBotonVer"
+msgstr "Ver"
+
+msgid "sBotonNVersion"
+msgstr "Nueva Version"
+
+msgid "sBotonAprobar"
+msgstr "Aprobar"
+
+msgid "sBotonTareas"
+msgstr "Tareas"
+
+msgid "sBotonHist"
+msgstr "Historico"
+
+msgid "sCambios"
+msgstr "Guardar Cambios"
+
+msgid "sBotonEnviar"
+msgstr "Enviar"
+
+msgid "sAplicacion"
+msgstr "APLICACION"
+
+msgid "sCalidad"
+msgstr "CALIDAD"
+
+msgid "sMedio"
+msgstr "MEDIO AMBIENTE"
+
+msgid "sEstadoAbierto"
+msgstr "Abierto"
+
+msgid "sHt"
+msgstr "Hoja Tecnica"
+
+msgid "sPg"
+msgstr "Procedimiento General"
+
+msgid "sPe"
+msgstr "Procedimiento Operativo"
+
+msgid "sManual"
+msgstr "Manual"
+
+msgid "sObjetivos"
+msgstr "Objetivos"
+
+msgid "sIt"
+msgstr "Instruccion Tecnica"
+
+msgid "sItm"
+msgstr "Instruccion Tecnica MedioAmbiente"
+
+msgid "sItma"
+msgstr "Ficha Requisitos Legales"
+
+msgid "sIAai"
+msgstr "Analisis Ambiental Inicial"
+
+msgid "sExterno"
+msgstr "Documentos y formatos"
+
+msgid "sAlta_solicitada"
+msgstr "Alta solicitada"
+
+msgid "sInscripcion_realizada"
+msgstr "Inscripcion realizada"
+
+msgid "sYa_inscrito"
+msgstr "Ya esta inscrito en el curso o ya ha solicitado la inscripcion"
+
+msgid "sBaja_dolicitada"
+msgstr "Baja solicitada"
+
+msgid "sNo_Inscrito"
+msgstr "No est inscrito en el curso o ya ha solicitado la baja"
+
+msgid "sIncorrecto"
+msgstr "La opcion es incorrecta"
+
+msgid "sCurso_no_disponible"
+msgstr "El curso no esta disponible para inscripciones."
+
+msgid "sTestSuperado"
+msgstr "Test superado."
+
+msgid "sTestNoSuperado"
+msgstr "Test no superado."
+
+msgid "sErrorTest"
+msgstr "ERROR, test no realizado"
+
+msgid "sNecesitaAprobacion"
+msgstr "El documento debe ser revisado antes de aprobarlo"
+
+msgid "sPolitica"
+msgstr "Politica Integral"
+
+msgid "sAltav"
+msgstr "Alta Verificada."
+
+msgid "sBajav"
+msgstr "Baja Verificada."
+
+msgid "sAltay"
+msgstr "Ya esta verificada su alta"
+
+msgid "sBajay"
+msgstr "Ya esta verificada su baja"
+
+msgid "sAltan"
+msgstr "No se ha solicitado ninguna baja"
+
+msgid "sBajan"
+msgstr "No hay ninguna peticion pedida"
+
+msgid "sTInicio"
+msgstr "Inicio"
+
+msgid "sTMensajes"
+msgstr "Mensajes"
+
+msgid "sContMsj"
+msgstr "Contenido del Mensaje"
+
+msgid "sTNMensajes"
+msgstr "Enviar Mensaje Nuevo"
+
+msgid "sTEstMensajes"
+msgstr "Estadisticas de Mensajes"
+
+msgid "sTBajaMensajes"
+msgstr "Baja de Mensaje"
+
+msgid "sTVerMensajes"
+msgstr "Ver Mensaje"
+
+msgid "sTTareas"
+msgstr "Tareas"
+
+msgid "sTVerTareas"
+msgstr "Ver Tarea"
+
+msgid "sTBorradores"
+msgstr "Borradores"
+
+msgid "sTDocumentacion"
+msgstr "Documentacion"
+
+msgid "sTProveedores"
+msgstr "Proveedores"
+
+msgid "sTAccionesMejora"
+msgstr "Acciones de Mejora"
+
+msgid "sTFormacion"
+msgstr "Formacion"
+
+msgid "sTEquipos"
+msgstr "Equipos"
+
+msgid "sTAuditorias"
+msgstr "Auditorias"
+
+msgid "sTProcesos"
+msgstr "Procesos"
+
+msgid "sTIndicadores"
+msgstr "Indicadores"
+
+msgid "sTLogout"
+msgstr "Salir de la Aplicacion"
+
+msgid "sTLogout2"
+msgstr "Salir de la Aplicacion"
+
+msgid "sTDocVigor"
+msgstr "Documentacion en Vigor"
+
+msgid "sTDocumentacionHT"
+msgstr "Documentacion de Hojas Tecnicas"
+
+msgid "sTDocumentacionPG"
+msgstr "Documentacion de Procedimientos Generales"
+
+msgid "sTDocumentacionPE"
+msgstr "Documentacion de Procedimientos Operativos"
+
+msgid "sTDocumentacionIT"
+msgstr "Documentos de Instruccion Tecnica de Calidad"
+
+msgid "sTHIstoricoDoc"
+msgstr "Histórico de Documentos"
+
+msgid "sTListadoContactos"
+msgstr "Listado de Contactos"
+
+msgid "sTListadoProv"
+msgstr "Listado de Proveedores"
+
+msgid "sTListadoProductos"
+msgstr "Listado de Productos"
+
+msgid "sTListadoIncidencias"
+msgstr "Listado de Incidencias"
+
+msgid "sTListadoHomologados"
+msgstr "Listado de Proveedores Homologados"
+
+msgid "sTVerIncidencia"
+msgstr "Ver Incidencia"
+
+msgid "sTDatosProveedor"
+msgstr "Ver datos del Proveedor"
+
+msgid "sTDatosProductos"
+msgstr "Ver datos del Producto"
+
+msgid "sTCriteriosProducto"
+msgstr "Ver Criterios del Producto"
+
+msgid "sTAgregaCriterio"
+msgstr " Nuevo Criterio"
+
+msgid "sTHistorialProductos"
+msgstr "Histco de Productos"
+
+msgid "sTListAccMejora"
+msgstr "Listado de Acciones Mejora"
+
+msgid "sTVerSubproceso"
+msgstr "Ver Subprocesos"
+
+msgid "sTListIndicadores"
+msgstr "Listado de Indicadores"
+
+msgid "sTDocAnexos"
+msgstr "Documentos Anexos"
+
+msgid "sTIndicadorProceso"
+msgstr "Indicadores de Proceso"
+
+msgid "sTAgregaIndProceso"
+msgstr " Indicadores de Proceso"
+
+msgid "sTAgregaDoc"
+msgstr " Agregar Documento"
+
+msgid "sTListEquipos"
+msgstr "Listado de Equipos"
+
+msgid "sTVerPlanMant"
+msgstr "Ver Plan de Mantenimiento"
+
+msgid "sTPlanMant"
+msgstr "Plan de Mantenimiento"
+
+msgid "sTRevEquipos"
+msgstr "Revision de Equipos"
+
+msgid "sTProgrAnual"
+msgstr "Programa Anual"
+
+msgid "sTVerAuditoria"
+msgstr "Ver Auditorias"
+
+msgid "sTLEquipoAud"
+msgstr "Listado de Equipos Auditores"
+
+msgid "sTAreaAuditoria"
+msgstr "Areas de las Auditorias"
+
+msgid "sTAgregaArea"
+msgstr "Agregar Area"
+
+msgid "sTPlanAuditoria"
+msgstr "Plan de Auditorias"
+
+msgid "sTPlanFormacion"
+msgstr "Planes de Formacion"
+
+msgid "sTinscripcion"
+msgstr "Inscripcion"
+
+msgid "sTCursos"
+msgstr "Cursos"
+
+msgid "sVerCursos"
+msgstr "Listado de Cursos"
+
+msgid "sTListCursos"
+msgstr "Listado de Cursos"
+
+msgid "sListDocente"
+msgstr "Listado de Docentes"
+
+msgid "sTListAsistente"
+msgstr "Asistentes"
+
+msgid "sTListaAsistCurso"
+msgstr "Listado de Asistentes al Curso"
+
+msgid "sTAgregaCurso"
+msgstr " Curso de Formacion"
+
+msgid "sTVerHistorico"
+msgstr "Inicio-->Mensajes-->Historico"
+
+msgid "sTTareasDoc"
+msgstr "Inicio-->Tareas-->Ver Documento"
+
+msgid "sPListado"
+msgstr "Proveedores-->Listado"
+
+msgid "sPNuevo"
+msgstr "Proveedores-->Nuevo"
+
+msgid "sPEditar"
+msgstr "Proveedores-->Editar"
+
+msgid "sPBaja"
+msgstr "Proveedores-->Baja"
+
+msgid "sPProductos"
+msgstr "Proveedores-->Productos-->Listado"
+
+msgid "sPProducNuevo"
+msgstr "Proveedores-->Productos-->Nuevo"
+
+msgid "sPProducEditar"
+msgstr "Proveedores-->Productos-->Editar"
+
+msgid "sPProducCriterios"
+msgstr "Proveedores-->Productos-->Criterios"
+
+msgid "sPProductCriteNuevo"
+msgstr "Proveedores-->Productos-->Criterios-->Nuevo"
+
+msgid "sPProductCriteRevisar"
+msgstr "Proveedores-->Productos-->Criterios-->Revisar"
+
+msgid "sPProductCriteHistorico"
+msgstr "Proveedores-->Productos-->Criterios-->Historico"
+
+msgid "sPContactos"
+msgstr "Proveedores-->Contactos-->Listado"
+
+msgid "sPContactoNuevo"
+msgstr "Proveedores-->Contactos-->Nuevo"
+
+msgid "sPContactoVer"
+msgstr "Proveedores-->Contactos-->Ver"
+
+msgid "sPContactoEditar"
+msgstr "Proveedores-->Contactos-->Editar"
+
+msgid "sPIncidencias"
+msgstr "Proveedores-->Incidencias-->Listado"
+
+msgid "sPIncidenNuevo"
+msgstr "Proveedores-->Incidencias-->Nuevo"
+
+msgid "sPIncidenEditar"
+msgstr "Proveedores-->Incidencias-->Editar"
+
+msgid "sPIncidenVer"
+msgstr "Proveedores-->Incidencias-->Ver"
+
+msgid "sPProducHomologados"
+msgstr "Proveedores-->P.Homologados-->Listado"
+
+msgid "sPProducHomoEditar"
+msgstr "Proveedores-->P.Homologados-->Editar"
+
+msgid "sPProducHomoVer"
+msgstr "Proveedores-->P.Homologados-->Ver"
+
+msgid "sPProducHomoBaja"
+msgstr "Proveedores-->P.Homologados-->Baja"
+
+msgid "sEquiListado"
+msgstr "Equipos-->Listado"
+
+msgid "sEquiNuevo"
+msgstr "Equipos-->Nuevo"
+
+msgid "sEquiVer"
+msgstr "Equipos-->Ver"
+
+msgid "sEquiEditar"
+msgstr "Equipos-->Editar"
+
+msgid "sEquiPlanMantenimiento"
+msgstr "Equipos-->Plan Mantenimiento-->Listado"
+
+msgid "sEquiPlanManPreNuevo"
+msgstr "Equipos-->Plan Mantenimiento Preventivo-->Nuevo"
+
+msgid "sEquiPlanManCorrNuevo"
+msgstr "Equipos-->Plan Mantenimiento Correctivo-->Nuevo"
+
+msgid "sEquiPlanManVer"
+msgstr "Equipos-->Plan Mantenimiento-->Ver"
+
+msgid "sEquiManPreEditar"
+msgstr "Equipos-->Mantenimiento Preventivo-->Editar"
+
+msgid "sEquiManCorrEditar"
+msgstr "Equipos-->Mantenimiento Correctivo-->Editar"
+
+msgid "sEquiRevisiones"
+msgstr "Equipos-->Revisiones"
+
+msgid "sEquiPlanManListado"
+msgstr "Equipos-->Plan Mantenimiento-->Listado"
+
+msgid "sEquiCalendario"
+msgstr "Equipos-->Calendario"
+
+msgid "sProcNuevo"
+msgstr "Procesos-->Nuevo"
+
+msgid "sProcEditar"
+msgstr "Procesos-->Editar"
+
+msgid "sProcDetalles"
+msgstr "Procesos-->Detalles"
+
+msgid "sProcFicha"
+msgstr "Procesos-->Ficha"
+
+msgid "sProcMatriz"
+msgstr "Procesos-->Matriz"
+
+msgid "sProcBaja"
+msgstr "Procesos-->Baja"
+
+msgid "sProcIndiciadores"
+msgstr "Procesos-->Indicadores"
+
+msgid "sProcIndNuevo"
+msgstr "Procesos-->Indicadores-->Nuevo"
+
+msgid "sProcDetVer"
+msgstr "Procesos-->Detalles-->Ver"
+
+msgid "sProcDetEditar"
+msgstr "Procesos-->Detalles-->Editar"
+
+msgid "sProdDetDoc"
+msgstr "Procesos-->Detalles-->Documentos Anexos"
+
+msgid "sProdDetDocListado"
+msgstr "Procesos-->Detalles-->Documentos Anexos-->Listado"
+
+msgid "sProdDetFlujo"
+msgstr "Procesos-->Detalles-->Flujograma"
+
+msgid "sProdDetArea"
+msgstr "Procesos-->Detalles-->Area"
+
+msgid "sProdDetRev"
+msgstr "Procesos-->Detalles-->Revisar"
+
+msgid "sProdDetAprobar"
+msgstr "Procesos-->Detalles-->Aprobar"
+
+msgid "sProdVerFicha"
+msgstr "Procesos-->Ver Ficha"
+
+msgid "sProdIndValores"
+msgstr "Procesos-->Indicadores-->Valores"
+
+msgid "sProdIndValoresIns"
+msgstr "Procesos-->Indicadores-->Insertar Valores"
+
+msgid "sProdIndValIns"
+msgstr "Procesos-->Indicadores-->Insertar un Valor"
+
+msgid "sProdIndValEditar"
+msgstr "Procesos-->Indicadores-->Editar Valor"
+
+msgid "sProdIndObj"
+msgstr "Procesos-->Indicadores-->Objetivos"
+
+msgid "sProdIndObjNuevo"
+msgstr "Procesos-->Indicadores-->Objetivos-->Nuevo"
+
+msgid "sProdIndObjEditar"
+msgstr "Procesos-->Indicadores-->Objetivos-->Editar"
+
+msgid "sProdIndObjGrafica"
+msgstr "Procesos-->Indicadores-->Gráfica"
+
+msgid "sProdIndEliminar"
+msgstr "Procesos-->Indicadores-->Eliminar"
+
+msgid "sTManual"
+msgstr "Manuales y Documentacion"
+
+msgid "sTNuevoManual"
+msgstr "Documentacion-->Documentacion S.G.-->Manual-->Nuevo Manual"
+
+msgid "sTVerManual"
+msgstr "Documentacion-->Documentacion S.G.-->Manual-->Ver Manual"
+
+msgid "sTVerDetallesManual"
+msgstr "Documentacion-->Documentacion S.G.-->Ver Detalles Manual"
+
+msgid "sTVerDetallesEditarManual"
+msgstr "Documentacion-->Documentacion S.G.-->Editar"
+
+msgid "sTDocVerHistorico"
+msgstr "Documentacion-->Ver Historico"
+
+msgid "sTDocVerPermisos"
+msgstr "Documentacion-->Ver Permisos"
+
+msgid "sTDocPoliticaNuevo"
+msgstr "Documentacion-->Nueva Documentacion de Politica"
+
+msgid "sTDocPoliticaVer"
+msgstr "Documentacion-->Ver Documentacion de Politica"
+
+msgid "sTDocPoliticaPermisos"
+msgstr "Documentacion-->Permisos de Politica"
+
+msgid "sTDocObjNuevo"
+msgstr "Documentacion-->Documentos S.G.-->Nuevo Objetivo"
+
+msgid "sTProgAudit"
+msgstr "Documentacion-->Documentos S.G.-->Programacion de Auditorias"
+
+msgid "sTDocProceso"
+msgstr "Documentacion-->Documentos S.G.-->Procesos"
+
+msgid "sTDocObjEditar"
+msgstr "Documentacion-->Documentos S.G.-->Editar Objetivo"
+
+msgid "sTDocObjSeguimiento"
+msgstr "Documentacion-->Documentos S.G.-->Seguimiento Objetivo"
+
+msgid "sTDocSgRevision"
+msgstr "Documentacion-->Documentos S.G.-->Revisar"
+
+msgid "sTDocSgAprobar"
+msgstr "Documentacion-->Documentos S.G.-->Aprobar"
+
+msgid "sTDocMetas"
+msgstr "Documentacion-->Documentos S.G.-->Metas"
+
+msgid "sTDocMetasNueva"
+msgstr "Documentacion-->Documentos S.G.-->Nueva Meta"
+
+msgid "sTDocSgNuevaVersion"
+msgstr "Documentacion-->Documentos S.G.-->Nueva Version"
+
+msgid "sTDocObjSeguimientoNuevo"
+msgstr "Documentacion-->Documentos S.G.-->Nuevo Seguimiento del Objetivo"
+
+msgid "sTDocPgNuevo"
+msgstr "Documentacion-->Nuevo Documento P.G."
+
+msgid "sTDocPgVer"
+msgstr "Documentacion-->Ver Documento P.G."
+
+msgid "sTDocPgListado"
+msgstr "Documentacion-->Documentos P.G.-->Listado"
+
+msgid "sTDocRevisar"
+msgstr "Documentacion-->Revisar"
+
+msgid "sTDocAprobar"
+msgstr "Documentacion-->Aprobar"
+
+msgid "sTDocPgNueVersion"
+msgstr "Documentacion-->Nueva Version del Documento"
+
+msgid "sTDocGeneralAsigTarea"
+msgstr "Documentacion-->Asignar Tarea"
+
+msgid "sTDocPgPermisos"
+msgstr "Documentacion-->Ver Permisos del Documento P.G."
+
+msgid "sTDocPoListado"
+msgstr "Documentacion-->Listado de Procedimientos Operativos"
+
+msgid "sTDocPoNuevo"
+msgstr "Documentacion-->Nuevo Documento P.O."
+
+msgid "sTDocPoDetalles"
+msgstr "Documentacion-->Detalles del Documento P.O."
+
+msgid "sTDocPoPermisos"
+msgstr "Documentacion-->Ver Permisos del Documento P.O."
+
+msgid "sTDocVigorListado"
+msgstr "Documentacion-->Listado de Documentacion en Vigor"
+
+msgid "sTDocVigorDetalles"
+msgstr "Documentacion-->Detalles del Documento en Vigor"
+
+msgid "sTDocBorradorListado"
+msgstr "Documentacion-->Listado de Documentacion de Borradores"
+
+msgid "sTDocBorradorDetalles"
+msgstr "Documentacion-->Detalles del Borrador"
+
+msgid "sTDocAAIListado"
+msgstr "Documentacion-->Listado de Documentacion de Analisis Ambiental Inicial"
+
+msgid "sTDocAAINuevo"
+msgstr "Documentacion-->Nuevo Documento de Analisis Ambiental Inicial"
+
+msgid "sTDocAAIDetalles"
+msgstr "Documentacion-->Detalles del Documento de AAI"
+
+msgid "sTDocAAIPermisos"
+msgstr "Documentacion-->Permisos del Documento de AAI"
+
+msgid "sTDocPlanambListado"
+msgstr "Documentacion-->Listado de Documentacion de Planes de Emergencia Ambiental"
+
+msgid "sTDocPlanemerambNuevo"
+msgstr "Documentacion-->Nuevo Documento de Plan de Emergencia Ambiental"
+
+msgid "sTDocPlanemerambVer"
+msgstr "Documentacion-->Ver Documento de Plan de Emergencia Ambiental"
+
+msgid "sTDocPlanemerambPermisos"
+msgstr "Documentacion-->Permisos del Documento de Plan de Emergencia Ambiental"
+
+msgid "sTDocFRLListado"
+msgstr "Documentacion-->Listado de Documentacion de F.R.L."
+
+msgid "sTDocFrlNuevo"
+msgstr "Documentacion-->F.R.L.-->Nuevo"
+
+msgid "sTDocFrlDetalles"
+msgstr "Documentacion-->F.R.L.-->Detalles"
+
+msgid "sTDocFrlPermisos"
+msgstr "Documentacion-->F.R.L.-->Permisos"
+
+msgid "sTDocLegisList"
+msgstr "Documentacion-->Legislación-->Listados"
+
+msgid "sTDocLegNuevo"
+msgstr "Documentacion-->Legislacion-->Nuevo"
+
+msgid "sTDocLegEditar"
+msgstr "Documentacion-->Legislacion-->Editar"
+
+msgid "sTDocLegCuestNuevo"
+msgstr "Documentacion-->Legislacion-->Cuestionario"
+
+msgid "sTDocLegLisVerLey"
+msgstr "Documentacion-->Legislacion-->Ver Ley"
+
+msgid "sTDocNormList"
+msgstr "Documentacion-->Legislacion-->Normativa"
+
+msgid "sTDocLegisNuevo"
+msgstr "Documentacion-->Legislacion-->Normativa-->Nuevo"
+
+msgid "sTDocLegNormVer"
+msgstr "Documentacion-->Legislacion-->Detalles Normativa"
+
+msgid "sTDocAsoRegList"
+msgstr "Documentacion-->Doc.Asociados-->Registros"
+
+msgid "sTDocLegRegList"
+msgstr "Documentacion-->Doc.Asociados-->Registros-->Listados"
+
+msgid "sTDocAsoFormList"
+msgstr "Documentacion-->Doc.Asociados-->Documentos y Formatos"
+
+msgid "sTDocAsoFormNuevo"
+msgstr "Documentacion-->Doc.Asociados-->Nuevo Formato"
+
+msgid "sTDocAsoFormDetalles"
+msgstr "Documentacion-->Doc.Asociados-->Detalles"
+
+msgid "sTDocAsoFormPermisos"
+msgstr "Documentacion-->Doc.Asociados-->Permisos"
+
+msgid "sTMejoraListado"
+msgstr "Listado de Acciones de Mejora"
+
+msgid "sTMejoraNuevo"
+msgstr "Accion Mejora-->Nueva"
+
+msgid "sTMejoraEditar"
+msgstr "Accion Mejora-->Editar"
+
+msgid "sTMejoraSelecUsuario"
+msgstr "Accion Mejora-->Seleccionar Usuario"
+
+msgid "sTFormFichListado"
+msgstr "Formacion-->Recursos-->Listado de Fichas Personales"
+
+msgid "sTFormFichaNuevo"
+msgstr "Formacion-->Recursos-->Nueva Ficha Personal"
+
+msgid "sTFormFichaEditar"
+msgstr "Formacion-->Recursos-->Editar Ficha Personal"
+
+msgid "sTFormFichaDatosPer"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Datos Personales"
+
+msgid "sTFormFichaInc"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Incorporaci�n"
+
+msgid "sTFormFichaFor"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Formacion"
+
+msgid "sTFormFichaPreForm"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Pre-formacion"
+
+msgid "sTFormFichaIdiomas"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Idiomas"
+
+msgid "sTFormFichaCursos"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Cursos"
+
+msgid "sTFormFichaFormacionTec"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Formacion Tecnica"
+
+msgid "sTFormFichaExp"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Experiencia Laboral"
+
+msgid "sTFormFichaCambPerfil"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Cambio de Perfil"
+
+msgid "sTFormFichaCambDept"
+msgstr "Formacion-->Recursos-->Ficha Personal-->Cambios de Departamento"
+
+msgid "sTFormReqpuestoListado"
+msgstr "Formacion-->Recursos-->Listado de Requirimientos del Puesto"
+
+msgid "sTFormReqPuestoNuevo"
+msgstr "Formacion-->Recursos-->Nuevo Requerimiento para el Puesto"
+
+msgid "sTFormCursosListado"
+msgstr "Formación-->Listado de Cursos"
+
+msgid "sTFormCursosNuevo"
+msgstr "Formación-->Cursos-->Nuevo"
+
+msgid "sTFormCursosEditar"
+msgstr "Formación-->Cursos-->Editar"
+
+msgid "sTFormInscripcionListado"
+msgstr "Formación-->Listado de Inscripciones"
+
+msgid "sTFormInscAsistentes"
+msgstr "Formación-->Inscripciones-->Asistentes"
+
+msgid "sTFormInscDetalles"
+msgstr "Formación-->Inscripciones-->Detalles"
+
+msgid "sTFormInscAlta"
+msgstr "Formación-->Inscripciones-->Alta"
+
+msgid "sTFormPlanesListado"
+msgstr "Formacion-->Listado de Planes de Formacion"
+
+msgid "sTFormPlanesNuevo"
+msgstr "Formacion-->Nuevo Plan de Formacion"
+
+msgid "sTFormPlanesEditar"
+msgstr "Formacion-->Editar Plan de Formacion"
+
+msgid "sTFormPlanesCursosPlan"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan"
+
+msgid "sTFormPlanesCursosPlanNuevo"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Nuevo"
+
+msgid "sTFormPlanesCursosPlanNuevoAgregar"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Agregar"
+
+msgid "sTFormPlanesCursosPlanNuevoMsj"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Nuevo Mensaje"
+
+msgid "sTFormPlanesCursosPlanEditar"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Editar"
+
+msgid "sTFormPlanesCursosPlanDetalles"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Detalles"
+
+msgid "sTFormPlanesCursosPlanAsist"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Asistentes"
+
+msgid "sTFormPlanesCursosPlanAsistAlumNuevo"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Alumno Nuevo"
+
+msgid "sTFormPlanesCursosPlanProfesores"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Profesores"
+
+msgid "sTFormPlanesCursosPlanProfeNuevo"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Nuevo Profesor"
+
+msgid "sTFormPlanesCursosPlanProfeEditar"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Editar Profesor"
+
+msgid "sTFormPlanesCursosPlanSubir"
+msgstr "Formacion-->Planes Formacion-->Cursos Plan-->Subir Hoja de Firmas"
+
+msgid "sTIndListado"
+msgstr "Indicadores-->Listado de Indicadores"
+
+msgid "sTIndNuevo"
+msgstr "Indicadores-->Nuevo Indicador"
+
+msgid "sTIndMatriz"
+msgstr "Indicadores-->Matriz"
+
+msgid "sTIndGrafica"
+msgstr "Indicadores-->Grafica"
+
+msgid "sTIndGraficaVer"
+msgstr "Indicadores-->Ver Grafica"
+
+msgid "sTIndEditar"
+msgstr "Indicadores-->Editar"
+
+msgid "sTIndValores"
+msgstr "Indicadores-->Valores"
+
+msgid "sTIndInsValores"
+msgstr "Indicadores-->Insertar Valores"
+
+msgid "sTIndInsUnValor"
+msgstr "Indicadores-->Insertar Un Valor"
+
+msgid "sTIndEditarValor"
+msgstr "Indicadores-->Editar Valores"
+
+msgid "sTIndObjNuevo"
+msgstr "Indicadores-->Objetivos-->Nuevo Objetivo"
+
+msgid "sTIndObjEditar"
+msgstr "Indicadores-->Objetivos-->Editar Objetivo"
+
+msgid "sTIndObjMetas"
+msgstr "Indicadores-->Objetivos-->Metas"
+
+msgid "sTIndObjRevisar"
+msgstr "Indicadores-->Objetivos-->Revisar"
+
+msgid "sTIndObjAprobar"
+msgstr "Indicadores-->Objetivos-->Aprobar"
+
+msgid "sTIndObjListado"
+msgstr "Indicadores-->Listado de Objetivos"
+
+msgid "sTAambRevListado"
+msgstr "A.Ambientales-->Listado de Aspectos Ambientales"
+
+msgid "sTAambNuevo"
+msgstr "A.Ambientales-->Nuevo Aspecto Ambiental"
+
+msgid "sTAambEditar"
+msgstr "A.Ambientales-->Editar Apsecto Ambiental"
+
+msgid "sTAambRevemerListado"
+msgstr "A.Ambientales-->Listado de Aspectos Ambientales de Emergencia"
+
+msgid "sTAambEmerNuevo"
+msgstr "A.Ambientales-->A.Amb.Emergencia-->Nuevo"
+
+msgid "sTAambEmerEditar"
+msgstr "A.Ambientales-->A.Amb.Emergencia-->Editar"
+
+msgid "sTAmbMatrizVer"
+msgstr "A.Ambientales-->Matriz"
+
+msgid "sTAdmin"
+msgstr "Administracion"
+
+msgid "sTAdminUsuarioListado"
+msgstr "Administracion-->Aplicacion-->Listado de Usuarios"
+
+msgid "sTAdminUsuarioNuevo"
+msgstr "Administracion-->Aplicacion-->Usuario Nuevo"
+
+msgid "sTAdminUsuarioFicha"
+msgstr "Administracion-->Aplicacion-->Usuarios-->Seleccionar Ficha"
+
+msgid "sTAdminUsuarioReq"
+msgstr "Administracion-->Aplicacion-->Usuarios-->Seleccionar Requisito"
+
+msgid "sTAdminUsuarioEditar"
+msgstr "Administracion-->Aplicacion-->Usuarios-->Editar Usuario"
+
+msgid "sTAdminUsuarioPass"
+msgstr "Administracion-->Aplicacion-->Usuarios-->Cambiar Password"
+
+msgid "sTAdminPerfListado"
+msgstr "Administracion-->Aplicacion-->Listado de Perfiles"
+
+msgid "sTAdminPerfNuevo"
+msgstr "Administracion-->Aplicacion-->Perfiles-->Nuevo Perfil"
+
+msgid "sTAdminPerfEditar"
+msgstr "Administracion-->Aplicacion-->Perfiles-->Editar Perfil"
+
+msgid "sTAdminPerfCopiar"
+msgstr "Administracion-->Aplicacion-->Perfiles-->Copiar Perfil"
+
+msgid "sTAdminMsjList"
+msgstr "Administracion-->Aplicacion-->Listado de Mensajes"
+
+msgid "sTAdminMsjNuevo"
+msgstr "Administracion-->Aplicacion-->Nuevo Mensaje"
+
+msgid "sTAdminTareasList"
+msgstr "Administracion-->Aplicacion-->Listado de Tareas"
+
+msgid "sTAdminMenusList"
+msgstr "Administracion-->Aplicacion-->Listado de Menus"
+
+msgid "sTAdminMenuEstruc"
+msgstr "Administracion-->Aplicacion-->Menus-->Estructura"
+
+msgid "sTAdminMenuNuevo"
+msgstr "Administracion-->Aplicacion-->Menus-->Nuevo"
+
+msgid "sTAmindMenuBotones"
+msgstr "Administracion-->Aplicacion-->Menus-->Botones"
+
+msgid "sTAdminMenuBotonesNuevo"
+msgstr "Administracion-->Aplicacion-->Menus-->Botones-->Nuevo"
+
+msgid "sTAdminMenuBotonesEditar"
+msgstr "Administracion-->Aplicacion-->Menus-->Botones-->Editar"
+
+msgid "sTAdminMenuBotonesIdioma"
+msgstr "Administracion-->Aplicacion-->Menus-->Botones-->Idiomas"
+
+msgid "sTAdminMenuBotonesIdiomaEditar"
+msgstr "Administracion-->Aplicacion-->Menus-->Botones-->Editar Idioma"
+
+msgid "sTAdminMenuIdioma"
+msgstr "Administracion-->Aplicacion-->Menus-->Idiomas"
+
+msgid "sTAdminMenuIdiomaEditar"
+msgstr "Administracion-->Aplicacion-->Menus-->Editar Idioma"
+
+msgid "sTAdminMenuEditar"
+msgstr "Administracion-->Aplicacion-->Menus-->Editar"
+
+msgid "sTAdminIdiomaList"
+msgstr "Administracion-->Aplicacion-->Listado de Idiomas"
+
+msgid "sTAdminIdiomaNuevo"
+msgstr "Administracion-->Aplicacion-->Idioma Nuevo"
+
+msgid "sTAdminDocSGList"
+msgstr "Administracion-->Documentos-->Listado de Documentos S.G."
+
+msgid "sTAdminRegistrosList"
+msgstr "Administracion-->Documentos-->Listado de Registros"
+
+msgid "sTAdminNormativaList"
+msgstr "Administracion-->Documentos-->Listado de tipos de documentos y formatos"
+
+msgid "sTAdminTipomejoraList"
+msgstr "Administracion-->Listado de Tipos de Acci�n de Mejora"
+
+msgid "sTAdminTipomejoraNuevo"
+msgstr "Administracion-->Tipos de Acc.Mejora-->Nueva"
+
+msgid "sTAdminTipomejoraEditar"
+msgstr "Administracion-->Tipos de Acc.Mejora-->Editar"
+
+msgid "sTAdminTipoareasList"
+msgstr "Administracion-->Listado de Tipos de Area"
+
+msgid "sTAdminTipoareasNuevo"
+msgstr "Administracion-->Tipos de Areas-->Nuevo"
+
+msgid "sTAdminTipoareasEditar"
+msgstr "Administracion-->Tipos de Areas-->Editar"
+
+msgid "sTAdminTiposambList"
+msgstr "Administracion-->Listado de Tipos Ambientales de la Aplicacion"
+
+msgid "sTAdminTiposambNuevo"
+msgstr "Administracion-->Tipos Ambientales de la Aplicacion-->Nuevo"
+
+msgid "sTAdminTiposambEditar"
+msgstr "Administracion-->Tipos Ambientales de la Aplicacion-->Editar"
+
+msgid "sTAdminLegList"
+msgstr "Administracion-->Legislacion Aplicable"
+
+msgid "sTAdminLegListPreg"
+msgstr "Administracion-->Legislacion Aplicable-->Preguntas"
+
+msgid "sTAdminLegListPregNueva"
+msgstr "Administracion-->Legislacion Aplicable-->Preguntas-->Nueva"
+
+msgid "sTAdminLegListPregBaja"
+msgstr "Administracion-->Legislacion Aplicable-->Preguntas-->Baja"
+
+msgid "sTAdminTiposimpList"
+msgstr "Administracion-->Listado de Tipos de Impactos Ambientales"
+
+msgid "sTAdminTiposimpNuevo"
+msgstr "Administracion-->Tipos de Impactos Ambientales-->Nuevo"
+
+msgid "sTAdminTiposimpEditar"
+msgstr "Administracion-->Tipos de Impactos Ambientales-->Editar"
+
+msgid "sTAdminFormCurList"
+msgstr "Administracion-->Formacion-->Listado de Tipos de Cursos"
+
+msgid "sTAdminFormCurNuevo"
+msgstr "Administracion->Formacion-->Tipos de Cursos-->Nuevo"
+
+msgid "sTAdminFormCurEditar"
+msgstr "Administracion-->Formacion-->Tipos de Cursos-->Editar"
+
+msgid "sTAdminTipoDocList"
+msgstr "Administracion-->Listado de Tipos de Documentos"
+
+msgid "sTAdminTipoDocNuevo"
+msgstr "Administracion-->Tipos de Documentos-->Nuevo"
+
+msgid "sTAdminTipoDocEditar"
+msgstr "Administracion-->Tipos de Doumentos-->Editar"
+
+msgid "sTAdminTipoDocPermisos"
+msgstr "Administracion-->Tipos de Documentos-->Permisos"
+
+msgid "sTAdminAspecMagList"
+msgstr "Administracion-->Aspectos Ambientales-->Cantidad-->Listado"
+
+msgid "sTAdminAspecMagNuevo"
+msgstr "Administracion-->Aspectos Ambientales-->Cantidad-->Nueva"
+
+msgid "sTAdminAspecMagEditar"
+msgstr "Administracion-->Aspectos Ambientales-->Cantidad-->Editar"
+
+msgid "sTAdminAspecGravList"
+msgstr "Administracion-->Aspectos Ambientales-->Severidad-->Listado"
+
+msgid "sTAdminAspecGravNuevo"
+msgstr "Administracion-->Aspectos Ambientales-->Severidad-->Nueva"
+
+msgid "sTAdminAspecGravEditar"
+msgstr "Administracion-->Aspectos Ambientales-->Severidad-->Editar"
+
+msgid "sTAdminAspecFreList"
+msgstr "Administracion-->Aspectos Ambientales-->Frec./Probabilidad-->Listado"
+
+msgid "sTAdminAspecFreNuevo"
+msgstr "Administracion-->Aspectos Ambientales-->Frec./Probabilidad-->Nuevo"
+
+msgid "sTAdminAspecFreEditar"
+msgstr "Administracion-->Aspectos Ambientales-->Frec./Probabilidad-->Editar"
+
+msgid "sTAdminAspecFormList"
+msgstr "Administracion-->Aspectos Ambientales-->Formulas"
+
+msgid "sTAdminAspecFormEditar"
+msgstr "Administracion-->Aspectos Ambientals-->Formulas-->Editar"
+
+msgid "sTAdminAspecProbList"
+msgstr "Administracion-->Aspectos Ambientales-->Listado de Tipos de Probabilidad"
+
+msgid "sTAdminAspecProbNuevo"
+msgstr "Administracion-->Aspectos Ambientales-->Probabilidad-->Nuevo"
+
+msgid "sTAdminAspecProbEditar"
+msgstr "Administracion-->Aspectos Ambientales-->Probabilidad-->Editar"
+
+msgid "sTAdminAspecSeverList"
+msgstr "Administracion-->Aspectos Ambientales-->Sever./Emergencia-->Listado"
+
+msgid "sTAdminAspecServNuevo"
+msgstr "Administracion-->Aspectos Ambientales-->Sever./Emergencia-->Nueva"
+
+msgid "sTAdminAspecServEditar"
+msgstr "Administracion-->Aspectos Ambientales-->Sever./Emergencia-->Editar"
+
+msgid "sTAdminAyudaList"
+msgstr "Administracion-->Listado de los registros de Ayuda"
+
+msgid "sTAdminAyudaNuevo"
+msgstr "Administracion-->Ayuda-->Nueva"
+
+msgid "sTAdminAyudaEditar"
+msgstr "Administracion-->Ayuda-->Editar"
+
+msgid "sTAdminMod"
+msgstr "Administracion-->Permisos de los modulos"
+
+msgid "sTAudiListado"
+msgstr "Auditorias-->Programa Anual-->Listado"
+
+msgid "sTAudiNuevo"
+msgstr "Auditorias-->Programa Anual-->Nuevo"
+
+msgid "sTAudiEditar"
+msgstr "Auditorias-->Programa Anual-->Editar"
+
+msgid "sTAudiVigente"
+msgstr "Auditorias-->Programa Anual-->Hacer Vigente"
+
+msgid "sTAudiCopiar"
+msgstr "Auditorias-->Programa Anual-->Copiar"
+
+msgid "sTAudiVer"
+msgstr "Auditorias-->Programa Anual-->Listado de Auditorias"
+
+msgid "sTAudiAudiEditar"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Editar"
+
+msgid "sTAudiAudiDetalles"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Detalles"
+
+msgid "sTAudiAudiPlan"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Plan de Auditoria"
+
+msgid "sTAudiAudiEquipoAudi"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Equipo de Auditores"
+
+msgid "sTAudiAudiAdjunto"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Equipo de Auditores-->Subir Fichero"
+
+msgid "sTAudiAudiVerAdjunto"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Equipo de Auditores-->Ver Fichero"
+
+msgid "sTAudiAudiHorario"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Horarios"
+
+msgid "sTAudiAudiHorarioNuevo"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Horarios-->Nuevo"
+
+msgid "sTAudiAudiHorarioEditar"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Horarios-->Editar"
+
+msgid "sTAudiAudiInforme"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Informe"
+
+msgid "sTAudiAudiRevision"
+msgstr "Auditorias-->Programa Anual-->Auditorias-->Revision"
+
+msgid "sTAudiVigor"
+msgstr "Auditorias-->Programa en Vigor-->Listado"
+
+msgid "sTAudiVigorNuevo"
+msgstr "Auditorias-->Programa en Vigor-->Nuevo"
+
+msgid "sTAudiVigorEditar"
+msgstr "Auditorias-->Programa en Vigor-->Editar"
+
+msgid "sTAudiVigorDetalles"
+msgstr "Auditorias-->Programa en Vigor-->Detalles"
+
+msgid "sTListRegistro"
+msgstr "Listado de Registros"
+
+msgid "sTDocExterna"
+msgstr "Documentacion Externa"
+
+msgid "sTFichaPersonal"
+msgstr "Ficha del Personal"
+
+msgid "sTRequisito"
+msgstr "Requisitos del Puesto"
+
+msgid "sTCalendarioA"
+msgstr "Calendario Anual"
+
+msgid "sTNuevoDoc"
+msgstr "Nuevo Documento"
+
+msgid "sTNuevaVersionDoc"
+msgstr "Nueva Version del Documento"
+
+msgid "sTEditarDoc"
+msgstr "Editar Documento"
+
+msgid "sTAprobarDoc"
+msgstr "Aprobar el Documento"
+
+msgid "sTRevisarDoc"
+msgstr "Revisar el Documento"
+
+msgid "sTAsignaTarea"
+msgstr "Asignar Tarea"
+
+msgid "sTAgregaProv"
+msgstr "Nuevo Proveedor"
+
+msgid "sTAgregaInc"
+msgstr "Nueva Incidencia"
+
+msgid "TAgregaContacto"
+msgstr "Nuevo Contacto"
+
+msgid "sTAgregaProd"
+msgstr "Nuevo Producto"
+
+msgid "sTEditProv"
+msgstr "Editar Informacion del Proveedor"
+
+msgid "sTEditInc"
+msgstr "Editar Incidencia"
+
+msgid "sTEditContacto"
+msgstr "Editar Contacto"
+
+msgid "sTVerInfoProd"
+msgstr "Ver Informacion del Producto"
+
+msgid "sTEditProdInfo"
+msgstr "Editar Informacion del Producto"
+
+msgid "sTVerInfoProv"
+msgstr "Ver Informacion del Proveedor"
+
+msgid "sTVerInfoContacto"
+msgstr "Ver Informacion de los Contactos"
+
+msgid "sTRevProducto"
+msgstr "Revision del Producto"
+
+msgid "sTDarAlta"
+msgstr "Dar de Alta"
+
+msgid "sTDarBaja"
+msgstr "Dar de Baja"
+
+msgid "sTListaAccMej"
+msgstr "Nuevo Listado de Acciones de Mejora"
+
+msgid "sTEditAccMej"
+msgstr "Editar Acciones de Mejora"
+
+msgid "sAccVerificada"
+msgstr "Accion Verificada"
+
+msgid "sAccYaCerrada"
+msgstr "La accion ya está cerrada"
+
+msgid "sAccCerrada"
+msgstr "Accion Cerrada"
+
+msgid "sTNuevoProceso"
+msgstr "Nuevo Proceso"
+
+msgid "sTNuevoIndicador"
+msgstr "Nuevo Indicador"
+
+msgid "sTEditaProceso"
+msgstr "Editar Proceso"
+
+msgid "sTEditaIndicador"
+msgstr "Editar Indicador"
+
+msgid "sTVerFichaProceso"
+msgstr "Ver Fichas del Proceso"
+
+msgid "sTCatalgProceso"
+msgstr "Catalogo de Procesos"
+
+msgid "sTArbolProceso"
+msgstr "Arbol de Procesos"
+
+msgid "sTEditaContenido"
+msgstr "Editar Contenido"
+
+msgid "sTDarAltaDoc"
+msgstr "Dar de Alta el Documento"
+
+msgid "sTDarBajaDoc"
+msgstr "Dar de Baja el Documento"
+
+msgid "sTDarAltaIndProc"
+msgstr "Añadir Indicador de Proceso"
+
+msgid "sTDarBajaIndProc"
+msgstr "Dar de Baja el Indicador de Proceso"
+
+msgid "sTVerFichaProc"
+msgstr "Ver Ficha de Proceso"
+
+msgid "sTVerMatrizProc"
+msgstr "Ver Matriz de Procesos"
+
+msgid "sTVerFlujog"
+msgstr "Ver Flujograma"
+
+msgid "sTNuevoEquipo"
+msgstr "Nuevo Equipo"
+
+msgid "sTEditDatosEq"
+msgstr "Editar Datos del Equipo"
+
+msgid "sTMantPrev"
+msgstr " Mantenimiento Preventivo"
+
+msgid "sTMantCorr"
+msgstr " Mantenimiento Correctivo"
+
+msgid "sTEditMantCorr"
+msgstr "Agregar Nuevo Plan de Mantenimiento Correctivo"
+
+msgid "sTEditMantPrev"
+msgstr "Agregar Nuevo Plan de Mantenimiento Preventivo"
+
+msgid "sTVerDatosEquipo"
+msgstr "Ver Datos del Equipo"
+
+msgid "sTBajaEquipo"
+msgstr "Dar de Baja Un Equipo"
+
+msgid "sTDetallesMant"
+msgstr "Detalles del Plan de  Mantenimiento"
+
+msgid "sTNuevoProg"
+msgstr "Nuevo Programa de Auditoria"
+
+msgid "sTEditProg"
+msgstr "Editar Programa de Auditoria"
+
+msgid "sTNuevaAudit"
+msgstr "Nueva Auditoria"
+
+msgid "sTNuevoAuditor"
+msgstr "Nuevo Auditor"
+
+msgid "sTEditAudit"
+msgstr "Editar Auditoria"
+
+msgid "sTEditPlanAudit"
+msgstr "Nuevo Plan de Auditoria"
+
+msgid "sTEditInformeA"
+msgstr "Informe de Auditoria"
+
+msgid "sTDarBajaPrg"
+msgstr "Dar de baja un Programa"
+
+msgid "sTDarBajaAud"
+msgstr "Dar de Baja una Auditoria"
+
+msgid "sTHacerVigente"
+msgstr "Hacer Vigente un Programa de Auditoria"
+
+msgid "sTAltaArea"
+msgstr "Dar de Alta un Area"
+
+msgid "sTBajaArea"
+msgstr "Dar de Baja un Area"
+
+msgid "sTDetallesAudit"
+msgstr "Detalles de la Auditoria"
+
+msgid "sTPrintInforme"
+msgstr "Imprimir Informe"
+
+msgid "sTMejora"
+msgstr "Mejora"
+
+msgid "sTIndicador"
+msgstr "Indicadores"
+
+msgid "sTAuditoria"
+msgstr "Auditorias"
+
+msgid "sTAspectosA"
+msgstr "Aspectos Ambientales"
+
+msgid "sTBorrador"
+msgstr "Borradores"
+
+msgid "sTDocHT"
+msgstr "Documentacion de Hojas Técnicas"
+
+msgid "sTDocPG"
+msgstr "Documentos de Procedimiento General"
+
+msgid "sTDocIT"
+msgstr "Documentacion de Instruccion Tecnica."
+
+msgid "sTDocPolitica"
+msgstr "Documentacion de Politica"
+
+msgid "sTDocObjetivos"
+msgstr "Documentacion-->Documentos S.G.-->Objetivos"
+
+msgid "sTNuevoMsg"
+msgstr "Nuevo Mensaje"
+
+msgid "sTHistorial"
+msgstr "Histórico"
+
+msgid "sTLegislacion"
+msgstr "Legislacion"
+
+msgid "sTPlanesForm"
+msgstr "Planes de Formacion"
+
+msgid "sTInscripcion"
+msgstr "Inscripcion"
+
+msgid "sTCursosForm"
+msgstr "Cursos de Formacion"
+
+msgid "sTListDocente"
+msgstr "Listado de Docentes"
+
+msgid "sTAsistente"
+msgstr "Asistentes"
+
+msgid "sTListAssistente"
+msgstr "Listado de Asistentes al Curso"
+
+msgid "TNuevaLeg"
+msgstr "Nueva Legislacion"
+
+msgid "sTEditLeg"
+msgstr "Editar Legislacion"
+
+msgid "sTVerLeg"
+msgstr "Ver Legislacion"
+
+msgid "sTVerCuestionario"
+msgstr "Ver Cuestionario"
+
+msgid "sTFormularios"
+msgstr "Formularios"
+
+msgid "sTHistPreg"
+msgstr "Histórico de Preguntas"
+
+msgid "sTAdminDocs"
+msgstr "Administracion de Documentos"
+
+msgid "sTAdminUsuario"
+msgstr "Administracion de Usuarios"
+
+msgid "sTAdminPerfiles"
+msgstr "Administracion de Perfiles"
+
+msgid "sTAdminMsg"
+msgstr "Administracion de Mensajes"
+
+msgid "sTAdminTareas"
+msgstr "Administracion de Tareas"
+
+msgid "sTAdminAreas"
+msgstr "Administracion de Areas"
+
+msgid "sTAdminClientes"
+msgstr "Administracion de Clientes"
+
+msgid "sTAdminAccMej"
+msgstr "Administracion de Acciones Mejora"
+
+msgid "sTAdminCrit"
+msgstr "Administracion de Criterios"
+
+msgid "sTHistMsg"
+msgstr "Historico de Mensajes"
+
+msgid "sTAdminReg"
+msgstr "Administracion de Registros"
+
+msgid "sTAdminNorm"
+msgstr "Administracion de Normativas"
+
+msgid "sTNuevoCrit"
+msgstr "Nuevo Criterio"
+
+msgid "sTNuevoUsuario"
+msgstr "Nuevo Usuario"
+
+msgid "sTNuevoCliente"
+msgstr "Nuevo Cliente"
+
+msgid "sTNuevoPerfil"
+msgstr "Nuevo Perfil"
+
+msgid "sTNuevoArea"
+msgstr "Nueva Area"
+
+msgid "sTNuevaMejora"
+msgstr "Nueva Accion de Mejora"
+
+msgid "sTNuevoCurso"
+msgstr "Nuevo Curso"
+
+msgid "sTEditCriterio"
+msgstr "Editar Criterio"
+
+msgid "sTEditMsg"
+msgstr "Editar Mensaje"
+
+msgid "sTEditArea"
+msgstr "Editar Area"
+
+msgid "sTEditUsuario"
+msgstr "Editar Usuario"
+
+msgid "sTEditPerfil"
+msgstr "Editar Perfil"
+
+msgid "sTEditCliente"
+msgstr "Editar Cliente"
+
+msgid "sTClaveUsuario"
+msgstr "Cambiar Clave de Usuario"
+
+msgid "sTPermisos"
+msgstr "Permisos"
+
+msgid "sTNuevoPlanForm"
+msgstr "Nuevo Plan de Formacion"
+
+msgid "sTNuevoDocente"
+msgstr "Nuevo Docente"
+
+msgid "sTNuevoAlumno"
+msgstr "Nuevo Alumno"
+
+msgid "sTMandarMsg"
+msgstr "Nuevo Mensaje a los Usuarios"
+
+msgid "sTEditDocente"
+msgstr "Editar Informacion del Docente"
+
+msgid "sTEditPlanCurso"
+msgstr "Editar Plan del Curso"
+
+msgid "sNuevoPlanCurso"
+msgstr "Nuevo Plan del Curso"
+
+msgid "sTEditPlan"
+msgstr "Editar Plan de Formacion"
+
+msgid "sTEditInfoCurso"
+msgstr "Editar Informacion Sobre el Curso"
+
+msgid "sTEditDetallesPlan"
+msgstr " Editar los Detalles de la Planificacion del Curso"
+
+msgid "sTDetallesCurso"
+msgstr "Detalles del Curso"
+
+msgid "sTDetallesDoc"
+msgstr "Informacion sobre el Documento"
+
+msgid "sTDocInfo"
+msgstr "Informacion sobre el Documento"
+
+msgid "sTVerMensaje"
+msgstr "Ver Mensaje"
+
+msgid "sTVerTarea"
+msgstr "Inicio-->Ver Tarea"
+
+msgid "sTConfirmaAlta"
+msgstr "Confirmar Alta"
+
+msgid "sTConfirmaBaja"
+msgstr "Confirmar Baja"
+
+msgid "sTAltaCurso"
+msgstr "Alta del Curso"
+
+msgid "sTBajaCruso"
+msgstr "Baja del Curso"
+
+msgid "sTHistMsgUsuario"
+msgstr "Histórico de Mensajes del Usuario"
+
+msgid "sTDarBajaPerfiles"
+msgstr "Dar de Baja Perfiles"
+
+msgid "sTDarbajaUsuario"
+msgstr "Dar de Baja Usuarios"
+
+msgid "sTDarBajaTareas"
+msgstr "Dar de Baja Tareas"
+
+msgid "sTDarBajaDocs"
+msgstr "Dar de Baja Documentos"
+
+msgid "sTDarAltaDocs"
+msgstr "Dar de Alta Documentos"
+
+msgid "sTEditorDocs"
+msgstr "Editor de Documentos"
+
+msgid "sTCalentario"
+msgstr "Calendario"
+
+msgid "sTFormulario"
+msgstr "Formulario"
+
+msgid "sTEliminar"
+msgstr "Eliminar"
+
+msgid "sTAceptar"
+msgstr "Aceptar"
+
+msgid "sTAceptarDocs"
+msgstr "Aceptar Documentos"
+
+msgid "sTAceptarPerfil"
+msgstr "Aceptar el Perfil"
+
+msgid "sTVerDoc"
+msgstr "Ver Documento"
+
+msgid "sTSeleccUsuario"
+msgstr "Seleccionar Usuario"
+
+msgid "sTFila"
+msgstr "Fila"
+
+msgid "sTopCorrecta"
+msgstr "Operacion Correcta"
+
+msgid "sTPoliticaC"
+msgstr "Politica de Calidad"
+
+msgid "sTPoliticaI"
+msgstr "Politica Integral"
+
+msgid "sTPoliticaA"
+msgstr "Politica Ambiental"
+
+msgid "sAdminTAreas"
+msgstr "Administrar Tipos de Area"
+
+msgid "sAdminTAmb"
+msgstr "Administrar Ambitos de Aplicacion"
+
+msgid "sTAdminPolC"
+msgstr "Politica de Calidad"
+
+msgid "sTAdminPolM"
+msgstr "Politica Medioambiental"
+
+msgid "sTNuevoCal"
+msgstr "Añadir Documento de Politica de Calidad"
+
+msgid "sTNuevoAmb"
+msgstr "Nuevo Documento de Politica MedioAmbiental"
+
+msgid "sTAdminLey"
+msgstr "Administracion de la Legislacion Aplicable"
+
+msgid "sTNuevoMsj"
+msgstr "Nuevo Mensaje"
+
+msgid "sTNuevoFichaP"
+msgstr "Nueva Ficha de Personal"
+
+msgid "sTEditFichaP"
+msgstr "Editar Ficha de Personal"
+
+msgid "sTEditDatosP"
+msgstr "Editar Datos Personales"
+
+msgid "sTExterno"
+msgstr "Documentos y formatos"
+
+msgid "sTEditDForm"
+msgstr "Editar Datos de Formacion"
+
+msgid "sTEditPreForm"
+msgstr "Editar Datos de Pre-formacion"
+
+msgid "sTEditIdioma"
+msgstr "Editar Conocimiento de Idiomas"
+
+msgid "sTEditCurso"
+msgstr "Editar Cursos Realizados"
+
+msgid "sTAddCurso"
+msgstr "Añadir Curso"
+
+msgid "sTVerFTec"
+msgstr "Formacion Técnica"
+
+msgid "sTVerEL"
+msgstr "Experiencia Laboral"
+
+msgid "sTCambiosP"
+msgstr "Editar Cambios de Perfil"
+
+msgid "sTVerP"
+msgstr "Cambios de Perfil"
+
+msgid "sTCambiosDpt"
+msgstr "Cambios de Departamento"
+
+msgid "sTExpL"
+msgstr "Experiencia Laboral"
+
+msgid "sTFormTec"
+msgstr "Formacion Tecnica"
+
+msgid "sTNuevoFT"
+msgstr "Añadir Formacion Tecnica"
+
+msgid "sTEditFT"
+msgstr "Editar Formacion Tecnica"
+
+msgid "sTNuevoELab"
+msgstr "Añadir Experiencia Laboral"
+
+msgid "sEditELab"
+msgstr "Editar Experiencia Laboral"
+
+msgid "sEditCambioP"
+msgstr "Editar Cambio de Perfil"
+
+msgid "sEditCambioDpt"
+msgstr "Editar Cambio de Departamento"
+
+msgid "sEditNuevoCDpt"
+msgstr "Nuevo Cambio de Departamento"
+
+msgid "sTVerFormReq"
+msgstr "Formacion"
+
+msgid "sTNuevoFormReq"
+msgstr "Añadir Formacion"
+
+msgid "sTNuevoFTReq"
+msgstr "Añadir Formacion Tecnica"
+
+msgid "sTEditFTReq"
+msgstr "Editar Requisitos del Puesto"
+
+msgid "sTEditCompReq"
+msgstr "Editar Competencias del Puesto"
+
+msgid "sTNuevaCompReq"
+msgstr "Añadir Nuevas Competencias del Puesto"
+
+msgid "sTEditFormReq"
+msgstr "Editar Formacion"
+
+msgid "sTVerCompReq"
+msgstr "Competencias del Puesto"
+
+msgid "sTNuevoPromReq"
+msgstr "Añadir Requisitos del Puesto de Promocion"
+
+msgid "sEditReqPuesto"
+msgstr "Editar Requisitos del Puesto"
+
+msgid "sTEditarReqProm"
+msgstr "Editar Requisitos del Puesto de Promocion"
+
+msgid "sTNuevoMP"
+msgstr "Nuevo Plan de Mantenimiento Preventivo"
+
+msgid "sTNuevoMC"
+msgstr "Nuevo Plan de Mantenimiento Correctivo"
+
+msgid "sTEditMP"
+msgstr "Nuevo Plan de Mantenimiento Preventivo"
+
+msgid "sTEditMC"
+msgstr "Nuevo Plan de Mantenimiento Correctivo"
+
+msgid "sTDetallesProc"
+msgstr "Detalles del Proceso"
+
+msgid "sTNuevoInd"
+msgstr "Nuevo Indicador de Proceso"
+
+msgid "sTVerValoresInd"
+msgstr "Ver Valores del Indicador"
+
+msgid "sTNuevoValorInd"
+msgstr "Nuevo Valor del Indicador"
+
+msgid "sTListObj"
+msgstr "Listado de Objetivos"
+
+msgid "sTVerObjetivos"
+msgstr "Objetivos"
+
+msgid "sTAddIndProc"
+msgstr "Agregar Indicadores de Proceso"
+
+msgid "sTVerMatrizInd"
+msgstr "Ver Matriz de Indicadores"
+
+msgid "sTEditObjetivo"
+msgstr "Editar Objetivo"
+
+msgid "sTNuevoObjInd"
+msgstr "Nuevo Objetivo"
+
+msgid "sTMatrizAmb"
+msgstr "Matriz de Aspectos Ambientales"
+
+msgid "sTAspAmb"
+msgstr "Revision de Aspectos Ambientales"
+
+msgid "sTNuevoAspAmb"
+msgstr "Nuevo Aspecto Ambiental"
+
+msgid "sTEditAspAmb"
+msgstr "Editar Aspecto Ambiental"
+
+msgid "sTPermisosDoc"
+msgstr "Permisos de Documentos"
+
+msgid "sTCopiarPerfil"
+msgstr "Copiar Perfil"
+
+msgid "sCreadoPerfil"
+msgstr "Perfil Creado"
+
+msgid "sNoCreadoPerfil"
+msgstr "No se pueden crear mas perfiles"
+
+msgid "sTAdmNormativa"
+msgstr "Administracion de Normativas"
+
+msgid "sTNuevaNorm"
+msgstr "Nueva Normativa"
+
+msgid "sTEditNorm"
+msgstr "Editar Normativa"
+
+msgid "sTSubirFichero"
+msgstr "Subir Fichero"
+
+msgid "sTHistPAmb"
+msgstr "Historico de Politica Ambiental"
+
+msgid "sTHistPCal"
+msgstr "Historico de Politica de Calidad"
+
+msgid "sTAdministracionAp"
+msgstr "Administracion de la Aplicacion"
+
+msgid "sTAdministracionC"
+msgstr "Administracion del Modulo de Calidad"
+
+msgid "sTAdministracionAm"
+msgstr "Administracion del Modulo de Medio Ambiente"
+
+msgid "sTExito"
+msgstr "Operacion Realizada con Exito"
+
+msgid "sTFichasMA"
+msgstr "Fichas de Requisitos Legales"
+
+msgid "sNoFila"
+msgstr "Ninguna fila encontrada"
+
+msgid "sElemPag"
+msgstr "Numero de Elementos por Pagina"
+
+msgid "sAltaBaja"
+msgstr "Alta/Baja"
+
+msgid "sAlta"
+msgstr "Alta"
+
+msgid "sBaja"
+msgstr "Baja"
+
+msgid "sTodos"
+msgstr "Todos"
+
+msgid "sAnterior"
+msgstr "Anterior"
+
+msgid "sAltFechOrd"
+msgstr "flecha de ordenacion ascendente"
+
+msgid "sMantProx"
+msgstr "Proximo Mantenimiento Preventivo Previsto: &nbsp,&nbsp,&nbsp,&nbsp,"
+
+msgid "sGrafID"
+msgstr "Grafica del indicador"
+
+msgid "sOfProc"
+msgstr "del proceso"
+
+msgid "sGrafYear"
+msgstr "Grafica de los 12 ultimos meses"
+
+msgid "sGrafYearAc"
+msgstr "Grafica del a�o actual"
+
+msgid "sGrafHist"
+msgstr "Grafica del historico"
+
+msgid "sNoPuedeGraf"
+msgstr "El indicador no posee valores para poder hacer la grafica"
+
+msgid "sTablaMensajes"
+msgstr "Mensajes"
+
+msgid "sMensajesID"
+msgstr "mensajes.id"
+
+msgid "sMensajesDest"
+msgstr "mensajes.destinatario"
+
+msgid "sElemxPag"
+msgstr "Numero Elementos por Pagina"
+
+msgid "sEstadoMejora"
+msgstr "Estado"
+
+msgid "sMejoraTodos"
+msgstr "Todos"
+
+msgid "sMejoraCerrada"
+msgstr "Cerrada"
+
+msgid "sMejoraAbierta"
+msgstr "Abierta"
+
+msgid "sMejoraAnterior"
+msgstr "Anterior"
+
+msgid "sIzquierda"
+msgstr "<<"
+
+msgid "sDerecha"
+msgstr ">>"
+
+msgid "sFilaActual"
+msgstr "Actualizada fila"
+
+msgid "sProvNombre"
+msgstr "Nombre:"
+
+msgid "sProvDireccion"
+msgstr "Direccion:"
+
+msgid "sProvTelefono"
+msgstr "Telefono:"
+
+msgid "sProvWeb"
+msgstr "Web:"
+
+msgid "sProvCif"
+msgstr "CIF:"
+
+msgid "sProvFechaHomol"
+msgstr "Fecha de Homologacion:"
+
+msgid "sProvUltimaRevHom"
+msgstr "Ultima fecha de revision homologacion:"
+
+msgid "sProvDeshomol"
+msgstr "Fecha Deshomologacion:"
+
+msgid "sProvError"
+msgstr "Error"
+
+msgid "sIncFecha"
+msgstr "Fecha:"
+
+msgid "sIncPedido"
+msgstr "Numero Pedido:"
+
+msgid "sIncComentario"
+msgstr "Comentario:"
+
+msgid "sIncError"
+msgstr "Error"
+
+msgid "sCtcNombre"
+msgstr "Nombre:"
+
+msgid "sCtcTlf1"
+msgstr "Primer Telefono:"
+
+msgid "sCtcTlf2"
+msgstr "Segundo Telefono:"
+
+msgid "sCtcFax"
+msgstr "Fax:"
+
+msgid "sCtcMovil"
+msgstr "Movil:"
+
+msgid "sCtcError"
+msgstr "Error"
+
+msgid "sProdDesc"
+msgstr "Descripcion del Producto:"
+
+msgid "sProdValorH"
+msgstr "Valor Homologacion:"
+
+msgid "sProdProv"
+msgstr "Proveedor:"
+
+msgid "sProdActivo"
+msgstr "Activo:"
+
+msgid "sProdError"
+msgstr "Error"
+
+msgid "sProdRevisado"
+msgstr "Revisado Correctamente"
+
+msgid "sCritQuitar"
+msgstr "Criterio Quitado"
+
+msgid "sCritPoner"
+msgstr "Criterio Añadido"
+
+msgid "sCritNombre"
+msgstr "Nombre"
+
+msgid "sCritValoracion"
+msgstr "Valoracion"
+
+msgid "sCritPuntuacion"
+msgstr "Puntuacion Total:"
+
+msgid "sCritNoHomol"
+msgstr "Proveedor no homologado:"
+
+msgid "sCritHomol"
+msgstr "Proveedor homologado:"
+
+msgid "sProcQuitarDoc"
+msgstr "Documento Quitado"
+
+msgid "sProcQuitarInd"
+msgstr "Quitar Indicador"
+
+msgid "sProcPonerDoc"
+msgstr "Documento Añadido"
+
+msgid "sProcPonerInd"
+msgstr "Indicador Añadido"
+
+msgid "sProcProv"
+msgstr "Proveedor"
+
+msgid "sProcEntradas"
+msgstr "Entradas"
+
+msgid "sProcPropietario"
+msgstr "Propietario"
+
+msgid "sProcInd"
+msgstr "Indicadores"
+
+msgid "sProcSalidas"
+msgstr "Salidas"
+
+msgid "sProcCliente"
+msgstr "Cliente"
+
+msgid "sProcInstal"
+msgstr "Instalaciones y Ambiente de Trabajo"
+
+msgid "sProcIndicacion"
+msgstr "Indicaciones"
+
+msgid "sProcNoDef"
+msgstr "No esta definida una ficha para este proceso."
+
+msgid "sMatrProv"
+msgstr "Proveedor"
+
+msgid "sMatrEntrada"
+msgstr "Entradas"
+
+msgid "sMatrPropietario"
+msgstr "Propietario"
+
+msgid "sMatrIndic"
+msgstr "Indicadores"
+
+msgid "sMatrSalida"
+msgstr "Salidas"
+
+msgid "sMatrCliente"
+msgstr "Cliente"
+
+msgid "sMatrInstal"
+msgstr "Instalaciones y Ambiente de Trabajo"
+
+msgid "sMatrDocAsoc"
+msgstr "Documentacion Asociada"
+
+msgid "sMatrReg"
+msgstr "Registros"
+
+msgid "sMatrNombre"
+msgstr "Nombre"
+
+msgid "sMatrTipo"
+msgstr "Tipo"
+
+msgid "sMatrImpacto"
+msgstr "Impacto"
+
+msgid "sMatrArea"
+msgstr "Area"
+
+msgid "sMatrCantidad"
+msgstr "Cantidad"
+
+msgid "sMatrSeveridad"
+msgstr "Severidad"
+
+msgid "sMatrFrecuncia"
+msgstr "Frec./Probabilidad"
+
+msgid "sMatrSeverEmer"
+msgstr "Sever./Emerg"
+
+msgid "sMatrProbabilidad"
+msgstr "Probabilidad"
+
+msgid "sMatrSignificante"
+msgstr "Significante"
+
+msgid "sMatrValoracion"
+msgstr "Valoracion"
+
+msgid "sEqNumCtrl"
+msgstr "Numero Control:"
+
+msgid "sEqSN"
+msgstr "S/N:"
+
+msgid "sEqDesc"
+msgstr "Descripcion:"
+
+msgid "sEqModelo"
+msgstr "Modelo:"
+
+msgid "sEqFabrica"
+msgstr "Fabricante:"
+
+msgid "sEqLugar"
+msgstr "Ubicacion:"
+
+msgid "sEqVerifInt"
+msgstr "Verificacion Interna:"
+
+msgid "sEqCalibra"
+msgstr "Calibracion"
+
+msgid "sEqNoUso"
+msgstr "Fuera de Uso"
+
+msgid "sEqFechaNoUso"
+msgstr "Fecha Fuera de Uso"
+
+msgid "sEqMotivo"
+msgstr "Motivo:"
+
+msgid "sDetFecha"
+msgstr "Fecha Realizacion:"
+
+msgid "sDetComent"
+msgstr "Comentarios:"
+
+msgid "sDetMotivo"
+msgstr "Motivo del Mantenimiento"
+
+msgid "sQuitaArea"
+msgstr "Area Quitada"
+
+msgid "sAudPonArea"
+msgstr "Area Aadida"
+
+msgid "sAudNombre"
+msgstr "AUDITORIA"
+
+msgid "sAudDesc"
+msgstr "Descripcion:"
+
+msgid "sAudMes"
+msgstr "Mes Previsto:"
+
+msgid "sAudObserva"
+msgstr "Observaciones:"
+
+msgid "sAudEstado"
+msgstr "Estado:"
+
+msgid "sAudPlan"
+msgstr "PLAN DE LA AUDITORIA"
+
+msgid "sAudTipo"
+msgstr "Tipo Auditoria:"
+
+msgid "sAudInterna"
+msgstr "Interna"
+
+msgid "sAudExterna"
+msgstr "Externa"
+
+msgid "sAudRequisito"
+msgstr "Requisitos a Estudiar:"
+
+msgid "sAudAlcance"
+msgstr "Alcance:"
+
+msgid "sRealizado"
+msgstr "Realizado"
+
+msgid "sPrintAud"
+msgstr "AUDITORIA"
+
+msgid "sPrintDesc"
+msgstr "Descripcion:"
+
+msgid "sPrintMes"
+msgstr "Mes Previsto:"
+
+msgid "sPrintObserva"
+msgstr "Observaciones:"
+
+msgid "sPrintEstado"
+msgstr "Estado:"
+
+msgid "sPrintPlan"
+msgstr "PLAN DE LA AUDITORIA"
+
+msgid "sPrintTipo"
+msgstr "Tipo Auditoria:"
+
+msgid "sPrintInterna"
+msgstr "Interna"
+
+msgid "sPrintExterna"
+msgstr "Externa"
+
+msgid "sPrintReq"
+msgstr "Requisitos a Estudiar:"
+
+msgid "sPrintAlcance"
+msgstr "Alcance:"
+
+msgid "sPrintInforme"
+msgstr "INFORME"
+
+msgid "sPrintRecom"
+msgstr "Recomendaciones:"
+
+msgid "sPrintConclusion"
+msgstr "Conclusiones:"
+
+msgid "sPrintEqAud"
+msgstr "Equipo Auditor:"
+
+msgid "sPrintAreas"
+msgstr "Areas Auditadas:"
+
+msgid "sPrintConforme"
+msgstr "No Conformidades Detectadas:"
+
+msgid "sIndNinguno"
+msgstr "Ninguno"
+
+msgid "sIndFormValor"
+msgstr "Formulario Valores"
+
+msgid "sIndMedicion"
+msgstr "Ultima medicion:"
+
+msgid "sIndNunca"
+msgstr "Nunca"
+
+msgid "sCalFlechaIzq"
+msgstr "<<"
+
+msgid "sCalFlechaDer"
+msgstr ">>"
+
+msgid "sCalDia"
+msgstr "Hoy"
+
+msgid "sEne"
+msgstr "Ene"
+
+msgid "sAbr"
+msgstr "Abr"
+
+msgid "sAgo"
+msgstr "Ago"
+
+msgid "sDic"
+msgstr "Dic"
+
+msgid "sEnero"
+msgstr "Enero"
+
+msgid "sFebrero"
+msgstr "Febrero"
+
+msgid "sMarzo"
+msgstr "Marzo"
+
+msgid "sAbril"
+msgstr "Abril"
+
+msgid "sMayo"
+msgstr "Mayo"
+
+msgid "sJunio"
+msgstr "Junio"
+
+msgid "sJulio"
+msgstr "Julio"
+
+msgid "sAgosto"
+msgstr "Agosto"
+
+msgid "sSeptiembre"
+msgstr "Septiembre"
+
+msgid "sOctubre"
+msgstr "Octubre"
+
+msgid "sNoviembre"
+msgstr "Noviembre"
+
+msgid "sDiciembre"
+msgstr "Diciembre"
+
+msgid "sLunes"
+msgstr "Lu"
+
+msgid "sMartes"
+msgstr "Ma"
+
+msgid "sMiercoles"
+msgstr "Mi"
+
+msgid "sJueves"
+msgstr "Ju"
+
+msgid "sViernes"
+msgstr "Vi"
+
+msgid "sSabado"
+msgstr "Sa"
+
+msgid "sDomingo"
+msgstr "Do"
+
+msgid "sElimFila"
+msgstr "Eliminar Fila"
+
+msgid "sElimTable"
+msgstr "que tiene el table id:"
+
+msgid "sElimTable2"
+msgstr "en la tabla"
+
+msgid "sSubWelcomeC"
+msgstr "Bienvenido a la Aplicacion de Calidad"
+
+msgid "sSubWelcomeA"
+msgstr "Bienvenido a la Seccion de Administracion"
+
+msgid "sSubWelcomeM"
+msgstr "Bienvenido a la aplicacion de Medio Ambiente"
+
+msgid "sSubCalidad"
+msgstr "Calidad"
+
+msgid "sSubAdmin"
+msgstr "Administracion"
+
+msgid "sDocumento"
+msgstr "Documento:"
+
+msgid "sDocRevision"
+msgstr "Revision:"
+
+msgid "sDocEstado"
+msgstr "Estado:"
+
+msgid "sDocRevisado"
+msgstr "Revisado por:"
+
+msgid "sDocNuevo"
+msgstr "Nuevo"
+
+msgid "sBorraAlert"
+msgstr "Ya hay un borrador"
+
+msgid "sRevision"
+msgstr "Revision Correcta"
+
+msgid "sRevAument"
+msgstr "Revision aumentada"
+
+msgid "sDocAprobado"
+msgstr "Documento Aprobado"
+
+msgid "sDocOpCorrecta"
+msgstr "Operacion Correcta"
+
+msgid "sDocError"
+msgstr "Operación Errónea"
+
+msgid "sDocAprobar"
+msgstr "Aprobado por"
+
+msgid "sDocBorrador"
+msgstr "BORRADOR"
+
+msgid "sDocNoRevisado"
+msgstr "No Revisado"
+
+msgid "sNoBorrador"
+msgstr "No existe borrador"
+
+msgid "sNoFichBorr"
+msgstr "No existe la ficha, aun en borrador"
+
+msgid "sNoFichCrea"
+msgstr "No existe ficha,creando nueva"
+
+msgid "sModEditor"
+msgstr "Modifique el Documento:"
+
+msgid "sEditorTit"
+msgstr "Titulo:"
+
+msgid "sEditorCod"
+msgstr "Codigo:"
+
+msgid "sEditorCalidad"
+msgstr "Calidad"
+
+msgid "sEditorAmb"
+msgstr "Medio Ambiente"
+
+msgid "sEditorArea"
+msgstr "Area:"
+
+msgid "sDFlujograma"
+msgstr "Flujograma:"
+
+msgid "sVacio"
+msgstr "Mensaje Vaco"
+
+msgid "sDocExito"
+msgstr "El documento se ha creado correctamente"
+
+msgid "sCursoNombre"
+msgstr "Curso:"
+
+msgid "sCursoLugar"
+msgstr "Lugar:"
+
+msgid "sCursoDuracion"
+msgstr "Duracion (horas):"
+
+msgid "sCursoFechaPrev"
+msgstr "Fecha Prevista:"
+
+msgid "sCursoHoraPrev"
+msgstr "Hora Prevista:"
+
+msgid "sCursoResponsable"
+msgstr "Responsable:"
+
+msgid "sCursoObj"
+msgstr "Objetivos:"
+
+msgid "sCursoCont"
+msgstr "Contenidos:"
+
+msgid "sCursoMaterialN"
+msgstr "Material Necesario:"
+
+msgid "sCursoMaterialS"
+msgstr "Material Suministrado:"
+
+msgid "sCursoNoPeticion"
+msgstr "No hay ninguna peticion pedida"
+
+msgid "sCursoNoBaja"
+msgstr "No se ha solicitado ninguna baja"
+
+msgid "sCursoInscrito"
+msgstr "Ya esta inscrito en el curso"
+
+msgid "sCursoSolicitado"
+msgstr "Ya ha solicitado la inscripcion"
+
+msgid "sCursoPedirAlta"
+msgstr "Alta Solicitada"
+
+msgid "sCursoInscripcion"
+msgstr "Inscripcion realizada"
+
+msgid "sCursoPedirBaja"
+msgstr "Baja Solicitada"
+
+msgid "sCursoCancel"
+msgstr "Peticion de alta cancelada"
+
+msgid "sCursoBaja"
+msgstr "Ya ha sido dado de baja del curso"
+
+msgid "sCursoSolBaja"
+msgstr "Ya ha solicitado la baja de este curso"
+
+msgid "sCursoNoInscrito"
+msgstr "No estaba inscrito al curso"
+
+msgid "sCursoNoDisp"
+msgstr "El curso no esta disponible para inscripciones."
+
+msgid "sVigenteNombre"
+msgstr "VIGENTE"
+
+msgid "sNoVersionVigor"
+msgstr "No hay version en vigor"
+
+msgid "sProcTime"
+msgstr "Procesando,esta operacion puede tardar algun tiempo,pulse OK"
+
+msgid "sNofichDef"
+msgstr "No hay ficha definida"
+
+msgid "sHistorico"
+msgstr "HISTORICO"
+
+msgid "sTareaEnviada"
+msgstr "Tarea Enviada Por:"
+
+msgid "sTareaEjecutar"
+msgstr "Ejecutar la Accion:"
+
+msgid "sTareaDoc"
+msgstr "Sobre el Documento:"
+
+msgid "sTareaDesc"
+msgstr "Descripcion:"
+
+msgid "sLegVerifica"
+msgstr "Verifica"
+
+msgid "sLegEstado"
+msgstr "Estado"
+
+msgid "sLegAnterior"
+msgstr "Anterior"
+
+msgid "sLegAll"
+msgstr "Todos"
+
+msgid "sLegSi"
+msgstr "Cumple"
+
+msgid "sLegNo"
+msgstr "No Cumple"
+
+msgid "sLegFicha"
+msgstr "Ficha:"
+
+msgid "sLegContenido"
+msgstr "Contenido:"
+
+msgid "sPregunta"
+msgstr "Pregunta:"
+
+msgid "sRespuesta"
+msgstr "Respuesta:"
+
+msgid "sAfirmacion"
+msgstr "Si"
+
+msgid "sNegacion"
+msgstr "No"
+
+msgid "sInsCorrecta"
+msgstr "Insercion Correcta"
+
+msgid "sCuestionario"
+msgstr "Cuestionario"
+
+msgid "sPreg"
+msgstr "Pregunta"
+
+msgid "sRes"
+msgstr "Respuesta"
+
+msgid "sEnviarFichero"
+msgstr "Enviar Fichero"
+
+msgid "sArchivo"
+msgstr "Archivo Llamado"
+
+msgid "sMetodo"
+msgstr "Metodo"
+
+msgid "sVariables"
+msgstr "Variables"
+
+msgid "sFSoportados"
+msgstr "Ficheros Soportados:    "
+
+msgid "sFormEditar"
+msgstr "Editar "
+
+msgid "sFormNuevo"
+msgstr "Nuevo "
+
+msgid "sFormClave"
+msgstr "Cambiar Password"
+
+msgid "sFormFicha"
+msgstr "Ficha de Personal"
+
+msgid "sFlujoUp"
+msgstr "Flujograma Subido"
+
+msgid "sFicheroUp"
+msgstr "Fichero Subido"
+
+msgid "sFNoSoportado"
+msgstr "Tipo de Fichero No Soportado"
+
+msgid "sESubir"
+msgstr "Error Subiendo Ficheros"
+
+msgid "sFichError"
+msgstr "Fichero Erróneo"
+
+msgid "sMIProceso"
+msgstr "Proceso"
+
+msgid "sMIIndicador"
+msgstr "Indicador"
+
+msgid "sMIValorIn"
+msgstr "Valor Inicial"
+
+msgid "sMIValorTol"
+msgstr "Valor Tolerable"
+
+msgid "sMIObj"
+msgstr "Objetivo"
+
+msgid "sMIMedicion"
+msgstr "Metodo de Medicion"
+
+msgid "sMIAnalisis"
+msgstr "Medicion/Analisis"
+
+msgid "sMIResponsable"
+msgstr "Responsable de Medicion/Analisis"
+
+msgid "sPInicio"
+msgstr "Esta es la pagina de inicio de la aplicacion. Desde aqui se podra gestionar tanto la calidad como los aspectos ambientales de la empresa seleccionando cualquiera de los elementos del menu superior."
+
+msgid "sPDocumentacion"
+msgstr "Modulo de Documentacion. Desde este modulo se puede acceder a toda la documentacion, registros y normativas de la empresa que se encuentren disponibles. Se pueden realizar operaciones como crear, ver, editar, revisar, aprobar documentos, y acceder a un registro con un listado de los mismos. Ademas, tambin se puede acceder a documentos externos y ver la legislacion vigente aplicable por la empresa."
+
+msgid "sPProveedores"
+msgstr "Modulo de Proveedores. Desde este modulo se pueden gestionar los proveedores y contactos de la empresa, los productos asi como las incidencias que hayan podido ocurrir."
+
+msgid "sPAM"
+msgstr "Modulo de Acciones de Mejora. Desde este modulo, y a traves de formularios, se podran gestionar las acciones de mejora que se encuentren registradas, pudiendo crear nuevos registros, editar o verificar los ya existentes"
+
+msgid "sPFormacion"
+msgstr "Modulo de Formacion. Dentro de este modulo se encuentran las ofertas formativas a la que los usuarios pueden inscribirse. Tambien se puede acceder a la ficha de personal de cada empleado, y ver los requisitos del puesto de trabajo."
+
+msgid "sPEquipos"
+msgstr "Modulo de Equipos. Este modulo permite llevar un control de los equipos existentes en la empresa. En el tambien se pueden definir las revisiones y planes de mantenimiento que necesiten llevarse a cabo en cada equipo. Ademas, este modulo contiene un calendario anual en donde se podran sealar fechas relativas a la realizacion de los planes de mantenimiento o revisiones."
+
+msgid "sPAuditoria"
+msgstr "Modulo de Auditorias. Este modulo permite mantener y administrar el registro de las auditoras de la empresa, tanto realizadas como pendientes, externas o internas. Entre otras operaciones, desde este modulo se puede crear, editar copiar o dar de baja una auditoria, hacerla vigente e incluso imprimir un informe detallado con los datos de las mismas, "
+
+msgid "PProcesos"
+msgstr "Modulo de Procesos. Este modulo es el encargado de gestionar los procedimientos internos de la empresa. Entre otras operaciones, se podran crear, modificar y gestionar procesos, fichas, indicadores e incluso documentos anexos."
+
+msgid "sPIndicadores"
+msgstr "Modulo de Indicadores. Este modulo se encarga de registro de los indicadores de proceso. Desde aqui un usuario puede crear nuevos indicadores, editar o dar de baja los ya existentes."
+
+msgid "sPAmbientales"
+msgstr "Modulo de Aspectos Ambientales. Desde este modulo se puede acceder a un listado de los diferentes tipos de aspectos ambientales registrados en la empresa. El usuario puede tambien registrar otros nuevos, editarlos o incluso darlos de baja."
+
+msgid "sPAplicacion"
+msgstr ""
+"Modulo de Administración de la Aplicación. En esta sección se puede "
+"modificar todo lo referente a la información de los usuarios registrados, "
+"sus claves de acceso, sus perfiles y permisos de acceso. Desde aquí también "
+"se puede dar de alta o baja a las áreas existentes, administrar los mensajes "
+"de los usuarios o las tareas a realizar por los mismos."
+
+msgid "sPCalidad"
+msgstr "Modulo de Administracion de la Calidad. En este modulo es donde se gestiona la documentacion disponible en la empresa, los registros y normativas, los criterios aplicados, los tipos de acciones de mejora registrados e incluso la informacion relacionada con los clientes de la empresa."
+
+msgid "sPMedio"
+msgstr "Modulo de Administracion del Medio Ambiente. Desde este modulo se pueden crear o editar diferentes areas o ambitos de aplicacion de los distintos aspectos ambientales registrados en la empresa."
+
+msgid "sAudAreas"
+msgstr "Areas"
+
+msgid "sTAai"
+msgstr "Analisis ambiental inicial"
+
+msgid "sNormativa"
+msgstr "Normativa"
+
+msgid "sAdjunto"
+msgstr "Adjunto"
+
+msgid "sFAContenido"
+msgstr "Contenido"
+
+msgid "sFATitulo"
+msgstr "Titulo"
+
+msgid "sFANombre"
+msgstr "Nombre"
+
+msgid "sFAActivo"
+msgstr "Activo/Inactivo"
+
+msgid "sFAPerfil"
+msgstr "Perfil"
+
+msgid "sFA1Apellido"
+msgstr "Primer Apellido"
+
+msgid "sFA2Apellido"
+msgstr "Segundo Apellido"
+
+msgid "sFATelefono"
+msgstr "Telefono"
+
+msgid "sFANIF"
+msgstr "NIF"
+
+msgid "sFAEmail"
+msgstr "Email"
+
+msgid "sFAFicha"
+msgstr "Ficha"
+
+msgid "sFARequisitos"
+msgstr "Requisitos puesto"
+
+msgid "sFAContacto"
+msgstr "Contacto"
+
+msgid "sFAValor"
+msgstr "Valor"
+
+msgid "sFAIdioma"
+msgstr "Idioma"
+
+msgid "sFACodigo"
+msgstr "Codigo"
+
+msgid "sFAArea"
+msgstr "Area"
+
+msgid "sFAPregunta"
+msgstr "Pregunta"
+
+msgid "sFAValorDeseado"
+msgstr "Valor deseado"
+
+msgid "sFALogin"
+msgstr "Login"
+
+msgid "sFAPassword"
+msgstr "Password"
+
+msgid "sFACerrar"
+msgstr "Cerrar"
+
+msgid "sFASeleccionar"
+msgstr "seleccionar"
+
+msgid "sFCFAX"
+msgstr "Fax"
+
+msgid "sFCMovil"
+msgstr "Movil"
+
+msgid "sFCActivo"
+msgstr "Activo"
+
+msgid "sFCHomolog"
+msgstr "Valor Homologacion"
+
+msgid "sFCCodigo"
+msgstr "Codigo"
+
+msgid "sFCProveedor"
+msgstr "Proveedor"
+
+msgid "sFCEntradas"
+msgstr "Entradas"
+
+msgid "sFCPropi"
+msgstr "Propietario"
+
+msgid "sFCSalidas"
+msgstr "Salidas"
+
+msgid "sFCCliente"
+msgstr "Cliente"
+
+msgid "sFCDocu"
+msgstr "Documentacion Asociada"
+
+msgid "sFCRegistro"
+msgstr "Registro"
+
+msgid "sFCIndica"
+msgstr "Indicaciones"
+
+msgid "sFCInst"
+msgstr "Instalaciones y ambiente de trabajo"
+
+msgid "sFCNControl"
+msgstr "Numero de control"
+
+msgid "sFCDesc"
+msgstr "Descripcion"
+
+msgid "sFCModelo"
+msgstr "Modelo"
+
+msgid "sFCFabricante"
+msgstr "Fabricante"
+
+msgid "sFCUbica"
+msgstr "Ubicacion"
+
+msgid "sFCTipo"
+msgstr "Tipo"
+
+msgid "sFCMantCada"
+msgstr "Mantenimento cada"
+
+msgid "sFCDiasMant"
+msgstr "Dias/Meses Mantenimento"
+
+msgid "sFCFueraUso"
+msgstr "Fuera de Uso"
+
+msgid "sFCFechaFueraServ"
+msgstr "Fecha puesta fuera de servicio"
+
+msgid "sFCCausa"
+msgstr "Causa"
+
+msgid "sFCFechaRealiz"
+msgstr "Fecha de realizacion"
+
+msgid "sFCComent"
+msgstr "Comentarios"
+
+msgid "sFCMotivosMant"
+msgstr "Motivos del mantenimento"
+
+msgid "sFCAccion"
+msgstr "accion"
+
+msgid "sFCVObjetivo"
+msgstr "Valor del Objetivo"
+
+msgid "sFCResponsable"
+msgstr "Responsable"
+
+msgid "sFCPlazo"
+msgstr "Plazo"
+
+msgid "sFCRecursos"
+msgstr "Recursos"
+
+msgid "sFCObserva"
+msgstr "Observaciones"
+
+msgid "sFCOArea"
+msgstr "Area"
+
+msgid "sFCFecha"
+msgstr "Fecha"
+
+msgid "sFCObjetivo"
+msgstr "Objetivo"
+
+msgid "sFCDefinicion"
+msgstr "Definicion"
+
+msgid "sFCValorInicial"
+msgstr "Valor inicial"
+
+msgid "sFCValorTolerante"
+msgstr "Valor Tolerable"
+
+msgid "sFCFrecuenciaSeg"
+msgstr "Frecuencia Del Seguimiento"
+
+msgid "sFCResponsableSeg"
+msgstr "Responsable Del Seguimiento"
+
+msgid "sFCFrecAnalisis"
+msgstr "Frecuencia Del Analisis"
+
+msgid "sFCRespAnalisis"
+msgstr "Responsable Del Analisis"
+
+msgid "sFCTecnica"
+msgstr "Tecnica"
+
+msgid "sFCVarControl"
+msgstr "Variables de Control"
+
+msgid "sFCGeneraObj"
+msgstr "Genera Objetivo"
+
+msgid "sFCAreas"
+msgstr "Areas"
+
+msgid "sFCEstado"
+msgstr "Estado"
+
+msgid "sFCTipoAudi"
+msgstr "Tipo Auditoria"
+
+msgid "sFCRequisitos"
+msgstr "Requisitos"
+
+msgid "sFCAlcance"
+msgstr "Alcance de la auditoria"
+
+msgid "sFCUsuarioInt"
+msgstr "Usuario Interno"
+
+msgid "sFCLugar"
+msgstr "Lugar"
+
+msgid "sFCFechaInforme"
+msgstr "Fecha Informe"
+
+msgid "sFCConclusiones"
+msgstr "Conclusiones"
+
+msgid "sFCRecomendaciones"
+msgstr "Recomendaciones"
+
+msgid "sFCFechaRealizAudi"
+msgstr "Fecha Realizacion Auditoria"
+
+msgid "sFCNombreFicha"
+msgstr "Nombre Ficha"
+
+msgid "sFCFechaCreacion"
+msgstr "Fecha Creacion"
+
+msgid "sFCRevision"
+msgstr "Revision"
+
+msgid "sFCApellidos"
+msgstr "Apellidos"
+
+msgid "sFCFechaNacim"
+msgstr "Fecha de Nacimiento"
+
+msgid "sFCLocalidad"
+msgstr "Localidad"
+
+msgid "sFCProvincia"
+msgstr "Provincia"
+
+msgid "sFCPobResidencia"
+msgstr "Poblacion de residencia"
+
+msgid "sFCProvResidencia"
+msgstr "Provincia de residencia"
+
+msgid "sFCVehiculopropio"
+msgstr "Vehiculo propio"
+
+msgid "sFCTitulosOfi"
+msgstr "Titulos Oficiales"
+
+msgid "sFCFechafin"
+msgstr "Fecha de finalizacion"
+
+msgid "sFCCentro"
+msgstr "Centro"
+
+msgid "sFCEmpresa"
+msgstr "Empresa"
+
+msgid "sFCFechaIncor"
+msgstr "Fecha de Incorporacion"
+
+msgid "sFCPerfil"
+msgstr "Perfil"
+
+msgid "sFCDepartamento"
+msgstr "Departamento"
+
+msgid "sFCCurso1"
+msgstr "Curso 1"
+
+msgid "sFCCurso2"
+msgstr "Curso 2"
+
+msgid "sFCCurso3"
+msgstr "Curso 3"
+
+msgid "sFCNivelIngles"
+msgstr "Nivel de Ingles"
+
+msgid "sFCNivelFrances"
+msgstr "Nivel de Frances"
+
+msgid "sFCOtros"
+msgstr "Otros"
+
+msgid "sFCNivel"
+msgstr "Nivel"
+
+msgid "sFCFechaInicio"
+msgstr "Fecha de Inicio"
+
+msgid "sFCFechaFin"
+msgstr "Fecha Fin"
+
+msgid "sFCPeriodo"
+msgstr "Periodo"
+
+msgid "sFCFicha"
+msgstr "Ficha"
+
+msgid "sFCPuesto"
+msgstr "Puesto"
+
+msgid "sFCFechaCambio"
+msgstr "Fecha del Cambio"
+
+msgid "sFCVersion"
+msgstr "Version"
+
+msgid "sFCConocimientos"
+msgstr "Conocimientos"
+
+msgid "sFCFunciones"
+msgstr "Funciones"
+
+msgid "sFCNomDelPuesto"
+msgstr "Nombre del puesto"
+
+msgid "sFCCategoria"
+msgstr "Categoria"
+
+msgid "sFCDependeDe"
+msgstr "Depende de"
+
+msgid "sFCArea"
+msgstr "Area"
+
+msgid "sFCRequiereAnt"
+msgstr "Requiere Antiguedad"
+
+msgid "sFCAntiguedad"
+msgstr "Antigüedad"
+
+msgid "sFCAutonomiaYResp"
+msgstr "Nivel de autonomia y Responsabilidad"
+
+msgid "sFCRelacionesYCom"
+msgstr "Nivel de relaciones y comunicaciones"
+
+msgid "sFCLiderazgo"
+msgstr "Liderazgo"
+
+msgid "sFCMando"
+msgstr "Mando"
+
+msgid "sFCMotivacion"
+msgstr "Motivacion"
+
+msgid "sFCNegociacion"
+msgstr "Negociacion"
+
+msgid "sFCTrabajo"
+msgstr "Trabajo"
+
+msgid "sFCFormacion"
+msgstr "Formacion"
+
+msgid "sFCFormacionTecnica"
+msgstr "Formacion Tecnica"
+
+msgid "sFCOpcional"
+msgstr "Opcional"
+
+msgid "sFCHoras"
+msgstr "Horas"
+
+msgid "sFCNumero"
+msgstr "Numero"
+
+msgid "sFCPlanAccion"
+msgstr "Plan de Accion"
+
+msgid "sFCFechaConsec"
+msgstr "Fecha Consecucion"
+
+msgid "sFCVMetas"
+msgstr "metas"
+
+msgid "sFCNombre"
+msgstr "Nombre"
+
+msgid "sFCCalidad"
+msgstr "Calidad"
+
+msgid "sFCIdioma"
+msgstr "Idioma de la auditoria"
+
+msgid "sFCHorario"
+msgstr "Horario"
+
+msgid "sFCAuditor"
+msgstr "Auditor"
+
+msgid "sFCHorainicio"
+msgstr "Hora inicio"
+
+msgid "sFCHorafin"
+msgstr "Hora fin"
+
+msgid "sFCIndicadores"
+msgstr "Indicadores"
+
+msgid "sFCOContenido"
+msgstr "Contenido"
+
+msgid "sFCODestinatario"
+msgstr "Destinatario"
+
+msgid "sFCOTitulo"
+msgstr "Titulo"
+
+msgid "sFCONombre"
+msgstr "Nombre"
+
+msgid "sFCODescripcion"
+msgstr "Descripcion"
+
+msgid "sFCOTipoCurso"
+msgstr "Tipo Curso"
+
+msgid "sFCOObjetivos"
+msgstr "Objetivos"
+
+msgid "sFCOContenidos"
+msgstr "Contenidos"
+
+msgid "sFCONumeroHoras"
+msgstr "Numero Horas"
+
+msgid "sFCOMaterialNecesario"
+msgstr "Material Necesario"
+
+msgid "sFCOMaterialSum"
+msgstr "Material Suministrado"
+
+msgid "sFCOActivo"
+msgstr "Activo"
+
+msgid "sFCOFechaPrev"
+msgstr "Fecha Prevista"
+
+msgid "sFCOResponsable"
+msgstr "Responsable"
+
+msgid "sFCOLugar"
+msgstr "Lugar"
+
+msgid "sFCOEstado"
+msgstr "Estado"
+
+msgid "sFCOHojaFirmas"
+msgstr "Hoja firmas"
+
+msgid "sFCOVerHojaFirmas"
+msgstr "Ver hoja firmas"
+
+msgid "sFCOFechaReal"
+msgstr "Fecha Realizacion"
+
+msgid "sFCODuracion"
+msgstr "Duracion(horas)"
+
+msgid "sFCOObserva"
+msgstr "Observaciones"
+
+msgid "sFCOUsuarioInt"
+msgstr "Usuario Interno"
+
+msgid "sFCOEmpresa"
+msgstr "Empresa"
+
+msgid "sFCOUsuario"
+msgstr "Usuario"
+
+msgid "sFCOAccion"
+msgstr "accion"
+
+msgid "sFCOComentarios"
+msgstr "Comentarios"
+
+msgid "sFCOTipo"
+msgstr "Tipo"
+
+msgid "sFCOCliente"
+msgstr "Cliente"
+
+msgid "sFCOFecha"
+msgstr "Fecha"
+
+msgid "sFCODetectadaPor"
+msgstr "Detectada por"
+
+msgid "sFCOAnalisis"
+msgstr "Analisis"
+
+msgid "sFCOReqTratamiento"
+msgstr "Requiere tratamiento"
+
+msgid "sFCOTratInmediato"
+msgstr "Tratamiento Inmediato"
+
+msgid "sFCOAccionCorrecPrev"
+msgstr "Accion Correctora Preventiva"
+
+msgid "sFCOResponsableImp"
+msgstr "Responsable de Implantacion"
+
+msgid "sFCOFechaImp"
+msgstr "Fecha Implantacion"
+
+msgid "sFCOPlazoApro"
+msgstr "Plazo Aproximado"
+
+msgid "sFCOCoste"
+msgstr "Coste"
+
+msgid "sProcesoBaja"
+msgstr "Proceso dado de baja"
+
+msgid "sFMNombre"
+msgstr "Nombre"
+
+msgid "sFMFormula"
+msgstr "Formula"
+
+msgid "sFMLegislacionApli"
+msgstr "Legislacion Aplicable"
+
+msgid "sFMFicha"
+msgstr "Ficha"
+
+msgid "sFMArea"
+msgstr "Area"
+
+msgid "sFMAmbito"
+msgstr "Ambito"
+
+msgid "sFMMagnitud"
+msgstr "Cantidad"
+
+msgid "sFMGravedad"
+msgstr "Severidad"
+
+msgid "sFMFrecuencia"
+msgstr "Frec./Probabilidad"
+
+msgid "sFMTipoAspecto"
+msgstr "Tipo Aspecto"
+
+msgid "sFMImpactoAmbiental"
+msgstr "Impacto Ambiental"
+
+msgid "sFMAreas"
+msgstr "Areas"
+
+msgid "sFMSeveridad"
+msgstr "Sever./Emergencia"
+
+msgid "sFMProbabilidad"
+msgstr "Probabilidad"
+
+msgid "sFMObservaciones"
+msgstr "Observaciones"
+
+msgid "sPCCliente"
+msgstr "cliente"
+
+msgid "sPCDestinatario"
+msgstr "destinatario"
+
+msgid "sPCTitulo"
+msgstr "titulo"
+
+msgid "sPCEnviado"
+msgstr "enviado"
+
+msgid "sPCHora"
+msgstr "hora"
+
+msgid "sPCRemitente"
+msgstr "remitente"
+
+msgid "sPCUsuOrigen"
+msgstr "Usuario Origen"
+
+msgid "sPCUsuDestino"
+msgstr "Usuario Destino"
+
+msgid "sPCDocumento"
+msgstr "documento"
+
+msgid "sPCAccion"
+msgstr "accion"
+
+msgid "sPCCodigo"
+msgstr "codigo"
+
+msgid "sPCNombre"
+msgstr "nombre"
+
+msgid "sPCTipo"
+msgstr "tipo"
+
+msgid "sPCRevisado"
+msgstr "revisado"
+
+msgid "sPCRevision"
+msgstr "revision"
+
+msgid "sPCRevisadoPor"
+msgstr "Revisado Por"
+
+msgid "sPCAprobadoPor"
+msgstr "Aprobado Por"
+
+msgid "sPCFechaInicio"
+msgstr "fecha de inicio"
+
+msgid "sPCFechaFin"
+msgstr "fecha de fin"
+
+msgid "sPCFechaCambio"
+msgstr "fecha de cambio"
+
+msgid "sPCTotal"
+msgstr "Total"
+
+msgid "sPCMucha"
+msgstr "Mucha"
+
+msgid "sPCBastante"
+msgstr "Bastante"
+
+msgid "sPCPoca"
+msgstr "Poca"
+
+msgid "sPCNinguna"
+msgstr "Ninguna"
+
+msgid "sPCMuyAlta"
+msgstr "Muy Alta"
+
+msgid "sPCAlta"
+msgstr "Alta"
+
+msgid "sPCMedia"
+msgstr "media"
+
+msgid "sPCBaja"
+msgstr "baja"
+
+msgid "sPCNula"
+msgstr "nula"
+
+msgid "sPCLiderazgo"
+msgstr "liderazgo"
+
+msgid "sPCMando"
+msgstr "mando"
+
+msgid "sPCMotivacion"
+msgstr "motivacion"
+
+msgid "sPCNegociacion"
+msgstr "negociacion"
+
+msgid "sPCTrabajo"
+msgstr "trabajo"
+
+msgid "sPCFormacion"
+msgstr "formacion"
+
+msgid "sPCTitulosOficiales"
+msgstr "titulos oficiales"
+
+msgid "sPCFormacionTecnica"
+msgstr "formacion tecnica"
+
+msgid "sPCFecha"
+msgstr "fecha"
+
+msgid "sPCActivo"
+msgstr "Activo"
+
+msgid "sPCHomologado"
+msgstr "homologado"
+
+msgid "sPCValor"
+msgstr "valor"
+
+msgid "sPCValoracionObtenida"
+msgstr "Valoracion Obtenida"
+
+msgid "sPCNumeroControl"
+msgstr "numero control"
+
+msgid "sPCPrevisto"
+msgstr "previsto"
+
+msgid "sPCRealizacion"
+msgstr "realizacion"
+
+msgid "sPCId"
+msgstr "id"
+
+msgid "sPCEstado"
+msgstr "estado"
+
+msgid "sPCVigente"
+msgstr "Vigente"
+
+msgid "sPCAuditor"
+msgstr "auditor"
+
+msgid "sPCInterno"
+msgstr "Interno"
+
+msgid "sPCCurso"
+msgstr "curso"
+
+msgid "sPCDiaRealiz"
+msgstr "dia realizacion"
+
+msgid "sPCHoraRealiz"
+msgstr "hora_realizacion"
+
+msgid "sPCUsuario"
+msgstr "usuario"
+
+msgid "sPCProfesor"
+msgstr "profesor"
+
+msgid "sPCTodas"
+msgstr "Todas"
+
+msgid "sPCArea"
+msgstr "area"
+
+msgid "sPCLugar"
+msgstr "lugar"
+
+msgid "sPCEmpresa"
+msgstr "empresa"
+
+msgid "sPCConocimientos"
+msgstr "conocimientos"
+
+msgid "sPCFunciones"
+msgstr "funciones"
+
+msgid "sPCOpcional"
+msgstr "opcional"
+
+msgid "sPCHoras"
+msgstr "horas"
+
+msgid "sPCTelefono"
+msgstr "telefono"
+
+msgid "sPCTelefono1"
+msgstr "telefono1"
+
+msgid "sPCTelefono2"
+msgstr "telefono2"
+
+msgid "sPCDescripcion"
+msgstr "descripcion"
+
+msgid "sPCProximaRev"
+msgstr "proxima revision"
+
+msgid "sPCNinguno"
+msgstr "Ninguno"
+
+msgid "sPCCerrada"
+msgstr "cerrada"
+
+msgid "sPCAbierta"
+msgstr "abierta"
+
+msgid "sPCMetas"
+msgstr "metas"
+
+msgid "sPCValorObjetivo"
+msgstr "valor_objetivo"
+
+msgid "sPCObservaciones"
+msgstr "observaciones"
+
+msgid "sPCExterno"
+msgstr "Externo"
+
+msgid "sPCPlanAccion"
+msgstr "Plan accion"
+
+msgid "sPCFechaConsecucion"
+msgstr "Fecha consecucion"
+
+msgid "sPCResponsable"
+msgstr "Responsable"
+
+msgid "sPCRecursos"
+msgstr "recursos"
+
+msgid "sPCSolicitadaAlta"
+msgstr "Solicitada Alta"
+
+msgid "sPCSolicitadaBaja"
+msgstr "Solicitada Baja"
+
+msgid "sPCLimpiar"
+msgstr "Limpiar"
+
+msgid "sPCVolver"
+msgstr "Volver"
+
+msgid "sPCVolverForm"
+msgstr "Volver al Formulario"
+
+msgid "sPCEquipoAuditor"
+msgstr "Equipo Auditor"
+
+msgid "sPCImprimir"
+msgstr "Imprimir"
+
+msgid "sPCVerNoConf"
+msgstr "Ver No Conformidades"
+
+msgid "sPCTipoGrafica"
+msgstr "Tipo de grafica"
+
+msgid "sPCModoVis"
+msgstr "Modo Visualizacion"
+
+msgid "sPCVerGrafica"
+msgstr "Ver Grafica"
+
+msgid "sPCFecha_revision"
+msgstr "Fecha revision"
+
+msgid "sPCFecha_aprovacion"
+msgstr "Fecha aprobacion"
+
+msgid "sPAVersion"
+msgstr "version"
+
+msgid "sPAPrimerApe"
+msgstr "primer apellido"
+
+msgid "sPASegundoApe"
+msgstr "segundo apellido"
+
+msgid "sPAEnviado"
+msgstr "enviado"
+
+msgid "sPAHora"
+msgstr "hora"
+
+msgid "sPAOrigen"
+msgstr "origen"
+
+msgid "sPADestino"
+msgstr "destino"
+
+msgid "sPAAccion"
+msgstr "accion"
+
+msgid "sPADocumento"
+msgstr "documento"
+
+msgid "sPAAlta"
+msgstr "Alta"
+
+msgid "sPATitulo"
+msgstr "titulo"
+
+msgid "sPAActivo"
+msgstr "Activo"
+
+msgid "sPAEstado"
+msgstr "estado"
+
+msgid "sPARevisadoPor"
+msgstr "Revisado Por"
+
+msgid "sPAFechaRevision"
+msgstr "fecha revision"
+
+msgid "sPAAprobadoPor"
+msgstr "Aprobado Por"
+
+msgid "sPAFechaAprov"
+msgstr "fecha aprobacion"
+
+msgid "sPACodigoFicha"
+msgstr "codigo ficha"
+
+msgid "sPAAreaIncidencia"
+msgstr "area incidencia"
+
+msgid "sPAAmbitoApli"
+msgstr "ambito aplicacion"
+
+msgid "sPAVerifica"
+msgstr "verifica"
+
+msgid "sPAFecha"
+msgstr "fecha"
+
+msgid "sPAValorDeseado"
+msgstr "Valor deseado"
+
+msgid "sPABaja"
+msgstr "baja"
+
+msgid "sPANombre"
+msgstr "nombre"
+
+msgid "sPANombreidioma"
+msgstr "Idioma"
+
+msgid "sPATelefono"
+msgstr "telefono"
+
+msgid "sPAContacto"
+msgstr "contacto"
+
+msgid "sPACodigo"
+msgstr "Codigo"
+
+msgid "sPATipo"
+msgstr "tipo"
+
+msgid "sPARevision"
+msgstr "revision"
+
+msgid "sPAValor"
+msgstr "valor"
+
+msgid "sPABorrador"
+msgstr "Borrador"
+
+msgid "sPARevisado"
+msgstr "Revisado"
+
+msgid "sPAVigor"
+msgstr "Vigor"
+
+msgid "sPACumple"
+msgstr "Cumple"
+
+msgid "sPANoCumple"
+msgstr "No Cumple"
+
+msgid "sPAPregunta"
+msgstr "Pregunta"
+
+msgid "sPAPadre"
+msgstr "Padre"
+
+msgid "sPAIdentificador"
+msgstr "identificador"
+
+msgid "sPAVolver"
+msgstr "Volver"
+
+msgid "sPCOEnviado"
+msgstr "enviado"
+
+msgid "sPCOHora"
+msgstr "hora"
+
+msgid "sPCORemitente"
+msgstr "remitente"
+
+msgid "sPCOUsuario"
+msgstr "Usuario"
+
+msgid "sPCOAccion"
+msgstr "accion"
+
+msgid "sPCONombre"
+msgstr "nombre"
+
+msgid "sPCODestinatario"
+msgstr "destinatario"
+
+msgid "sPCOTitulo"
+msgstr "titulo"
+
+msgid "sPCOPrimerApe"
+msgstr "Primer apellido"
+
+msgid "sPCOSegundoApe"
+msgstr "Segundo apellido"
+
+msgid "sPCOCodigo"
+msgstr "Codigo"
+
+msgid "sPCOEditar"
+msgstr "Editar"
+
+msgid "sPCORevisar"
+msgstr "Revisar"
+
+msgid "sPCOAprobar"
+msgstr "Aprobar"
+
+msgid "sPCOTareas"
+msgstr "Tareas"
+
+msgid "sPCOVer"
+msgstr "Ver"
+
+msgid "sPCODocumentosAnexos"
+msgstr "Documentos Anexos"
+
+msgid "sPCOFlujograma"
+msgstr "Flujograma"
+
+msgid "sPCOArea"
+msgstr "area"
+
+msgid "sPCOVolver"
+msgstr "Volver"
+
+msgid "sPCONuevaVersion"
+msgstr "Nueva Version"
+
+msgid "sPCOImprimir"
+msgstr "imprimir"
+
+msgid "sPCOVerHistorico"
+msgstr "Ver Historico"
+
+msgid "sPCODocument"
+msgstr "document"
+
+msgid "sFCObservaciones"
+msgstr "Observaciones"
+
+msgid "sPMCodigo"
+msgstr "codigo"
+
+msgid "sPMNombre"
+msgstr "nombre"
+
+msgid "sPMRevisado"
+msgstr "revisado"
+
+msgid "sPMTitulo"
+msgstr "titulo"
+
+msgid "sPMAreaIncidencia"
+msgstr "area incidencia"
+
+msgid "sPMAmbitoApli"
+msgstr "ambito aplicacion"
+
+msgid "sPMVerifica"
+msgstr "verifica"
+
+msgid "sPMFecha"
+msgstr "fecha"
+
+msgid "sPMCumplio"
+msgstr "Cumplio"
+
+msgid "sPMTipo"
+msgstr "tipo"
+
+msgid "sPMAspecto"
+msgstr "Aspecto"
+
+msgid "sPMImpacto"
+msgstr "impacto"
+
+msgid "sPMArea"
+msgstr "area"
+
+msgid "sPMMagnitud"
+msgstr "cantidad"
+
+msgid "sPMGravedad"
+msgstr "gravedad"
+
+msgid "sPMFrecuencia"
+msgstr "frecuencia"
+
+msgid "sPMValoracion"
+msgstr "valoracion"
+
+msgid "sPMRevision"
+msgstr "revision"
+
+msgid "sPMCumple"
+msgstr "Cumple"
+
+msgid "sPMNoCumple"
+msgstr "No Cumple"
+
+msgid "sPMNuncaComprobado"
+msgstr "Nunca Comprobado"
+
+msgid "sPMBaja"
+msgstr "Baja"
+
+msgid "sPMMedia"
+msgstr "Media"
+
+msgid "sPMAlta"
+msgstr "Alta"
+
+msgid "sPMExtrema"
+msgstr "Extrema"
+
+msgid "sPMNoSignificativo"
+msgstr "No Significativo"
+
+msgid "sPMSignificativo"
+msgstr "Significativo"
+
+msgid "sPMSignifModerado"
+msgstr "Significativo Moderado"
+
+msgid "sPMSignifSevero"
+msgstr "Significativo Severo"
+
+msgid "sPMSignifCritico"
+msgstr "Significativo Critico"
+
+msgid "sPMRiesgoBajo"
+msgstr "Indice riesgo bajo"
+
+msgid "sPMRiesgoMedio"
+msgstr "Indice riesgo medio"
+
+msgid "sPMRiesgoAlto"
+msgstr "Indice riesgo alto"
+
+msgid "sPMVolver"
+msgstr "Volver"
+
+msgid "sMCFirmas"
+msgstr "Subir hoja de firmas"
+
+msgid "sMCModulo"
+msgstr "modulo"
+
+msgid "sMCFormula"
+msgstr "formula"
+
+msgid "sMCEnviado"
+msgstr "enviado"
+
+msgid "sMCDocumento"
+msgstr "documento"
+
+msgid "sMCCodigo"
+msgstr "codigo"
+
+msgid "sMCId"
+msgstr "id"
+
+msgid "sMCNombre"
+msgstr "nombre"
+
+msgid "sMCFecha"
+msgstr "fecha"
+
+msgid "sMCDescripcion"
+msgstr "descripcion"
+
+msgid "sMCAccion"
+msgstr "accion"
+
+msgid "sMCNumeroControl"
+msgstr "Numero de Control"
+
+msgid "sMCRealizacion"
+msgstr "realizacion"
+
+msgid "sMCCurso"
+msgstr "curso"
+
+msgid "sMCNumeroMeta"
+msgstr "numero_meta"
+
+msgid "sMCValor"
+msgstr "valor"
+
+msgid "sMCAuditor"
+msgstr "auditor"
+
+msgid "sMCProfesor"
+msgstr "profesor"
+
+msgid "sMCUsuario"
+msgstr "usuario"
+
+msgid "sMCEliminar"
+msgstr "Eliminar"
+
+msgid "sMCVer"
+msgstr "Ver"
+
+msgid "sMCHistorico"
+msgstr "Historico"
+
+msgid "sMCVerTarea"
+msgstr "Ver Tarea"
+
+msgid "sMCVerDocumento"
+msgstr "Ver Documento"
+
+msgid "sMCSeleccionar"
+msgstr "Seleccionar"
+
+msgid "sMCVolver"
+msgstr "Volver"
+
+msgid "sMCAgregar"
+msgstr "Agregar"
+
+msgid "sMCDetalles"
+msgstr "Detalles"
+
+msgid "sMCMantPreventivo"
+msgstr "Mant. Preventivo"
+
+msgid "sMCMantCorrectivo"
+msgstr "Mant. Correctivo"
+
+msgid "sMCPlanMant"
+msgstr "Plan Mant."
+
+msgid "sMCNuevo"
+msgstr "Nuevo"
+
+msgid "sMCEditar"
+msgstr "Editar"
+
+msgid "sMCBaja"
+msgstr "Baja"
+
+msgid "sMCAgregarCriterio"
+msgstr "Agregar Criterio"
+
+msgid "sMCQuitarCriterio"
+msgstr "Quitar Criterio"
+
+msgid "sMCCriterios"
+msgstr "Criterios"
+
+msgid "sMCRevisar"
+msgstr "Revisar"
+
+msgid "sMCNuevoSubproceso"
+msgstr "Nuevo Subproceso"
+
+msgid "sMCValores"
+msgstr "Valores"
+
+msgid "sMCObjetivos"
+msgstr "Objetivos"
+
+msgid "sMCGrafica"
+msgstr "Grafica"
+
+msgid "sMCEstadoDetalles"
+msgstr "Estado/Detalles"
+
+msgid "sMCPlanAuditoria"
+msgstr "Plan Auditoria"
+
+msgid "sMCEquipoAuditor"
+msgstr "Equipo Auditor"
+
+msgid "sMCInforme"
+msgstr "Informe"
+
+msgid "sMCSubirDocAdj"
+msgstr "Subir Doc. Adj."
+
+msgid "sMCVerDocAdj"
+msgstr "Ver Doc. Adj."
+
+msgid "sMCAsistentes"
+msgstr "Asistentes"
+
+msgid "sMCProfesores"
+msgstr "Profesores"
+
+msgid "sMCEnviarMsj"
+msgstr "Enviar Msj"
+
+msgid "sMCAlta"
+msgstr "Alta"
+
+msgid "sMCConfirmarAlta"
+msgstr "Confirmar Alta"
+
+msgid "sMCConfirmarBaja"
+msgstr "Confirmar Baja"
+
+msgid "sMCVerPDF"
+msgstr "Ver PDF"
+
+msgid "sMCDatosPersonales"
+msgstr "Datos Personales"
+
+msgid "sMCIncorporacion"
+msgstr "Incorporacion"
+
+msgid "sMCFormacion"
+msgstr "Formacion"
+
+msgid "sMCPreFormacion"
+msgstr "Pre-formacion"
+
+msgid "sMCIdiomas"
+msgstr "Idiomas"
+
+msgid "sMCCursos"
+msgstr "Cursos"
+
+msgid "sMCFormacionTecnica"
+msgstr "Formacion Tecnica"
+
+msgid "sMCExperienciaLaboral"
+msgstr "Experiencia Laboral"
+
+msgid "sMCCambiosPerfil"
+msgstr "Cambios Perfil"
+
+msgid "sMCCambiosDpto"
+msgstr "Cambios Dpto"
+
+msgid "sMCDatosPuesto"
+msgstr "Datos Puesto"
+
+msgid "sMCCompetencias"
+msgstr "Competencias"
+
+msgid "sMCPromocion"
+msgstr "Promocion"
+
+msgid "sMCSubProcesos"
+msgstr "SubProcesos"
+
+msgid "sMCNuevoUnico"
+msgstr "Insertar un valor"
+
+msgid "sMCNuevoMultiple"
+msgstr "Insertar valores"
+
+msgid "sMCHorarioAuditorias"
+msgstr "horario auditorias"
+
+msgid "sMCSubirFichero"
+msgstr "Subir fichero"
+
+msgid "sMCVerFichero"
+msgstr "Ver fichero"
+
+msgid "sMAEnviado"
+msgstr "enviado"
+
+msgid "sMAOrigen"
+msgstr "origen"
+
+msgid "sMANombre"
+msgstr "nombre"
+
+msgid "sMAPrimerApe"
+msgstr "primer_apellido"
+
+msgid "sMACodigo"
+msgstr "codigo"
+
+msgid "sMATitulo"
+msgstr "titulo"
+
+msgid "sMAPregunta"
+msgstr "pregunta"
+
+msgid "sMAVer"
+msgstr "Ver"
+
+msgid "sMAVolver"
+msgstr "Volver"
+
+msgid "sMANuevo"
+msgstr "Nuevo"
+
+msgid "sMAEditar"
+msgstr "Editar"
+
+msgid "sMADarDeBaja"
+msgstr "Dar de Baja"
+
+msgid "sMAAccion"
+msgstr "Accion"
+
+msgid "sMCOEnviado"
+msgstr "enviado"
+
+msgid "sMCOEliminar"
+msgstr "Eliminar"
+
+msgid "sMCOVer"
+msgstr "Ver"
+
+msgid "sMCOHistorico"
+msgstr "Historico"
+
+msgid "sMCOVolver"
+msgstr "Volver"
+
+msgid "sMCOSeleccionar"
+msgstr "Seleccionar"
+
+msgid "sMCOCerrar"
+msgstr "Cerrar"
+
+msgid "sMCORevision"
+msgstr "revision"
+
+msgid "sMCONombre"
+msgstr "nombre"
+
+msgid "sMMTitulo"
+msgstr "titulo"
+
+msgid "sMMCodigo"
+msgstr "codigo"
+
+msgid "sMMId"
+msgstr "id"
+
+msgid "sMMFecha"
+msgstr "fecha"
+
+msgid "sMMVerPreguntas"
+msgstr "Ver Preguntas"
+
+msgid "sMMVolver"
+msgstr "Volver"
+
+msgid "sMMSignificancia"
+msgstr "Significancia"
+
+msgid "sMMImprimir"
+msgstr "Imprimir"
+
+msgid "sFATipo"
+msgstr "Tipo"
+
+msgid "sFATipoListado"
+msgstr "Listado"
+
+msgid "sFATipoUnico"
+msgstr "Unico"
+
+msgid "sFAAccion"
+msgstr "Accion"
+
+msgid "sFAPadre"
+msgstr "Padre"
+
+msgid "sFAAIdioma"
+msgstr "Idioma"
+
+msgid "sFAAMenu"
+msgstr "Menu"
+
+msgid "sFAABoton"
+msgstr "Boton"
+
+msgid "sFAATexto"
+msgstr "Texto"
+
+msgid "sFAACastellano"
+msgstr "Castellano"
+
+msgid "sFAACatalan"
+msgstr "Catalan"
+
+msgid "sFMensajeGeneral"
+msgstr "Mensaje General"
+
+msgid "sFMensaje"
+msgstr "Mensaje"
+
+msgid "sFTarea"
+msgstr "Tarea"
+
+msgid "sFArea"
+msgstr "Area"
+
+msgid "sFTipoArea"
+msgstr "Tipo Area"
+
+msgid "sFTipoAmbiente"
+msgstr "Tipo Ambiente"
+
+msgid "sFCriterio"
+msgstr "Criterio"
+
+msgid "sFTipoDocumento"
+msgstr "Tipo documento"
+
+msgid "sFAyuda"
+msgstr "Ayuda"
+
+msgid "sFUsuario"
+msgstr "Usuario"
+
+msgid "sFImpacto"
+msgstr "Impacto"
+
+msgid "sFPerfil"
+msgstr "Perfil"
+
+msgid "sFCliente"
+msgstr "Cliente"
+
+msgid "sFMejora"
+msgstr "Mejora"
+
+msgid "sFNormativa"
+msgstr "Normativa"
+
+msgid "sFProceso"
+msgstr "Proceso"
+
+msgid "sFContenidoProceso"
+msgstr "Contenido Proceso"
+
+msgid "sFIndicador"
+msgstr "Indicador"
+
+msgid "sFValor"
+msgstr "Valor"
+
+msgid "sFObjetivo"
+msgstr "Objetivo"
+
+msgid "sFPlan"
+msgstr "Plan"
+
+msgid "sFCurso"
+msgstr "Curso"
+
+msgid "sFProfesor"
+msgstr "Profesor"
+
+msgid "sFCursoPlan"
+msgstr "Curso Plan"
+
+msgid "sFAlumno"
+msgstr "Alumno"
+
+msgid "sFMensajeAllUsers"
+msgstr "Mensaje a todos los usuarios"
+
+msgid "sFLegislacion"
+msgstr "Legislacion"
+
+msgid "sFProveedor"
+msgstr "Proveedor"
+
+msgid "sFIncidencia"
+msgstr "Incidencia"
+
+msgid "sFContacto"
+msgstr "Contacto"
+
+msgid "sFProducto"
+msgstr "Producto"
+
+msgid "sFAccMejora"
+msgstr "Accion de Mejora"
+
+msgid "sFProgramaAuditoria"
+msgstr "Programa de Auditoria"
+
+msgid "sFAuditoria"
+msgstr "Auditoria"
+
+msgid "sFPlanAuditoria"
+msgstr "Plan Auditoria"
+
+msgid "sFAuditor"
+msgstr "Auditor"
+
+msgid "sFInforme"
+msgstr "Informe"
+
+msgid "sFEquipo"
+msgstr "Equipo"
+
+msgid "sFMantPrev"
+msgstr "Mantenimiento Preventivo"
+
+msgid "sFMantCorrec"
+msgstr "Mantenimiento Correctivo"
+
+msgid "sFAspectoAmbiental"
+msgstr "Aspecto Ambiental"
+
+msgid "sFFichaPersonal"
+msgstr "Ficha de Personal"
+
+msgid "sFFichaPersonalPreform"
+msgstr "Ficha de Personal Pre-Formacion"
+
+msgid "sFFichaPersonalIdiomas"
+msgstr "Ficha de Personal Idiomas"
+
+msgid "sFRequisitosProm"
+msgstr "Requisitos del Puesto Promocion"
+
+msgid "sFRequisitosPuesto"
+msgstr "Requisitos del Puesto Datos del puesto"
+
+msgid "sFFormacionTecnica"
+msgstr "Formacion Tecnica"
+
+msgid "sFExperienciaLaboral"
+msgstr "Experiencia Laboral"
+
+msgid "sFCambioPerfil"
+msgstr "Cambio de perfil"
+
+msgid "sFCambioDepartamento"
+msgstr "Cambio de departamento"
+
+msgid "sFMeta"
+msgstr "Meta"
+
+msgid "sFReqPuestoComp"
+msgstr "Requisitos del Puesto Competencias"
+
+msgid "sFReqPuestoFormacion"
+msgstr "Requisitos del Puesto Formacion"
+
+msgid "sFReqPuestoFormTec"
+msgstr "Requisitos del Puesto Formacion Tecnica"
+
+msgid "sFPreguntasLegislacion"
+msgstr "Preguntas Legislacion"
+
+msgid "sFTipoCurso"
+msgstr "Tipo de Curso"
+
+msgid "sFNuevo"
+msgstr "Nuevo"
+
+msgid "sFVolver"
+msgstr "Volver"
+
+msgid "sFIdioma"
+msgstr "Idioma"
+
+msgid "sFBoton"
+msgstr "Boton"
+
+msgid "sFIdiomaBoton"
+msgstr "Idioma Boton"
+
+msgid "sFIdiomaMenu"
+msgstr "Idioma Menu"
+
+msgid "sFObjetivosGlobales"
+msgstr "Objetivos globales: "
+
+msgid "sFMagnitud"
+msgstr "Cantidad"
+
+msgid "sFFrecuencia"
+msgstr "Frecuencia/Probabilidad"
+
+msgid "sFGravedad"
+msgstr "Severidad"
+
+msgid "sFSeguimiento"
+msgstr "Seguimiento"
+
+msgid "sFSeveridad"
+msgstr "Severidad/Emergencia"
+
+msgid "sMNIdiomas"
+msgstr "idioma"
+
+msgid "sMNAccion"
+msgstr "accion"
+
+msgid "sMNArea"
+msgstr "area"
+
+msgid "sMNValor"
+msgstr "valor"
+
+msgid "sMNNombre"
+msgstr "nombre"
+
+msgid "sMAActualizar"
+msgstr "Actualizar"
+
+msgid "sPNAccion"
+msgstr "accion"
+
+msgid "sPNTipo"
+msgstr "tipo"
+
+msgid "sPNPermisos"
+msgstr "permisos"
+
+msgid "sPNValor"
+msgstr "valor"
+
+msgid "sPNIdioma"
+msgstr "idioma"
+
+msgid "sPNHorainicio"
+msgstr "hora inicio"
+
+msgid "sPNHorafin"
+msgstr "hora fin"
+
+msgid "sPNArea"
+msgstr "area"
+
+msgid "sPNAuditor"
+msgstr "auditor"
+
+msgid "sPNRequisitos"
+msgstr "requisitos"
+
+msgid "sPNNombre"
+msgstr "nombre"
+
+msgid "sPNPerfilVer"
+msgstr "Perfil ver"
+
+msgid "sPNPerfilNueva"
+msgstr "Perfil nueva"
+
+msgid "sPNPerfilModificar"
+msgstr "Perfil modificar"
+
+msgid "sPNPerfilRevisar"
+msgstr "Perfil revisar"
+
+msgid "sPNPerfilAprobar"
+msgstr "Perfil aprobar"
+
+msgid "sPNPerfilHistorico"
+msgstr "Perfil historico"
+
+msgid "sPNPerfilTareas"
+msgstr "Perfil tareas"
+
+msgid "sPNActualizar"
+msgstr "Actualizar"
+
+msgid "sPNVolver"
+msgstr "Volver"
+
+msgid "sPNPermisosAct"
+msgstr "Permisos actualizados correctamente"
+
+msgid "sFNAccion"
+msgstr "Accion"
+
+msgid "sFNTipo"
+msgstr "Tipo"
+
+msgid "sFNValor"
+msgstr "Valor"
+
+msgid "sFNNombre"
+msgstr "Nombre"
+
+msgid "sPDVolver"
+msgstr "Volver"
+
+msgid "sMLAgregar"
+msgstr "Agregar"
+
+msgid "sMLVolver"
+msgstr "Volver"
+
+msgid "sMLAgregarCriterio"
+msgstr "Agregar Criterio"
+
+msgid "sMLQuitarCriterio"
+msgstr "Quitar Criterio"
+
+msgid "sPLVer"
+msgstr "Ver"
+
+msgid "sPLNuevaVersion"
+msgstr "Nueva version"
+
+msgid "sIOObjetivos"
+msgstr "OBJETIVOS:"
+
+msgid "sIOResp"
+msgstr "Responsable:"
+
+msgid "sIOPlazo"
+msgstr "PLAZO:"
+
+msgid "sIOAccion"
+msgstr "ACCION:"
+
+msgid "sIORecursos"
+msgstr "RECURSOS:"
+
+msgid "sIOMetas"
+msgstr "Meta Numero:"
+
+msgid "sIODesc"
+msgstr "Descripcion"
+
+msgid "sIOVerificado"
+msgstr "VERIFICADO POR:"
+
+msgid "sIOFirma"
+msgstr "Firma y fecha"
+
+msgid "sIOAprobado"
+msgstr "APROBADO POR:"
+
+msgid "sIOIndicador"
+msgstr "INDICADOR:"
+
+msgid "sIOFecha"
+msgstr "Fecha:"
+
+msgid "sIOPlanAccion"
+msgstr "Plan Accion:"
+
+msgid "sPFCExisteManual"
+msgstr "Ya existe un Manual"
+
+msgid "sPFCExistePolitica"
+msgstr "Ya existe una Politica"
+
+msgid "sPFCExisteAAI"
+msgstr "Ya existe un Analisis Ambiental Inicial"
+
+msgid "sAMenu"
+msgstr "Menu"
+
+msgid "sAIdioma"
+msgstr "Idioma"
+
+msgid "sATexto"
+msgstr "Texto"
+
+msgid "sABoton"
+msgstr "Boton"
+
+msgid "sCFFICHADEPERSONAL"
+msgstr "FICHA DE PERSONAL"
+
+msgid "sCFNombre"
+msgstr "Nombre"
+
+msgid "sCFApellidos"
+msgstr "Apellidos"
+
+msgid "sCFFechaNac"
+msgstr "Fecha de Nacimiento"
+
+msgid "sCFFOTO"
+msgstr "FOTO"
+
+msgid "sCFDireccion"
+msgstr "Dirección"
+
+msgid "sCFVehiculoprop"
+msgstr "Vehiculo propio"
+
+msgid "sCFLocalidad"
+msgstr "Localidad"
+
+msgid "sCFProvincia"
+msgstr "Provincia"
+
+msgid "sCFTelefono"
+msgstr "Telefono"
+
+msgid "sCFPoblacion"
+msgstr "Poblacion"
+
+msgid "sCFObservaciones"
+msgstr "Observaciones"
+
+msgid "sCFProvinciaRes"
+msgstr "Provincia Res"
+
+msgid "sCFTitulosOficiales"
+msgstr "Titulos Oficiales"
+
+msgid "sCFFechaFin"
+msgstr "Fecha Fin"
+
+msgid "sCFCentro"
+msgstr "Centro"
+
+msgid "sCFCoste"
+msgstr "COSTE"
+
+msgid "sCFCerradopor"
+msgstr "CERRADO POR"
+
+msgid "sCFEmpresa"
+msgstr "Empresa"
+
+msgid "sCFFechaIncorp"
+msgstr "Fecha Incorporacion"
+
+msgid "sCFPerfil"
+msgstr "Perfil"
+
+msgid "sCFDepartamento"
+msgstr "Departamento"
+
+msgid "sCFFechacambioperfil"
+msgstr "Fecha cambio perfil"
+
+msgid "sCFFechacambiodep"
+msgstr "Fecha cambio departamento"
+
+msgid "sCFCurso"
+msgstr "Curso"
+
+msgid "sCFIngles"
+msgstr "Ingles"
+
+msgid "sCFNivel"
+msgstr "Nivel"
+
+msgid "sCFFrances"
+msgstr "Frances"
+
+msgid "sCFOtros"
+msgstr "Otros"
+
+msgid "sCFPuestocargo"
+msgstr "Puesto/cargo"
+
+msgid "sCFFechaInicio"
+msgstr "Fecha Inicio"
+
+msgid "sCFFormacionComp"
+msgstr "Formación Complementaria"
+
+msgid "sCFNombreCurso"
+msgstr "Nombre Curso"
+
+msgid "sCFLugarimparticion"
+msgstr "Lugar imparticion"
+
+msgid "sCFDuracion"
+msgstr "Duracion"
+
+msgid "sCFDesde"
+msgstr "Desde"
+
+msgid "sCFHasta"
+msgstr "Hasta"
+
+msgid "sCFPeriodotiempo"
+msgstr "Periodo tiempo"
+
+msgid "sCFRequisitos"
+msgstr "Requisitos para el puesto"
+
+msgid "sCFNombrepuestotrab"
+msgstr "Nombre del puesto de trabajo"
+
+msgid "sCFCategoria"
+msgstr "Categoria"
+
+msgid "sCFDependede"
+msgstr "Depende de"
+
+msgid "sCFArea"
+msgstr "Area"
+
+msgid "sCFAntiguedad"
+msgstr "Antigüedad requerida"
+
+msgid "sCFSi"
+msgstr "Si"
+
+msgid "sCFNo"
+msgstr "No"
+
+msgid "sCFNYears"
+msgstr "Número Años"
+
+msgid "sCFFormacionTecnica"
+msgstr "Formacion Tecnica"
+
+msgid "sCFOpcional"
+msgstr "Opcional"
+
+msgid "sCFHoras"
+msgstr "Horas"
+
+msgid "sCFAutonomiayresp"
+msgstr "Nivel de autonomia y responsabilidad"
+
+msgid "sCFRelacionesyCom"
+msgstr "Nivel de Relaciones y Comunicaciones"
+
+msgid "sCFHabilidadessociales"
+msgstr "Habilidades sociales"
+
+msgid "sCFLiderazgoyevaluacion"
+msgstr "Liderazgo y evaluacion"
+
+msgid "sCFTotal"
+msgstr "Total"
+
+msgid "sCFMuyAlta"
+msgstr "Muy Alta"
+
+msgid "sCFMandoEvaluacion"
+msgstr "Mando/Evaluacion"
+
+msgid "sCFMucha"
+msgstr "Mucha"
+
+msgid "sCFAlta"
+msgstr "Alta"
+
+msgid "sCFMotivacionDelegacion"
+msgstr "Motivacion/Delegacion"
+
+msgid "sCFBastante"
+msgstr "Bastante"
+
+msgid "sCFMedia"
+msgstr "Media"
+
+msgid "sCFNegociacion"
+msgstr "Negociacion"
+
+msgid "sCFPoca"
+msgstr "Poca"
+
+msgid "sCFBaja"
+msgstr "Baja"
+
+msgid "sCFTrabajoequipo"
+msgstr "Trabajo en equipo"
+
+msgid "sCFNinguna"
+msgstr "Ninguna"
+
+msgid "sCFNula"
+msgstr "Nula"
+
+msgid "sCFFormacionEnse"
+msgstr "Formacion/Enseñanza"
+
+msgid "sCFAccionmejora"
+msgstr "ACCIÓN DE MEJORA"
+
+msgid "sCFNC"
+msgstr "NC"
+
+msgid "sCFReclamacion"
+msgstr "Reclamacion"
+
+msgid "sCFAuditoria"
+msgstr "Auditoria"
+
+msgid "sCFPreventiva"
+msgstr "Preventiva"
+
+msgid "sCFIdentificacion"
+msgstr "IDENTIFICACION"
+
+msgid "sCFCliente"
+msgstr "CLIENTE"
+
+msgid "sCFProductoproyecto"
+msgstr "PRODUCTO O PROYECTO"
+
+msgid "sCFFecha"
+msgstr "FECHA"
+
+msgid "sCFDetectadapor"
+msgstr "DETECTADA POR"
+
+msgid "sCFDescripcion"
+msgstr "DESCRIPCION"
+
+msgid "sCFAnalisis"
+msgstr "ANÁLISIS"
+
+msgid "sCFTratamientoinmediato"
+msgstr "TRATAMIENTO INMEDIATO"
+
+msgid "sCFNotiene"
+msgstr "No tiene"
+
+msgid "sCFAccionCORPREV"
+msgstr "ACCION CORRECTIVA/PREVENTIVA"
+
+msgid "sCFResponsableimp"
+msgstr "RESPONSABLE IMPLANTACION"
+
+msgid "sCFPlazoaproximado"
+msgstr "PLAZO APROXIMADO"
+
+msgid "sCFVerificadopor"
+msgstr "VERIFICADO POR"
+
+msgid "sCFFirmayfecha"
+msgstr "Firma y fecha"
+
+msgid "sErrorNoEncontrado"
+msgstr "El fichero solicitado no se encuentra en el sistema"
+
+msgid "sErrorNoICS"
+msgstr "Opción solo valida desde ICS"
+
+msgid "sHospital"
+msgstr "Hospital"
+
+msgid "sDbExiste"
+msgstr "Ya ha sido generada la base de datos asociada al hospital"
+
+msgid "sDbCreada"
+msgstr "Base de datos creada"
+
+msgid "sDbErrorHospital"
+msgstr "Se ha producido un error en la aplicación"
+
+msgid "sPLCodigo"
+msgstr "Codigo"
+
+msgid "sPLNombre"
+msgstr "Nombre"
+
+msgid "sPLTipo"
+msgstr "Tipo"
+
+msgid "sPLCurso"
+msgstr "Curso"
+
+msgid "sPLDescripcion"
+msgstr "Descripcion"
+
+msgid "sPLArea"
+msgstr "Area"
+
+msgid "sPLAspecto"
+msgstr "Aspecto"
+
+msgid "sPLImpacto"
+msgstr "Impacto"
+
+msgid "sPLPrimerApe"
+msgstr "Primer Apellido"
+
+msgid "sPLTitulo"
+msgstr "Titulo"
+
+msgid "sPLEnviado"
+msgstr "Enviado"
+
+msgid "sPLOrigen"
+msgstr "Origen"
+
+msgid "sPLDestino"
+msgstr "Destino"
+
+msgid "sPLAccion"
+msgstr "Accion"
+
+msgid "sPLDocumento"
+msgstr "Documento"
+
+msgid "sPLValor"
+msgstr "Valor"
+
+msgid "sPLPadre"
+msgstr "Padre"
+
+msgid "sPLIdioma"
+msgstr "Idioma"
+
+msgid "sPLMenu"
+msgstr "Menu"
+
+msgid "sPLBoton"
+msgstr "Boton"
+
+msgid "sPLRemitente"
+msgstr "Remitente"
+
+msgid "sBajarxls"
+msgstr "Bajar xls"
+
+msgid "File Uploaded"
+msgstr "Archivo Subido"
+
+msgid "Competences and skills for job"
+msgstr "Competencias y habilidades para el puesto de trabajo"
+
+msgid "Permission"
+msgstr "Permisos"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "Modify"
+msgstr "Modificar"
