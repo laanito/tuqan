@@ -11,6 +11,7 @@ From PEAR libraries to composer
 This is far from usable at this point without knowledge of the app I will work to have an usable version soon
 So far:
  * Dependencies are moved to composer
+ * Localization handled with gettext
  * Auth class moved from unsupported PEAR/AUTH to jasny/auth
  * Classes adapted to PSR
  * Added a minimal routing with phroute
