@@ -5,8 +5,6 @@
 * LICENSE see LICENSE.md file
  *
  *
-
- *
  * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
  * @version 1.0b
  */

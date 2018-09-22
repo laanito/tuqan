@@ -8,6 +8,7 @@ use Tuqan\Classes\Manejador_Base_Datos;
 use \encriptador;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
+use Tuqan\Classes\Auth;
 
 class LoginUsuario
 {
@@ -78,7 +79,6 @@ class LoginUsuario
 
     public function MuestraPagina()
     {
-
         $loader = new Twig_Loader_Filesystem($this->config->template_path);
         $twig = new Twig_Environment($loader, array(
             'cache' => $this->config->cache_path,
@@ -94,75 +94,10 @@ class LoginUsuario
 
     public function ProcesaPagina()
     {
+        $auth = new Auth();
 
-
-        $sLoginEmp = $_SESSION['login'];
-        $sDbEmp = $_SESSION['db'];
-
-
-        //Creamos el encriptador, las claves de acceso a la DB van encriptadas
-        $css =& new \encriptador();
-        $clave = 'encriptame';
-        $pass = (string)$css->decrypt(trim($this->config->sPassEtc), $clave);
-
-
-        //Cadena de conexión a la BD
-        $dsn = 'pgsql://' . $sLoginEmp . ':' . $pass . '@' . $this->config->sServidorEtc . '/' . $sDbEmp;
-
-        $options = array(
-            'dsn' => $dsn,
-            'table' => 'usuarios',
-            'usernamecol' => 'login',
-            'passwordcol' => 'password',
-            'cryptType' => 'md5'
-        );
-
-        $optional = true;
-
-        //Creamos objeto de autentificación e iniciamos sesion.
-        $a = new \Auth("DB", $options, "\Tuqan\loginFunction", $optional);
-        $a->start();
-
-//Auth configuration
-        $a->setAdvancedSecurity(TRUE);
-
-//Si usuario logeado
-        if ($a->getAuth()) {
-            //Si se ha echo un logout -> cerramos sesion.
-            if ($_GET['action'] == "logout") {
-                $a->logout();
-                $a->start();
-            } else
-                if (isset($_POST['password'])) {
-                    $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-
-                    $sClaveMd5 = md5($_POST['password']);
-
-                    $oBaseDatos->iniciar_Consulta('SELECT');
-                    $oBaseDatos->construir_Campos(array('id', 'login', 'perfil', 'area'));
-                    $oBaseDatos->construir_Tablas(array('usuarios'));
-                    $oBaseDatos->construir_Where(array('(login=\'' . $_POST["username"] . '\')', '(activo=\'t\')', '(password=\'' . $sClaveMd5 . '\')'));
-                    $oBaseDatos->consulta();
-
-                    $aIterador = $oBaseDatos->coger_Fila();
-                    $_SESSION['usuarioconectado'] = true;
-                    $_SESSION['userid'] = $aIterador[0];
-                    $_SESSION['nombreUsuario'] = $aIterador[1];
-                    $_SESSION['perfil'] = $aIterador[2];
-                    $_SESSION['areausuario'] = $aIterador[3];
-
-                    $oBaseDatos->iniciar_Consulta('UPDATE');
-                    $oBaseDatos->construir_Tablas(array('usuarios'));
-                    $oBaseDatos->construir_Where(array("id='" . $_SESSION['userid'] . "'"));
-                    $oBaseDatos->construir_SetSin(array('ultimo_acceso', 'numero_accesos'),
-                        array('now()', 'numero_accesos+1'));
-                    $oBaseDatos->consulta();
-                    $oBaseDatos->desconexion();
-                    header('Location:qnova.php');
-                } else {
-                    header('Location:qnova.php');
-                }
+        if($auth->login($_SESSION['login'], $_SESSION['pass'])){
+            // @TODO implement post-login logic
         }
-
     }
 }
