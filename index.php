@@ -26,6 +26,7 @@ require_once 'Classes/Manejador_De_Respuestas.php';
 require_once 'Pages/LoginEmpresa.php';
 require_once 'Pages/LoginUsuario.php';
 require_once 'Pages/IndexPage.php';
+require_once 'Auth.php';
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
