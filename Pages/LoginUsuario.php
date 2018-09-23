@@ -94,8 +94,9 @@ class LoginUsuario
     {
         $auth = new Auth();
 
-        if($auth->login($_SESSION['login'], $_SESSION['pass'])){
+        if($auth->login($_POST['login'], $_POST['pass'])){
             // @TODO implement post-login logic
+            header('Location: /main/');
         }
     }
 }

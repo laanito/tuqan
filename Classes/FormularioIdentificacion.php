@@ -47,8 +47,6 @@ class Formulario_Identificacion extends \HTML_QuickForm2
         if ($iTipoLog == 1) {
             // para logueo de empresa
 
-            $sNavegador = $_SESSION['navegador'];
-
             $oDb = new Manejador_Base_Datos($sLoginEmp, $sPassEmp, $sDbEmp);
 
             //Sacamos el idioma seleccionado para que salga el primero en el check
