@@ -6,9 +6,7 @@ namespace Tuqan;
  *
 * LICENSE see LICENSE.md file
  *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
- * @author Alejandra J Garcia Romero <u>ajgarcia@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
 
  * @version 0.2.4a
  * Pagina que procesa las peticiones, tenemos dos clases, peticion y devolver, la primera

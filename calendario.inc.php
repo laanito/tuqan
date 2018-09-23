@@ -19,7 +19,7 @@
  *
 
  *
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
  */
 

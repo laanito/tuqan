@@ -2,9 +2,7 @@
 /**
  * Created on 25-oct-2005
  *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
- * @author Alejandra J Garcia Romero <u>ajgarcia@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
 
  * @version 0.1.2b
  *

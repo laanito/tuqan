@@ -12,9 +12,7 @@ namespace Tuqan;
  * @TODO utilizar HTML_Page
  * @TODO utilizar CSS
  *
-
- * @author Alejandra Jess Garca Romero <u>agromero@islanda.es</u>
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
  */
 

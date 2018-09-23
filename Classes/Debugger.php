@@ -9,7 +9,7 @@ namespace Tuqan\Classes;
  *
 
  *
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
  *
  * Esta clase nos producira objetos debugger, los cuales nos iran registrando el punto en el que estamos y el

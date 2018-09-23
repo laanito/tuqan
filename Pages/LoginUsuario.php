@@ -12,8 +12,6 @@ use Tuqan\Classes\Auth;
 
 class LoginUsuario
 {
-    private $iAnchura;
-    private $iAltura;
     private $sNavegador;
     private $sSistema;
     private $idioma;

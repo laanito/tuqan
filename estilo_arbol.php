@@ -13,7 +13,7 @@ require_once 'HTML/CSS.php';
  *
 
  *
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
  *
  * Este es la clase que cargará el estilo general de la aplicación.

@@ -11,7 +11,7 @@ namespace Tuqan\Classes;
  *
 
  *
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
  * Este es la clase que recibe el codigo de las peticiones y obtiene los parametros para
  * que un objeto procesador de peticiones gestione la peticion, preparando los datos convenientemente

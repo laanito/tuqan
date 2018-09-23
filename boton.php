@@ -5,7 +5,7 @@
 * LICENSE see LICENSE.md file
 
  *
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
  *
  * Estas clase esta hecha para ser parte de los listados y de los arboles para añadir botones y desplegables a sus elementos

@@ -3,7 +3,7 @@ namespace Tuqan;
 /**
  * Created on 17-oct-2005
  *
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  *
  * @version 0.5.0a
  *

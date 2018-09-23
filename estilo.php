@@ -3,9 +3,7 @@
 /**
  * Created on 19-oct-2005
  *
- * @author Alejandra J Garca Romero <u>ajgarcia@islanda.es</u>
-
- * @author Luis Alberto Amigo Navarro <u>lamigo@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 0.5.1f
  * @TODO Eliminar css innecesario e incluir css menus
  * En este archivo definimos la/s hoja/s de estilo que va a tener la aplicacion.

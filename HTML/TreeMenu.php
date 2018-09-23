@@ -62,8 +62,8 @@
  *
  *
  *
- * Modificaciones para Ajustarlo a Qnova
- * @author Antonio Luis Batista Archilla <abatista@islanda.es>
+ * Modificaciones para Ajustarlo a Tuqan
+ * @author Luis Alberto Amigo Navarro <lamigo@praderas.org>
  * Añadido campo checkbox para poner en los arboles
  *
  */

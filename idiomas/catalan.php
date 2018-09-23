@@ -2,9 +2,7 @@
 /**
  * Created on 25-oct-2005
  *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
- * @author Alejandra J Garca Romero <u>ajgarcia@islanda.es</u>
+ * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
 
  * @version 0.1.2b
  *
@@ -62,9 +60,9 @@ $sFalloResultado = "Error al recuperar les dades";
 $sFalloCerrar = "Error al tancar la conexion amb la base de dades";
 $sFalloAuditoria = "Ha d'estar realitzada la auditoria";
 $sErrores = "Errors";
-$sSinAcceso = "ACC�S PROHIBIT, NECESSARI LOGEARSE";
-$sNoAcceso = "No t� permisos per a accedir a aquesta seccion";
-$sNoPermisoDoc = "No t� permisos per a veure el document";
+$sSinAcceso = "ACCÈS PROHIBIT, NECESSARI LOGEARSE";
+$sNoAcceso = "No tè permisos per a accedir a aquesta seccion";
+$sNoPermisoDoc = "No tè permisos per a veure el document";
 $sOpcionError = "Opcion erronea";
 $sYaManual = "Ja existeix un Manual";
 

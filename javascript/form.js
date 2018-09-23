@@ -1,6 +1,6 @@
 /**
  *  @version 0.1.1a
- *     @author Antonio Luis Batista Archilla <u>abatista@islanda.es</u>
+ *     @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  */
 
 function rellenaMes(year, mes, dia, campo) {

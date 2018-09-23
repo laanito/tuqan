@@ -35,7 +35,7 @@
 // $Id: TreeMenu.js,v 1.1 2006-08-31 08:36:06 jmartinez Exp $
 
 // Cambios para adaptacion a qnova
-// @author Antonio Luis Batista Archilla <abatista@islanda.es>
+// @author Luis Alberto Amigo Navarro <lamigo@praderas.org>
 // A?adidas funciones para checkbox
 
 /**
