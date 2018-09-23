@@ -2,7 +2,7 @@
 
 This is an old ISO9001 ISO14001 app that I had from around 2005.
 My plan is refactoring this to new technologies From old PHP 5.1 to PHP 7
-From custom AJAX framework to moder PHP frameworks
+From custom AJAX framework to modern PHP frameworks
 From PEAR libraries to composer
 
 
