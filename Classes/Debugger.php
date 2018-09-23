@@ -4,10 +4,9 @@ namespace Tuqan\Classes;
 /**
  * Created on 15-oct-2005
  *
-* LICENSE see LICENSE.md file
+ * LICENSE see LICENSE.md file
  *
  *
-
  *
  * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b

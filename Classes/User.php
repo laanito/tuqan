@@ -99,7 +99,7 @@ class User implements JUser
      */
     public function getHashedPassword()
     {
-        // TODO: Implement getHashedPassword() method.
+        return $this->password;
     }
 
     /**
