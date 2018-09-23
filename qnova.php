@@ -25,7 +25,6 @@ require_once 'HTML/Page.php';
 require_once 'Classes/FormatoPagina.php';
 require_once 'Classes/Manejador_De_Peticiones.php';
 require_once 'Classes/Manejador_Ayuda.php';
-require_once 'Classes/Debugger.php';
 require_once 'Classes/Manejador_Editor.php';
 require_once 'Classes/Manejador_Funciones_Comunes.php';
 require_once 'Classes/generador_Formularios.php';

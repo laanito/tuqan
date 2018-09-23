@@ -33,10 +33,6 @@ class Manejador_De_Respuestas
 
     function __construct($sCadena)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_De_Respuestas.php", "Constructor", null);
-        }
         $this->sHtml = $sCadena;
     }
     //Fin __construct
@@ -50,11 +46,6 @@ class Manejador_De_Respuestas
 
     public function toAjax()
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_De_Respuestas.php", "toAjax", null);
-        }
-
         echo $this->sHtml;
     }
     //Fin toAjax
