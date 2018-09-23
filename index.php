@@ -29,6 +29,7 @@ require_once 'Pages/IndexPage.php';
 require_once 'Pages/MainPage.php';
 require_once 'Pages/NotFoundPage.php';
 require_once 'Classes/Auth.php';
+require_once 'Classes/User.php';
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;

@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Luis
- * Date: 23/09/2018
- * Time: 0:11
+ *
+ *  Auth management class
+ *
  */
 
 namespace Tuqan\Classes;
