@@ -53,7 +53,7 @@ $dispatcher =  new Dispatcher($router->getData());
 try {
     TuqanLogger::debug('Launching dispatcher: ', array('request' => $_SERVER['REQUEST_URI']));
     $response=$dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-    return $response;
+    echo $response;
 } catch (\Exception $e) {
     TuqanLogger::debug(
         'Page not found: ',
@@ -63,5 +63,5 @@ try {
         )
     );
     $page = new NotFoundPage();
-    return $page->ShowPage();
+    echo $page->ShowPage();
 }
