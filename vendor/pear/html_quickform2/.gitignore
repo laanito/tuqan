@@ -1,9 +1,0 @@
-# composer related
-composer.lock
-composer.phar
-vendor
-
-# js build files
-js/build.properties
-js/build/
-js/docs/
