@@ -16,7 +16,6 @@ use Jasny\Auth\User as JUser;
 class User implements JUser
 {
 
-
     private $id;
     private $username;
     private $password;
@@ -33,7 +32,7 @@ class User implements JUser
     {
         $this->id =$id;
         $this->username = $username;
-        $this->password = $password;
+        $this->password = password_hash($password,PASSWORD_BCRYPT);
         $this->active = $active;
 
     }
@@ -59,26 +58,17 @@ class User implements JUser
     }
 
     /**
-     * Get the hashed password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
      * Event called on login.
      *
      * @return boolean  false cancels the login
      */
     public function onLogin()
     {
-        if (!$this->active) return false;
+        if (!$this->active) {
+            return false;
+        }
 
         $this->last_login = new \DateTime();
-        $this->save();
 
         return true;
     }
@@ -89,7 +79,6 @@ class User implements JUser
     public function onLogout()
     {
         $this->last_logout = new \DateTime();
-        $this->save();
     }
 
     /**
@@ -100,12 +89,5 @@ class User implements JUser
     public function getHashedPassword()
     {
         return $this->password;
-    }
-
-    /**
-     *
-     */
-    public function save(){
-
     }
 }
