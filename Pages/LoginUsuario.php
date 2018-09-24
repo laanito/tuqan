@@ -98,5 +98,8 @@ class LoginUsuario
             // @TODO implement post-login logic
             header('Location: /main/');
         }
+        else {
+            header('Location: /login/empresa/');
+        }
     }
 }
