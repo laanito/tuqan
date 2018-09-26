@@ -93,6 +93,8 @@ class LoginUsuario
 
         if($auth->login($_POST['nombre'], $_POST['clave'])){
             $_SESSION['usuarioconectado']=true;
+            $_SESSION['admin']=true;
+            $_SESSION['perfil']='0';
             header('Location: /main/');
         }
         else {
