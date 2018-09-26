@@ -35,6 +35,10 @@ class MainPage
         } catch (\Exception $e) {
             return ("Error al cargar plantilla: " . $e->getMessage());
         }
-        return $template->render();
+        $variables = array(
+            'UserTitle' => gettext('sUsuario'),
+            'UserName' =>  $_SESSION['nombreUsuario'],
+        );
+        return $template->render($variables);
     }
 }

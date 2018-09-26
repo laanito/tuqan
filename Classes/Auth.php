@@ -52,7 +52,8 @@ class Auth extends JAuth implements Authz
         $oBaseDatos->desconexion();
 
         $user = new User($aIterador[0], $aIterador[1], $aIterador[4], $aIterador[5]);
-
+        $user->setRoles($this->getRoleById((int)$aIterador[2]));
+        $this->updateSessionData('nombreUsuario', $aIterador[1]);
         return $user;
     }
 
@@ -81,6 +82,7 @@ class Auth extends JAuth implements Authz
 
         $user = new User($aIterador[0], $aIterador[1], $aIterador[4], $aIterador[5]);
         $user->setRoles($this->getRoleById((int)$aIterador[2]));
+        $this->updateSessionData('nombreUsuario', $aIterador[1]);
         return $user;
     }
 
