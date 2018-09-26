@@ -1,35 +1,35 @@
 //@version 0.3.5a
 
 window.onload = initialize;
-var separador = 'ZZZ';
-var separadorCadenas = 'YYY';
-var http = null;
-var tiempoPeticion = 10000;
+let separador = 'ZZZ';
+let separadorCadenas = 'YYY';
+let http = null;
+let tiempoPeticion = 10000;
 setCookie('ed', '0');
 //window.onload = iniciar_Qnova;
 // convert all characters to lowercase to simplify testing
-var agt = navigator.userAgent.toLowerCase();
+let agt = navigator.userAgent.toLowerCase();
 
 // *** BROWSER VERSION ***
 // Note: On IE5, these return 4, so use is_ie5up to detect IE5.
-var is_major = parseInt(navigator.appVersion);
-var is_minor = parseFloat(navigator.appVersion);
+let is_major = parseInt(navigator.appVersion);
+let is_minor = parseFloat(navigator.appVersion);
 
 // Note: Opera and WebTV spoof Navigator.  We do strict client detection.
 // If you want to allow spoofing, take out the tests for opera and webtv.
-var is_nav = ((agt.indexOf('mozilla') != -1) && (agt.indexOf('spoofer') == -1)
-    && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera') == -1)
-    && (agt.indexOf('webtv') == -1) && (agt.indexOf('hotjava') == -1));
-var is_nav6up = (is_nav && (is_major >= 5));
-var is_gecko = (agt.indexOf('gecko') != -1);
+let is_nav = ((agt.indexOf('mozilla') !== -1) && (agt.indexOf('spoofer') === -1)
+    && (agt.indexOf('compatible') === -1) && (agt.indexOf('opera') === -1)
+    && (agt.indexOf('webtv') === -1) && (agt.indexOf('hotjava') === -1));
+let is_nav6up = (is_nav && (is_major >= 5));
+let is_gecko = (agt.indexOf('gecko') !== -1);
 
 
-var is_ie = ((agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1));
-var is_ie4 = (is_ie && (is_major == 4) && (agt.indexOf("msie 4") != -1));
-var is_ie4up = (is_ie && (is_major >= 4));
+let is_ie = ((agt.indexOf("msie") !== -1) && (agt.indexOf("opera") === -1));
+let is_ie4 = (is_ie && (is_major === 4) && (agt.indexOf("msie 4") !== -1));
+let is_ie4up = (is_ie && (is_major >= 4));
 
-var is_opera = (agt.indexOf("opera") != -1);
-var is_opera7 = (is_opera && is_major >= 7) || agt.indexOf("opera 7") != -1;
+let is_opera = (agt.indexOf("opera") !== -1);
+let is_opera7 = (is_opera && is_major >= 7) || agt.indexOf("opera 7") !== -1;
 
 
 /**
@@ -96,13 +96,7 @@ function atras(numero) {
 //    }
 }
 
-/**
- * Esto lo hacemos para borrar el alert que devolvemos algunas veces y que si el usuario no pulsa podria dar un timeouterror al no
- * Eliminarse el temporizador de tiempo de peticion
- */
-//function borraAlert()
-//{
-//}
+
 /**
  * Esta funcion dibuja la barra de espera de carga de pagina en la division correspondiente
  */
@@ -116,8 +110,6 @@ function cargando(div) {
 function guardando(div) {
     document.getElementById(div).innerHTML = "<img src=\"/images/guardando2.gif\">";
 }
-
-var DHTML = (document.getElementById() || document.all || document.layers);
 
 /**
  * Esta funcion la usa ap_showWaitMessage para asociar el estilo de la division a la barra y asi poder
@@ -142,9 +134,6 @@ function ap_getObj(name) {
  */
 
 function ap_showWaitMessage(div, flag, tipo) {
-    if (!DHTML) {
-        return;
-    }
     if (tipo === 1) {
         cargando(div);
     }
@@ -396,7 +385,7 @@ function createRequestObject() {
 function errorEspera() {
     http = null;
     ap_showWaitMessage('wait', 0, 1);
-    document.getElementById('contenedor').innerHTML = "<center>No ha llegado respuesta en el tiempo estimado, por favor vuelva a intentarlo <br /> Si persiste el error p?ngase en contacto con el administrador de la aplicaci?n<center>";
+    document.getElementById('contenedor').innerHTML = "<p>No ha llegado respuesta en el tiempo estimado, por favor vuelva a intentarlo <br /> Si persiste el error p?ngase en contacto con el administrador de la aplicación</p>";
 }
 
 /**
@@ -404,15 +393,15 @@ function errorEspera() {
  * marcado o 0 en caso de ninguno
  */
 function cogerRadio(doc) {
-    radio = doc.getElementsByTagName("input");
-    valor = 0;
-    level = 0;
+    let radio = doc.getElementsByTagName("input");
+    let valor = 0;
+    let level = 0;
     for (i = 0; i < radio.length; i++) {
         if ((radio[i].type === "radio")) {
             if (radio[i].checked === true) {
                 valor = radio[i].value;
                 //Ahora cogemos en que nivel esta
-                nivel = radio[i].parentNode.parentNode.id.split('_');
+                let nivel = radio[i].parentNode.parentNode.id.split('_');
                 level = nivel.length;
             }
         }
