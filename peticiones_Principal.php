@@ -61,11 +61,6 @@ require_once 'Pager/Pager.php';
 require_once 'Classes/generador_listados.php';
 include_once 'constantes.inc.php';
 
-
-
-
-
-
 use Tuqan\Classes\Manejador_De_Peticiones;
 use Tuqan\Classes\Manejador_De_Respuestas;
 use Tuqan\Classes\Procesador_De_Peticiones;

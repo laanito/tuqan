@@ -765,7 +765,7 @@ function handleResponse() {
                 delCookie('anchura');
                 delCookie('altura');
                 delCookie('IdiomaCal');
-                location.href = "index.php";
+                location.href = "/";
             }
             /**
              * Este bucle nos va mostrando las divisiones que tengamos que cargar, primero el contenedor

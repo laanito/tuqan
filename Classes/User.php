@@ -63,7 +63,7 @@ class User implements JUser
         }
 
         $this->last_login = new \DateTime();
-
+        $_SESSION['usuarioconectado']=true;
         return true;
     }
 
@@ -73,6 +73,7 @@ class User implements JUser
     public function onLogout()
     {
         $this->last_logout = new \DateTime();
+        unset($_SESSION['usuarioconectado']);
     }
 
     /**

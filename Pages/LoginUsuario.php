@@ -4,8 +4,6 @@ namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
 use Tuqan\Classes\Formulario_Identificacion;
-use Tuqan\Classes\Manejador_Base_Datos;
-use \encriptador;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 use Tuqan\Classes\Auth;
@@ -16,7 +14,6 @@ class LoginUsuario
     private $sSistema;
     private $idioma;
     private $base_path;
-    private $auth;
     private $config;
 
     /**
@@ -95,7 +92,7 @@ class LoginUsuario
         $auth = new Auth();
 
         if($auth->login($_POST['nombre'], $_POST['clave'])){
-
+            $_SESSION['usuarioconectado']=true;
             header('Location: /main/');
         }
         else {
