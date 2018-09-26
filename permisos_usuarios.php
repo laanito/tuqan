@@ -4,14 +4,14 @@
  *
  * @author Luis Alberto Amigo Navarro
  * @version 0.3b
- * Archivo que genera los �rboles de permisos
+ * Archivo que genera los árboles de permisos
  */
 require_once 'boton.php';
-require_once('generador_arboles.php');
-require_once('Manejador_Base_Datos.class.php');
+require_once('Classes/generador_arboles.php');
+require_once('Classes/Manejador_Base_Datos.class.php');
 require_once('estilo.php');
 require_once('HTML/Page.php');
-require_once('FormatoPagina.php');
+require_once('Classes/FormatoPagina.php');
 
 
 function arbol_permisos($iUserid, $sLogin, $sPass, $sBdatos)

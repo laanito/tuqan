@@ -8,11 +8,25 @@
 namespace Tuqan\Classes;
 
 use Jasny\Auth as JAuth;
+use Jasny\Authz;
 use Tuqan\Classes\User as User;
-use Jasny\Auth\Sessions;
 
-class Auth extends JAuth
+
+class Auth extends JAuth implements Authz
 {
+    use Authz\ByGroup;
+    use JAuth\Sessions;
+
+    /**
+     * @var $groups array with permission structure
+     */
+    protected $groups;
+
+    /**
+     * @var $groups array with permission structure
+     */
+    protected $perfiles;
+
 
     /**
      * Fetch a user by ID
@@ -66,22 +80,90 @@ class Auth extends JAuth
         $oBaseDatos->desconexion();
 
         $user = new User($aIterador[0], $aIterador[1], $aIterador[4], $aIterador[5]);
-
+        $user->setRoles($this->getRoleById((int)$aIterador[2]));
         return $user;
     }
 
-    public function persistCurrentUser()
+    /**
+     * Get the session data
+     * @global array $_SESSION
+     *
+     * @param string $key
+     *
+     * @return array
+     */
+    protected function getSessionData($key)
     {
-        // TODO: Implement persistCurrentUser() method.
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
     }
 
     /**
-     * Get current authenticated user id
+     * Update the session
+     * @global array $_SESSION
      *
-     * @return mixed
+     * @param string $key
+     * @param mixed  $value
      */
-    protected function getCurrentUserId()
+    protected function updateSessionData($key, $value)
     {
-        // TODO: Implement getCurrentUserId() method.
+        if (is_null($value)) {
+            unset($_SESSION[$key]);
+        } else {
+            $_SESSION[$key] = $value;
+        }
+    }
+
+    /**
+     * Get the groups and the groups it supersedes.
+     *
+     * @return array
+     */
+    protected function getGroupStructure()
+    {
+        if (!isset($this->groups)) {
+            $dbName = $_SESSION['db'];
+            $dbUser = $_SESSION['login'];
+            $dbPass = $_SESSION['pass'];
+
+            $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
+            $oBaseDatos->iniciar_Consulta('SELECT');
+            $oBaseDatos->construir_Campos(array('nombre'));
+            $oBaseDatos->construir_Tablas(array('perfiles'));
+            $oBaseDatos->construir_where(array('id<>0', 'perfiles.activo=\'t\''));
+            $oBaseDatos->consulta();
+
+            while (($row = $oBaseDatos->coger_Fila())) {
+                $this->groups[$row[0]] = array();
+            }
+        }
+
+        return $this->groups;
+    }
+
+    /**
+     * Gets the role name from its id
+     *
+     *
+     * @param $id integer
+     *
+     * @return string
+     */
+    protected function getRoleById($id){
+        if (!isset($this->perfiles)) {
+            $dbName = $_SESSION['db'];
+            $dbUser = $_SESSION['login'];
+            $dbPass = $_SESSION['pass'];
+
+            $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
+            $oBaseDatos->iniciar_Consulta('SELECT');
+            $oBaseDatos->construir_Campos(array('id', 'nombre'));
+            $oBaseDatos->construir_Tablas(array('perfiles'));
+            $oBaseDatos->construir_where(array('perfiles.activo=\'t\''));
+            $oBaseDatos->consulta();
+            while (($row = $oBaseDatos->coger_Fila())) {
+                $this->perfiles[(int)$row[0]] = $row[1];
+            }
+        }
+        return $this->perfiles[(int)$id];
     }
 }

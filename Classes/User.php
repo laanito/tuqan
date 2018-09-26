@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Luis
- * Date: 23/09/2018
- * Time: 0:38
- */
 
 namespace Tuqan\Classes;
 
@@ -20,6 +14,7 @@ class User implements JUser
     private $username;
     private $password;
     private $active;
+    private $roles;
 
     /**
      * User constructor.
@@ -34,7 +29,6 @@ class User implements JUser
         $this->username = $username;
         $this->password = password_hash($password,PASSWORD_BCRYPT);
         $this->active = $active;
-
     }
 
     /**
@@ -89,5 +83,23 @@ class User implements JUser
     public function getHashedPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Get the access groups of the user
+     *
+     * @return string[]
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param $roles string
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
     }
 }
