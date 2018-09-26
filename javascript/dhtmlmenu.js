@@ -25,7 +25,7 @@ var liIndex = 0;
 var visibleMenus = new Array();
 var activeMenuItem = false;
 var timeBeforeAutoHide = 1200; // Microseconds from mouse leaves menu to auto hide.
-var dhtmlgoodies_menu_arrow = 'images/arrow.gif';
+var dhtmlgoodies_menu_arrow = '/images/arrow.gif';
 
 var MSIE = navigator.userAgent.indexOf('MSIE') >= 0 ? true : false;
 var navigatorVersion = navigator.appVersion.replace(/.*?MSIE ([0-9]\.[0-9]).*/g, '$1') / 1;

@@ -12,20 +12,18 @@ use \Twig_Environment;
 
 class NotFoundPage
 {
-    private $config;
-
     function __construct()
     {
-        $this->config = new Config();
+        Config::initialize();
     }
 
     /**
      * @return string
      */
     public function ShowPage(){
-        $loader = new Twig_Loader_Filesystem($this->config->template_path);
+        $loader = new Twig_Loader_Filesystem(Config::$template_path);
         $twig = new Twig_Environment($loader, array(
-            'cache' => $this->config->cache_path,
+            'cache' => Config::$cache_path,
         ));
         try {
             $template = $twig->load('notfound.twig');

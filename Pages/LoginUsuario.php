@@ -14,21 +14,20 @@ class LoginUsuario
     private $sSistema;
     private $idioma;
     private $base_path;
-    private $config;
 
     /**
      * LoginUsuario constructor.
      */
     function __construct()
     {
-        $this->config = new Config();
+        Config::initialize();
 
-        $this->idioma = $this->config->sIdioma;
-        $this->base_path = $this->config->base_path;
+        $this->idioma = Config::$sIdioma;
+        $this->base_path = Config::$base_path;
 
         if ($_SESSION['loginempresa'] == 1) {
-            $_SESSION['encodingdb'] = $this->config->dbEncoding;
-            $_SESSION['encodingapache'] = $this->config->apacheEncoding;
+            $_SESSION['encodingdb'] = Config::$dbEncoding;
+            $_SESSION['encodingapache'] = Config::$apacheEncoding;
             $aParametrosNav = explode(';', $_SERVER['HTTP_USER_AGENT']);
 
             $_SESSION['sistema_operativo'] = trim($aParametrosNav[2]);
@@ -74,9 +73,9 @@ class LoginUsuario
 
     public function MuestraPagina()
     {
-        $loader = new Twig_Loader_Filesystem($this->config->template_path);
+        $loader = new Twig_Loader_Filesystem(Config::$template_path);
         $twig = new Twig_Environment($loader, array(
-            'cache' => $this->config->cache_path,
+            'cache' => Config::$cache_path,
         ));
         try {
             $template = $twig->load('login.twig');

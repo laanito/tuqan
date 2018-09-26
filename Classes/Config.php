@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Luis
- * Date: 01/03/2018
- * Time: 11:01
+ * Class storing all config variables
  */
 
 namespace Tuqan\Classes;
@@ -11,81 +8,86 @@ namespace Tuqan\Classes;
 
 class Config
 {
-    public $sServidorEtc;
-    public $iPuertoEtc;
-    public $sTipoBdEtc;
-    public $sLoginEtc;
-    public $sPassEtc;
-    public $sDbEtc;
-    public $sMemoriaHtml2Pdf;
-    public $sMaxTiempoHtml2Pdf;
-    public $sFormulaMatrizAmbiental;
-    public $iValorNoSignificativo;
-    public $iValorSignificativoModerado;
-    public $iValorSignificativoCritico;
-    public $dbEncoding;
-    public $apacheEncoding;
+    public static $sServidorEtc;
+    public static $iPuertoEtc;
+    public static $sTipoBdEtc;
+    public static $sLoginEtc;
+    public static $sPassEtc;
+    public static $sDbEtc;
+    public static $sMemoriaHtml2Pdf;
+    public static $sMaxTiempoHtml2Pdf;
+    public static $sFormulaMatrizAmbiental;
+    public static $iValorNoSignificativo;
+    public static $iValorSignificativoModerado;
+    public static $iValorSignificativoCritico;
+    public static $dbEncoding;
+    public static $apacheEncoding;
 
-    public $iValorRiesgoBajo;
-    public $iValorRiesgoMedio;
-    public $iValorRiesgoAlto;
+    public static $iValorRiesgoBajo;
+    public static $iValorRiesgoMedio;
+    public static $iValorRiesgoAlto;
 
 //Idiomas, posibles valores: 1=>'castellano',2=>'catalan','ingles'
-    public $sIdioma;
-    public $sIdiomaInicial;
-    public $sLogo;
-    public $sPathUploadEditor;
-    public $sPathUploadURL;
-    public $sPathXls;
+    public static $sIdioma;
+    public static $sIdiomaInicial;
+    public static $sLogo;
+    public static $sPathUploadEditor;
+    public static $sPathUploadURL;
+    public static $sPathXls;
 
-    public $aCharset;
+    public static $aCharset;
 
-    public $base_path;
+    public static $base_path;
 
-    public $template_path;
+    public static $template_path;
 
-    public $cache_path;
+    public static $cache_path;
+
+    private static $initialized = false;
 
     /**
      * Config constructor.
      */
-public function __construct()
+public static function initialize()
 {
-    $this->sServidorEtc = "localhost";
-    $this->iPuertoEtc = 5432;
-    $this->sTipoBdEtc = 'pgsql';
-    $this->sLoginEtc = 'qnova';
-    $this->sPassEtc = 'ZTBlMWI2YTBlYmnDeYFE';
-    $this->sDbEtc = 'qnova';
-    $this->sMemoriaHtml2Pdf = '128M';
-    $this->sMaxTiempoHtml2Pdf = '240';
-    $this->sFormulaMatrizAmbiental= '(3*aspectos.magnitud+2*aspectos.gravedad)*aspectos.frecuencia';
-    $this->iValorNoSignificativo = 20;
-    $this->iValorSignificativoModerado = 50;
-    $this->iValorSignificativoCritico = 60;
-    $this->dbEncoding = 'UNICODE';
-    $this->apacheEncoding = 'UTF-8';
+    if(self::$initialized) {
+        return;
+    }
+    self::$sServidorEtc = "localhost";
+    self::$iPuertoEtc = 5432;
+    self::$sTipoBdEtc = 'pgsql';
+    self::$sLoginEtc = 'qnova';
+    self::$sPassEtc = 'ZTBlMWI2YTBlYmnDeYFE';
+    self::$sDbEtc = 'qnova';
+    self::$sMemoriaHtml2Pdf = '128M';
+    self::$sMaxTiempoHtml2Pdf = '240';
+    self::$sFormulaMatrizAmbiental= '(3*aspectos.magnitud+2*aspectos.gravedad)*aspectos.frecuencia';
+    self::$iValorNoSignificativo = 20;
+    self::$iValorSignificativoModerado = 50;
+    self::$iValorSignificativoCritico = 60;
+    self::$dbEncoding = 'UNICODE';
+    self::$apacheEncoding = 'UTF-8';
 
-    $this->iValorRiesgoBajo = 1;
-    $this->iValorRiesgoMedio = 3;
-    $this->iValorRiesgoAlto = 6;
+    self::$iValorRiesgoBajo = 1;
+    self::$iValorRiesgoMedio = 3;
+    self::$iValorRiesgoAlto = 6;
 
 //Idiomas, posibles valores: 1=>'castellano',2=>'catalan','ingles'
-    $this->sIdioma = '1';
-    $this->sIdiomaInicial = "castellano";
-    $this->sLogo = 'logo-islanda.png';
-    $this->sPathUploadEditor = $_SERVER['DOCUMENT_ROOT'].$this->base_path."/userfiles/";
-    $this->sPathUploadURL = $_SERVER['DOCUMENT_ROOT'].$this->base_path."/userfiles/";
-    $this->sPathXls = "/tmp/";
+    self::$sIdioma = '1';
+    self::$sIdiomaInicial = "castellano";
+    self::$sLogo = 'logo-islanda.png';
+    self::$sPathUploadEditor = $_SERVER['DOCUMENT_ROOT'].self::$base_path."/userfiles/";
+    self::$sPathUploadURL = $_SERVER['DOCUMENT_ROOT'].self::$base_path."/userfiles/";
+    self::$sPathXls = "/tmp/";
 
-    $this->aCharset = array('ISO-8859-15' => 'LATIN1',
+    self::$aCharset = array('ISO-8859-15' => 'LATIN1',
         'ISO-8859-1' => 'LATIN1',
         'utf-8' => 'UNICODE'
     );
-    $this->base_path='';
+    self::$base_path='';
 
-    $this->template_path = $_SERVER['DOCUMENT_ROOT'].$this->base_path.'/templates/';
+    self::$template_path = $_SERVER['DOCUMENT_ROOT'].self::$base_path.'/templates/';
 
-    $this->cache_path = $this->template_path.'cache/';
+    self::$cache_path = self::$template_path.'cache/';
     }
 }

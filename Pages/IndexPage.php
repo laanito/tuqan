@@ -10,10 +10,10 @@ class IndexPage {
 
     public function MuestraPagina()
     {
-        $config= new Config();
-        $loader = new Twig_Loader_Filesystem($config->template_path);
+        Config::initialize();
+        $loader = new Twig_Loader_Filesystem(Config::$template_path);
         $twig = new Twig_Environment($loader, array(
-            'cache' => $config->cache_path,
+            'cache' => Config::$cache_path,
         ));
         try {
             $template = $twig->load('index.twig');

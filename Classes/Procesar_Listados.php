@@ -2783,7 +2783,7 @@ class Procesar_Listados
     function procesa_Listado_Medio($sAccion, $aParametros)
     {
         $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $config = new Config();
+        Config::initialize();
 
         switch ($sAccion) {
             //DOCUMENTACION
@@ -2883,9 +2883,10 @@ class Procesar_Listados
                     $aCampos = array('aspectos.id', "aspectos.nombre as \"" . gettext('sPMAspecto') . "\"", "tipo_impactos_idiomas.valor as \"" . gettext('sPMImpacto') . "\"", "areas.nombre as \"" . gettext('sPMArea') . "\"",
                         "tipo_probabilidad_idiomas.valor as \"probabilidad'", "tipo_severidad_idiomas.valor as \"severidad\"",
                         'pp.significancia',
-                        "case when pp.significancia<$config->iValorRiesgoBajo then '" . gettext('sPMNoSignificativo') .
-                        "' when pp.significancia<$config->iValorRiesgoMedio and pp.significancia >=$config->iValorRiesgoBajo then '" .
-                        gettext('sPMRiesgoBajo') . "' when pp.significancia<$config->iValorRiesgoAlto and pp.significancia >=$config->iValorRiesgoMedio then '"
+                        "case when pp.significancia<".Config::$iValorRiesgoBajo." then '" . gettext('sPMNoSignificativo') .
+                        "' when pp.significancia<".Config::$iValorRiesgoMedio." and pp.significancia >=".Config::$iValorRiesgoBajo." then '" .
+                        gettext('sPMRiesgoBajo') . "' when pp.significancia<".Config::$iValorRiesgoAlto." and pp.significancia >="
+                        .Config::$iValorRiesgoMedio." then '"
                         . gettext('sPMRiesgoMedio') . "' else '" . gettext('sPMRiesgoAlto') . "' end as \"" . gettext('sPMValoracion') . "\""
                     );
                     $oDb->iniciar_Consulta('SELECT');
@@ -2908,15 +2909,16 @@ class Procesar_Listados
                     $aCampos = array('aspectos.id', "aspectos.nombre as \"" . gettext('sPMAspecto') . "\"", "tipo_impactos_idiomas.valor as \"" . gettext('sPMImpacto') . "\"", "area as \"" . gettext('sPMArea') . "\"",
                         "tipo_probabilidad_idiomas.valor as \"" . gettext('sMatrProbabilidad') . "\"", "tipo_severidad_idiomas.valor as \"" . gettext('sFMGravedad') . "\"",
                         'pp.significancia',
-                        "case when pp.significancia<$config->iValorRiesgoBajo then '" . gettext('sPMNoSignificativo') .
-                        "' when pp.significancia<$config->iValorRiesgoMedio and pp.significancia >=$config->iValorRiesgoBajo then '" .
-                        gettext('sPMRiesgoBajo') . "' when pp.significancia<$config->iValorRiesgoAlto and pp.significancia >=$config->iValorRiesgoMedio then '" .
+                        "case when pp.significancia<".Config::$iValorRiesgoBajo." then '" . gettext('sPMNoSignificativo') .
+                        "' when pp.significancia<".Config::$iValorRiesgoMedio." and pp.significancia >=".Config::$iValorRiesgoBajo." then '" .
+                        gettext('sPMRiesgoBajo') . "' when pp.significancia<".Config::$iValorRiesgoAlto.
+                        " and pp.significancia >=".Config::$iValorRiesgoMedio." then '" .
                         gettext('sPMRiesgoMedio') . "' else '" . gettext('sPMRiesgoAlto') . "' end as \"" . gettext('sPMValoracion') . "\""
                     );
                     $oDb->iniciar_Consulta('SELECT');
                     $oDb->construir_Campos($aCampos);
                     $oDb->construir_Tablas(array('aspectos', 'tipo_impactos', 'tipo_severidad', 'tipo_probabilidad', 'tipo_aspectos',
-                        '(select aspectos.id, ' . $config->FormulaMatrizAmbientales .
+                        '(select aspectos.id, ' . Config::$FormulaMatrizAmbientales .
                         ' as significancia from aspectos,tipo_probabilidad,tipo_severidad where tipo_severidad.id=aspectos.severidad' .
                         ' AND tipo_probabilidad.id=aspectos.probabilidad)as pp',
                         'tipo_impactos_idiomas', 'tipo_severidad_idiomas', 'tipo_probabilidad_idiomas'));

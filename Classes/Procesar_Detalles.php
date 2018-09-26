@@ -543,7 +543,7 @@ class Procesar_Detalles
 
         $sHtml .= "<div class=\"tborrador\"><b>" . gettext('sDocBorrador') . "</b></div>";
         $sHtml .= "<table class=\"borrador\">";
-        $config=new Config();
+        Config::initialize();
 
         //$sHtml.="</tr><br />";
         //Si tenemos un documento en borrador lo ponemos
@@ -722,7 +722,7 @@ class Procesar_Detalles
     {
         $oVolver = new boton(gettext('sPDVolver'), "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $config = new Config();
+        Config::initialize();
         $sHtml = "<div align='center'><h1>MATRIZ ASPECTOS AMBIENTALES</h1><br /><table border=1>";
         $sHtml .= "<tr>";
         $sHtml .= "<th>";
@@ -868,10 +868,10 @@ class Procesar_Detalles
                 'tipo_severidad_idiomas.valor',
                 'tipo_probabilidad_idiomas.valor',
                 'pp.significancia',
-                "case when pp.significancia<".$config->iValorRiesgoBajo." then '" .gettext('sPMNoSignificativo').
-                "' when pp.significancia<$config->iValorRiesgoMedio and pp.significancia >=$config->iValorRiesgoBajo then '" .
-                gettext('sPMRiesgoBajo') . "' when pp.significancia<$config->iValorRiesgoAlto and".
-                " pp.significancia >=$config->iValorRiesgoMedio then '" .
+                "case when pp.significancia<".Config::$iValorRiesgoBajo." then '" .gettext('sPMNoSignificativo').
+                "' when pp.significancia<".Config::$iValorRiesgoMedio ."and pp.significancia >=".Config::$iValorRiesgoBajo." then '" .
+                gettext('sPMRiesgoBajo') . "' when pp.significancia<".Config::$iValorRiesgoAlto." and".
+                " pp.significancia >=".Config::$iValorRiesgoMedio." then '" .
                 gettext('sPMRiesgoMedio') ."' else '" . gettext('sPMRiesgoAlto') . "' end as \"" . gettext('sPMValoracion') . "\""
             ));
             $oBaseDatos->construir_Tablas(array('aspectos', 'tipo_aspectos', 'tipo_impactos', 'tipo_probabilidad', 'tipo_severidad', 'areas',
@@ -892,13 +892,14 @@ class Procesar_Detalles
         } else {
             $oBaseDatos->construir_Campos(array('aspectos.nombre', 'tipo_aspectos.nombre', 'tipo_impactos_idiomas.valor', 'aspectos.area',
                 'tipo_severidad_idiomas.valor', 'tipo_probabilidad_idiomas.valor', 'pp.significancia',
-                "case when pp.significancia<$config->iValorRiesgoBajo then '" . gettext('sPMNoSignificativo') .
-                "' when pp.significancia<$config->iValorRiesgoMedio and pp.significancia >=$config->iValorRiesgoBajo then '" .
-                gettext('sPMRiesgoBajo') . "' when pp.significancia<$config->iValorRiesgoAlto and pp.significancia >=$config->iValorRiesgoMedio then '" .
+                "case when pp.significancia<".Config::$iValorRiesgoBajo." then '" . gettext('sPMNoSignificativo') .
+                "' when pp.significancia<".Config::$iValorRiesgoMedio." and pp.significancia >=".Config::$iValorRiesgoBajo." then '" .
+                gettext('sPMRiesgoBajo') . "' when pp.significancia<".Config::$iValorRiesgoAlto
+                ." and pp.significancia >=".Config::$iValorRiesgoMedio." then '" .
                 gettext('sPMRiesgoMedio') . "' else '" . gettext('sPMRiesgoAlto') . "' end as \"" . gettext('sPMValoracion') . "\""
             ));
             $oBaseDatos->construir_Tablas(array('aspectos', 'tipo_aspectos', 'tipo_impactos', 'tipo_probabilidad', 'tipo_severidad',
-                '(select aspectos.id, ' . $config->sFormulaMatrizAmbientales . ' as significancia from aspectos,tipo_severidad, tipo_probabilidad ' .
+                '(select aspectos.id, ' . Config::$sFormulaMatrizAmbientales . ' as significancia from aspectos,tipo_severidad, tipo_probabilidad ' .
                 'where aspectos.severidad=tipo_severidad.id AND aspectos.probabilidad=tipo_probabilidad.id)as pp',
                 'tipo_impactos_idiomas', 'tipo_severidad_idiomas', 'tipo_probabilidad_idiomas'
             ));
