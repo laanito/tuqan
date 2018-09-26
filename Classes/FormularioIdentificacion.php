@@ -47,8 +47,6 @@ class Formulario_Identificacion extends \HTML_QuickForm2
         if ($iTipoLog == 1) {
             // para logueo de empresa
 
-            $sNavegador = $_SESSION['navegador'];
-
             $oDb = new Manejador_Base_Datos($sLoginEmp, $sPassEmp, $sDbEmp);
 
             //Sacamos el idioma seleccionado para que salga el primero en el check
@@ -86,14 +84,7 @@ class Formulario_Identificacion extends \HTML_QuickForm2
                 $aEmpresas[$aIterador[0]] = $aIterador[0];
             }
 
-            if ($sNavegador == "Microsoft Internet Explorer") {
-                $aEventos = array("class" => "b_activo",
-                    "onMouseOver" => "this.className='b_focus'",
-                    "onMouseOut" => "this.className='b_activo'"
-                );
-            } else {
-                $aEventos = array("class" => "b_activo");
-            }
+            $aEventos = array("class" => "b_activo");
             $aEmpresa = array('options' => $aEmpresas);
             $aIdiomas = array('options' => $aIdioma);
             $aEventos['label']=gettext("sBotonAceptar");
@@ -108,26 +99,18 @@ class Formulario_Identificacion extends \HTML_QuickForm2
 
             $this->addElement('hidden', 'numero', array('value' => $iNumeroprocesa));
             $this->addElement('hidden', 'sesion', array('value' => $sSesion));
-        } else {
+        } else
+            {
             $aNombre = array("id" => "enfocar");
             // para logueo de usuario
-
-            if ( $_SESSION['navegador'] == "Microsoft Internet Explorer") {
-                $aEventos = array("class" => "b_activo",
-                    "onMouseOver" => "this.className='b_focus'",
-                    "onMouseOut" => "this.className='b_activo'"
-                );
-            } else {
                 $aEventos = array("class" => "b_activo");
-            }
             $this->addElement('text', 'nombre', $aNombre)->setLabel(gettext("sUsuario"));
             $this->addElement('password', 'clave')->setLabel(gettext("sClave"));
             $this->addElement('submit', 'submit', $aEventos)->setLabel(gettext("sBotonAceptar"));
 
             $this->addElement('hidden', 'numero', $iNumeroprocesa);
             $this->addElement('hidden', 'sesion', $sSesion);
-
-        }
+            }
     }
 }
 

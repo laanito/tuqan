@@ -1,7 +1,7 @@
 <?php
+
 /**
- * Main Page of the app
- *
+ * Main 404 template
  */
 
 namespace Tuqan\Pages;
@@ -10,12 +10,8 @@ use Tuqan\Classes\Config;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 
-class MainPage
+class NotFoundPage
 {
-
-    /**
-     * LoginUsuario constructor.
-     */
     function __construct()
     {
         Config::initialize();
@@ -30,14 +26,10 @@ class MainPage
             'cache' => Config::$cache_path,
         ));
         try {
-            $template = $twig->load('main.twig');
+            $template = $twig->load('notfound.twig');
         } catch (\Exception $e) {
             return ("Error al cargar plantilla: " . $e->getMessage());
         }
-        $variables = array(
-            'UserTitle' => gettext('sUsuario'),
-            'UserName' =>  $_SESSION['nombreUsuario'],
-        );
-        return $template->render($variables);
+        return $template->render();
     }
 }

@@ -111,11 +111,6 @@ class Manejador_Base_Datos extends \DB
 
     function __construct($login, $pass, $db, $sServidorEtc='localhost', $iPuertoEtc=5432, $sTipoBdEtc='pgsql')
     {
-
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "constructor", array('login=' . $login . ' pass=' . $pass . ' db=' . $db));
-        }
         $this->sUser = trim($login);
         $this->sPasswd = trim($pass);
         $this->sDb = trim($db);
@@ -157,11 +152,6 @@ class Manejador_Base_Datos extends \DB
             case 'conexion':
             $pera = new \PEAR();
                 if ($pera->isError($this->oConexion)) {
-                    global $iDebug;
-                    if ($iDebug == 1) {
-                        $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "manejo_errores", array($this->oResultado->message));
-                        $_SESSION['sError'] = $_SESSION['oDebugger']->mostrar_Path();
-                    }
                     $nombre_archivo = 'tmp/error.txt';
                     $contenido = "contenedor|" . print_r($this->oConexion);;
 
@@ -183,11 +173,6 @@ class Manejador_Base_Datos extends \DB
             case 'desconexion':
 
                 if ($mValor == false) {
-                    global $iDebug;
-                    if ($iDebug == 1) {
-                        $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "manejo_errores", array("Error al desconectar"));
-                        $_SESSION['sError'] = $_SESSION['oDebugger']->mostrar_Path();
-                    }
                     //echo "contenedor|desconexion";
                     $nombre_archivo = 'tmp/error.txt';
                     $contenido = "contenedor|Se ha producido un error en la aplicación, si persiste por favor pongase en contacto con el administrador";
@@ -209,12 +194,6 @@ class Manejador_Base_Datos extends \DB
                 break;
             case 'consulta':
                 if (\PEAR::isError($this->oResultado)) {
-                    global $iDebug;
-                    if ($iDebug == 1) {
-                        $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "manejo_errores", array($this->oResultado->message));
-                        $_SESSION['sError'] = $_SESSION['oDebugger']->mostrar_Path();
-                    }
-
 
                     echo "contenedor|Se ha producido un error en la aplicación, si persiste por favor pongase en contacto con el administrador";
                     die();
@@ -225,11 +204,6 @@ class Manejador_Base_Datos extends \DB
                 break;
             case 'fetch':
                 if (\PEAR::isError($mValor)) {
-                    global $iDebug;
-                    if ($iDebug == 1) {
-                        $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "manejo_errores", array($this->oResultado->message));
-                        $_SESSION['sError'] = $_SESSION['oDebugger']->mostrar_Path();
-                    }
                     //echo "contenedor|a";print_r($this->oResultado);
                     //echo "contenedor|fetch";
                     $nombre_archivo = 'tmp/error.txt';
@@ -267,10 +241,6 @@ class Manejador_Base_Datos extends \DB
     public function consulta($sSql = null)
     {
         $sConsulta = $this->to_String_Consulta();
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "consulta", array("SQL=" . $sConsulta));
-        }
         $this->conexion();
         if (is_null($sSql)) {
             $this->oResultado = $this->oConexion->query($sConsulta);
@@ -289,10 +259,6 @@ class Manejador_Base_Datos extends \DB
      */
     public function coger_Fila($bSlash = true)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "coger_Fila", null);
-        }
         $mTmp = $this->oResultado->fetchRow();
         if (is_array($mTmp)) {
             foreach ($mTmp as $sKey => $sValor) {
@@ -304,9 +270,6 @@ class Manejador_Base_Datos extends \DB
             }
         }
         $this->manejo_Errores('fetch', $mTmp);
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "coger_Fila=>Devuelve", array($mTmp));
-        }
         return $mTmp;
     }
     //Fin coger_Columna
@@ -325,10 +288,6 @@ class Manejador_Base_Datos extends \DB
 
     public function conexion($tipo = 'persistente')
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "conexion", null);
-        }
 
         if(isset($_SESSION['encodingapache'])) {
             $sEncoding = $_SESSION['encodingapache'];
@@ -352,10 +311,6 @@ class Manejador_Base_Datos extends \DB
 
     public function iniciar_Consulta($sTipo)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "iniciar_Consulta", array('Tipo=' . $sTipo));
-        }
         $this->oQuery = new generador_SQL($sTipo);
     }
     //Fin iniciar_Consulta
@@ -382,10 +337,6 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_Campos($aCampos)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Campos", $aCampos);
-        }
         if (is_array($aCampos)) {
             foreach ($aCampos as $sValor) {
                 $this->pon_Campo($sValor);
@@ -417,10 +368,6 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_Tablas($aTablas)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Tablas", $aTablas);
-        }
         if (is_array($aTablas)) {
             foreach ($aTablas as $sValor) {
                 $this->pon_Tabla($sValor);
@@ -450,10 +397,7 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_Where($aWheres)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Where", $aWheres);
-        }
+
         if (is_array($aWheres)) {
             foreach ($aWheres as $sValor) {
                 $this->pon_Where($sValor);
@@ -484,10 +428,6 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_Begin($aBegins)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Begins", $aBegins);
-        }
         if (is_array($aBegins)) {
             foreach ($aBegins as $sValor) {
                 $this->pon_Sentencia($sValor);
@@ -515,10 +455,6 @@ class Manejador_Base_Datos extends \DB
      */
     public function construir_Order($aOrders)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Orders", $aOrders);
-        }
         if (is_array($aOrders)) {
             foreach ($aOrders as $sValor) {
                 $this->pon_Order($sValor);
@@ -549,10 +485,6 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_Group($aGroups)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Groups", $aGroups);
-        }
         if (is_array($aGroups)) {
             foreach ($aGroups as $sValor) {
                 $this->pon_Group($sValor);
@@ -590,10 +522,6 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_Value($aValues)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Values", $aValues);
-        }
         if (is_array($aValues)) {
             foreach ($aValues as $sValor) {
                 $this->pon_Value($sValor);
@@ -606,10 +534,6 @@ class Manejador_Base_Datos extends \DB
      */
     public function construir_ValueSin($aValues)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Values", $aValues);
-        }
         if (is_array($aValues)) {
             foreach ($aValues as $sValor) {
                 $this->pon_ValueSin($sValor);
@@ -619,10 +543,6 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_ValueSinSlash($aValues)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Values", $aValues);
-        }
         if (is_array($aValues)) {
             foreach ($aValues as $sValor) {
                 $this->pon_ValueSinSlash($sValor);
@@ -683,10 +603,6 @@ class Manejador_Base_Datos extends \DB
 
     public function construir_Set($aSets, $aValues)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Sets", $aSets);
-        }
         if (is_array($aSets)) {
             foreach ($aSets as $sKey => $sValor) {
                 $this->pon_Set($sValor, $aValues[$sKey]);
@@ -700,10 +616,6 @@ class Manejador_Base_Datos extends \DB
      */
     public function construir_SetSin($aSets, $aValues)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Sets", $aSets);
-        }
         if (is_array($aSets)) {
             foreach ($aSets as $sKey => $sValor) {
                 $this->pon_SetSin($sValor, $aValues[$sKey]);
@@ -717,10 +629,6 @@ class Manejador_Base_Datos extends \DB
      */
     public function construir_SetSlashes($aSets, $aValues)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "construir_Sets", $aSets);
-        }
         if (is_array($aSets)) {
             foreach ($aSets as $sKey => $sValor) {
                 $this->pon_SetSlashes($sValor, $aValues[$sKey]);
@@ -736,10 +644,6 @@ class Manejador_Base_Datos extends \DB
 
     public function hacer_Commit()
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "Commit", array("SQL=Commit"));
-        }
         $this->conexion();
 
         $this->oResultado = $this->oConexion->query("COMMIT;");
@@ -754,10 +658,6 @@ class Manejador_Base_Datos extends \DB
 
     public function hacer_Rollback()
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_Base_Datos.class.php", "Rollback", array("SQL=Rollback"));
-        }
         $this->conexion();
 
         $this->oResultado = $this->oConexion->query("ROLLBACK;");

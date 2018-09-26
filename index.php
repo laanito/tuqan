@@ -10,7 +10,7 @@ require_once 'HTML/Page.php';
 require_once 'Classes/FormatoPagina.php';
 require_once 'Classes/Manejador_De_Peticiones.php';
 require_once 'Classes/Manejador_Ayuda.php';
-require_once 'Classes/Debugger.php';
+require_once 'Classes/TuqanLogger.php';
 require_once 'Classes/Manejador_Editor.php';
 require_once 'Classes/Manejador_Funciones_Comunes.php';
 require_once 'Classes/Manejador_Formularios.php';
@@ -27,10 +27,14 @@ require_once 'Pages/LoginEmpresa.php';
 require_once 'Pages/LoginUsuario.php';
 require_once 'Pages/IndexPage.php';
 require_once 'Pages/MainPage.php';
+require_once 'Pages/NotFoundPage.php';
 require_once 'Classes/Auth.php';
+require_once 'Classes/User.php';
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
+use Tuqan\Classes\TuqanLogger;
+use Tuqan\Pages\NotFoundPage;
 
 if (!isset($_SESSION)) {
     session_start();
@@ -48,8 +52,17 @@ $router->get('/main/', ['Tuqan\Pages\MainPage', 'ShowPage']);
 $dispatcher =  new Dispatcher($router->getData());
 
 try {
+    TuqanLogger::debug('Launching dispatcher: ', array('request' => $_SERVER['REQUEST_URI']));
     $response=$dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     echo $response;
 } catch (\Exception $e) {
-    echo "Ruta no encontrada\n".$e->getMessage();
+    TuqanLogger::debug(
+        'Page not found: ',
+        array(
+            'request' => $_SERVER['REQUEST_URI'],
+            'errormessage' => $e->getMessage()
+        )
+    );
+    $page = new NotFoundPage();
+    echo $page->ShowPage();
 }

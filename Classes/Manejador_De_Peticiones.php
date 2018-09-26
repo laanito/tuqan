@@ -46,10 +46,6 @@ class Manejador_De_Peticiones
     {
         $this->sCodigo = $sPeticion;
         $this->aDatos = $aDatos;
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_De_Peticiones.php", "Constructor", array('Peticion=' . $sPeticion . ' Datos='));
-        }
     }
 
     //Fin __construct
@@ -63,10 +59,6 @@ class Manejador_De_Peticiones
     public function devuelve_Parametros()
     {
         global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Manejador_De_Peticiones.php", "devuelve_Parametros", null);
-        }
-
         $aOpciones = explode(":", $this->sCodigo, 5);
 
         // Si el tercer campo de la URL esta definido entonces tenemos un formulario, un listado,

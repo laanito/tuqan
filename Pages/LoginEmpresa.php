@@ -23,15 +23,15 @@ class LoginEmpresa
      */
     public function __construct()
     {
-        $config = new Config();
+        Config::initialize();
         $css =& new \encriptador();
         $clave = 'encriptame';
-        $this->sLoginEmp = $config->sLoginEtc;
-        $this->sPassEmp = $css->decrypt(trim($config->sPassEtc), $clave);
-        $this->sDbEmp = $config->sDbEtc;
-        $this->idioma = $config->sIdioma;
-        $this->base_path = $config->base_path;
-        $_SESSION['idioma'] = $config->sIdioma;
+        $this->sLoginEmp = Config::$sLoginEtc;
+        $this->sPassEmp = $css->decrypt(trim(Config::$sPassEtc), $clave);
+        $this->sDbEmp = Config::$sDbEtc;
+        $this->idioma = Config::$sIdioma;
+        $this->base_path = Config::$base_path;
+        $_SESSION['idioma'] = Config::$sIdioma;
     }
 
     /**
@@ -56,10 +56,10 @@ class LoginEmpresa
         } else {
             $_SESSION['idiomaid'] = 1;
         }
-        $config = new Config();
-        $loader = new Twig_Loader_Filesystem($config->template_path);
+        Config::initialize();
+        $loader = new Twig_Loader_Filesystem(Config::$template_path);
         $twig = new Twig_Environment($loader, array(
-            'cache' => $config->cache_path,
+            'cache' => Config::$cache_path,
         ));
 
 

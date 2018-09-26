@@ -15,6 +15,7 @@
     "phroute/phroute": "v2.1.0",
     "jasny/auth": "v1.0.1",
     "twig/twig": "~1.35",
+    "monolog/monolog": "~1.23",
     "ext-gettext": "*"
   }
 }

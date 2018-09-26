@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Luis
- * Date: 23/09/2018
- * Time: 0:38
- */
 
 namespace Tuqan\Classes;
 
@@ -16,11 +10,11 @@ use Jasny\Auth\User as JUser;
 class User implements JUser
 {
 
-
     private $id;
     private $username;
     private $password;
     private $active;
+    private $roles;
 
     /**
      * User constructor.
@@ -33,9 +27,8 @@ class User implements JUser
     {
         $this->id =$id;
         $this->username = $username;
-        $this->password = $password;
+        $this->password = password_hash($password,PASSWORD_BCRYPT);
         $this->active = $active;
-
     }
 
     /**
@@ -59,27 +52,18 @@ class User implements JUser
     }
 
     /**
-     * Get the hashed password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
      * Event called on login.
      *
      * @return boolean  false cancels the login
      */
     public function onLogin()
     {
-        if (!$this->active) return false;
+        if (!$this->active) {
+            return false;
+        }
 
         $this->last_login = new \DateTime();
-        $this->save();
-
+        $_SESSION['usuarioconectado']=true;
         return true;
     }
 
@@ -89,7 +73,7 @@ class User implements JUser
     public function onLogout()
     {
         $this->last_logout = new \DateTime();
-        $this->save();
+        unset($_SESSION['usuarioconectado']);
     }
 
     /**
@@ -103,9 +87,20 @@ class User implements JUser
     }
 
     /**
+     * Get the access groups of the user
      *
+     * @return string[]
      */
-    public function save(){
+    public function getRoles()
+    {
+        return $this->roles;
+    }
 
+    /**
+     * @param $roles string
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
     }
 }

@@ -41,7 +41,6 @@ require_once 'Classes/FormatoPagina.php';
 require_once 'Classes/Manejador_Listados.php';
 require_once 'Classes/Manejador_De_Peticiones.php';
 require_once 'Classes/Manejador_Ayuda.php';
-require_once 'Classes/Debugger.php';
 require_once 'Classes/Manejador_Editor.php';
 require_once 'Classes/Manejador_Funciones_Comunes.php';
 require_once 'Classes/Manejador_Formularios.php';
@@ -62,12 +61,6 @@ require_once 'Pager/Pager.php';
 require_once 'Classes/generador_listados.php';
 include_once 'constantes.inc.php';
 
-
-
-
-
-
-use Tuqan\Classes\Debugger;
 use Tuqan\Classes\Manejador_De_Peticiones;
 use Tuqan\Classes\Manejador_De_Respuestas;
 use Tuqan\Classes\Procesador_De_Peticiones;
@@ -91,15 +84,10 @@ if (isset($_REQUEST['pageID'])) {
  * @var integer
  */
 
-$iDebug = 0;
 
 if (!isset($_SESSION['usuarioconectado'])) {
     echo "contenedor|logout";
     die();
-}
-
-if ($iDebug == 1) {
-    $_SESSION['oDebugger'] = new Debugger("peticiones_Principal.php", "Main", $aDatos);
 }
 
 /**

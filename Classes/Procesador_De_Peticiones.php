@@ -41,10 +41,6 @@ class Procesador_De_Peticiones
 
     function __construct($aParam)
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Procesador_De_Peticiones.php", "Constructor", $aParam);
-        }
         $this->aParametros = $aParam;
     }
     //Fin __construct
@@ -58,10 +54,6 @@ class Procesador_De_Peticiones
 
     function procesar()
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Procesador_De_Peticiones.php", "procesar", null);
-        }
         $sAccion = $this->aParametros['accion'];
         $aOpciones = explode(":", $sAccion, 4);
         if ($aOpciones[2]) {
@@ -1241,10 +1233,6 @@ class Procesador_De_Peticiones
 
     function devolver()
     {
-        global $iDebug;
-        if ($iDebug == 1) {
-            $_SESSION['oDebugger']->agregar_Paso("Procesador_De_Peticiones.php", "devolver", null);
-        }
         return $this->sHtml;
     }
     //Fin devolver

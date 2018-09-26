@@ -1,53 +1,35 @@
 //@version 0.3.5a
 
 window.onload = initialize;
-var separador = 'ZZZ';
-var separadorCadenas = 'YYY';
-var http = null;
-var tiempoPeticion = 10000;
+let separador = 'ZZZ';
+let separadorCadenas = 'YYY';
+let http = null;
+let tiempoPeticion = 10000;
 setCookie('ed', '0');
 //window.onload = iniciar_Qnova;
 // convert all characters to lowercase to simplify testing
-var agt = navigator.userAgent.toLowerCase();
+let agt = navigator.userAgent.toLowerCase();
 
 // *** BROWSER VERSION ***
 // Note: On IE5, these return 4, so use is_ie5up to detect IE5.
-var is_major = parseInt(navigator.appVersion);
-var is_minor = parseFloat(navigator.appVersion);
+let is_major = parseInt(navigator.appVersion);
+let is_minor = parseFloat(navigator.appVersion);
 
 // Note: Opera and WebTV spoof Navigator.  We do strict client detection.
 // If you want to allow spoofing, take out the tests for opera and webtv.
-var is_nav = ((agt.indexOf('mozilla') != -1) && (agt.indexOf('spoofer') == -1)
-    && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera') == -1)
-    && (agt.indexOf('webtv') == -1) && (agt.indexOf('hotjava') == -1));
-var is_nav6up = (is_nav && (is_major >= 5));
-var is_gecko = (agt.indexOf('gecko') != -1);
+let is_nav = ((agt.indexOf('mozilla') !== -1) && (agt.indexOf('spoofer') === -1)
+    && (agt.indexOf('compatible') === -1) && (agt.indexOf('opera') === -1)
+    && (agt.indexOf('webtv') === -1) && (agt.indexOf('hotjava') === -1));
+let is_nav6up = (is_nav && (is_major >= 5));
+let is_gecko = (agt.indexOf('gecko') !== -1);
 
 
-var is_ie = ((agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1));
-var is_ie4 = (is_ie && (is_major == 4) && (agt.indexOf("msie 4") != -1));
-var is_ie4up = (is_ie && (is_major >= 4));
+let is_ie = ((agt.indexOf("msie") !== -1) && (agt.indexOf("opera") === -1));
+let is_ie4 = (is_ie && (is_major === 4) && (agt.indexOf("msie 4") !== -1));
+let is_ie4up = (is_ie && (is_major >= 4));
 
-var is_opera = (agt.indexOf("opera") != -1);
-var is_opera7 = (is_opera && is_major >= 7) || agt.indexOf("opera 7") != -1;
-
-/** Esto lo dejamos por si acaso
- // GECKO REVISION
- function vale_pestannas()
- {
- var is_rev=0
- if (is_gecko) {
-     temp = agt.split("rv:")
-     if(parseFloat(temp[1])>1.7)
-         return 1;
-     else
-         return 0;
-     }
- else
-     return 1;
- }
-
- **/
+let is_opera = (agt.indexOf("opera") !== -1);
+let is_opera7 = (is_opera && is_major >= 7) || agt.indexOf("opera 7") !== -1;
 
 
 /**
@@ -80,7 +62,7 @@ function initialize() {
 
 function historyChange(newLocation, sectionData) {
     //Filtramos los editar por que fallan si intentamos ir con las flechas del navegador (necesita prepararse)
-    if (newLocation.search("^editar") == -1) {
+    if (newLocation.search("^editar") === -1) {
         sndReq(newLocation, 0, 1);
     }
 }
@@ -100,7 +82,7 @@ function atras(numero) {
     check = document.getElementsByTagName("input");
     i = 0;
     for (i = 0; i < check.length; i++) {
-        if ((check[i].type == "checkbox") && (check[i].value == "aplicable")) {
+        if ((check[i].type === "checkbox") && (check[i].value === "aplicable")) {
             check[i].checked = false;
         }
     }
@@ -114,28 +96,20 @@ function atras(numero) {
 //    }
 }
 
-/**
- * Esto lo hacemos para borrar el alert que devolvemos algunas veces y que si el usuario no pulsa podria dar un timeouterror al no
- * Eliminarse el temporizador de tiempo de peticion
- */
-//function borraAlert()
-//{
-//}
+
 /**
  * Esta funcion dibuja la barra de espera de carga de pagina en la division correspondiente
  */
 function cargando(div) {
-    document.getElementById(div).innerHTML = "<img src=\"images/cargando.gif\">";
+    document.getElementById(div).innerHTML = "<img src=\"/images/cargando.gif\">";
 }
 
 /**
  * Esta funcion dibuja la barra de espera al guardar datos
  */
 function guardando(div) {
-    document.getElementById(div).innerHTML = "<img src=\"images/guardando.gif\">";
+    document.getElementById(div).innerHTML = "<img src=\"/images/guardando2.gif\">";
 }
-
-var DHTML = (document.getElementById || document.all || document.layers);
 
 /**
  * Esta funcion la usa ap_showWaitMessage para asociar el estilo de la division a la barra y asi poder
@@ -160,13 +134,10 @@ function ap_getObj(name) {
  */
 
 function ap_showWaitMessage(div, flag, tipo) {
-    if (!DHTML) {
-        return;
-    }
-    if (tipo == 1) {
+    if (tipo === 1) {
         cargando(div);
     }
-    else if (tipo == 2) {
+    else if (tipo === 2) {
 
     }
     else {
@@ -185,8 +156,8 @@ function puntuacion() {
     check = document.getElementsByTagName("input");
     //camposuma=document.getElementById("camposuma");
     for (i = 0; i < check.length; i++) {
-        if (check[i].type == "checkbox") {
-            if (check[i].checked == true) {
+        if (check[i].type === "checkbox") {
+            if (check[i].checked === true) {
                 checkid = check[i].name.split(':');
                 //Las lineas comentadas no funcionan en ie, asi funcionan en ambos
                 //columna=document.getElementById("td:"+checkid[1]);
@@ -211,13 +182,13 @@ function puntuacion() {
  */
 function marcardesmarcar() {
     checkeado = false;
-    if (document.getElementById("checkarriba").checked == true) {
+    if (document.getElementById("checkarriba").checked === true) {
         checkeado = true;
     }
     check = document.getElementsByTagName("input");
     i = 0;
     for (i = 0; i < check.length; i++) {
-        if ((check[i].type == "checkbox") && (check[i].value == "aplicable")) {
+        if ((check[i].type === "checkbox") && (check[i].value === "aplicable")) {
             check[i].checked = checkeado;
         }
     }
@@ -234,9 +205,9 @@ function comprobar_Botones() {
     marcados = 0;
     var noborra = false;
     for (i = 0; i < check.length; i++) {
-        if (check[i].type == "checkbox") {
-            if (check[i].checked == true) {
-                if (check[i].id == 'noborra') {
+        if (check[i].type === "checkbox") {
+            if (check[i].checked === true) {
+                if (check[i].id === 'noborra') {
                     noborra = true;
                 }
                 marcados++;
@@ -244,10 +215,10 @@ function comprobar_Botones() {
         }
     }
     for (i = 0; i < check.length; i++) {
-        if (check[i].type == "button") {
+        if (check[i].type === "button") {
             switch (marcados) {
                 case 0:
-                    if ((check[i].name == 'noafecta') || (check[i].name == 'sincheck')) {
+                    if ((check[i].name === 'noafecta') || (check[i].name === 'sincheck')) {
                         check[i].className = 'b_activo';
                         check[i].disabled = false;
                     }
@@ -257,7 +228,7 @@ function comprobar_Botones() {
                     }
                     break;
                 case 1:
-                    if ((check[i].name == 'sincheck') || ((check[i].name == 'general') && (noborra))) {
+                    if ((check[i].name === 'sincheck') || ((check[i].name === 'general') && (noborra))) {
                         check[i].className = 'b_inactivo';
                         check[i].disabled = true;
                     }
@@ -268,7 +239,7 @@ function comprobar_Botones() {
                     }
                     break;
                 default:
-                    if ((check[i].name == 'fila') || (check[i].name == 'sincheck') || ((check[i].name == 'general') && (noborra))) {
+                    if ((check[i].name === 'fila') || (check[i].name === 'sincheck') || ((check[i].name === 'general') && (noborra))) {
                         check[i].className = 'b_inactivo';
                         check[i].disabled = true;
                     }
@@ -294,9 +265,9 @@ function cogerUnicaCheck(doc) {
 //    checkarriba=doc.getElementById("checkarriba");
     check = doc.getElementsByTagName("input");
     i = 0;
-    while ((iNumero == -1) && (i < check.length)) {
-        if ((check[i].type == "checkbox") && (check[i].id != "checkarriba")) {
-            if (check[i].checked == true) {
+    while ((iNumero === -1) && (i < check.length)) {
+        if ((check[i].type === "checkbox") && (check[i].id !== "checkarriba")) {
+            if (check[i].checked === true) {
                 //Si tenemos la check de arriba del listado la que obtenemos sera una posicion menos
                 if (esnulo) {
                     iNumero = (i) + separador + check[i].value;
@@ -323,8 +294,8 @@ function cogerCheckBox(doc) {
     check = doc.getElementsByTagName("input");
     i = 0;
     for (i = 0; i < check.length; i++) {
-        if ((check[i].type == "checkbox") && ((check[i].value == "aplicable") || (check[i].id == "aplicable"))) {
-            if (check[i].checked == true) {
+        if ((check[i].type === "checkbox") && ((check[i].value === "aplicable") || (check[i].id === "aplicable"))) {
+            if (check[i].checked === true) {
                 sResCadena += "1";
                 sValor = check[i].value;
             }
@@ -332,8 +303,8 @@ function cogerCheckBox(doc) {
                 sResCadena += "0";
             }
         }
-        if ((check[i].type == "checkbox") && ((check[i].value == "boton") || (check[i].id == "boton"))) {
-            if (check[i].checked == true) {
+        if ((check[i].type === "checkbox") && ((check[i].value === "boton") || (check[i].id === "boton"))) {
+            if (check[i].checked === true) {
                 sBotCadena += "1";
                 sValor = check[i].value;
             }
@@ -355,8 +326,8 @@ function cogerValueCheckBox(doc) {
     check = doc.getElementsByTagName("input");
     i = 0;
     for (i = 0; i < check.length; i++) {
-        if ((check[i].type == "checkbox") && (check[i].name == "aplicable")) {
-            if (check[i].checked == true) {
+        if ((check[i].type === "checkbox") && (check[i].name === "aplicable")) {
+            if (check[i].checked === true) {
                 sResCadena += check[i].value;
                 sResCadena += separadorCadenas;
             }
@@ -371,11 +342,11 @@ function cogerCampos() {
     select = document.getElementsByTagName("select");
     var selectVacios = true;
     for (i = 0; i < select.length; i++) {
-        if (select[i].name == 'paginas') {
+        if (select[i].name === 'paginas') {
             sResCadena = select[i].value + separador;
         }
         //Si nos pasan un valor de -1 es que el select es para ver todos los elementos
-        else if (select[i].value != -1) {
+        else if (select[i].value !== -1) {
             selectVacios = false;
             sResSelect = separadorCadenas + select[i].name + separadorCadenas + select[i].value;
         }
@@ -383,7 +354,7 @@ function cogerCampos() {
     text = document.getElementsByTagName("input");
     var todosVacios = true;
     for (i = 0; i < text.length; i++) {
-        if (text[i].type == "text") {
+        if (text[i].type === "text") {
             if (text[i].value.length > 0) {
                 todosVacios = false;
                 sResCadena += separadorCadenas + text[i].name + separadorCadenas + text[i].value;
@@ -403,7 +374,7 @@ function cogerCampos() {
 function createRequestObject() {
     var ro;
     var browser = navigator.appName;
-    if (browser == "Microsoft Internet Explorer") {
+    if (browser === "Microsoft Internet Explorer") {
         ro = new ActiveXObject("Microsoft.XMLHTTP");
     } else {
         ro = new XMLHttpRequest();
@@ -414,7 +385,7 @@ function createRequestObject() {
 function errorEspera() {
     http = null;
     ap_showWaitMessage('wait', 0, 1);
-    document.getElementById('contenedor').innerHTML = "<center>No ha llegado respuesta en el tiempo estimado, por favor vuelva a intentarlo <br /> Si persiste el error p?ngase en contacto con el administrador de la aplicaci?n<center>";
+    document.getElementById('contenedor').innerHTML = "<p>No ha llegado respuesta en el tiempo estimado, por favor vuelva a intentarlo <br /> Si persiste el error p?ngase en contacto con el administrador de la aplicación</p>";
 }
 
 /**
@@ -422,15 +393,15 @@ function errorEspera() {
  * marcado o 0 en caso de ninguno
  */
 function cogerRadio(doc) {
-    radio = doc.getElementsByTagName("input");
-    valor = 0;
-    level = 0;
+    let radio = doc.getElementsByTagName("input");
+    let valor = 0;
+    let level = 0;
     for (i = 0; i < radio.length; i++) {
-        if ((radio[i].type == "radio")) {
-            if (radio[i].checked == true) {
+        if ((radio[i].type === "radio")) {
+            if (radio[i].checked === true) {
                 valor = radio[i].value;
                 //Ahora cogemos en que nivel esta
-                nivel = radio[i].parentNode.parentNode.id.split('_');
+                let nivel = radio[i].parentNode.parentNode.id.split('_');
                 level = nivel.length;
             }
         }
@@ -445,7 +416,7 @@ function cogerOptionPerfil() {
     doc = document.getElementById('form').contentWindow.document;
     selects = doc.getElementsByTagName('select');
     for (i = 0; i < selects.length; i++) {
-        if (selects[i].name == "usuarios:perfil") {
+        if (selects[i].name === "usuarios:perfil") {
             valor = selects[i].value;
         }
     }
@@ -461,18 +432,18 @@ function cogerOptionPerfil() {
  */
 
 function filtroEditor(action) {
-    var proceso;
-    editorCreado = getCookie('ed');
+    let proceso;
+    let editorCreado = getCookie('ed');
     //primero le pasamos el filtro de cerrar:selecciona
-    if ((action == 'cerrar:selecciona') || (action == 'ninguna')) {
+    if ((action === 'cerrar:selecciona') || (action === 'ninguna')) {
         proceso = 0;
     }
-    else if (editorCreado == 1) {
+    else if (editorCreado === 1) {
 
         editorPintado = getCookie('editor');
-        if (editorPintado == 1) {
+        if (editorPintado === 1) {
             //La division del editor esta mostrandose en este momento
-            if (action != 'editor') {
+            if (action !== 'editor') {
                 //La accion no es editor, ocultamos la division y procesamos la peticion normalmente
                 ap_showWaitMessage('diveditor', 0, 2);
                 ap_showWaitMessage('contenedor', 1, 2);
@@ -496,7 +467,7 @@ function filtroEditor(action) {
         }
         else {
             //La division del editor esta oculta en este momento
-            if (action != 'editor') {
+            if (action !== 'editor') {
                 //La accion no es editor, lo procesamos normalmente
                 proceso = 1;
             }
@@ -530,7 +501,7 @@ function cogerCheckBoxPerfiles(doc) {
     check = doc.getElementsByTagName("input");
     i = 0;
     for (i = 0; i < check.length; i++) {
-        if ((check[i].type == "checkbox")) {
+        if ((check[i].type === "checkbox")) {
             var cbox;
             var pepe;
             cbox = check[i];
@@ -538,7 +509,7 @@ function cogerCheckBoxPerfiles(doc) {
             nombre = pepe.split('_');
             switch (nombre[0]) {
                 case 'perfilVer': {
-                    if (check[i].checked == true) {
+                    if (check[i].checked === true) {
                         sVerCadena += "1" + separadorCadenas + nombre[1] + separadorCadenas;
                     }
                     else {
@@ -547,7 +518,7 @@ function cogerCheckBoxPerfiles(doc) {
                     break;
                 }
                 case 'perfilNuevo': {
-                    if (check[i].checked == true) {
+                    if (check[i].checked === true) {
                         sNuevoCadena += "1" + separadorCadenas + nombre[1] + separadorCadenas;
                     }
                     else {
@@ -556,7 +527,7 @@ function cogerCheckBoxPerfiles(doc) {
                     break;
                 }
                 case 'perfilModificar': {
-                    if (check[i].checked == true) {
+                    if (check[i].checked === true) {
                         sModificarCadena += "1" + separadorCadenas + nombre[1] + separadorCadenas;
                     }
                     else {
@@ -565,7 +536,7 @@ function cogerCheckBoxPerfiles(doc) {
                     break;
                 }
                 case 'perfilRevisar': {
-                    if (check[i].checked == true) {
+                    if (check[i].checked === true) {
                         sRevisarCadena += "1" + separadorCadenas + nombre[1] + separadorCadenas;
                     }
                     else {
@@ -574,7 +545,7 @@ function cogerCheckBoxPerfiles(doc) {
                     break;
                 }
                 case 'perfilAprobar': {
-                    if (check[i].checked == true) {
+                    if (check[i].checked === true) {
                         sAprobarCadena += "1" + separadorCadenas + nombre[1] + separadorCadenas;
                     }
                     else {
@@ -583,7 +554,7 @@ function cogerCheckBoxPerfiles(doc) {
                     break;
                 }
                 case 'perfilHistorico': {
-                    if (check[i].checked == true) {
+                    if (check[i].checked === true) {
                         sHistoricoCadena += "1" + separadorCadenas + nombre[1] + separadorCadenas;
                     }
                     else {
@@ -592,7 +563,7 @@ function cogerCheckBoxPerfiles(doc) {
                     break;
                 }
                 case 'perfilTareas': {
-                    if (check[i].checked == true) {
+                    if (check[i].checked === true) {
                         sTareasCadena += "1" + separadorCadenas + nombre[1] + separadorCadenas;
                     }
                     else {
@@ -617,14 +588,14 @@ function cogerCheckBoxPerfiles(doc) {
 function cogerCheckBoxPermisos(doc) {
     var nombre = "";
     var sCadena = "";
-    var aId = new Array();
-    var aPermisos = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    var aId = [];
+    var aPermisos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     check = doc.getElementsByTagName("input");
     i = 0;
     for (i = 0; i < check.length; i++) {
-        if ((check[i].type == "checkbox")) {
+        if ((check[i].type === "checkbox")) {
             aId = check[i].id.split('_');
-            if (check[i].checked == true) {
+            if (check[i].checked === true) {
                 aPermisos[aId[1]] = 1;
             }
             else {
@@ -661,8 +632,8 @@ function sndReq(action, sesion, tipo, datos) {
                 docarbol = framearbol.contentWindow.document;
                 devolver = cogerRadio(docarbol);
                 iIdMarcada = devolver[0];
-                if (iIdMarcada == 0) {
-                    if (trocearAction[3] != "nuevo") {
+                if (iIdMarcada === 0) {
+                    if (trocearAction[3] !== "nuevo") {
                         alert('No ha seleccionado ningun elemento');
                         action = 'ninguna';
                     }
@@ -671,7 +642,7 @@ function sndReq(action, sesion, tipo, datos) {
                     }
                 }
                 else {
-                    if ((trocearAction[3] != "nuevo") || (devolver[1] < 8)) {
+                    if ((trocearAction[3] !== "nuevo") || (devolver[1] < 8)) {
                         datos = iIdMarcada;
                     }
                     else {
@@ -703,7 +674,7 @@ function sndReq(action, sesion, tipo, datos) {
                     noencontrado = true;
                     i = 0;
                     while ((noencontrado) && (i < elementos.length)) {
-                        if (elementos[i].name == aForm[1]) {
+                        if (elementos[i].name === aForm[1]) {
                             elementos[i].value = aForm[0];
                             noencontrado = false;
                         }
@@ -714,7 +685,7 @@ function sndReq(action, sesion, tipo, datos) {
                     noencontrado = true;
                     i = 0;
                     while ((noencontrado) && (i < elementos.length)) {
-                        if (elementos[i].name == (aForm[1] + "texto")) {
+                        if (elementos[i].name === (aForm[1] + "texto")) {
                             elementos[i].value = aForm[2];
                             noencontrado = false;
                         }
@@ -751,13 +722,13 @@ function sndReq(action, sesion, tipo, datos) {
         if (action.length < 1) {
             proceso = 0;
         }
-        if (proceso == 1) {
+        if (proceso === 1) {
             temporizador = window.setTimeout("errorEspera()", tiempoPeticion);
             setCookie('temporizador', temporizador);
             dhtmlHistory.add(action, null);
             /*ap_showWaitMessage('wait',1 ,tipo);*/
             http = createRequestObject();
-            http.open('post', 'peticiones_Principal.php?action=' + action + '&sesion=' + sesion + '&datos=' + datos);
+            http.open('post', '/peticiones_Principal.php?action=' + action + '&sesion=' + sesion + '&datos=' + datos);
             http.onreadystatechange = handleResponse;
             http.send(null);
         }
@@ -770,13 +741,13 @@ function sndReq(action, sesion, tipo, datos) {
  */
 
 function handleResponse() {
-    if (http.readyState == 4) {
+    if (http.readyState === 4) {
         var response = http.responseText;
-        var update = new Array();
+        var update = [];
         var quitar = true;
         update = response.split('|');
         //document.getElementById('contenedor').innerHTML=update[0];
-        if (response.indexOf('|' != -1)) {
+        if (response.indexOf('|' !== -1)) {
             /**
              * En caso de que la longitud de la cadena devuelta sea menor o igual a 1 querra
              * decir que tenemos un error con lo cual no mostramos nada.
@@ -785,7 +756,7 @@ function handleResponse() {
             /**
              * Si lo que queremos es desconectarnos anulamos todas las cookies y volvemos a index
              */
-            if (update[i] == "logout") {
+            if (update[i] === "logout") {
                 clearTimeout(temporizador);
                 delCookie('temporizador');
                 delCookie('PHPSESSID');
@@ -794,16 +765,16 @@ function handleResponse() {
                 delCookie('anchura');
                 delCookie('altura');
                 delCookie('IdiomaCal');
-                location.href = "index.php";
+                location.href = "/";
             }
             /**
              * Este bucle nos va mostrando las divisiones que tengamos que cargar, primero el contenedor
              * y, en el caso en que tengamos que hacerlo, tambien el menu de la izquierda
              */
-            if (update[i] == null) {
+            if (update[i] === null) {
                 destino = document.getElementById("contenedor");
                 if (is_ie) {
-                    var error = document.createElement("<TEXTAREA name='thetext' rows='80' cols='120'>" + response + "</TEXTAREA>");
+                    error = document.createElement("<TEXTAREA name='thetext' rows='80' cols='120'>" + response + "</TEXTAREA>");
                 }
                 else {
                     error = document.createElement("textarea");
@@ -874,7 +845,6 @@ function handleResponse() {
                             break;
                         }
                         case "menu":
-                        case "diveditor":
                         case "titulo": {
                             document.getElementById(update[i - 1]).innerHTML = update[i];
                             break;
@@ -887,7 +857,7 @@ function handleResponse() {
                             noencontrado = true;
                             i = 0;
                             while ((noencontrado) && (i < elementos.length)) {
-                                if (elementos[i].name == aForm[1]) {
+                                if (elementos[i].name === aForm[1]) {
                                     elementos[i].value = aForm[0];
                                     noencontrado = false;
                                 }
@@ -898,7 +868,7 @@ function handleResponse() {
                             noencontrado = true;
                             i = 0;
                             while ((noencontrado) && (i < elementos.length)) {
-                                if (elementos[i].name == (aForm[1] + "texto")) {
+                                if (elementos[i].name === (aForm[1] + "texto")) {
                                     elementos[i].value = aForm[2];
                                     noencontrado = false;
                                 }

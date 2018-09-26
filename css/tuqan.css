@@ -628,7 +628,7 @@ td.encima_casilla {
 
 .quickform select {
     min-width: 40%;
-    background-image: url("/qnova/images/arrow-down.png");
+    background-image: url("/images/arrow-down.png");
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center right;
