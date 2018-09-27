@@ -30,7 +30,6 @@ require_once 'Classes/Manejador_Funciones_Comunes.php';
 require_once 'Classes/generador_Formularios.php';
 require_once 'Classes/Manejador_Formularios.php';
 require_once 'Classes/Manejador_Base_Datos.class.php';
-require_once 'Classes/Manejador_De_Respuestas.php';
 require_once 'Classes/Manejador_Detalles.php';
 require_once 'Classes/generador_SQL.php';
 require_once 'Classes/Config.php';

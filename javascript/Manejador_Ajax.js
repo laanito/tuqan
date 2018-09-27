@@ -728,9 +728,9 @@ function sndReq(action, sesion, tipo, datos) {
             dhtmlHistory.add(action, null);
             /*ap_showWaitMessage('wait',1 ,tipo);*/
             http = createRequestObject();
-            http.open('post', '/peticiones_Principal.php?action=' + action + '&sesion=' + sesion + '&datos=' + datos);
-            http.onreadystatechange = handleResponse;
-            http.send(null);
+            http.open('post', '/ajax', true);
+            http.onload = handleResponse;
+            http.send('action=' + action + '&sesion=' + sesion + '&datos=' + datos);
         }
     }
 }

@@ -48,6 +48,7 @@ $router->get('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
 $router->post('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
 $router->get('/', ['Tuqan\Pages\IndexPage', 'MuestraPagina']);
 $router->get('/main/', ['Tuqan\Pages\MainPage', 'ShowPage']);
+$router->controller('/ajax','Tuqan\Classes\AjaxHandler');
 
 $dispatcher =  new Dispatcher($router->getData());
 
