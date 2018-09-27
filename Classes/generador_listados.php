@@ -159,9 +159,10 @@ class generador_listados
             'delta' => $iNumeroLinks,
             'perPage' => $iElementosPorPagina,
         );
-
-        $this->sOrder = $sOrder;
-        $this->sSentidoOrder = $sSentidoOrder;
+        if(!is_null($sOrder) && !is_null($sSentidoOrder)){
+            $this->sOrder = $sOrder;
+            $this->sSentidoOrder = $sSentidoOrder;
+        }
         $this->aEventos = array();
         $this->aBotones = array();
         $this->sTabla = $sTabla;
