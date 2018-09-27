@@ -113,7 +113,6 @@ $router->filter('auth', function(){
         header('Location: /login/usuario/');
         return false;
     }
-    return true;
 });
 
 

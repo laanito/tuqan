@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -6,33 +5,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <title>Tuqan</title>
-    <meta name="Generator" content="Tuqan" />
+    <meta name="viewport" content="Tuqan" />
     <link rel="stylesheet" href="/css/style.css" type="text/css" />
     <link rel="stylesheet" href="/css/tuqan.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="cabecera1"></div>
-<div id="cabecera2"><img class="logo_tuqan" src="/images/logotipo-tuqan.svg"></div>
-<div id="cabecera3">
-    <h1 class="titulo_cabecera">Gestión de Calidad y Medioambiente</h1>
-</div>
-<div id="cabecera4"></div>
-<div id="cabecera5"></div>
-<div id="login">{{ FormTitle }}</div>
-<div id="contenedor">
-    <div id="izquierda"></div>
-    <div id="central" align="center">
-        {{ FormContent|raw }}
+    <div id="cabecera1"></div>
+    <div id="cabecera2"><img class="logo_tuqan" src="/images/logotipo-tuqan.svg" alt="logotipo tuqan"></div>
+    <div id="cabecera3">
+        <h1 class="titulo_cabecera">Gestión de Calidad y Medioambiente</h1>
     </div>
-    <div id="derecha"></div>
-</div>
-<div id="logos">
-    <div id="Esq_Izq"></div>
-    <div id="Borde_Inf"></div>
-    <div id="Esq_Der"></div>
-</div>
-<script type="text/javascript" src="/javascript/cookies.js"></script>
-<script type="text/javascript" src="/javascript/focus.js"></script>
-<script type="text/javascript" src="/javascript/recargarIndex.js"></script>
+    <div id="cabecera4"></div>
+    <div id="cabecera5"></div>
+    <div id="login">{{ FormTitle }}</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-2" id="izquierda"></div>
+            <div class="col-8" id="contenedor" align="center">
+                {{ FormContent|raw }}
+            </div>
+            <div class="col-2"id="derecha"></div>
+        </div>
+    </div>
+    <footer class="page-footer">
+        <div id="logos">
+            <div id="Esq_Izq"></div>
+            <div id="Borde_Inf"></div>
+            <div id="Esq_Der"></div>
+        </div>
+    </footer>
+    <script type="text/javascript" src="/javascript/cookies.js"></script>
+    <script type="text/javascript" src="/javascript/focus.js"></script>
+    <script type="text/javascript" src="/javascript/recargarIndex.js"></script>
 </body>
 </html>
