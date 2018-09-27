@@ -732,8 +732,12 @@ function sndReq(action, sesion, tipo, datos) {
             http.onload = handleResponse;
             var data = new FormData();
             data.append('action', action);
-            data.append('sesion', sesion);
-            data.append('datos', datos);
+            if (typeof sesion !== 'undefined') {
+                data.append('sesion', sesion);
+            }
+            if (typeof datos !== 'undefined') {
+                data.append('datos', datos);
+            }
             http.send(data);
         }
     }

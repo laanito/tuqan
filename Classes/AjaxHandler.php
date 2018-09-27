@@ -16,7 +16,12 @@ class AjaxHandler
     public function anyIndex()
     {
         $action=$_POST['action'];
-        $aDatos= $_POST['datos'];
+        if(isset($_POST['datos'])) {
+            $aDatos = $_POST['datos'];
+        }
+        else {
+            $aDatos = array();
+        }
         $oPeticion = new Manejador_De_Peticiones($action, $aDatos);
         $aParametros = $oPeticion->devuelve_Parametros();
         TuqanLogger::debug('Parameters: ',['aparametros' => $aParametros]);
