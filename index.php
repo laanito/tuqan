@@ -89,7 +89,6 @@ require_once 'Classes/Procesar_Ayuda.php';
  */
 require_once 'Pages/LoginEmpresa.php';
 require_once 'Pages/LoginUsuario.php';
-require_once 'Pages/IndexPage.php';
 require_once 'Pages/MainPage.php';
 require_once 'Pages/NotFoundPage.php';
 
@@ -103,14 +102,28 @@ if (!isset($_SESSION)) {
 }
 
 $router = new RouteCollector();
+$router->filter('auth', function(){
+    if(!isset($_SESSION['loginempresa']) || $_SESSION['loginempresa']!=1)
+    {
+        header('Location: /login/empresa/');
+        return false;
+    }
+    if(!isset($_SESSION['usuarioconectado']) ||!$_SESSION['usuarioconectado'])
+    {
+        header('Location: /login/usuario/');
+        return false;
+    }
+    return true;
+});
+
 
 $router->get('/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'MuestraPagina']);
 $router->post('/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'ProcesaPagina']);
 $router->get('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
 $router->post('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
-$router->get('/', ['Tuqan\Pages\IndexPage', 'MuestraPagina']);
-$router->get('/main/', ['Tuqan\Pages\MainPage', 'ShowPage']);
-$router->controller('/ajax','Tuqan\Classes\AjaxHandler');
+$router->get('/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth']);
+$router->get('/main/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth']);
+$router->controller('/ajax','Tuqan\Classes\AjaxHandler',['before' => 'auth']);
 
 $dispatcher =  new Dispatcher($router->getData());
 
