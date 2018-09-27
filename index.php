@@ -23,6 +23,7 @@ require_once 'constantes.inc.php';
 require_once 'estilo.php';
 require_once 'Classes/Procesador_De_Peticiones.php';
 require_once 'Classes/Manejador_De_Respuestas.php';
+require_once 'Classes/Manejador_Listados.php';
 require_once 'Pages/LoginEmpresa.php';
 require_once 'Pages/LoginUsuario.php';
 require_once 'Pages/IndexPage.php';
