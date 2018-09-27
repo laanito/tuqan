@@ -30,6 +30,7 @@ require_once 'Pages/MainPage.php';
 require_once 'Pages/NotFoundPage.php';
 require_once 'Classes/Auth.php';
 require_once 'Classes/User.php';
+require_once  'Classes/AjaxHandler.php';
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;

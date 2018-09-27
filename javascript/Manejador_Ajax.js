@@ -730,7 +730,11 @@ function sndReq(action, sesion, tipo, datos) {
             http = createRequestObject();
             http.open('post', '/ajax', true);
             http.onload = handleResponse;
-            http.send('action=' + action + '&sesion=' + sesion + '&datos=' + datos);
+            var data = new FormData();
+            data.append('action', action);
+            data.append('sesion', sesion);
+            data.append('datos', datos);
+            http.send(data);
         }
     }
 }
