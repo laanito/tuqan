@@ -20,6 +20,7 @@ class AjaxHandler
         $oPeticion = new Manejador_De_Peticiones($action, $aDatos);
         $aParametros = $oPeticion->devuelve_Parametros();
         $oProcesador = new Procesador_De_Peticiones($aParametros);
+        $oProcesador->procesar();
         $result=$oProcesador->devolver();
         return $result;
     }
