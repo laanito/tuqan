@@ -227,6 +227,7 @@ class Manejador_Listados
                     break;
             }
         }
+        TuqanLogger::debug("End of manejador_listados: ", ['adatos' => $aDatos]);
         if (!(isset($aDatos[2]))) {
             $iNumeroPaginas = 20;
         } else {
