@@ -404,11 +404,4 @@ class generador_SQL
         }
         return $this->sSql;
     }
-    //Fin to_String
-    //  Fin Metodos
-
-
 }
-
-//Fin Clase
-

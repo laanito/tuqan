@@ -728,9 +728,17 @@ function sndReq(action, sesion, tipo, datos) {
             dhtmlHistory.add(action, null);
             /*ap_showWaitMessage('wait',1 ,tipo);*/
             http = createRequestObject();
-            http.open('post', '/peticiones_Principal.php?action=' + action + '&sesion=' + sesion + '&datos=' + datos);
-            http.onreadystatechange = handleResponse;
-            http.send(null);
+            http.open('post', '/ajax', true);
+            http.onload = handleResponse;
+            var data = new FormData();
+            data.append('action', action);
+            if (typeof sesion !== 'undefined') {
+                data.append('sesion', sesion);
+            }
+            if (typeof datos !== 'undefined') {
+                data.append('datos', datos);
+            }
+            http.send(data);
         }
     }
 }
