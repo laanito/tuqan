@@ -189,7 +189,7 @@ class generador_listados
         $_SESSION['pagina'] = array();
         $dsn = $this->oDb->dsn();
         $oMiDb = $this->oDb->connect($dsn);
-        TuqanLogger::debug("Calling Pagger_wrapper ", $dsn);
+        TuqanLogger::debug("Calling Pagger_wrapper ", ['dsn' => $dsn]);
         $paged_data = $this->Pager_Wrapper_DB($oMiDb);
         if (is_object($paged_data)) {
             //Esto sacaria un error
@@ -653,7 +653,7 @@ class generador_listados
     private function Pager_Wrapper_DB(&$db, $disabled = false, $fetchMode = DB_FETCHMODE_ASSOC, $dbparams = null)
     {
         $query = $this->oDb->to_String_Consulta();
-        TuqanLogger::debug("Query in wrapper: ",$query);
+        TuqanLogger::debug("Query in wrapper: ",['query' => $query]);
         if (!array_key_exists('totalItems', $this->aOpcionesPager)) {
             //  be smart and try to guess the total number of records
             /*    if ($countQuery = $this->rewriteCountQuery($query))
