@@ -58,7 +58,10 @@ class Manejador_De_Peticiones
 
     public function devuelve_Parametros()
     {
-        global $iDebug;
+        TuqanLogger::debug(
+            "Parameter entry: ",
+            ['sCodigo'=>$this->sCodigo, 'aDatos' => $this->aDatos]
+        );
         $aOpciones = explode(":", $this->sCodigo, 5);
 
         // Si el tercer campo de la URL esta definido entonces tenemos un formulario, un listado,
@@ -767,7 +770,6 @@ class Manejador_De_Peticiones
                             case 'documentacion:pg:ver':
                             case 'documentacion:procesoarchivo:ver':
                             case 'documentacion:pe:ver':
-
                             case 'documentacion:planamb:ver':
                             case 'documentacion:docvigor:ver':
                             case 'documentacion:frl:ver':
@@ -777,7 +779,6 @@ class Manejador_De_Peticiones
                             case 'documentacion:normativa:ver':
                             case 'documentacion:documentonormativa:ver':
                             case 'documentacion:aai:ver':
-
                             case 'administracion:aspectos:magnitud':
                             case 'administracion:aspectos:gravedad':
                             case 'administracion:aspectos:frecuencia':
@@ -786,13 +787,15 @@ class Manejador_De_Peticiones
                             case 'administracion:aspectos:severidad':
                             case 'administracion:modulos:nuevo':
                             case 'administracion:centros:nuevo':
-
                             case 'editor:documentos:ver':
                                 $Listados = new Manejador_Listados();
                                 $aParametros = $Listados->prepara_Listado_Inicial($sMenu, $this->aDatos, $this->sCodigo);
                                 $aParametros['accion'] = $this->sCodigo;
+                                TuqanLogger::debug(
+                                    "Parameter in case: ",
+                                    ['aParametros'=>$aParametros]
+                                );
                                 break;
-
                             case 'catalogo:areadoc:nuevo':
                             case 'catalogo:documentoproceso:nuevo':
                             case 'catalogo:indicadoresproceso:nuevo':
