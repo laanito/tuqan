@@ -10,12 +10,17 @@ namespace Tuqan\Classes;
 
 class AjaxHandler
 {
+    /**
+     * @return string
+     */
     public function anyIndex()
     {
-        $result='contenedor|This is the default page and will respond to /ajax and /ajax/index\n';
-        $result.="action=".$_POST['action'];
-        $result.="sesion=".$_POST['sesion'];
-        $result.="datos=".$_POST['datos'];
+        $action=$_POST['action'];
+        $aDatos= $_POST['datos'];
+        $oPeticion = new Manejador_De_Peticiones($action, $aDatos);
+        $aParametros = $oPeticion->devuelve_Parametros();
+        $oProcesador = new Procesador_De_Peticiones($aParametros);
+        $result=$oProcesador->devolver();
         return $result;
     }
 
