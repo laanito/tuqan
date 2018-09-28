@@ -70,9 +70,9 @@ class LoginEmpresa
                 ->label(gettext("Company Name"));
             $Formulario.= Former::password('clave')->label(gettext("Password"));
             $Formulario.= Former::actions(
-                Button::submit( gettext('Submit')->addClass('b_activo')),
-                Button::reset( gettext('Reset')->addClass('b_activo'))
-            );
+                Former::submit( gettext('Submit'))->addClass('b_activo'),
+                Former::reset( gettext('Reset'))->addClass('b_activo')
+            )->addClass('text-center');
             $Formulario.= Former::close();
             Config::initialize();
             $loader = new Twig_Loader_Filesystem(Config::$template_path);
