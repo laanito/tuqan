@@ -5,6 +5,7 @@ namespace Tuqan\Pages;
 use Tuqan\Classes\Config;
 use Tuqan\Classes\Manejador_Base_Datos;
 use Former\Facades\Former as Former;
+use Former\Form\Fields\Button;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 
@@ -63,18 +64,14 @@ class LoginEmpresa
 
 
             $Formulario = (string)Former::framework('TwitterBootstrap3');
-            $Formulario.= Former::horizontal_open([
-                'action' => '/login/empresa',
-                'method' => 'POST'
-                ]);
-
+            $Formulario.= Former::horizontal_open();
             $Formulario.= Former::select('nombre')->options($aEmpresas)
                 ->placeholder(gettext("Choose an option..."))
                 ->label(gettext("Company Name"));
             $Formulario.= Former::password('clave')->label(gettext("Password"));
             $Formulario.= Former::actions(
-                Button::submit( gettext('Submit')),
-                Button::reset( gettext('Reset'))
+                Button::submit( gettext('Submit')->addClass('b_activo')),
+                Button::reset( gettext('Reset')->addClass('b_activo'))
             );
             $Formulario.= Former::close();
             Config::initialize();
