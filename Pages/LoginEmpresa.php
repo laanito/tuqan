@@ -4,7 +4,7 @@ namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
 use Tuqan\Classes\Manejador_Base_Datos;
-use Former\Former;
+use Former\Facades\Former as Former;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 
@@ -62,8 +62,8 @@ class LoginEmpresa
             }
 
 
-            Former::framework('TwitterBootstrap3');
-            $Formulario = (string)Former::horizontal_open([
+            $Formulario = (string)Former::framework('TwitterBootstrap3');
+            $Formulario.= Former::horizontal_open([
                 'url' => '/login/empresa',
                 'method' => 'POST'
                 ]);
