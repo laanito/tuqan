@@ -4,6 +4,7 @@ namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
 use \Twig_Loader_Filesystem;
+use Former\Facades\Former as Former;
 use \Twig_Environment;
 use Tuqan\Classes\Auth;
 
