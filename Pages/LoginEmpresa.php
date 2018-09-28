@@ -5,7 +5,6 @@ namespace Tuqan\Pages;
 use Tuqan\Classes\Config;
 use Tuqan\Classes\Manejador_Base_Datos;
 use Former\Facades\Former as Former;
-use Former\Form\Fields\Button;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 
@@ -61,7 +60,6 @@ class LoginEmpresa
             if (isset($_GET['error'])) {
                 $FormTitle .= "<p class=\"error\">" . gettext('sIdIncorrecta') . "</p>";
             }
-
 
             $Formulario = (string)Former::framework('TwitterBootstrap3');
             $Formulario.= Former::horizontal_open();
@@ -164,10 +162,10 @@ class LoginEmpresa
             }
         } else {
             $this->Redirect($this->base_path .
-                "/index.php?error=1", false);
+                "/?error=1", false);
         }
         $this->Redirect($this->base_path .
-            "/index.php?error=1", false);
+            "/?error=1", false);
     }
 
     function Redirect($url, $permanent = false)

@@ -3,7 +3,6 @@
 namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
-use Tuqan\Classes\Formulario_Identificacion;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 use Tuqan\Classes\Auth;
@@ -50,25 +49,33 @@ class LoginUsuario
          * @var object
          */
 
-        $oFormulario2 = new Formulario_Identificacion('Identificacion', 'POST',
-            $this->base_path . '/login/usuario/');
         try {
-            $oFormulario2->inicializar(
-                session_id(),
-                1,
-                $_SESSION['login'],
-                $_SESSION['pass'],
-                $_SESSION['db'],
-                2);
-        } catch (\Exception $e) {
-            return ("Ocurrió un error:\n" . $e->getMessage());
-        }
+            $FormTitle = gettext('sWelcome2') . ' : ' . $_SESSION['empresa'];
+            if (isset($_GET['error'])) {
+                $FormTitle .= "<p class=\"error\">" . gettext('sIdIncorrecta') . "</p>";
+            }
 
-        $result = array(
-            'FormTitle' => gettext('sWelcome2') . ' : ' . $_SESSION['empresa'],
-            'FormContent' => $oFormulario2->__toString()
-        );
-        return $result;
+            $Formulario = (string)Former::framework('TwitterBootstrap3');
+            $Formulario.= Former::horizontal_open();
+            $Formulario.= Former::select('nombre')->text()
+                ->placeholder(gettext("Insert user name..."))
+                ->label(gettext("User Name"));
+            $Formulario.= Former::password('clave')->label(gettext("Password"));
+            $Formulario.= Former::actions(
+                Former::submit( gettext('Submit'))->addClass('b_activo'),
+                Former::reset( gettext('Reset'))->addClass('b_activo')
+            )->addClass('text-center');
+            $Formulario.= Former::close();
+            $result = array(
+                'FormTitle' => $FormTitle,
+                'FormContent' => $Formulario
+            );
+            return $result;
+        } catch (\Exception $e) {
+            return array(
+                'FormTitle' => "Ocurrió un error:",
+                'FormContent' => $e->getMessage());
+        }
     }
 
     public function MuestraPagina()
