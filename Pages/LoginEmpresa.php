@@ -4,7 +4,7 @@ namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
 use Tuqan\Classes\Manejador_Base_Datos;
-use Tuqan\Classes\Formulario_Identificacion;
+use Former\Former;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 
@@ -39,66 +39,56 @@ class LoginEmpresa
      */
     public function MuestraPagina()
     {
-
-        $oDb = new Manejador_Base_Datos(
-            $this->sLoginEmp,
-            $this->sPassEmp,
-            $this->sDbEmp
-        );
-        $oDb->iniciar_Consulta('SELECT');
-        $oDb->construir_Campos(array('nombre', 'id'));
-        $oDb->construir_Tablas(array('idiomas'));
-        $oDb->construir_Where(array("(id=" . $_SESSION['idioma'] . ")"));
-        $oDb->consulta();
-        if ($aIterador = $oDb->coger_Fila()) {
-            $_SESSION['idioma'] = $aIterador[0];
-            $_SESSION['idiomaid'] = $aIterador[1];
-        } else {
-            $_SESSION['idiomaid'] = 1;
-        }
-        Config::initialize();
-        $loader = new Twig_Loader_Filesystem(Config::$template_path);
-        $twig = new Twig_Environment($loader, array(
-            'cache' => Config::$cache_path,
-        ));
-
-
-        /**
-         * Este es el objeto donde cargamos el formulario de login. Es una instancia de la clase HTML_QuickForm.
-         * @var object
-         */
-        $oFormulario2 = new Formulario_Identificacion('Identificacion', 'POST',
-            $this->base_path . '/login/empresa/');
         try {
-            $oFormulario2->inicializar(
-                session_id(),
-                1,
+            $oDb = new Manejador_Base_Datos(
                 $this->sLoginEmp,
                 $this->sPassEmp,
-                $this->sDbEmp,
-                1);
+                $this->sDbEmp
+            );
+
+            $oDb->iniciar_Consulta('SELECT');
+            $oDb->construir_Campos(array('login_name'));
+            $oDb->construir_Tablas(array('qnova_acl'));
+            $oDb->consulta();
+
+            $aEmpresas=array();
+            while ($aIterador = $oDb->coger_Fila()) {
+                $aEmpresas[$aIterador[0]] = $aIterador[0];
+            }
+
+            $FormTitle = gettext("sIdentEmpresa");
+            if (isset($_GET['error'])) {
+                $FormTitle .= "<p class=\"error\">" . gettext('sIdIncorrecta') . "</p>";
+            }
+
+
+            Former::framework('TwitterBootstrap3');
+            $Formulario = (string)Former::horizontal_open([
+                'url' => '/login/empresa',
+                'method' => 'POST'
+                ]);
+
+            $Formulario.= Former::select('nombre')->options($aEmpresas)
+                ->placeholder(gettext("Choose an option..."))
+                ->label(gettext("Company Name"));
+            $Formulario.= Former::password('clave')->label(gettext("Password"));
+            $Formulario.= Former::close();
+            Config::initialize();
+            $loader = new Twig_Loader_Filesystem(Config::$template_path);
+            $twig = new Twig_Environment(
+                $loader, array('cache' => Config::$cache_path,)
+            );
+
+            $template = $twig->load('login.twig');
+            return $template->render(
+                array(
+                    'FormTitle' => $FormTitle,
+                    'FormContent' => $Formulario
+                )
+            );
         } catch (\Exception $e) {
             return ("Ocurrió un error:\n" . $e->getMessage());
         }
-        try {
-            $template = $twig->load('login.twig');
-        } catch (\Exception $e) {
-            return ("Error al cargar plantilla: " . $e->getMessage());
-        }
-        $FormTitle = gettext("sIdentEmpresa");
-
-
-        $Formulario = $oFormulario2->__toString();
-        if (isset($_GET['error'])) {
-            $FormTitle .= "<p class=\"error\">" . gettext('sIdIncorrecta') . "</p>";
-        }
-        return $template->render(
-            array(
-                'FormTitle' => $FormTitle,
-                'FormContent' => $Formulario
-            )
-        );
-
     }
 
     /**
