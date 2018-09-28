@@ -64,7 +64,7 @@ class LoginEmpresa
 
             $Formulario = (string)Former::framework('TwitterBootstrap3');
             $Formulario.= Former::horizontal_open([
-                'url' => '/login/empresa',
+                'action' => '/login/empresa',
                 'method' => 'POST'
                 ]);
 
@@ -72,6 +72,10 @@ class LoginEmpresa
                 ->placeholder(gettext("Choose an option..."))
                 ->label(gettext("Company Name"));
             $Formulario.= Former::password('clave')->label(gettext("Password"));
+            $Formulario.= Former::actions(
+                Button::submit( gettext('Submit')),
+                Button::reset( gettext('Reset'))
+            );
             $Formulario.= Former::close();
             Config::initialize();
             $loader = new Twig_Loader_Filesystem(Config::$template_path);
