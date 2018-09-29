@@ -208,9 +208,11 @@ class arbol_listas
         if (is_array($this->aArbol[$oPadre])) {
             $this->sHtml .= '<ul>';
             foreach ($this->aArbol[$oPadre] as $oId => $oTitulo) {
-                $this->sHtml .= '<li id="' . $oId . '">';
+                $this->sHtml .= '<li class="dropdown" id="' . $oId . '">';
                 if (($this->aOpciones['accion']) && (!$this->aOpciones['permisos'])) {
-                    $this->sHtml .= "<a onclick=sndReq('" . $this->aAcciones[$oId] . "','',1,'')>" . $oTitulo . '</a>';
+                    $this->sHtml .= "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"".
+                        " onclick=sndReq('" . $this->aAcciones[$oId] . "','',1,'')>" . $oTitulo
+                        .'<b class="caret"></b></a>';
                 } else if ($this->aOpciones['permisos']) {
                     $aTipo = explode(separador, $oTitulo);
                     if (count($aTipo) > 1) {

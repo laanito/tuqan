@@ -104,16 +104,7 @@ body {
 }
 
 #submenu {
-    height: 25px;
-    position: relative;
-    width: 100%;
     background-color: #ffffff;
-    margin-top: -11px;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
-    -moz-box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
-    -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
 }
 
 #submenu a {
@@ -123,112 +114,8 @@ body {
     text-decoration: none;
 }
 
-#submenu .currentDepth1 {
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 6px;
-}
-
-#submenu .currentDepth1 a {
-    font-weight: bold;
-}
-
-#submenu .currentDepth1over {
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 6px;
-    height: 25px;
-}
-
-#submenu .currentDepth1over a {
-    color: #575756;
-    font-weight: normal;
-}
-
-#submenu .currentDepth2 {
-    width: 150px;
-    padding: 2px;
-    background-color: #BE1622;
-}
-
-#submenu .currentDepth2 a {
-    width: 140px;
-    color: #ffffff;
-    font-weight: normal;
-}
-
-#submenu .currentDepth2over {
-    width: 150px;
-    padding: 2px;
-    background-color: #393938;
-}
-
-#submenu .currentDepth2over a {
-    width: 150px;
-    color: #ffffff;
-    font-weight: normal;
-}
-
-#submenu .currentDepth3 {
-    padding: 2px;
-    background-color: #575756;
-    width: 120px;
-}
-
-#submenu .currentDepth3 a {
-    color: #ffffff;
-    font-weight: normal;
-}
-
-#submenu .currentDepth3over {
-    padding: 2px;
-    background-color: #797979;
-    width: 120px;
-}
-
-#submenu .currentDepth3over a {
-    color: #ffffff;
-    font-weight: normal;
-}
-
-#submenu ul li ul {
-    display: none;
-}
-
 #submenu li {
     list-style-type: none;
-}
-
-#submenu ul {
-    margin: 0;
-}
-
-#submenu ul.menuBlock1 {
-    border: 0;
-    padding: 0;
-    overflow: visible;
-}
-
-#submenu ul.menuBlock2 {
-    margin-top: -22px;
-    padding: 10px;
-    background: #BE1622;
-    border-radius: 2px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    -moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    -webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    top: 0;
-}
-
-#submenu ul.menuBlock3 {
-    margin-top: 6px;
-    margin-left: 12px;
-    padding: 10px;
-    background: #575756;
-    border-radius: 2px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    -moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    -webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 
 #administrador {
