@@ -156,6 +156,8 @@ class LoginEmpresa
                 $_SESSION['login'] = $aIteradorInterno[1];
                 $_SESSION['pass'] = $css->decrypt(trim($aIteradorInterno[2]), $clave);
                 $_SESSION['empresa'] = $aIteradorInterno[3];
+                // @TODO remove once language is fixed
+                $_SESSION['idiomaid'] ='1';
 
                 $this->Redirect($this->base_path .
                     "/login/usuario/", false);
