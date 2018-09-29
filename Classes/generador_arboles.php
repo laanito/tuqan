@@ -206,7 +206,12 @@ class arbol_listas
     public function colocarama($oPadre)
     {
         if (is_array($this->aArbol[$oPadre])) {
-            $this->sHtml .= '<ul class="nav navbar-nav">';
+            if ($oPadre == 0){
+                $this->sHtml .= '<ul class="nav navbar-nav">';
+            }
+            else {
+                $this->sHtml .= '<ul class="dropdown-menu multi-level">';
+            }
             foreach ($this->aArbol[$oPadre] as $oId => $oTitulo) {
                 $this->sHtml .= '<li class="dropdown" id="' . $oId . '">';
                 if (($this->aOpciones['accion']) && (!$this->aOpciones['permisos'])) {
