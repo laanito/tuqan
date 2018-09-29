@@ -118,16 +118,17 @@ body {
     list-style-type: none;
 }
 
-.dropdown:hover .dropdown-menu {
+ul.nav > li:hover > ul.dropdown-menu {
     display: block;
 }
 
-.dropdown:hover .dropdown-submenu {
+ul.nav > li:hover ul.dropdown-submenu {
     display: none;
 }
 
-.dropdown-menu:hover .dropdown-submenu {
+ul.nav li:hover > ul.dropdown-submenu {
     display: block;
+
 }
 
 #administrador {
