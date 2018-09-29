@@ -202,15 +202,21 @@ class arbol_listas
 
     }
 
-
-    public function colocarama($oPadre)
+    /**
+     * @param $oPadre
+     * @param int $level
+     */
+    public function colocarama($oPadre, $level =0)
     {
         if (is_array($this->aArbol[$oPadre])) {
-            if ($oPadre == 0){
+            if ($level == 0){
                 $this->sHtml .= '<ul class="nav navbar-nav">';
             }
-            else {
+            else if ($level == 1){
                 $this->sHtml .= '<ul class="dropdown-menu multi-level">';
+            }
+            else {
+                $this->sHtml .= '<ul class="dropdown-submenu">';
             }
             foreach ($this->aArbol[$oPadre] as $oId => $oTitulo) {
                 $this->sHtml .= '<li class="dropdown" id="' . $oId . '">';
@@ -230,7 +236,7 @@ class arbol_listas
                 } else {
                     $this->sHtml .= '<a href="#">' . $oTitulo . '</a>';
                 }
-                $this->colocarama($oId);
+                $this->colocarama($oId, $level+1);
             }
             $this->sHtml .= '</ul>';
         }

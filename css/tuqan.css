@@ -118,6 +118,18 @@ body {
     list-style-type: none;
 }
 
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown:hover .dropdown-submenu {
+    display: none;
+}
+
+.dropdown-menu:hover .dropdown-submenu {
+    display: block;
+}
+
 #administrador {
     background-color: #3399cc;
     height: 100%;
