@@ -202,15 +202,28 @@ class arbol_listas
 
     }
 
-
-    public function colocarama($oPadre)
+    /**
+     * @param $oPadre
+     * @param int $level
+     */
+    public function colocarama($oPadre, $level =0)
     {
         if (is_array($this->aArbol[$oPadre])) {
-            $this->sHtml .= '<ul>';
+            if ($level == 0){
+                $this->sHtml .= '<ul class="nav navbar-nav">';
+            }
+            else if ($level == 1){
+                $this->sHtml .= '<ul class="dropdown-menu multi-level">';
+            }
+            else {
+                $this->sHtml .= '<ul class="dropdown-submenu">';
+            }
             foreach ($this->aArbol[$oPadre] as $oId => $oTitulo) {
-                $this->sHtml .= '<li id="' . $oId . '">';
+                $this->sHtml .= '<li class="dropdown" id="' . $oId . '">';
                 if (($this->aOpciones['accion']) && (!$this->aOpciones['permisos'])) {
-                    $this->sHtml .= "<a onclick=sndReq('" . $this->aAcciones[$oId] . "','',1,'')>" . $oTitulo . '</a>';
+                    $this->sHtml .= "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"".
+                        " onclick=sndReq('" . $this->aAcciones[$oId] . "','',1,'')>" . $oTitulo
+                        .'<b class="caret"></b></a>';
                 } else if ($this->aOpciones['permisos']) {
                     $aTipo = explode(separador, $oTitulo);
                     if (count($aTipo) > 1) {
@@ -223,7 +236,7 @@ class arbol_listas
                 } else {
                     $this->sHtml .= '<a href="#">' . $oTitulo . '</a>';
                 }
-                $this->colocarama($oId);
+                $this->colocarama($oId, $level+1);
             }
             $this->sHtml .= '</ul>';
         }

@@ -16,6 +16,7 @@
     "jasny/auth": "v1.0.1",
     "twig/twig": "~1.35",
     "monolog/monolog": "~1.23",
-    "ext-gettext": "*"
+    "ext-gettext": "*",
+    "anahkiasen/former": "4.1.7"
   }
 }

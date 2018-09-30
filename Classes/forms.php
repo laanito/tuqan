@@ -38,16 +38,12 @@ class Forms
     function formulario($sIdentFormulario, $iId)
     {
 
-        $sNavegador = $_SESSION['navegador'];
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
         $oPagina = new HTML_Page();
 
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
-        $oPagina->addScript('javascript/dhtmlgoodies_calendar.js', "text/javascript");
-        $oPagina->addScript('javascript/form.js', "text/javascript");
-        if ($sNavegador != "Microsoft Internet Explorer") {
-            $oPagina->addBodyContent("<div id='formulario'>");
-        }
+        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
+        $oPagina->addScript('/javascript/dhtmlgoodies_calendar.js', "text/javascript");
+        $oPagina->addScript('/javascript/form.js', "text/javascript");
+        $oPagina->addBodyContent("<div id='formulario'>");
         $aSplit = explode(separadorForm, $sIdentFormulario);
         $iPassword = 0;
         if ($aSplit[3] == 'nuevo') {

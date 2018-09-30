@@ -494,7 +494,7 @@ class Manejador_De_Peticiones
 
                         case 'inicio:nuevo:general':
                             $Form = new Manejador_Formularios();
-                            $aParametros = $Form->prepara_Formulario($this->aDatos);
+                            $aParametros = $Form->prepara_Formulario(array($this->aDatos));
                             $aParametros['accion'] = $this->sCodigo;
                             break;
 

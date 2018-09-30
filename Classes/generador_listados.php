@@ -193,26 +193,24 @@ class generador_listados
         TuqanLogger::debug("Calling Pagger_wrapper ", ['dsn' => $dsn]);
         $paged_data = $this->Pager_Wrapper_DB($oMiDb);
         if (is_object($paged_data)) {
-            //Esto sacaria un error
-            echo "contenedor|";
-            print_r($paged_data);
+            TuqanLogger::debug("Error en la llamada:",$paged_data);
         }
         if ($paged_data['totalItems'] != 0) {
 
-            $sHtml = "<br /><div id=\"tablas\" align=\"center\">";
+            $sHtml = "<div id=\"tablas\" align=\"center\">";
 
             //Tabla de listados de los registros
-            $aTableAttrs = array('BORDER' => '0', 'class' => 'tablag');
-            $oTable = new HTML_Table($aTableAttrs);
+            $aTableAttrs = array('class' => 'table table-responsive');
+            $oTable = new HTML_Table($aTableAttrs, 0, true);
 
 
             //Si hay algun boton que afecte a mas de una fila ponemos las cabeceras de las checkbox
             if (count($this->aBotones) > 0) {
-                $aContenido = array('<INPUT TYPE=CHECKBOX id=\'checkarriba\' onclick=\'marcardesmarcar()\'>');
-                $oTable->addRow($aContenido, null, 'TH');
+                $aContenido = "<input type=checkbox id='checkarriba' onclick='marcardesmarcar()'>";
+                $oTable->setHeaderContents(0,0, $aContenido, null);
             } else if (count($this->aBotonesFila) > 0) {
-                $aContenido = array('');
-                $oTable->addRow($aContenido, null, 'TH');
+                $aContenido = '';
+                $oTable->setHeaderContents(0,0, $aContenido, null);;
 
             }
             if (is_array($paged_data['data'][0])) {
@@ -224,46 +222,26 @@ class generador_listados
                      */
                     if (($value != 'id') && ($value != 'destinatario')) {
                         if ($value == $this->sOrder) {
-                            if ($this->sSentidoOrder != "DESC")  //cambiar img
-                            {
-                                //$aAtributos = "onclick=\"sndReq('".$this->sModulo.":listado:general:listado','',1,'".
-                                //                $this->sAccion.separador.$i.separador.$value." DESC"."')\"";
-                                $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
-                                    $this->sAccion . separador . $iterador . separador . $value . " DESC" . "')\"";
-                                $aContenido = array('>' .
-                                    '<b onmouseover=\'this.className=\'over\' onmouseout=\'this.className=\'out\'\'>' . $value .
-                                    '</b>');
-                                $oTable->setCellAttributes(0, $key, $aAtributos);
-                                $oTable->setCellContents(0, $key, $aContenido, 'TH');
-
+                            if ($this->sSentidoOrder != "DESC") {
+                                $newOrder = "ASC";
+                                $glyphIcon = '<span class="glyphicon glyphicon-arrow-down"></span>';
                             } else {
-                                //$aAtributos = "onclick=\"sndReq('".$this->sModulo.":listado:general:listado','',1,'".
-                                //               $this->sAccion.separador.$i.separador.$value." ASC"."')\"";
-                                $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
-                                    $this->sAccion . separador . $iterador . separador . $value . " ASC" . "')\"";
-                                $aContenido = array('>' .
-                                    '<b onmouseover=\'this.className=\'over\' onmouseout=\'this.className=\'out\'\'>' . $value .
-                                    '</b>');
-                                $oTable->setCellAttributes(0, $key, $aAtributos);
-                                $oTable->setCellContents(0, $key, $aContenido, 'TH');
+                                $newOrder = "DESC";
+                                $glyphIcon = '<span class="glyphicon glyphicon-arrow-up"></span>';
                             }
                         } else {
-
-                            //$aAtributos = "onclick=\"sndReq('".$this->sModulo.":listado:general:listado','',1,'".
-                            //            $this->sAccion.separador.$i.separador.$value." ASC"."')\"";
-                            $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador .
-                                $iterador . separador . $value . " ASC" . "')\"";
-                            $aContenido = '<b onmouseover=\'this.className=\'over\' onmouseout=\'this.className=\'out\'\'>' . $value .
-                                '</b>';
-                            $oTable->setCellAttributes(0, $key, $aAtributos);
-                            $oTable->setCellContents(0, $key, $aContenido, 'TH');
+                            $newOrder = "";
+                            $glyphIcon = '';
                         }
-
+                        $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
+                            $this->sAccion . separador . $iterador . separador . $value . " ".$newOrder . "')\"";
+                        $aContenido = $value.$glyphIcon;
+                        $oTable->setHeaderContents(0, $key, $aContenido, $aAtributos);
+                        $iterador++;
                     }
-                    $iterador++;
-                }//end foreach
-            }//end if($paged_data['totalItems']!=0)
+                }
 
+            }
 
             for ($i = 0; $i < count($paged_data['data']); $i++) {
                 //Cada fila de los registros
@@ -547,63 +525,6 @@ class generador_listados
     //Fin agrega_Desplegable
 
 
-// Pager_Wrapper 
-// ------------- 
-// 
-// Ready-to-use wrappers for paging the result of a query, 
-// when fetching the whole resultset is NOT an option. 
-// This is a performance- and memory-savvy method 
-// to use PEAR::Pager with a database. 
-// With this approach, the network load can be 
-// consistently smaller than with PEAR::DB_Pager. 
-// 
-// The following wrappers are provided: one for each PEAR 
-// db abstraction layer (DB, MDB and MDB2), one for 
-// PEAR::DB_DataObject, and one for the PHP Eclipse library 
-// 
-// 
-// SAMPLE USAGE 
-// ------------ 
-// 
-// $query = 'SELECT this, that FROM mytable'; 
-// require_once 'Pager_Wrapper.php'; 
-//this file 
-// $pagerOptions = array( 
-//     'mode'    => 'Sliding', 
-//     'delta'   => 2, 
-//     'perPage' => 15, 
-// ); 
-// $paged_data = Pager_Wrapper_MDB2($db, $query, $pagerOptions); 
-// 
-//$paged_data['data'];  
-//paged data 
-// 
-//$paged_data['links']; 
-//xhtml links for page navigation 
-// 
-//$paged_data['page_numbers']; 
-//array('current', 'total'); 
-// 
-
-    /**
-     * Helper method - Rewrite the query into a "SELECT COUNT(*)" query.
-     * @param string $sql query
-     * @return string rewritten query OR false if the query can't be rewritten
-     * @access private
-     */
-
-    private function rewriteCountQuery($sql)
-    {
-        if (preg_match('/^\s*SELECT\s+\bDISTINCT\b/is', $sql) || preg_match('/\s+GROUP\s+BY\s+/is', $sql)) {
-            return false;
-        }
-        $queryCount = preg_replace('/(?:.*)\bFROM\b\s+/Uims', "SELECT COUNT(*) FROM ", $sql, 1);
-        list($queryCount,) = preg_split('/\s+ORDER\s+BY\s+/is', $queryCount);
-        list($queryCount,) = preg_split('/\bLIMIT\b/is', $queryCount);
-        return trim($queryCount);
-    }
-    //Fin rewriteCountQuery
-
     /**
      * Esta funcion nos pone los links necesarios entre el pagina anterior y el pagina siguiente, es el metodo
      * del PAGER modificado para que las peticiones vayan por nuestro manejador AJAX
@@ -656,17 +577,6 @@ class generador_listados
         $query = $this->oDb->to_String_Consulta();
         TuqanLogger::debug("Query in wrapper: ",['query' => $query]);
         if (!array_key_exists('totalItems', $this->aOpcionesPager)) {
-            //  be smart and try to guess the total number of records
-            /*    if ($countQuery = $this->rewriteCountQuery($query))
-                    {
-                        $totalItems = $db->getOne($countQuery, $dbparams);
-                        if (\PEAR::isError($totalItems))
-                        {
-                            return $totalItems;
-                        }
-                    }
-                else
-                {  */
             $res =& $db->query($query, $dbparams);
             if (\PEAR::isError($res)) {
                 return $res;

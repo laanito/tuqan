@@ -53,7 +53,6 @@ function initialize() {
     dhtmlHistory.addListener(historyChange);
     var currentLocation = dhtmlHistory.getCurrentLocation();
     iniciar_Qnova();
-    initDhtmlGoodiesMenu();
 }
 
 /**
@@ -849,7 +848,6 @@ function handleResponse() {
                         }
                         case "submenu": {
                             document.getElementById(update[i - 1]).innerHTML = update[i];
-                            initDhtmlGoodiesMenu();
                             break;
                         }
                         case "menu":

@@ -47,7 +47,6 @@ require_once 'Classes/AjaxHandler.php';
  * Misc
  */
 require_once 'Classes/FormatoPagina.php';
-require_once 'Classes/FormularioIdentificacion.php';
 require_once 'Classes/generador_SQL.php';
 require_once 'Classes/Config.php';
 require_once 'encriptador.php';
@@ -113,7 +112,6 @@ $router->filter('auth', function(){
         header('Location: /login/usuario/');
         return false;
     }
-    return true;
 });
 
 

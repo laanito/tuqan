@@ -305,7 +305,7 @@ class Procesar_Detalles
             $_SESSION['documentodetalles'] = $aIterador[1];
             $sHtml = "contenedor|" . $this->procesa_Detalles_Documento(-1);
         } else {
-            $sHtml = "diviframe|<iframe id=\"form\" src=\"peticiones_Principal.php?action=inicio:nuevo:formulario:general&sesion=&datos=catalogo:contenidoproceso:formulario:editar:fila" . separador . $iIdProceso . "\"  width=\"100%\"" .
+            $sHtml = "diviframe|<iframe id=\"form\" src=\"/ajax/form?action=inicio:nuevo:formulario:general&sesion=&datos=catalogo:contenidoproceso:formulario:editar:fila" . separador . $iIdProceso . "\"  width=\"100%\"" .
                 " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>|alert|" . gettext('sNoFichCrea');
 
         }
