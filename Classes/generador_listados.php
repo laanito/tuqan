@@ -235,8 +235,8 @@ class generador_listados
                         }
                         $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
                             $this->sAccion . separador . $iterador . separador . $value . " ".$newOrder . "')\"";
-                        $aContenido = array($value.$glyphIcon );
-                        $oTable->setHeaderContents(0, $key, $aAtributos, $aContenido);
+                        $aContenido = $value.$glyphIcon;
+                        $oTable->setHeaderContents(0, $key, $aContenido, $aAtributos);
                         $iterador++;
                     }
                 }
