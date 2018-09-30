@@ -1036,7 +1036,7 @@ class Procesar_Funciones_Comunes
     {
         
         $iIdDoc = $_SESSION['pagina'][$aParametros['numeroDeFila']];
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=formulariosubir&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=formulariosubir&sesion=&datos=" .
             $iIdDoc . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1045,14 +1045,14 @@ class Procesar_Funciones_Comunes
     {
         
         $iIdCurso = $_SESSION['pagina'][$aParametros['numeroDeFila']];
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=catalogo:flujograma:upload:iframe&sesion=&datos=  width=\"100%\"" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=catalogo:flujograma:upload:iframe&sesion=&datos=  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
     function subir_Fichero_Politica($sAccion)
     {
         $sPolitica = $sAccion;
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=politica:iframe&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=politica:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1061,7 +1061,7 @@ class Procesar_Funciones_Comunes
     function subir_Fichero_Objetivo($sAccion)
     {
         $sPolitica = $sAccion;
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=objetivo:iframe&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=objetivo:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1070,7 +1070,7 @@ class Procesar_Funciones_Comunes
     {
         
         $sPolitica = $sAccion;
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=manual:iframe&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=manual:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1079,7 +1079,7 @@ class Procesar_Funciones_Comunes
     {
         
         $sPolitica = 'PG';
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=pg:iframe&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=pg:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1088,7 +1088,7 @@ class Procesar_Funciones_Comunes
     {
         
         $sPolitica = 'PE';
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=pe:iframe&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=pe:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1097,7 +1097,7 @@ class Procesar_Funciones_Comunes
     {
         
         $sPolitica = 'MA';
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=ma:iframe&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=ma:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1106,7 +1106,7 @@ class Procesar_Funciones_Comunes
     {
         
         $sPolitica = 'Externo';
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=externo:iframe&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=externo:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
@@ -1627,7 +1627,7 @@ class Procesar_Funciones_Comunes
             //Eso es que ya hay un borrador, abortamos
             return "alert|" . gettext('sBorraAlert');
         } else {
-            return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=documentos:general:comun:iframe:nuevaversion&sesion=&datos="
+            return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=documentos:general:comun:iframe:nuevaversion&sesion=&datos="
                 . $aParametros['idtipo'] . separador . $aParametros['id'] . "\"  width=\"100%\"" .
                 " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
         }
@@ -1884,7 +1884,7 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Editar_Documento($aParametros)
     {
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=documentacion:general:comun:editarversion&sesion=&datos=" . $aParametros['idtipo'] . separador . $aParametros['id'] . "\"  width=\"100%\"" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=documentacion:general:comun:editarversion&sesion=&datos=" . $aParametros['idtipo'] . separador . $aParametros['id'] . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
@@ -2216,7 +2216,7 @@ class Procesar_Funciones_Comunes
                     'instalaciones_ambiente,proceso FROM contenido_procesos,documentos_id_seq WHERE id=' . $aParametros['ficha']);
                 $oBaseDatos->consulta();
                 $oBaseDatos->termina_transaccion();
-                $sHtml = "diviframe|<iframe id=\"form\" src=\"peticiones_Principal.php?action=inicio:nuevo:formulario:general&sesion=&datos=catalogo:contenidoproc:formulario:editar" . separador . $aParametros['ficha'] . "\"  width=\"100%\"" .
+                $sHtml = "diviframe|<iframe id=\"form\" src=\"/main/?action=inicio:nuevo:formulario:general&sesion=&datos=catalogo:contenidoproc:formulario:editar" . separador . $aParametros['ficha'] . "\"  width=\"100%\"" .
                     " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
             }
         }
@@ -3043,7 +3043,7 @@ class Procesar_Funciones_Comunes
 
     function subir_Fichero_Adjunto($sAccion, $aParametros)
     {
-        return "contenedor|<iframe id=\"formsubir\" src=\"peticiones_Principal.php?action=auditorias:iframe:upload:nuevo:adjunto&sesion=&datos=" .
+        return "contenedor|<iframe id=\"formsubir\" src=\"/main/?action=auditorias:iframe:upload:nuevo:adjunto&sesion=&datos=" .
             $_SESSION['pagina'][$aParametros['numeroDeFila']] . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
