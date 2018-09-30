@@ -235,9 +235,7 @@ class generador_listados
                         }
                         $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
                             $this->sAccion . separador . $iterador . separador . $value . " ".$newOrder . "')\"";
-                        $aContenido = array('>' .
-                            '<b onmouseover=\'this.className=\'over\' onmouseout=\'this.className=\'out\'\'>' .
-                            $value .'</b>'. $glyphIcon );
+                        $aContenido = array($value.$glyphIcon );
                         $oTable->setHeaderContents(0, $key, $aAtributos, $aContenido);
                         $iterador++;
                     }
