@@ -36,25 +36,6 @@ body {
     margin-top: -10px;
 }
 
-#izquierda {
-    width: 20%;
-    height: 100%;
-    display: inline-block;
-}
-
-#central {
-    width: 55%;
-    height: 100%;
-    display: inline-block;
-}
-
-
-#derecha {
-    width: 20%;
-    height: 100%;
-    display: inline-block;
-}
-
 .titulo_cabecera {
     font-size: 12pt;
     font-weight: normal;
@@ -85,7 +66,7 @@ body {
     padding-right: 10px;
     border-bottom: 1px dotted #797979;
     float: left;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-left: 20px;
 }
 
@@ -100,7 +81,7 @@ body {
     border-left: 1px dotted #797979;
     border-bottom: 1px dotted #797979;
     float: left;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 #submenu {
@@ -177,17 +158,8 @@ ul.nav li:hover > ul.dropdown-submenu {
     top: 90px;
 }
 
-#contenido {
-    background-color: #ffffff;
-    width: 100%;
-    margin-top: 50px;
-}
-
 #contenedor {
-    font-size: 100%;
     color: #575756;
-    background-color: #ffffff;
-    width: 100%;
 }
 
 #diveditor {
@@ -331,52 +303,6 @@ td.encima_casilla {
     cursor: default;
 }
 
-#tablas {
-    overflow: auto;
-    position: relative;
-    top: 20px;
-    left: 0;
-    width: 1310px;
-    height: 537px;
-}
-
-.tablag {
-    background-color: #ffffff;
-    overflow: auto;
-    font-family: "Arial", sans-serif;
-    width: auto;
-    height: auto;
-    border-collapse: collapse;
-}
-
-.tablag tbody td {
-    font-size: 100%;
-}
-
-.tablag tbody {
-    border-collapse: collapse;
-    margin-left: 0;
-    text-align: left;
-}
-
-.tablag tbody tr td b {
-    font-weight: normal;
-}
-
-.tablag td {
-    color: #333333;
-    padding: 1px 15px;
-}
-
-.tablag th {
-    font-size: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
-    background-color: #3399cc;
-    text-transform: uppercase;
-    color: #ffffff;
-    overflow: hidden;
-}
 
 #contenedor .subtabla {
     font-weight: bold;
