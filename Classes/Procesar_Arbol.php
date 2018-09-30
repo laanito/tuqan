@@ -154,45 +154,45 @@ class Procesar_Arbol
                 return ("menu|<iframe src=\"funcionesMenu.php?action=" . $aParametros . "\" frameborder=no scrolling=\"no\" width=100% height=375px></iframe>");
                 break;
             case 'verpermisos':
-                return ("calendario|<iframe id=\"verpermisos\" src=\"/main/?action=administracion:usuarios:arbol:ver_permiso&sesion=&datos=" . $aParametros . "\" width=\"100%\" height=375px " .
+                return ("calendario|<iframe id=\"verpermisos\" src=\"/ajax/form?action=administracion:usuarios:arbol:ver_permiso&sesion=&datos=" . $aParametros . "\" width=\"100%\" height=375px " .
                     " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>");
                 break;
             case 'permisos':
                 {
                     $iId = $_SESSION['pagina'][$aParametros['numeroDeFila']];
-                    return ("diviframe|<iframe id=\"arbol\" src=\"/main/?action=administracion:general:arbol:ver:arbol_permiso&sesion=&datos=" . $iId . "\" width=\"100%\" " .
+                    return ("diviframe|<iframe id=\"arbol\" src=\"/ajax/form?action=administracion:general:arbol:ver:arbol_permiso&sesion=&datos=" . $iId . "\" width=\"100%\" " .
                         " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>");
                     break;
                 }
             case 'documentos':
                 {
                     $iId = $_SESSION['pagina'][$aParametros['numeroDeFila']];
-                    return ("diviframe|<iframe id=\"arbol\" src=\"/main/?action=arbol_documentos&sesion=&datos=" . $iId . "\" width=\"100%\" " .
+                    return ("diviframe|<iframe id=\"arbol\" src=\"/ajax/form?action=arbol_documentos&sesion=&datos=" . $iId . "\" width=\"100%\" " .
                         " frameborder=\"0\" style=\"z-index: 0\" overflow:\"scroll\" ><\iframe>");
                     break;
                 }
             case 'perfil_doc':
                 {
                     $iId = $_SESSION['pagina'][$aParametros['numeroDeFila']];
-                    return ("diviframe|<iframe id=\"arbol\" src=\"/main/?action=administracion:general:arbol:ver:arbol_perfil_doc&sesion=&datos=" . $iId . "\" width=\"100%\" " .
+                    return ("diviframe|<iframe id=\"arbol\" src=\"/ajax/form?action=administracion:general:arbol:ver:arbol_perfil_doc&sesion=&datos=" . $iId . "\" width=\"100%\" " .
                         " frameborder=\"0\" style=\"z-index: 0\" overflow:\"scroll\" ><\iframe>");
                     break;
                 }
             case 'procesos:catalogos':
                 {
-                    return ("diviframe|<iframe id=\"arbol\" src=\"/main/?action=procesos:general:arbol:ver:arbol_procesos&sesion=&datos=" . $sAccion . "\" width=\"100%\" " .
+                    return ("diviframe|<iframe id=\"arbol\" src=\"/ajax/form?action=procesos:general:arbol:ver:arbol_procesos&sesion=&datos=" . $sAccion . "\" width=\"100%\" " .
                         " frameborder=\"0\" style=\"z-index: 0\" overflow:\"scroll\" ><\iframe>");
                     break;
                 }
             case 'procesos:matriz':
                 {
-                    return ("diviframe|<iframe id=\"arbol\" src=\"/main/?action=arbol_matriz&sesion=&datos=\" width=\"100%\" " .
+                    return ("diviframe|<iframe id=\"arbol\" src=\"/ajax/form?action=arbol_matriz&sesion=&datos=\" width=\"100%\" " .
                         " frameborder=\"0\" style=\"z-index: 0\" overflow:\"scroll\" ><\iframe>");
                     break;
                 }
             case 'permisosusuarios':
                 {
-                    return ("diviframe|<iframe id=\"arbol\" src=\"/main/?action=administracion:modulos:arbol:permisos&sesion=&datos=" . $_SESSION['pagina'][$aParametros['numeroDeFila']] . "\" width=\"100%\" " .
+                    return ("diviframe|<iframe id=\"arbol\" src=\"/ajax/form?action=administracion:modulos:arbol:permisos&sesion=&datos=" . $_SESSION['pagina'][$aParametros['numeroDeFila']] . "\" width=\"100%\" " .
                         " frameborder=\"0\" style=\"z-index: 0\" overflow:\"scroll\" ><\iframe>");
                     break;
                 }

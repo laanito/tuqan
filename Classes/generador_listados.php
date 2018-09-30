@@ -200,7 +200,7 @@ class generador_listados
             $sHtml = "<div id=\"tablas\" align=\"center\">";
 
             //Tabla de listados de los registros
-            $aTableAttrs = array('class' => 'table-responsive');
+            $aTableAttrs = array('class' => 'table table-responsive');
             $oTable = new HTML_Table($aTableAttrs, 0, true);
 
 

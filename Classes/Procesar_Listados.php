@@ -23,7 +23,7 @@ class Procesar_Listados
     {
         $iIdLegislacion = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         return ("contenedor|<iframe id=\"formmedio\"".
-            " src=\"/main/?action=documentacion:formulariomedio:formulario:nuevo&sesion=&datos=" .
+            " src=\"/ajax/form?action=documentacion:formulariomedio:formulario:nuevo&sesion=&datos=" .
             $iIdLegislacion . "\"  width=\"100%'" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>");
     }
