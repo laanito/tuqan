@@ -42,6 +42,7 @@ require_once 'Classes/TuqanLogger.php';
 require_once 'Classes/Auth.php';
 require_once 'Classes/User.php';
 require_once 'Classes/AjaxHandler.php';
+require_once 'Classes/FormManager.php';
 
 /**
  * Misc
