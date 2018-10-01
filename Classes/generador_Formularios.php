@@ -635,7 +635,7 @@ class genera_Formularios extends HTML_QuickForm2
 
                     $this->iElementoActual = 0;
                     /**
-                     *     Para cada campo de la tabla que hayamos seleccionado lo a�adimos
+                     *     Para cada campo de la tabla que hayamos seleccionado lo añadimos
                      */
                     if (is_array($aValue)) {
                         foreach ($aValue as $sKey => $aValores) {

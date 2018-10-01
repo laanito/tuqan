@@ -68,7 +68,7 @@ class Forms
         switch ($aSplit[1]) {
             // Para la opcion inicio:mensajes:formulario:nuevo
             case 'mensajes':
-                if ($_SESSION['userid'] == 0) {
+                if ($_SESSION['admin']) {
                     $Form = new Form_Administracion();
                     $aFormulario = $Form->devuelve_Array_Form($aSplit[1], $sTipoForm, $iId);
                     $sCabecera .= gettext('sFMensajeGeneral');
