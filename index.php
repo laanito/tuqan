@@ -51,7 +51,6 @@ require_once 'Classes/generador_SQL.php';
 require_once 'Classes/Config.php';
 require_once 'encriptador.php';
 require_once 'constantes.inc.php';
-require_once 'estilo.php';
 require_once 'Classes/Titulos.php';
 require_once 'boton.php';
 

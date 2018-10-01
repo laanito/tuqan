@@ -1059,20 +1059,10 @@ class Forms
                 unset ($_SESSION['texto']);
             }
             $oPagina->addBodyContent($form->__toString());
+            $oPagina->addBodyContent("<br /><br /><input class=\"b_activo\"  type=\"button\" value=\"Atras\" onclick=\"parent.atras(-2)\",'',1)\">");
 
+            $oPagina->addBodyContent("</div>");
 
-            if ($sNavegador == "Microsoft Internet Explorer") {
-                $oPagina->addBodyContent("<input class=\"b_activo\"  onMouseOver=\"this.className='b_focus'\"" .
-                    "onMouseOut=\"this.className='b_activo'\" type=\"button\" value=\"Atras\" onclick=\"parent.atras(-1)\",'',1)\">");
-            } else {
-                $oPagina->addBodyContent("<br /><br /><input class=\"b_activo\"  type=\"button\" value=\"Atras\" onclick=\"parent.atras(-2)\",'',1)\">");
-            }
-
-
-            //  $oPagina->addScript("javascript/fija_Calendario.js", "text/javascript");
-            if ($sNavegador != "Microsoft Internet Explorer") {
-                $oPagina->addBodyContent("</div>");
-            }
             $oPagina->addBodyContent("<div id=\"divcalendario\">");
             $oPagina->addBodyContent("</div>");
         }
