@@ -1050,7 +1050,9 @@ class Forms
         } catch (\HTML_QuickForm2_Exception $e) {
             return "Error en formulario:". $e->getTraceAsString();
         }
-        if ($form->validate()) {
+
+        //@todo remove false, it is set to prevent validation
+        if (false && $form->validate()) {
             $form->process();
         } else {
             //Si el formulario necesita algun tipo de informacion en la cabecera lo ponemos aqui

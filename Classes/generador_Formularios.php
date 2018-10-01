@@ -723,16 +723,7 @@ class genera_Formularios extends HTML_QuickForm2
             }
             $this->addDataSource(new HTML_QuickForm2_DataSource_Array($aDefaults));
 
-            $sNavegador = $_SESSION['navegador'];
-
-            if ($sNavegador == "Microsoft Internet Explorer") {
-                $aBotones = array("class" => "b_activo",
-                    "onMouseOver" => "this.className='b_focus'",
-                    "onMouseOut" => "this.className='b_activo'",
-                );
-            } else {
-                $aBotones = array("class" => "b_activo");
-            }
+            $aBotones = array("class" => "b_activo");
             $oFieldset = $this->addFieldset('actions')->setLabel(gettext('Actions'));
 
             $oFieldset->addReset('reset', $aBotones, array('value' =>'Limpiar'));
@@ -926,13 +917,8 @@ class genera_Formularios extends HTML_QuickForm2
         );
         $oPagina->addScriptDeclaration('onload=parent.atras();', 'text/javascript');
         $oPagina->addBodyContent("<div align='center'>");
-        if ($_SESSION['navegador'] == 'Microsoft Internet Explorer') {
-            $oPagina->addBodyContent("Operacion Correcta<br /><br />".
-                "<input type=\"button\" class=\"b_activo\" value=\"Atras\" onclick=\"parent.atras(-2)\",'',1)\">");
-        } else {
-            $oPagina->addBodyContent("Operacion Correcta<br />".
+        $oPagina->addBodyContent("Operacion Correcta<br />".
                 "<br /><input type=\"button\" class=\"b_activo\" value=\"Atras\" onclick=\"parent.atras(-2)\",'',1)\">");
-        }
         $oPagina->addBodyContent("</div>");
         $oPagina->display();
     }
