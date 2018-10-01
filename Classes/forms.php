@@ -1068,7 +1068,7 @@ class Forms
             $oPagina->addBodyContent("<div id=\"divcalendario\">");
             $oPagina->addBodyContent("</div>");
         }
-        return $form->__toString();
+        return $aFormulario;
     }
 
 

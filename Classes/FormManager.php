@@ -36,7 +36,7 @@ class FormManager
     public function process(){
         $Form=new Forms();
         $sHtml = $Form->formulario($this->action);
-        return 'contenedor|'.$sHtml;
+        return 'contenedor|'.print_r($sHtml,1);
     }
 
 }
