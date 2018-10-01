@@ -35,7 +35,7 @@ class Forms
         return $sArrayPermisos;
     }
 
-    function formulario($sIdentFormulario, $iId)
+    function formulario($sIdentFormulario, $iId=null)
     {
 
         $oPagina = new HTML_Page();
@@ -1066,7 +1066,7 @@ class Forms
             $oPagina->addBodyContent("<div id=\"divcalendario\">");
             $oPagina->addBodyContent("</div>");
         }
-        return $oPagina->toHTML();
+        return $form->__toString();
     }
 
 

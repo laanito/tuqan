@@ -34,7 +34,9 @@ class FormManager
      * @return string
      */
     public function process(){
-        return 'contenedor|Action: '.$this->action.' data: '.$this->data;
+        $Form=new Forms();
+        $sHtml = $Form->formulario($this->action);
+        return 'contenedor|'.$sHtml;
     }
 
 }
