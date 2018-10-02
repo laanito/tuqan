@@ -106,12 +106,13 @@ class FormManager
     private function generate($fields){
         $Formulario = (string)Former::framework('TwitterBootstrap3');
         $Formulario.= Former::horizontal_open();
+
         foreach($fields as $table => $tablefields) {
-            $content='';
+            $Formulario.="<fieldset><legend>".$table."</legend>";
             foreach($tablefields as $name => $field){
-                $content.=$this->addField($name,$field);
+                $Formulario.=$this->addField($name,$field);
             }
-            $Formulario.= Former::form_group($table)->div($content);
+            $Formulario.="</fieldset>";
         }
 
         $Formulario.= Former::close();
