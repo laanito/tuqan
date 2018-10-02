@@ -123,7 +123,9 @@ class FormManager
      */
     public function process(){
         $allTableFields = $this->getFields();
-        $result = $this->generate($allTableFields);
-        return print_r($result,1);
+        $result='<div class="container-fluid">';
+        $result.= $this->generate($allTableFields);
+        $result.='</div>';
+        return $result;
     }
 }
