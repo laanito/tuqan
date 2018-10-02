@@ -75,7 +75,11 @@ class FormManager
 
                 $tableFieldsArray = array();
                 while ($aIterador = $this->oDb->coger_Fila(false, DB_FETCHMODE_ASSOC)) {
-                    $tableFieldsArray[] = $aIterador;
+                    $tableFieldsArray[$aIterador['nombre']] = array(
+                        'tipo' => $aIterador['tipo'],
+                        'longitud' => $aIterador['longitud'],
+                        'nulo' => $aIterador['nulo'],
+                    );
                 }
                 $allTableFields[$table] = $tableFieldsArray;
             }
