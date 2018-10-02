@@ -610,6 +610,7 @@ function cogerCheckBoxPermisos(doc) {
 
 
 function sndReq(action, sesion, tipo, datos) {
+    let address = '/ajax';
     // Comprobamos que no se esta cursando otra peticion
     proceso = 1;
     document.body.style.cursor = "wait";
@@ -715,6 +716,9 @@ function sndReq(action, sesion, tipo, datos) {
                 break;
             }
         }
+        if (trocearAction[2] === 'formulario') {
+            address += '/form';
+        }
 
 
         proceso = filtroEditor(trocearAction[2]);
@@ -727,7 +731,7 @@ function sndReq(action, sesion, tipo, datos) {
             dhtmlHistory.add(action, null);
             /*ap_showWaitMessage('wait',1 ,tipo);*/
             http = createRequestObject();
-            http.open('post', '/ajax', true);
+            http.open('post', address, true);
             http.onload = handleResponse;
             var data = new FormData();
             data.append('action', action);

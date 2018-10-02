@@ -18,7 +18,6 @@ require_once 'Pager/Pager.php';
 /**
  * Forms
  */
-require_once 'Classes/generador_Formularios.php';
 require_once 'Classes/Form_Administracion.php';
 require_once 'Classes/Form_Comun.php';
 require_once 'Classes/Form_Calidad.php';
@@ -42,6 +41,8 @@ require_once 'Classes/TuqanLogger.php';
 require_once 'Classes/Auth.php';
 require_once 'Classes/User.php';
 require_once 'Classes/AjaxHandler.php';
+require_once 'Classes/FormManager.php';
+require_once 'Classes/FormElement.php';
 
 /**
  * Misc
@@ -51,7 +52,6 @@ require_once 'Classes/generador_SQL.php';
 require_once 'Classes/Config.php';
 require_once 'encriptador.php';
 require_once 'constantes.inc.php';
-require_once 'estilo.php';
 require_once 'Classes/Titulos.php';
 require_once 'boton.php';
 

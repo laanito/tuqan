@@ -4,7 +4,7 @@ namespace Tuqan\Classes;
 /**
 * LICENSE see LICENSE.md file
  *
- * Este archivo contiene la informacion de la barra de totulos
+ * Este archivo contiene la informacion de la barra de titulos
  * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 0.1.2a
  */
