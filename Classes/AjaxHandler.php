@@ -46,7 +46,7 @@ class AjaxHandler
             $aDatos = array();
         }
         $form = new FormManager($action, $aDatos);
-        $result = $form->process();
+        $result = 'contenedor|'.$form->process();
         return $result;
     }
 

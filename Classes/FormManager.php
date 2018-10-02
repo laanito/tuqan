@@ -45,9 +45,11 @@ class FormManager
     }
 
     /**
+     * Generate an array with all the database fields needed for form
+     *
      *  @return array|bool
      */
-    public function getFields()
+    private function getFields()
     {
         if (is_array($this->fields)) {
             $tables = array_keys($this->fields);
@@ -75,7 +77,7 @@ class FormManager
                 while ($aIterador = $this->oDb->coger_Fila(false, DB_FETCHMODE_ASSOC)) {
                     $tableFieldsArray[] = $aIterador;
                 }
-                $allTableFields[] = $tableFieldsArray;
+                $allTableFields[$table] = $tableFieldsArray;
             }
             return $allTableFields;
         } catch (\Exception $e) {
@@ -89,6 +91,6 @@ class FormManager
      */
     public function process(){
         $allTableFields = $this->getFields();
-        return 'contenedor|'.print_r($allTableFields,1);
+        return print_r($allTableFields,1);
     }
 }
