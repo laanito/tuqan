@@ -393,7 +393,6 @@ class Procesar_Funciones_Comunes
 
         $aTrocear = explode(separadorCadenas, $aParametros['filas']);
         $aFilas = str_split($aTrocear[0]);
-        $aElegidos = array();
 
         $aUltimo = count($aDocumentos);
         //Comenzamos una transaccion
@@ -759,7 +758,7 @@ class Procesar_Funciones_Comunes
             $oPagina->addScript("javascript/checkeditor.js", "text/javascript");
 
 
-            $sHtml = "<form  enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\" onsubmit=\"return checkform(this);\">" .
+            $sHtml = "<form  enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\" onsubmit=\"return checkform(this);\">" .
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\"";
             if (isset($iIdProc)) {
@@ -818,12 +817,12 @@ class Procesar_Funciones_Comunes
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $_SESSION['subirfichero'] = 'adjunto';
 
-        $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">");
+        $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">");
 
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
 
 
-        $sHtml = "<form  enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">" .
+        $sHtml = "<form  enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">" .
             "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
             "<input type=\"hidden\" name=\"documento\" value=\"" . $iAdjunto . "\">" .
             "<input name=\"userfile\" type=\"file\"><input class=\"b_activo\" type=\"submit\" value=\"" . gettext('sBotonEnviar') . "\"></form>";
@@ -973,12 +972,12 @@ class Procesar_Funciones_Comunes
         }
 
         if ($sNavegador == "Microsoft Internet Explorer") {
-            $sHtml = "<form  enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">" .
+            $sHtml = "<form  enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">" .
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\" value=\"" . $iIdProc . "\">" .
                 "<input name=\"userfile\" type=\"file\"><input class=\"b_activo\" onMouseOut=\"this.className='b_activo'\" onMouseOver=\"this.className='b_focus'\" type=\"submit\" value=\"" . gettext('sBotonEnviar') . "\"></form>";
         } else {
-            $sHtml = "<form  enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">" .
+            $sHtml = "<form  enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">" .
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\" value=\"" . $iIdProc . "\">" .
                 "<input name=\"userfile\" type=\"file\"><input class=\"b_activo\" type=\"submit\" value=\"" . gettext('sBotonEnviar') . "\"></form>";
@@ -1125,14 +1124,14 @@ class Procesar_Funciones_Comunes
         $sNavegador = $_SESSION['navegador'];
 
         if ($sNavegador == "Microsoft Internet Explorer") {
-            $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"coger.php\" method=\"post\">" .
+            $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"/coger.php\" method=\"post\">" .
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\" value=\"" . $aParametros['iddoc'] . "\">" .
                 "<input name=\"userfile\" type=\"file\"><input type=\"submit\" value=" . gettext('sBotonEnviar') . " onMouseOver=\"this.className='b_activo'\" " .
                 "onMouseOut=\"this.className='b_focus'\"></form>";
 
         } else {
-            $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"coger.php\" method=\"post\">" .
+            $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"/coger.php\" method=\"post\">" .
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\" value=\"" . $aParametros['iddoc'] . "\">" .
                 "<input name=\"userfile\" type=\"file\"><input class=\"b_activo\" type=\"submit\" value=" . gettext('sBotonEnviar') . "></form>";
@@ -1568,7 +1567,7 @@ class Procesar_Funciones_Comunes
 
         $_SESSION['subirfichero'] = $aParametros[0];
 
-        $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">");
+        $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">");
 
 
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
@@ -1577,7 +1576,7 @@ class Procesar_Funciones_Comunes
 
         $iIdProc = $aParametros[1];
 
-        $sHtml = "<form  enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">" .
+        $sHtml = "<form  enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">" .
             "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
             "<input type=\"hidden\" name=\"documento\" value=\"" . $iIdProc . "\">" .
             "<input type=\"hidden\" name=\"politica\" ";
@@ -1835,7 +1834,7 @@ class Procesar_Funciones_Comunes
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $_SESSION['subirfichero'] = $aParametros[0];
 
-        $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">");
+        $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">");
 
 
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
@@ -1844,7 +1843,7 @@ class Procesar_Funciones_Comunes
 
         $iIdProc = $aParametros[1];
 
-        $sHtml = "<form  enctype=\"multipart/form-data\" action=\"coger.php\" method=\"post\">" .
+        $sHtml = "<form  enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">" .
             "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
             "<input type=\"hidden\" name=\"documento\" value=\"" . $iIdProc . "\">" .
             "<input type=\"hidden\" name=\"politica\"";
@@ -1863,8 +1862,6 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Where(array('id<6'));
         $oBaseDatos->construir_Order(array('extension'));
         $oBaseDatos->consulta();
-        $aTipos = array();
-        $bPrimero = true;
         $sHtml .= gettext('sFSoportados');
         while ($aIterador = $oBaseDatos->coger_Fila()) {
             $sHtml .= $aIterador[0] . " ";
@@ -1899,7 +1896,6 @@ class Procesar_Funciones_Comunes
 
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oVolver = new boton("Volver", "atras(-2)", "noafecta");
-        $iIdProducto = $_SESSION['producto'];
         $aTrocear = explode(separadorCadenas, $aParametros['filas']);
         $aFilas = str_split($aTrocear[0]);
         $aElegidos = array();
@@ -3057,9 +3053,7 @@ class Procesar_Funciones_Comunes
     function sacar_hijos(&$oArbol, &$oPadre, $iNivel, $iIdPadre = null)
     {
 
-        if (($iNivel > 6) || ($iIdPadre == null)) {
-            //No hacemos nada
-        } else {
+        if (!(($iNivel > 6) || ($iIdPadre == null))) {
             //Creamos el nodo y lo enganchamos
             $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
             $oDb->iniciar_Consulta('SELECT');

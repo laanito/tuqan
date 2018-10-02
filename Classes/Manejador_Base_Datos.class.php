@@ -346,7 +346,7 @@ class Manejador_Base_Datos extends \DB
      *    Este metodo recibe un array de String y nos crea la parte BEGIN
      *
      * @access public
-     * @param String $aBegins
+     * @param array $aBegins
      */
     public function construir_Begin($aBegins)
     {

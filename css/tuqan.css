@@ -29,9 +29,9 @@ body {
 }
 
 #cabecera3 {
-    box-shadow: inset 0 3px 3px 2px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: inset 0 3px 3px 2px rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: inset 0 3px 3px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 3px 3px 2px rgba(0, 0, 0, 0.2);
     background-color: #BE1622;
     margin-top: -10px;
 }
@@ -87,9 +87,7 @@ ul.nav li:hover > ul.dropdown-submenu {
 
 #administrador {
     background-color: #3399cc;
-    height: 100%;
     color: #ffffff;
-    width: 15%;
     overflow: hidden;
     text-align: center;
     font-family: "helvetica", sans-serif;
@@ -174,9 +172,9 @@ ul.nav li:hover > ul.dropdown-submenu {
     text-align: center;
     margin-top: 100px;
     background-color: #393938;
-    box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.2);
     -moz-box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.2);
     -webkit-box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.2);
     position: fixed;
     bottom: 0;
 }
@@ -242,7 +240,7 @@ ul.nav li:hover > ul.dropdown-submenu {
     text-decoration: underline;
 }
 
-b.encima {
+.encima {
     cursor: pointer;
 }
 
@@ -587,9 +585,9 @@ div nobr input {
     padding: 10px 0;
     border-radius: 3px;
     border: none;
-    box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
     -moz-box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
     font-size: 100%;
 }
 
@@ -604,12 +602,12 @@ div nobr input {
     width: 250px;
     cursor: pointer;
     text-transform: uppercase;
-    padding: 10px 0!important;
-    border-radius: 3px!important;
-    border: none!important;
-    box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
+    padding: 10px 0;
+    border-radius: 3px;
+    border: none;
     -moz-box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 -1px 4px 0 rgba(0,0,0,0.3);
 }
 
 #contenido .b_activo:hover {
@@ -1159,15 +1157,12 @@ div nobr input {
 .navbar-login
 {
     width: 305px;
-    padding: 10px;
-    padding-bottom: 0px;
+    padding: 10px 10px 0;
 }
 
 .navbar-login-session
 {
-    padding: 10px;
-    padding-bottom: 0px;
-    padding-top: 0px;
+    padding: 0px 10px;
 }
 
 .icon-size
