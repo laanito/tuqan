@@ -97,7 +97,10 @@ class FormManager
      * @return string
      */
     private function addField($name,  $field){
-        return (string)call_user_func(array(Former, FormElement::getElement($field['tipo'])),$name);
+        return (string)call_user_func(
+            array('\Former\Facades\Former', FormElement::getElement($field['tipo'])),
+            $name
+        );
     }
     /**
      * @param $fields
