@@ -29,7 +29,7 @@ while ($aIterador = $oDb->coger_Fila()) {
     $sFecha = preg_replace('Apr', 'Abr', $sFecha);
     $sFecha = preg_replace('Aug', 'Ago', $sFecha);
     $sFecha = preg_replace('Dec', 'Dic', $sFecha);
-    $aDatos[0][$aIterador[1]] = $aIterador[0];
+    $aDatos[0][$sFecha] = $aIterador[0];
 }
 $oGrafica = new generadorGrafica(null, null, 'bar', $aDatos, array('valor_objetivo' => 0, 'titulo' => "Estadisticas mensajes"));
 $oGrafica->pintaGrafica();
