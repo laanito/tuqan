@@ -11,8 +11,6 @@ namespace Tuqan\Classes;
  * @version 1.0b
  */
 
-use \Estilo_Pagina;
-use \HTML_Page;
 use \boton;
 
 class Forms
@@ -37,13 +35,6 @@ class Forms
 
     function formulario($sIdentFormulario, $iId=null)
     {
-
-        $oPagina = new HTML_Page();
-
-        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
-        $oPagina->addScript('/javascript/dhtmlgoodies_calendar.js', "text/javascript");
-        $oPagina->addScript('/javascript/form.js', "text/javascript");
-        $oPagina->addBodyContent("<div id='formulario'>");
         $aSplit = explode(separadorForm, $sIdentFormulario);
         $iPassword = 0;
         if ($aSplit[3] == 'nuevo') {
@@ -77,9 +68,7 @@ class Forms
                     $aFormulario = $Form->devuelve_Array_Form('mensajeusuario', $sTipoForm, $iId);
                     $sCabecera .= gettext('sFMensaje');
                 }
-
                 break;
-
             // Para la opcion auditorias:programa:nuevo
             case 'programa':
                 $Form = new Form_Calidad();
@@ -1031,43 +1020,6 @@ class Forms
                 $iPassword = 1;
                 break;
         }
-        $aDatos = array('formulario' => $aFormulario);
-        $aOpciones['login'] = $_SESSION['login'];
-        $aOpciones['pass'] = $_SESSION['pass'];
-        $aOpciones['db'] = $_SESSION['db'];
-        $aOpciones['accion'] = $sIdentFormulario;
-        if(isset($_SESSION['formid'])) {
-            $aOpciones['id'] = $_SESSION['formid'];
-        }
-        $aOpciones['tipo'] = $sTipoForm;
-        $aOpciones['cabecera'] = $sCabecera;
-        $aOpciones['password'] = $iPassword;
-        $aOpciones['formrespuesta'] = 'inicio:nuevo:formulario:general';
-        $aOpciones['id'] = $iId;
-        $form = new genera_Formularios($aDatos, $aOpciones);
-        try {
-            $form->generar();
-        } catch (\HTML_QuickForm2_Exception $e) {
-            return "Error en formulario:". $e->getTraceAsString();
-        }
-
-        //@todo remove false, it is set to prevent validation
-        if (false && $form->validate()) {
-            $form->process();
-        } else {
-            //Si el formulario necesita algun tipo de informacion en la cabecera lo ponemos aqui
-            if (isset($_SESSION['texto'])) {
-                $oPagina->addBodyContent($_SESSION['texto']);
-                unset ($_SESSION['texto']);
-            }
-            $oPagina->addBodyContent($form->__toString());
-            $oPagina->addBodyContent("<br /><br /><input class=\"b_activo\"  type=\"button\" value=\"Atras\" onclick=\"parent.atras(-2)\",'',1)\">");
-
-            $oPagina->addBodyContent("</div>");
-
-            $oPagina->addBodyContent("<div id=\"divcalendario\">");
-            $oPagina->addBodyContent("</div>");
-        }
         return $aFormulario;
     }
 
@@ -1078,19 +1030,10 @@ class Forms
 
     function formulario_Medio($iIdLegislacion)
     {
-        $sNavegador = $_SESSION['navegador'];
-        if ($sNavegador == "Microsoft Internet Explorer") {
-            $oBoton = new boton(gettext('sFVolver'), "parent.atras(-1)", "sincheck");
-        } else {
-            $oBoton = new boton(gettext('sFVolver'), "parent.atras(-2)", "sincheck");
-        }
         //Aqui guardamos las ids de las preguntas
         $aDeseado = array(0 => "nada");
         //Y aqui los textos de las pregutnas
         $aPreguntas = array();
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
-        $oPagina = new HTML_Page();
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
 
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 
@@ -1099,19 +1042,12 @@ class Forms
         $oBaseDatos->construir_Tablas(array('preguntas_legislacion_aplicable'));
         $oBaseDatos->construir_Where(array('(legislacion_aplicable=' . $iIdLegislacion . ')', 'activo=true'));
         $oBaseDatos->consulta();
-
-        $oPagina->addBodyContent(">");
-
-        $oPagina->addBodyContent("<p class=\"cuestionario\">" . gettext('sCuestionario') . "</p>");
+        ;
         $i = 1;
         while ($aIterador = $oBaseDatos->coger_Fila()) {
             $aPreguntas[] = $aIterador[1];
             $aDeseado[] = $aIterador[0];
-
-            $oPagina->addBodyContent($aIterador[1] . ":<br />");
-            $oPagina->addBodyContent("<input type=\"radio\" name=\"" . $i . "\" value=\"t\">" . gettext('sAfirmacion'));
-            $oPagina->addBodyContent("<input type=\"radio\" name=\"" . $i . "\" value=\"f\">" . gettext('sNegacion') . "<br />");
-            $oPagina->addBodyContent("<br />");
+            //@todo create a checkgroup for questions
             $i++;
         }
 
@@ -1123,20 +1059,6 @@ class Forms
 
         //$sNavegador = $_SESSION['navegador']; Lo ponemos arriba
 
-        if ($sNavegador == "Microsoft Internet Explorer") {
-            $oPagina->addBodyContent("<input class=\"b_activo\" onMouseOver=\"this.className='b_focus'\" " .
-                "onMouseOut=\"this.className='b_activo'\" type=\"submit\" VALUE=\"Enviar\">");
-
-            $oPagina->addBodyContent("<input class=\"b_activo\" onMouseOver=\"this.className='b_focus'\" " .
-                "onMouseOut=\"this.className='b_activo'\" type=\"reset\" value=\"Limpiar\"><br />");
-        } else {
-            $oPagina->addBodyContent("<input class=\"b_activo\" type=\"submit\" VALUE=\"Enviar\">");
-            $oPagina->addBodyContent("<input class=\"b_activo\" type=\"reset\" value=\"Limpiar\"><br />");
-        }
-
-        $oPagina->addBodyContent("</form><br />");
-        $oPagina->addBodyContent($oBoton->to_Html());
-
-        return $oPagina->toHTML();
+        return array('preguntas_legislacion_aplicable'=>array('preguntas' => array('tipo'=>'text')));
     }
 }

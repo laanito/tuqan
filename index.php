@@ -18,7 +18,6 @@ require_once 'Pager/Pager.php';
 /**
  * Forms
  */
-require_once 'Classes/generador_Formularios.php';
 require_once 'Classes/Form_Administracion.php';
 require_once 'Classes/Form_Comun.php';
 require_once 'Classes/Form_Calidad.php';
