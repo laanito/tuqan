@@ -12,6 +12,7 @@
  */
 
 require 'fpdf153/fpdf.php';
+require_once 'Classes/Manejador_Base_Datos.class.php';
 
 class PDF extends FPDF
 {
@@ -54,7 +55,6 @@ class PDF extends FPDF
 function ficha_personal($iIdFicha)
 {
 //Primero vamos a sacar los datos necesarios
-    require_once 'Manejador_Base_Datos.class.php';
     $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
     $oBaseDatos->iniciar_Consulta('SELECT');
     $oBaseDatos->construir_Campos(array('nombre', 'apellidos', 'to_char(fecha_nac, \'DD/MM/YYYY\')', 'localidad', 'provincia',
@@ -926,7 +926,6 @@ function ficha_personal($iIdFicha)
  */
 function req_puesto($iIdReq)
 {
-    require_once 'Manejador_Base_Datos.class.php';
     $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
     $oBaseDatos->iniciar_Consulta('SELECT');
     $oBaseDatos->construir_Campos(array('nombre_puesto', 'categoria', 'depende_de', 'area', 'requiere_ant',
@@ -1536,7 +1535,6 @@ function req_puesto($iIdReq)
 
 function acc_mejora($iIdAccMejora)
 {
-    require_once 'Manejador_Base_Datos.class.php';
     $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
     $oBaseDatos->iniciar_Consulta('SELECT');
     $oBaseDatos->construir_Campos(array('tipo',
@@ -1945,7 +1943,6 @@ function acc_mejora($iIdAccMejora)
 // Funcion para mostrar los PDF's de los indicadores
 function indicadores($iIdIndi)
 {
-    require_once 'Manejador_Base_Datos.class.php';
     $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
     $oBaseDatos->iniciar_Consulta('SELECT');
     $oBaseDatos->construir_Campos(array('objetivos.nombre', 'indicadores.nombre'));
@@ -2311,7 +2308,7 @@ function indicadores($iIdIndi)
         array('rojo' => 220)
     );
 
-    $pdf->pon_Caja(186, 149, array('ancho' => 100, 'alto' => 5, 'texto' => $aprobado,
+    $pdf->pon_Caja(186, 149, array('ancho' => 100, 'alto' => 5, 'texto' => $sUsuarioCerrado,
         'borde' => 1, 'linea' => 1, 'alineacion' => 'C', 'relleno' => 1),
         array('familia' => 'Times', 'estilo' => null, 'size' => 7),
         array('rojo' => 220)
@@ -2336,7 +2333,6 @@ function indicadores($iIdIndi)
 // Funcion para mostrar los PDF's de los indicadores
 function documentacion($IdDoc)
 {
-    require_once 'Manejador_Base_Datos.class.php';
     $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
     $oBaseDatos->iniciar_Consulta('SELECT');
     $oBaseDatos->construir_Campos(array('nombre'));
