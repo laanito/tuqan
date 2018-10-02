@@ -147,10 +147,10 @@ class Manejador_Base_Datos extends \DB
      */
     private function manejo_Errores($sMotivo, $mValor = false)
     {
-        if (is_a($this->conexion(), 'PEAR_Error')) {
+        if (is_a($this->oConexion, 'PEAR_Error')) {
             TuqanLogger::error(
                 'Database Error',
-                ['smotivo' => $sMotivo, 'mvalor' => $mValor, 'error' => $this->conexion()]
+                ['smotivo' => $sMotivo, 'mvalor' => $mValor, 'error' => $this->oConexion]
             );
         }
     }
