@@ -86,7 +86,7 @@ class Manejador_Listados
         $_SESSION['ultimolistado'] = array($sMenu_Completo);
         $_SESSION['ultimolistadodatos'] = array($aDatos);
         $_SESSION['paginaanterior'] = array($_SESSION['pagina']);
-        if (($aDatos[0] == "undefined") || ($aDatos[0] < 1)) {
+        if (!isset($aDatos[0]) || ($aDatos[0] == "undefined") || ($aDatos[0] < 1)) {
             $aDatos[0] = 1;
         }
         if (!isset($aDatos[1])) {
