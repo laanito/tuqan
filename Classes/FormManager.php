@@ -6,6 +6,7 @@
 
 namespace Tuqan\Classes;
 
+use Former\Facades\Former as Former;
 
 class FormManager
 {
@@ -91,10 +92,37 @@ class FormManager
     }
 
     /**
+     * @param $name string
+     * @param $field array
+     * @return string
+     */
+    private function addField($name,  $field){
+        return (string)Former::text($name)->value(print_r($field,1));
+    }
+    /**
+     * @param $fields
+     * @return mixed
+     */
+    private function generate($fields){
+        $Formulario = (string)Former::framework('TwitterBootstrap3');
+        $Formulario.= Former::horizontal_open();
+        foreach($fields as $table => $tablefields) {
+            $content='';
+            foreach($tablefields as $name => $field){
+                $content.=$this->addField($name,$field);
+            }
+            $Formulario.= Former::form_group($table)->div($content);
+        }
+
+        $Formulario.= Former::close();
+        return $Formulario;
+    }
+    /**
      * @return string
      */
     public function process(){
         $allTableFields = $this->getFields();
-        return print_r($allTableFields,1);
+        $result = $this->generate($allTableFields);
+        return print_r($result,1);
     }
 }
