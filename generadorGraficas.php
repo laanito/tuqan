@@ -111,7 +111,7 @@ class generadorGrafica
                 //$Plot[$iKey]->setLineColor($aColores[$iKey]);
                 $oEstiloLinea =& Image_Graph::factory('Line_Solid', $aColores[$iKey]);
                 $oEstiloLinea->setThickness(2);
-                $Plot[$iKey]->setLineStyle(&$oEstiloLinea);
+                $Plot[$iKey]->setLineStyle($oEstiloLinea);
             }
             // set a standard fill style
             //    $Plot->setFillStyle($FillArray);
