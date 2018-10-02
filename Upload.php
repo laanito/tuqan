@@ -715,7 +715,7 @@ class HTTP_Upload_File extends HTTP_Upload_Error
 
             //just incase the original filename had a sequence, we take it out 
             // e.g: 'userGuide[3]' should become 'userGuide'
-            $basename = ereg_replace($pattern, '', $basename);
+            $basename = preg_replace($pattern, '', $basename);
 
             /*
              * attempt to find a unique sequence file name

@@ -73,10 +73,10 @@ $j = 0;
 $aDatos = array();
 $aDatos[0] = array();
 while ($aIterador = $oDb->coger_Fila()) {
-    $sFecha = ereg_replace('Jan', 'Ene', $aIterador[1]);
-    $sFecha = ereg_replace('Apr', 'Abr', $sFecha);
-    $sFecha = ereg_replace('Aug', 'Ago', $sFecha);
-    $sFecha = ereg_replace('Dec', 'Dic', $sFecha);
+    $sFecha = preg_replace('Jan', 'Ene', $aIterador[1]);
+    $sFecha = preg_replace('Apr', 'Abr', $sFecha);
+    $sFecha = preg_replace('Aug', 'Ago', $sFecha);
+    $sFecha = preg_replace('Dec', 'Dic', $sFecha);
     $aDatos[0][$sFecha] = $aIterador[0];
 }
 

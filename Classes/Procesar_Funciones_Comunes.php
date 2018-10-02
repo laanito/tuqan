@@ -3349,7 +3349,7 @@ class Procesar_Funciones_Comunes
         if ($aIterador = $oDb->coger_Fila()) {
             $iNumeroMensajesGlobales = $aIterador[0];
         }
-        $sImg = "<img src=\"graficamensajes.php\">";
+        $sImg = "<img src=\"/graficamensajes.php\">";
         $sHtml = $sImg . "<br /><br />";
         $sHtml .= "Mensajes totales en el sistema: " . $iNumeroMensajes . "<br />";
         $sHtml .= "Mensajes globales: " . $iNumeroMensajesGlobales . "<br />";

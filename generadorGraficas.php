@@ -8,7 +8,7 @@
 
 
 include_once 'Image/Graph.php';
-require_once 'Manejador_Base_Datos.class.php';
+require_once 'Classes/Manejador_Base_Datos.class.php';
 
 class generadorGrafica
 {
