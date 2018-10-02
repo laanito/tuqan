@@ -44,31 +44,9 @@ function iniciar_Qnova() {
  */
 
 function initialize() {
-    // initialize the DHTML History
-    // framework
-    dhtmlHistory.initialize();
-
-    // subscribe to DHTML history change
-    // events
-    dhtmlHistory.addListener(historyChange);
-    var currentLocation = dhtmlHistory.getCurrentLocation();
     iniciar_Qnova();
 }
 
-/**
- * Se llama a esta funcion cada vez que hacemos un cambio en el navegador
- */
-
-function historyChange(newLocation, sectionData) {
-    //Filtramos los editar por que fallan si intentamos ir con las flechas del navegador (necesita prepararse)
-    if (newLocation.search("^editar") === -1) {
-        sndReq(newLocation, 0, 1);
-    }
-}
-
-function historico(action) {
-    dhtmlHistory.add(action, null);
-}
 
 //Con esta funcion volvemos atras desde el editor, simplemente lo ocultamos
 function atraseditor() {
@@ -86,13 +64,6 @@ function atras(numero) {
         }
     }
     sndReq('atras', '0', 1);
-//    history.go(numero);
-//    trocear = location.href.split('#');
-//    while (trocear[1]=="listado")
-//    {
-//        history.back();
-//        trocear = location.href.split('#');    
-//    }
 }
 
 
@@ -728,7 +699,6 @@ function sndReq(action, sesion, tipo, datos) {
         if (proceso === 1) {
             temporizador = window.setTimeout("errorEspera()", tiempoPeticion);
             setCookie('temporizador', temporizador);
-            dhtmlHistory.add(action, null);
             /*ap_showWaitMessage('wait',1 ,tipo);*/
             http = createRequestObject();
             http.open('post', address, true);
