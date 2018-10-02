@@ -147,7 +147,7 @@ class Manejador_Base_Datos extends \DB
      */
     private function manejo_Errores($sMotivo, $mValor = false)
     {
-        if (parent::isError($this->conexion())) {
+        if (is_a($this->conexion(), 'PEAR_Error')) {
             TuqanLogger::error(
                 'Database Error',
                 ['smotivo' => $sMotivo, 'mvalor' => $mValor, 'error' => $this->conexion()]
@@ -181,6 +181,7 @@ class Manejador_Base_Datos extends \DB
      *    Este es nuestro fetchrow
      * @access public
      * @param bool $bSlash
+     * @param integer $mode fetch mode
      * @return array
      */
     public function coger_Fila($bSlash = true, $mode = DB_FETCHMODE_ORDERED)
