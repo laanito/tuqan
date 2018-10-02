@@ -1,14 +1,11 @@
 <?php
 /*
- * Created on 27-ene-06
- *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
+ *  Generates Graphics
  */
-
 
 include_once 'Image/Graph.php';
 require_once 'Classes/Manejador_Base_Datos.class.php';
+require_once 'DB.php';
 
 class generadorGrafica
 {
@@ -54,20 +51,20 @@ class generadorGrafica
                 switch ($iContador) {
                     case '0':
                         {
-                            $Dataset[$iContador]->setName("A�o Actual");
+                            $Dataset[$iContador]->setName("Año Actual");
                             break;
                         }
                     case '1':
                         {
-                            $Dataset[$iContador]->setName("A�o Anterior");
+                            $Dataset[$iContador]->setName("Año Anterior");
                             break;
                         }
                 }
             } else {
                 if ($iContador == 0) {
-                    $Dataset[$iContador]->setName("A�o Actual");
+                    $Dataset[$iContador]->setName("Año Actual");
                 } else {
-                    $Dataset[$iContador]->setName("A�o " . $sFecha1);
+                    $Dataset[$iContador]->setName("Año " . $sFecha1);
                 }
             }
             $iContador++;
