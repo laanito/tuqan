@@ -57,33 +57,6 @@ body {
     margin-top: 40px;
 }
 
-#usuariodiv {
-    color: #575756;
-    height: 22px;
-    font-family: "Arial", sans-serif;
-    text-align: left;
-    padding-top: 4px;
-    padding-right: 10px;
-    border-bottom: 1px dotted #797979;
-    float: left;
-    margin-top: 20px;
-    margin-left: 20px;
-}
-
-#titulo {
-    color: #575756;
-    height: 22px;
-    font-family: Arial, sans-serif;
-    text-align: left;
-    padding-top: 4px;
-    padding-left: 10px;
-    overflow: hidden;
-    border-left: 1px dotted #797979;
-    border-bottom: 1px dotted #797979;
-    float: left;
-    margin-top: 20px;
-}
-
 #submenu {
     background-color: #ffffff;
 }
