@@ -183,7 +183,7 @@ class Manejador_Base_Datos extends \DB
      * @param bool $bSlash
      * @return array
      */
-    public function coger_Fila($bSlash = true, $mode = DB_FETCHMODE_DEFAULT)
+    public function coger_Fila($bSlash = true, $mode = DB_FETCHMODE_ORDERED)
     {
         $mTmp = $this->oResultado->fetchRow($mode);
         if (is_array($mTmp)) {
