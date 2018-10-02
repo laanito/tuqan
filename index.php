@@ -43,6 +43,7 @@ require_once 'Classes/Auth.php';
 require_once 'Classes/User.php';
 require_once 'Classes/AjaxHandler.php';
 require_once 'Classes/FormManager.php';
+require_once 'Classes/FormElement.php';
 
 /**
  * Misc
