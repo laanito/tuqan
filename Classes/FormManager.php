@@ -72,14 +72,14 @@ class FormManager
                 $this->oDb->consulta();
 
                 $tableFieldsArray = array();
-                while ($aIterador = $this->oDb->coger_Fila()) {
+                while ($aIterador = $this->oDb->coger_Fila(false, DB_FETCHMODE_ASSOC)) {
                     $tableFieldsArray[] = $aIterador;
                 }
                 $allTableFields[] = $tableFieldsArray;
             }
             return $allTableFields;
         } catch (\Exception $e) {
-            TuqanLogger::debug("Exception on FormManager ->getFields", $e);
+            TuqanLogger::debug("Exception on FormManager ->getFields", ['exception' => $e]);
             return false;
         }
     }

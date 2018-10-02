@@ -145,87 +145,13 @@ class Manejador_Base_Datos extends \DB
      * @param String $sMotivo
      * @param Mixed $mValor
      */
-
     private function manejo_Errores($sMotivo, $mValor = false)
     {
-        switch ($sMotivo) {
-            case 'conexion':
-            $pera = new \PEAR();
-                if ($pera->isError($this->oConexion)) {
-                    $nombre_archivo = 'tmp/error.txt';
-                    $contenido = "contenedor|" . print_r($this->oConexion);;
-
-                    $gestor = fopen($nombre_archivo, 'w');
-                    fwrite($gestor, $contenido);
-                    fclose($gestor);
-
-
-                    $length = strlen($contenido);
-                    Header('Content-Type: text/plain');
-                    Header('Content-Length: ' . $length);
-                    Header('Content-Disposition: attachment; filename="error.txt"');
-                    readfile($nombre_archivo);
-                    unlink($nombre_archivo);
-
-                    die();
-                }
-                break;
-            case 'desconexion':
-
-                if ($mValor == false) {
-                    //echo "contenedor|desconexion";
-                    $nombre_archivo = 'tmp/error.txt';
-                    $contenido = "contenedor|Se ha producido un error en la aplicación, si persiste por favor pongase en contacto con el administrador";
-
-                    $gestor = fopen($nombre_archivo, 'w');
-                    fwrite($gestor, $contenido);
-                    fclose($gestor);
-
-
-                    $length = strlen($contenido);
-                    Header('Content-Type: text/plain');
-                    Header('Content-Length: ' . $length);
-                    Header('Content-Disposition: attachment; filename="error.txt"');
-                    readfile($nombre_archivo);
-                    unlink($nombre_archivo);
-
-                    die();
-                }
-                break;
-            case 'consulta':
-                if (\PEAR::isError($this->oResultado)) {
-
-                    echo "contenedor|Se ha producido un error en la aplicación, si persiste por favor pongase en contacto con el administrador";
-                    die();
-                    //echo "contenedor|<iframe src=\"error.php?motivo=conexion\" width=\"100%\" height=\"600px\"" .
-                    //"frameborder=\"0\" scrolling=\"auto\" style=\"z-index: 0\"><\iframe>";
-
-                }
-                break;
-            case 'fetch':
-                if (\PEAR::isError($mValor)) {
-                    //echo "contenedor|a";print_r($this->oResultado);
-                    //echo "contenedor|fetch";
-                    $nombre_archivo = 'tmp/error.txt';
-                    $contenido = "contenedor|" . print_r($this->oResultado, true);
-                    $gestor = fopen($nombre_archivo, 'w');
-                    fwrite($gestor, $contenido);
-                    fclose($gestor);
-
-
-                    $length = strlen($contenido);
-                    Header('Content-Type: text/plain');
-                    Header('Content-Length: ' . $length);
-                    Header('Content-Disposition: attachment; filename="error.txt"');
-                    readfile($nombre_archivo);
-                    unlink($nombre_archivo);
-
-                    //    echo "contenedor|Se ha producido un error en la aplicación, si persiste por favor pongase en contacto con el administrador";
-                    die();
-//                    echo "contenedor|<iframe src=\"error.php?motivo=conexion\" width=\"100%\" height=\"600px\"" .
-                    //                   "frameborder=\"0\" scrolling=\"auto\" style=\"z-index: 0\"><\iframe>";
-                }
-                break;
+        if (parent::isError($this->conexion())) {
+            TuqanLogger::error(
+                'Database Error',
+                ['smotivo' => $sMotivo, 'mvalor' => $mValor, 'error' => $this->conexion()]
+            );
         }
     }
     //Fin manejo_Errores
@@ -257,9 +183,9 @@ class Manejador_Base_Datos extends \DB
      * @param bool $bSlash
      * @return array
      */
-    public function coger_Fila($bSlash = true)
+    public function coger_Fila($bSlash = true, $mode = DB_FETCHMODE_DEFAULT)
     {
-        $mTmp = $this->oResultado->fetchRow();
+        $mTmp = $this->oResultado->fetchRow($mode);
         if (is_array($mTmp)) {
             foreach ($mTmp as $sKey => $sValor) {
                 if ($bSlash) {
@@ -286,7 +212,10 @@ class Manejador_Base_Datos extends \DB
         return $this->sTipo_Bd . "://" . $this->sUser . ":" . $this->sPasswd . "@" . $this->sHost . ":" . $this->sPort . "/" . $this->sDb;
     }
 
-    public function conexion($tipo = 'persistente')
+    /**
+     * @param string $tipo
+     */
+    public function conexion()
     {
 
         if(isset($_SESSION['encodingapache'])) {
@@ -308,7 +237,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param $sTipo
      */
-
     public function iniciar_Consulta($sTipo)
     {
         $this->oQuery = new generador_SQL($sTipo);
@@ -320,7 +248,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param string $sCampo
      */
-
     public function pon_Campo($sCampo)
     {
         $this->oQuery->nuevo_Campo($sCampo);
@@ -334,7 +261,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param array $aCampos
      */
-
     public function construir_Campos($aCampos)
     {
         if (is_array($aCampos)) {
@@ -351,7 +277,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param String
      */
-
     public function pon_Tabla($sTabla)
     {
         $this->oQuery->nuevo_Tabla($sTabla);
@@ -365,7 +290,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param array $aTablas
      */
-
     public function construir_Tablas($aTablas)
     {
         if (is_array($aTablas)) {
@@ -394,7 +318,6 @@ class Manejador_Base_Datos extends \DB
     /**
      * @param $aWheres
      */
-
     public function construir_Where($aWheres)
     {
 
@@ -412,7 +335,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param String $sSentencia
      */
-
     public function pon_Sentencia($sSentencia)
     {
         $this->oQuery->nuevo_Sentencia($sSentencia);
@@ -425,7 +347,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param String $aBegins
      */
-
     public function construir_Begin($aBegins)
     {
         if (is_array($aBegins)) {
@@ -442,7 +363,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param String $sOrder
      */
-
     public function pon_Order($sOrder)
     {
         $this->oQuery->nuevo_Order($sOrder);
@@ -469,7 +389,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param String $sGroup
      */
-
     public function pon_Group($sGroup)
     {
         $this->oQuery->nuevo_Group($sGroup);
@@ -499,17 +418,22 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param String $sValue
      */
-
     public function pon_Value($sValue)
     {
         $this->oQuery->nuevo_Value($sValue);
     }
 
+    /**
+     * @param $sValue
+     */
     public function pon_ValueSin($sValue)
     {
         $this->oQuery->nuevo_ValueSin($sValue);
     }
 
+    /**
+     * @param $sValue
+     */
     public function pon_ValueSinSlash($sValue)
     {
         $this->oQuery->nuevo_ValueSinSlashes($sValue);
@@ -555,9 +479,9 @@ class Manejador_Base_Datos extends \DB
      *    Este es nuestro metodo añadir al campo SET
      *
      * @access public
-     * @param String $sSet
+     * @param string $sSet
+     * @param string $sValue
      */
-
     public function pon_Set($sSet, $sValue)
     {
         $this->oQuery->nuevo_Set($sSet, $sValue);
@@ -600,7 +524,6 @@ class Manejador_Base_Datos extends \DB
      * @access public
      * @param array $aSets
      */
-
     public function construir_Set($aSets, $aValues)
     {
         if (is_array($aSets)) {
@@ -671,7 +594,6 @@ class Manejador_Base_Datos extends \DB
      * Para hacer las transacciones usamos estos dos metodos que nos permiten tener seguridad de que si no se completa
      *
      */
-
     public function comienza_transaccion()
     {
         $this->conexion();
@@ -680,6 +602,9 @@ class Manejador_Base_Datos extends \DB
         $this->manejo_Errores('consulta');
     }
 
+    /**
+     *
+     */
     public function termina_transaccion()
     {
         $this->conexion();

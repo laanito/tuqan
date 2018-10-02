@@ -17,6 +17,7 @@
     "twig/twig": "~1.35",
     "monolog/monolog": "~1.23",
     "ext-gettext": "*",
-    "anahkiasen/former": "4.1.7"
+    "anahkiasen/former": "4.1.7",
+    "ext-pgsql": "*"
   }
 }
