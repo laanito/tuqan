@@ -1,12 +1,9 @@
 <?php
+namespace Tuqan\Classes;
+
 /*
  *  Generates Graphics
  */
-
-include_once 'Image/Graph.php';
-require_once 'Classes/Manejador_Base_Datos.class.php';
-require_once 'DB.php';
-
 class generadorGrafica
 {
     private $sTipo;
@@ -15,7 +12,6 @@ class generadorGrafica
 
     public function __construct($iId, $iPid, $modo, $aDatos, $aDatosExtra)
     {
-        $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $this->sTipo = $modo;
         $this->oGraph =& Image_Graph::factory('graph', array(800, 500));
         $this->iLimite = 1000000;
