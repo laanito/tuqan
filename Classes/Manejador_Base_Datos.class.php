@@ -606,7 +606,7 @@ class Manejador_Base_Datos extends \PDO
 
     public function desconexion()
     {
-        $this->disconnect();
+        return true;
     }
     //Fin desconexion
 
