@@ -25,7 +25,7 @@ Array.prototype.indexOf = function (A) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == A) return i;
     }
-    ;
+    
     return -1;
 };
 String.prototype.startsWith = function (A) {
@@ -79,7 +79,7 @@ if (!(FCKBrowserInfo = NS.FCKBrowserInfo)) {
     FCKBrowserInfo.IsSafari = (sAgent.indexOf("safari") != -1);
     FCKBrowserInfo.IsNetscape = (sAgent.indexOf("netscape") != -1);
 }
-;
+
 var FCKScriptLoader = new Object();
 FCKScriptLoader.IsLoading = false;
 FCKScriptLoader.Queue = new Array();
@@ -99,7 +99,7 @@ FCKScriptLoader.CheckQueue = function () {
         this.IsLoading = false;
         if (this.OnEmpty) this.OnEmpty();
     }
-    ;
+    
 };
 if (FCKBrowserInfo.IsSafari) {
     FCKScriptLoader.LoadFile = function (A) {
@@ -107,7 +107,7 @@ if (FCKBrowserInfo.IsSafari) {
             this.CheckQueue();
             return;
         }
-        ;var B = new XMLHttpRequest();
+        var B = new XMLHttpRequest();
         B.open("GET", A, false);
         B.send(null);
         if (B.status == 200) {
@@ -116,7 +116,7 @@ if (FCKBrowserInfo.IsSafari) {
             } catch (e) {
                 alert('Error parsing ' + A + ': ' + e.message);
             }
-            ;
+            
         } else alert('Error loading ' + A);
         this.CheckQueue();
     };
@@ -131,7 +131,7 @@ if (FCKBrowserInfo.IsSafari) {
             e = document.createElement("script");
             e.type = "text/javascript";
         }
-        ;document.getElementsByTagName("head")[0].appendChild(e);
+        document.getElementsByTagName("head")[0].appendChild(e);
         if (e.tagName == 'LINK') {
             if (FCKBrowserInfo.IsIE) e.onload = FCKScriptLoader_OnLoad; else FCKScriptLoader.CheckQueue();
             e.href = A;
@@ -139,12 +139,12 @@ if (FCKBrowserInfo.IsSafari) {
             e.onload = e.onreadystatechange = FCKScriptLoader_OnLoad;
             e.src = A;
         }
-        ;
+        
     };
 
     function FCKScriptLoader_OnLoad() {
         if (this.tagName == 'LINK' || !this.readyState || this.readyState == 'loaded') FCKScriptLoader.CheckQueue();
-    };
+    }
 }
 var FCKURLParams = new Object();
 var aParams = document.location.search.substr(1).split('&');
@@ -164,7 +164,7 @@ var i = 0;
 while ((FCK.LinkedField = aElements[i++])) {
     if (FCK.LinkedField.tagName == 'INPUT' || FCK.LinkedField.tagName == 'TEXTAREA') break;
 }
-;var FCKTempBin = new Object();
+var FCKTempBin = new Object();
 FCKTempBin.Elements = new Array();
 FCKTempBin.AddElement = function (A) {
     var B = FCKTempBin.Elements.length;
@@ -190,7 +190,7 @@ if (document.location.protocol == 'file:') {
     FCKConfig.BasePath = document.location.pathname.substring(0, document.location.pathname.lastIndexOf('/') + 1);
     FCKConfig.FullBasePath = document.location.protocol + '//' + document.location.host + FCKConfig.BasePath;
 }
-;FCKConfig.EditorPath = FCKConfig.BasePath.replace(/editor\/$/, '');
+FCKConfig.EditorPath = FCKConfig.BasePath.replace(/editor\/$/, '');
 try {
     FCKConfig.ScreenWidth = screen.width;
     FCKConfig.ScreenHeight = screen.height;
@@ -198,7 +198,7 @@ try {
     FCKConfig.ScreenWidth = 800;
     FCKConfig.ScreenHeight = 600;
 }
-;FCKConfig.ProcessHiddenField = function () {
+FCKConfig.ProcessHiddenField = function () {
     this.PageConfig = new Object();
     var A = window.parent.document.getElementById(FCK.Name + '___Config');
     if (!A) return;
@@ -210,7 +210,7 @@ try {
         var E = unescape(C[1]);
         if (D == 'CustomConfigurationsPath') FCKConfig[D] = E; else if (E.toLowerCase() == "true") this.PageConfig[D] = true; else if (E.toLowerCase() == "false") this.PageConfig[D] = false; else if (!isNaN(E)) this.PageConfig[D] = parseInt(E); else this.PageConfig[D] = E;
     }
-    ;
+    
 };
 FCKConfig.LoadPageConfig = function () {
     for (var A in this.PageConfig) FCKConfig[A] = this.PageConfig[A];
@@ -230,18 +230,18 @@ FCKConfig.ProtectedSource.Protect = function (A) {
     function _Replace(protectedSource) {
         var B = FCKTempBin.AddElement(protectedSource);
         return '<!--{PS..' + B + '}-->';
-    };
+    }
     for (var i = 0; i < this.RegexEntries.length; i++) {
         A = A.replace(this.RegexEntries[i], _Replace);
     }
-    ;
+    
     return A;
 };
 FCKConfig.ProtectedSource.Revert = function (A, B) {
     function _Replace(m, opener, index) {
         var C = B ? FCKTempBin.RemoveElement(index) : FCKTempBin.Elements[index];
         return FCKConfig.ProtectedSource.Revert(C, B);
-    };
+    }
     return A.replace(/(<|&lt;)!--\{PS..(\d+)\}--(>|&gt;)/g, _Replace);
 };
 FCKConfig.ProtectedSource.Add(/<!--[\s\S]*?-->/g);
@@ -249,7 +249,7 @@ var FCKeditorAPI;
 
 function FCKeditorAPI_GetInstance(instanceName) {
     return this.__Instances[instanceName];
-};
+}
 if (!window.parent.FCKeditorAPI) {
     FCKeditorAPI = window.parent.FCKeditorAPI = new Object();
     FCKeditorAPI.__Instances = new Object();
@@ -262,9 +262,9 @@ function Window_OnContextMenu(e) {
     if (e) e.preventDefault(); else {
         if (event.srcElement == document.getElementById('eSourceField')) return true;
     }
-    ;
+    
     return false;
-};window.document.oncontextmenu = Window_OnContextMenu;
+}window.document.oncontextmenu = Window_OnContextMenu;
 if (FCKBrowserInfo.IsGecko) {
     function Window_OnResize() {
         var oFrame = document.getElementById('eEditorArea');
@@ -272,9 +272,9 @@ if (FCKBrowserInfo.IsGecko) {
         var oCell = document.getElementById(FCK.EditMode == FCK_EDITMODE_WYSIWYG ? 'eWysiwygCell' : 'eSource');
         var iHeight = oCell.offsetHeight;
         oFrame.height = iHeight - 2;
-    };window.onresize = Window_OnResize;
+    }window.onresize = Window_OnResize;
 }
-;
+
 if (FCKBrowserInfo.IsIE) {
     var aCleanupDocs = new Array();
     aCleanupDocs[0] = document;
@@ -289,32 +289,32 @@ if (FCKBrowserInfo.IsIE) {
                 if (e.FCKSpecialCombo) e.FCKSpecialCombo = null;
                 if (e.Command) e.Command = null;
             }
-            ;i = 0;
+            i = 0;
             while ((e = d.getElementsByTagName("TR").item(i++))) {
                 if (e.FCKContextMenuItem) e.FCKContextMenuItem = null;
             }
-            ;aCleanupDocs[j] = null;
+            aCleanupDocs[j] = null;
         }
-        ;
+        
         if (typeof(FCKTempBin) != 'undefined') FCKTempBin.Reset();
-    };window.attachEvent("onunload", Window_OnBeforeUnload);
+    }window.attachEvent("onunload", Window_OnBeforeUnload);
 }
-;
+
 
 function Window_OnLoad() {
     if (FCKBrowserInfo.IsNetscape) document.getElementById('eWysiwygCell').style.paddingRight = '2px';
     LoadConfigFile();
-};window.onload = Window_OnLoad;
+}window.onload = Window_OnLoad;
 
 function LoadConfigFile() {
     FCKScriptLoader.OnEmpty = ProcessHiddenField;
     FCKScriptLoader.AddScript('../fckconfig.js');
-};
+}
 
 function ProcessHiddenField() {
     FCKConfig.ProcessHiddenField();
     LoadCustomConfigFile();
-};
+}
 
 function LoadCustomConfigFile() {
     if (FCKConfig.CustomConfigurationsPath.length > 0) {
@@ -323,29 +323,29 @@ function LoadCustomConfigFile() {
     } else {
         LoadPageConfig();
     }
-    ;
-};
+    
+}
 
 function LoadPageConfig() {
     FCKConfig.LoadPageConfig();
     LoadStyles();
-};
+}
 
 function LoadStyles() {
     FCKScriptLoader.OnEmpty = LoadScripts;
     FCKScriptLoader.AddScript(FCKConfig.SkinPath + 'fck_editor.css');
     FCKScriptLoader.AddScript(FCKConfig.SkinPath + 'fck_contextmenu.css');
-};
+}
 
 function LoadScripts() {
     FCKScriptLoader.OnEmpty = null;
     if (FCKBrowserInfo.IsIE) FCKScriptLoader.AddScript('js/fckeditorcode_ie_1.js'); else FCKScriptLoader.AddScript('js/fckeditorcode_gecko_1.js');
-};
+}
 
 function LoadLanguageFile() {
     FCKScriptLoader.OnEmpty = LoadEditor;
     FCKScriptLoader.AddScript('lang/' + FCKLanguageManager.ActiveLanguage.Code + '.js');
-};
+}
 
 function LoadEditor() {
     FCKScriptLoader.OnEmpty = null;

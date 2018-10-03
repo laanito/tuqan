@@ -320,14 +320,14 @@ function selectYear() {
 function switchMonth() {
     if (this.src.indexOf('left') >= 0) {
         currentMonth = currentMonth - 1;
-        ;
+        
         if (currentMonth < 0) {
             currentMonth = 11;
             currentYear = currentYear - 1;
         }
     } else {
         currentMonth = currentMonth + 1;
-        ;
+        
         if (currentMonth > 11) {
             currentMonth = 0;
             currentYear = currentYear / 1 + 1;
@@ -389,7 +389,7 @@ function changeSelectBoxYear(e, inputObj) {
         if (document.getElementById('yearDiv' + currentYear)) {
             activeSelectBoxYear = document.getElementById('yearDiv' + currentYear);
             activeSelectBoxYear.style.color = selectBoxHighlightColor;
-            ;
+            
         }
     }
 }
@@ -425,7 +425,7 @@ function changeSelectBoxHour(e, inputObj) {
         if (document.getElementById('hourDiv' + currentHour)) {
             activeSelectBoxHour = document.getElementById('hourDiv' + currentHour);
             activeSelectBoxHour.style.color = selectBoxHighlightColor;
-            ;
+            
         }
     }
 }

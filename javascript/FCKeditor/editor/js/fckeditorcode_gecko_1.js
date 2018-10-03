@@ -36,15 +36,15 @@ FCKTools.AttachToLinkedFieldFormSubmit = function (A) {
         B.originalSubmit = B.submit;
         B.submit = FCKTools_SubmitReplacer;
     }
-    ;
+    
 };
 
 function FCKTools_SubmitReplacer() {
     if (this.updateFCKeditor) {
         for (var i = 0; i < this.updateFCKeditor.length; i++) this.updateFCKeditor[i]();
     }
-    ;this.originalSubmit();
-};FCKTools.AddSelectOption = function (A, B, C, D) {
+    this.originalSubmit();
+}FCKTools.AddSelectOption = function (A, B, C, D) {
     var E = A.createElement("OPTION");
     E.text = C;
     E.value = D;
@@ -55,7 +55,7 @@ FCKTools.RemoveAllSelectOptions = function (A) {
     for (var i = A.options.length - 1; i >= 0; i--) {
         A.options.remove(i);
     }
-    ;
+    
 };
 FCKTools.SelectNoCase = function (A, B, C) {
     var D = B.toString().toLowerCase();
@@ -64,9 +64,9 @@ FCKTools.SelectNoCase = function (A, B, C) {
             A.selectedIndex = i;
             return;
         }
-        ;
+        
     }
-    ;
+    
     if (C != null) FCKTools.SelectNoCase(A, C);
 };
 FCKTools.HTMLEncode = function (A) {
@@ -87,7 +87,7 @@ FCKTools.GetResultingArray = function (A, B) {
         default:
             if (isArray(A)) return A; else return new Array();
     }
-    ;
+    
 };
 FCKTools.GetElementPosition = function (A) {
     var c = {X: 0, Y: 0};
@@ -96,7 +96,7 @@ FCKTools.GetElementPosition = function (A) {
         c.Y += A.offsetTop;
         A = A.offsetParent;
     }
-    ;
+    
     return c;
 };
 FCKTools.GetElementAscensor = function (A, B) {
@@ -106,7 +106,7 @@ FCKTools.GetElementAscensor = function (A, B) {
         if (C.indexOf("," + e.nodeName.toUpperCase() + ",") != -1) return e;
         e = e.parentNode;
     }
-    ;
+    
     return null;
 };
 FCKTools.Pause = function (A) {
@@ -115,7 +115,7 @@ FCKTools.Pause = function (A) {
         var C = new Date();
         if (A < C - B) return;
     }
-    ;
+    
 };
 FCKTools.ConvertStyleSizeToHtml = function (A) {
     return A.endsWith('%') ? A : parseInt(A);
@@ -136,7 +136,7 @@ FCKTools.ClearElementAttributes = function (A) {
     for (var i = 0; i < A.attributes.length; i++) {
         A.removeAttribute(A.attributes[i].name, 0);
     }
-    ;
+    
 };
 FCKTools.GetAllChildrenIds = function (A) {
     var B = new Array();
@@ -146,7 +146,7 @@ FCKTools.GetAllChildrenIds = function (A) {
             if (D && D.length > 0) B[B.length] = D;
             C(parent.childNodes[i]);
         }
-        ;
+        
     };
     C(A);
     return B;
@@ -163,7 +163,7 @@ FCKTools.CreateXmlObject = function (A) {
         case 'DOMDocument':
             return document.implementation.createDocument('', '', null);
     }
-    ;
+    
     return null;
 };
 var FCKRegexLib = new Object();
@@ -195,19 +195,19 @@ FCKLanguageManager.GetActiveLanguage = function () {
         if (navigator.userLanguage) A = navigator.userLanguage.toLowerCase(); else if (navigator.language) A = navigator.language.toLowerCase(); else {
             return FCKConfig.DefaultLanguage;
         }
-        ;
+        
         if (A.length >= 5) {
             A = A.substr(0, 5);
             if (this.AvailableLanguages[A]) return A;
         }
-        ;
+        
         if (A.length >= 2) {
             A = A.substr(0, 2);
             if (this.AvailableLanguages[A]) return A;
         }
-        ;
+        
     }
-    ;
+    
     return this.DefaultLanguage;
 };
 FCKLanguageManager.TranslateElements = function (A, B, C) {
@@ -218,9 +218,9 @@ FCKLanguageManager.TranslateElements = function (A, B, C) {
             var s = FCKLang[D];
             if (s) eval('e[i].' + C + ' = s');
         }
-        ;
+        
     }
-    ;
+    
 };
 FCKLanguageManager.TranslatePage = function (A) {
     this.TranslateElements(A, 'INPUT', 'value');
@@ -250,7 +250,7 @@ if (!(FCKEvents = NS.FCKEvents)) {
         if (D) {
             for (var i = 0; i < D.length; i++) C = (D[i](this.Owner, B) && C);
         }
-        ;
+        
         return C;
     };
 }
@@ -458,9 +458,9 @@ if (FCKConfig.ProcessHTMLEntities) {
             FCKXHtmlEntities.Entities[e] = oEntities[e];
             FCKXHtmlEntities.Chars += e;
         }
-        ;oEntities = null;
+        oEntities = null;
     }
-    ;
+    
     if (FCKConfig.IncludeGreekEntities) {
         var oEntities = {
             'Α': 'Alpha',
@@ -517,9 +517,9 @@ if (FCKConfig.ProcessHTMLEntities) {
             FCKXHtmlEntities.Entities[e] = oEntities[e];
             FCKXHtmlEntities.Chars += e;
         }
-        ;oEntities = null;
+        oEntities = null;
     }
-    ;FCKXHtmlEntities.EntitiesRegex = new RegExp('', '');
+    FCKXHtmlEntities.EntitiesRegex = new RegExp('', '');
     FCKXHtmlEntities.EntitiesRegex.compile('[' + FCKXHtmlEntities.Chars + ']|[^' + FCKXHtmlEntities.Chars + ']+', 'g');
 } else {
     FCKXHtmlEntities.Entities = {' ': 'nbsp'};
@@ -543,7 +543,7 @@ FCKXHtml.GetXHTML = function (A, B, C) {
         var E = new RegExp('___FCKsi___' + i);
         D = D.replace(E, FCKXHtml.SpecialBlocks[i]);
     }
-    ;this.XML = null;
+    this.XML = null;
     return D
 };
 FCKXHtml._AppendAttribute = function (A, B, C) {
@@ -553,7 +553,7 @@ FCKXHtml._AppendAttribute = function (A, B, C) {
         A.attributes.setNamedItem(D);
     } catch (e) {
     }
-    ;
+    
 };
 FCKXHtml._AppendChildNodes = function (A, B, C) {
     var D = 0;
@@ -562,18 +562,18 @@ FCKXHtml._AppendChildNodes = function (A, B, C) {
         for (var i = 0; i < E.length; i++) {
             if (this._AppendNode(A, E[i])) D++;
         }
-        ;
+        
     }
-    ;
+    
     if (D == 0) {
         if (C && FCKConfig.FillEmptyBlocks) {
             this._AppendEntity(A, 'nbsp');
             return;
         }
-        ;
+        
         if (!FCKRegexLib.EmptyElements.test(B.nodeName)) A.appendChild(this.XML.createTextNode(''));
     }
-    ;
+    
 };
 FCKXHtml._AppendNode = function (A, B) {
     switch (B.nodeType) {
@@ -603,13 +603,13 @@ FCKXHtml._AppendNode = function (A, B) {
                 A.appendChild(this.XML.createComment(B.nodeValue));
             } catch (e) { /* Do nothing... probably this is a wrong format comment. */
             }
-            ;
+            
             break;
         default:
             A.appendChild(this.XML.createComment("Element not supported - Type: " + B.nodeType + " Name: " + B.nodeName));
             break;
     }
-    ;
+    
     return true;
 };
 if (FCKConfig.ForceStrongEm) {
@@ -622,7 +622,7 @@ if (FCKConfig.ForceStrongEm) {
                 A = 'em';
                 break;
         }
-        ;
+        
         return this.XML.createElement(A);
     };
 } else {
@@ -630,7 +630,7 @@ if (FCKConfig.ForceStrongEm) {
         return this.XML.createElement(A);
     };
 }
-;FCKXHtml._AppendSpecialItem = function (A) {
+FCKXHtml._AppendSpecialItem = function (A) {
     return '___FCKsi___' + FCKXHtml.SpecialBlocks.addItem(A);
 };
 FCKXHtml._AppendTextNode = function (A, B) {
@@ -643,13 +643,13 @@ FCKXHtml._AppendTextNode = function (A, B) {
                     this._AppendEntity(A, D);
                     continue;
                 }
-                ;
+                
             }
-            ;A.appendChild(this.XML.createTextNode(C[i]));
+            A.appendChild(this.XML.createTextNode(C[i]));
         }
-        ;
+        
     }
-    ;
+    
 };
 FCKXHtml.TagProcessors = new Object();
 FCKXHtml.TagProcessors['img'] = function (A) {
@@ -685,7 +685,7 @@ FCKXHtml.TagProcessors['table'] = function (A, B) {
         var D = C.nodeValue.replace(FCKRegexLib.TableBorderClass, '');
         if (D.length == 0) A.attributes.removeNamedItem('class'); else FCKXHtml._AppendAttribute(A, 'class', D);
     }
-    ;FCKXHtml._AppendChildNodes(A, B, false);
+    FCKXHtml._AppendChildNodes(A, B, false);
     return A;
 }
 FCKXHtml._GetMainXmlString = function () {
@@ -706,9 +706,9 @@ FCKXHtml._AppendAttributes = function (A, B, C) {
             if (FCKConfig.ForceSimpleAmpersand && G.replace) G = G.replace(/&/g, '___FCKAmp___');
             this._AppendAttribute(C, F, G);
         }
-        ;
+        
     }
-    ;
+    
 }
 var FCKCodeFormatter;
 if (!(FCKCodeFormatter = NS.FCKCodeFormatter)) {
@@ -724,7 +724,7 @@ if (!(FCKCodeFormatter = NS.FCKCodeFormatter)) {
     FCKCodeFormatter.Regex.FormatIndentatorRemove = new RegExp(FCKConfig.FormatIndentator);
     FCKCodeFormatter.Format = function (A) {
         var B = A.replace(this.Regex.BlocksOpener, '\n$&');
-        ;B = B.replace(this.Regex.BlocksCloser, '$&\n');
+        B = B.replace(this.Regex.BlocksCloser, '$&\n');
         B = B.replace(this.Regex.NewLineTags, '$&\n');
         B = B.replace(this.Regex.MainTags, '\n$&\n');
         var C = '';
@@ -737,7 +737,7 @@ if (!(FCKCodeFormatter = NS.FCKCodeFormatter)) {
             B += C + E + '\n';
             if (this.Regex.IncreaseIndent.test(E)) C += FCKConfig.FormatIndentator;
         }
-        ;
+        
         return B.trim();
     };
 }
@@ -758,14 +758,14 @@ FCK.StartEditor = function () {
 
 function Window_OnFocus() {
     FCK.Focus();
-};FCK.SetStatus = function (A) {
+}FCK.SetStatus = function (A) {
     this.Status = A;
     if (A == FCK_STATUS_ACTIVE) {
         window.onfocus = window.document.body.onfocus = Window_OnFocus;
         if (FCKConfig.StartupFocus) FCK.Focus();
         if (FCKBrowserInfo.IsIE) FCKScriptLoader.AddScript('js/fckeditorcode_ie_2.js'); else FCKScriptLoader.AddScript('js/fckeditorcode_gecko_2.js');
     }
-    ;this.Events.FireEvent('OnStatusChange', A);
+    this.Events.FireEvent('OnStatusChange', A);
 };
 FCK.GetHTML = function (A) {
     var B;
@@ -781,7 +781,7 @@ FCK.GetXHTML = function (A) {
     if (FCKConfig.FullPage) C = FCKXHtml.GetXHTML(this.EditorDocument.getElementsByTagName('html')[0], true, A); else {
         if (FCKConfig.IgnoreEmptyParagraphValue && this.EditorDocument.body.innerHTML == '<P>&nbsp;</P>') C = ''; else C = FCKXHtml.GetXHTML(this.EditorDocument.body, false, A);
     }
-    ;
+    
     if (B) this.SwitchEditMode();
     if (FCKBrowserInfo.IsIE) C = C.replace(FCKRegexLib.ToReplace, '$1');
     if (FCK.DocTypeDeclaration && FCK.DocTypeDeclaration.length > 0) C = FCK.DocTypeDeclaration + '\n' + C;
@@ -831,9 +831,9 @@ FCKAnchorsProcessor.ProcessDocument = function (A) {
             C.parentNode.insertBefore(D, C);
             C.parentNode.removeChild(C);
         }
-        ;
+        
     }
-    ;
+    
 };
 FCKDocumentProcessors.addItem(FCKAnchorsProcessor);
 var FCKPageBreaksProcessor = new Object();
@@ -847,9 +847,9 @@ FCKPageBreaksProcessor.ProcessDocument = function (A) {
             C.parentNode.insertBefore(D, C);
             C.parentNode.removeChild(C);
         }
-        ;
+        
     }
-    ;
+    
 };
 FCKDocumentProcessors.addItem(FCKPageBreaksProcessor);
 var FCKFlashProcessor = new Object();
@@ -865,9 +865,9 @@ FCKFlashProcessor.ProcessDocument = function (A) {
             C.parentNode.insertBefore(D, C);
             C.parentNode.removeChild(C);
         }
-        ;
+        
     }
-    ;
+    
 };
 FCKFlashProcessor.RefreshView = function (A, B) {
     if (B.width > 0) A.style.width = FCKTools.ConvertHtmlSizeToStyle(B.width);
@@ -880,7 +880,7 @@ FCK.GetRealElement = function (A) {
         if (A.style.width.length > 0) e.width = FCKTools.ConvertStyleSizeToHtml(A.style.width);
         if (A.style.height.length > 0) e.height = FCKTools.ConvertStyleSizeToHtml(A.style.height);
     }
-    ;
+    
     return e;
 };
 FCK.Description = "FCKeditor for Gecko Browsers";
@@ -889,7 +889,7 @@ FCK.InitializeBehaviors = function () {
         var A = FCKTools.AppendStyleSheet(this.EditorDocument, FCKConfig.FullBasePath + 'css/fck_showtableborders_gecko.css');
         A.setAttribute('_fcktemp', 'true');
     }
-    ;var B = function (e) {
+    var B = function (e) {
         e.preventDefault();
         FCK.ShowContextMenu(e.clientX, e.clientY);
     };
@@ -918,14 +918,14 @@ FCK.InitializeBehaviors = function () {
                     D = (FCK.Status != FCK_STATUS_COMPLETE || !FCK.Events.FireEvent("OnPaste"));
                     break;
             }
-            ;
+            
             if (D) {
                 e.preventDefault();
                 e.stopPropagation();
             }
-            ;
+            
         }
-        ;
+        
     };
     this.EditorDocument.addEventListener('keypress', C, true);
     this.ExecOnSelectionChange = function () {
@@ -947,7 +947,7 @@ FCK.InitializeBehaviors = function () {
             this.document.body.innerHTML = this._FCK_HTML;
             this._FCK_HTML = null;
         }
-        ;
+        
     };
     this.EditorWindow.addEventListener('load', this._OnLoad, true);
 };
@@ -957,14 +957,14 @@ FCK.MakeEditable = function () {
         FCK.EditorDocument.execCommand('useCSS', false, !FCKConfig.GeckoUseSPAN);
     } catch (e) {
     }
-    ;
+    
 };
 FCK.Focus = function () {
     try {
         FCK.EditorWindow.focus();
     } catch (e) {
     }
-    ;
+    
 };
 FCK.SetHTML = function (A, B) {
     A = A.replace(FCKRegexLib.StrongOpener, '<b$1');
@@ -986,7 +986,7 @@ FCK.SetHTML = function (A, B) {
                 FCK.EditorDocument.execCommand("useCSS", false, !FCKConfig.GeckoUseSPAN);
                 this._Initialized = true;
             }
-            ;this.EditorDocument.open();
+            this.EditorDocument.open();
             this.EditorDocument.write(G);
             this.EditorDocument.close();
             if (this.EditorDocument.body) this.EditorDocument.body.innerHTML = E; else this.EditorWindow._FCK_HTML = E;
@@ -999,10 +999,10 @@ FCK.SetHTML = function (A, B) {
                 this.InitializeBehaviors();
                 this._Initialized = true;
             }
-            ;
+            
             if (A.length == 0) FCK.EditorDocument.body.innerHTML = GECKO_BOGUS; else if (FCKRegexLib.EmptyParagraph.test(A)) FCK.EditorDocument.body.innerHTML = A.replace(FCKRegexLib.TagBody, '>' + GECKO_BOGUS + '<'); else FCK.EditorDocument.body.innerHTML = A;
             FCK.MakeEditable();
         }
-        ;FCK.OnAfterSetHTML();
+        FCK.OnAfterSetHTML();
     } else document.getElementById('eSourceField').value = A;
 }

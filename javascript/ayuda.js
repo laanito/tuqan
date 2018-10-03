@@ -54,7 +54,7 @@ function initSlideLeftPanel(expandOnly) {
 
 
         if (!document.all || navigator.userAgent.indexOf('Opera') >= 0) slideLeftPanelObj.style.position = 'fixed';
-        ;
+        
     }
 
     if (panelPosition == 0) {
