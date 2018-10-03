@@ -194,7 +194,10 @@ class Manejador_Base_Datos extends \PDO
      */
     public function dsn()
     {
-        return $this->sTipo_Bd . "://" . $this->sUser . ":" . $this->sPasswd . "@" . $this->sHost . ":" . $this->sPort . "/" . $this->sDb;
+        $dsn = $this->sTipo_Bd . ':' . 'dbname='. $this->sDb . ';'.
+            'user='.$this->sUser .';'.'password='.$this->sPasswd.
+            ';'.'host='.$this->sHost;
+        return $dsn;
     }
 
     /**
