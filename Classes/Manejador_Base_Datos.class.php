@@ -187,9 +187,7 @@ class Manejador_Base_Datos extends \PDO
      */
     public function dsn()
     {
-        $dsn = $this->sTipo_Bd . ':' . 'dbname='. $this->sDb . ';'.
-            'user='.$this->sUser .';'.'password='.$this->sPasswd.
-            ';'.'host='.$this->sHost;
+        $dsn = "$this->sTipo_Bd:dbname=$this->sDb;user=$this->sUser;password=$this->sPasswd;host=$this->sHost";
         return $dsn;
     }
 
