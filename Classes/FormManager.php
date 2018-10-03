@@ -75,7 +75,7 @@ class FormManager
                 $this->oDb->consulta();
 
                 $tableFieldsArray = array();
-                while ($aIterador = $this->oDb->coger_Fila(false, DB_FETCHMODE_ASSOC)) {
+                while ($aIterador = $this->oDb->coger_Fila(false, \PDO::FETCH_ASSOC)) {
                     $tableFieldsArray[$aIterador['nombre']] = array(
                         'tipo' => $aIterador['tipo'],
                         'longitud' => $aIterador['longitud'],
