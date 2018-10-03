@@ -268,7 +268,7 @@ class generador_listados
 
             //Fin Tabla de registros
             $sTabla = $oTable->setHead($headerContent)
-                ->addRows($rowContent)
+                ->addRows($rows)
                 ->render();
             $sHtml .= $sTabla . "</div>";
 
