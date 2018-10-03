@@ -189,7 +189,7 @@ class generador_listados
     {
         unset($_SESSION['pagina']);
         $_SESSION['pagina'] = array();
-        $paged_data = $this->Pager_Wrapper_DB($this->oDb);
+        $paged_data = $this->Pager_Wrapper_DB();
         if (is_object($paged_data)) {
             TuqanLogger::debug("Error en la llamada:",$paged_data);
         }
@@ -496,7 +496,6 @@ class generador_listados
     //Fin pon_Links
 
     /**
-     * @param object PEAR::DB instance
      * @param object db query
      * @param array  PEAR::Pager options
      * @param boolean Disable pagination (get all results)
@@ -508,17 +507,13 @@ class generador_listados
      * @return array with links and paged data
      * @access private
      */
-    private function Pager_Wrapper_DB(&$db, $disabled = false, $fetchMode = DB_FETCHMODE_ASSOC, $dbparams = null)
+    private function Pager_Wrapper_DB($disabled = false, $fetchMode = \PDO::FETCH_ASSOC, $dbparams = null)
     {
         $query = $this->oDb->to_String_Consulta();
         TuqanLogger::debug("Query in wrapper: ",['query' => $query]);
         if (!array_key_exists('totalItems', $this->aOpcionesPager)) {
-            $res =& $db->query($query, $dbparams);
-            if (\PEAR::isError($res)) {
-                return $res;
-            }
-            $totalItems = (int)$res->numRows();
-            $res->free();
+            $this->oDb->consulta($query);
+            $totalItems = (int)$this->oDb->rowCount();
             //}
             $this->aOpcionesPager['totalItems'] = $totalItems;
         }
@@ -561,29 +556,13 @@ class generador_listados
         );
         list($page['from'], $page['to']) = $pager->getOffsetByPageId();
 
-        /**
-         *     Hacemos la consulta limitada para obtener un numero prefijado de datos
-         */
-
-        //Arreglo del fallo cuando no tenemos select
-        $iPaginas = 20;
-        if ($this->aOpcionesPager['perPage'] != null) {
-            $iPaginas = $this->aOpcionesPager['perPage'];
-        }
-        $res = ($disabled) ?
-            $db->limitQuery($query, 0, $totalItems, $dbparams) :
-            $db->limitQuery($query, $page['from'] - 1, $iPaginas, $dbparams);
-        $pera = new \PEAR();
-        if ($pera->isError($res)) {
-            return $res;
-        }
 
         /**
          *     Añadimos los datos al listado
          */
         $row=array();
         $page['data'] = array();
-        while ($res->fetchInto($row, $fetchMode)) {
+        while ($this->oDb->fetchInto($row, $fetchMode)) {
             $page['data'][] = $row;
         }
         if ($disabled) {
