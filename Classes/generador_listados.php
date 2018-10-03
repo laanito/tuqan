@@ -10,7 +10,6 @@ namespace Tuqan\Classes;
  * Esta clase es la encargada de realizar los listados que se mostraran en
  * pantalla
  *
-
  *
  * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
