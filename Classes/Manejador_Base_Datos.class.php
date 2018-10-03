@@ -608,7 +608,17 @@ class Manejador_Base_Datos extends \PDO
     {
         return true;
     }
-    //Fin desconexion
+
+    /**
+     *    get rowcount
+     *
+     * @access public
+     */
+
+    public function rowCount()
+    {
+        return $this->oResultado->rowCount();
+    }
 
     /**
      *     Creacion de un LOB
