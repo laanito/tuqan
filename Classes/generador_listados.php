@@ -189,10 +189,7 @@ class generador_listados
     {
         unset($_SESSION['pagina']);
         $_SESSION['pagina'] = array();
-        $dsn = $this->oDb->dsn();
-        $oMiDb = $this->oDb->connect($dsn);
-        TuqanLogger::debug("Calling Pagger_wrapper ", ['dsn' => $dsn]);
-        $paged_data = $this->Pager_Wrapper_DB($oMiDb);
+        $paged_data = $this->Pager_Wrapper_DB($this->oDb);
         if (is_object($paged_data)) {
             TuqanLogger::debug("Error en la llamada:",$paged_data);
         }
