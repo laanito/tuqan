@@ -6,24 +6,26 @@
  * @version 0.3b
  * Archivo que genera los árboles de permisos
  */
+
+use Tuqan\Classes\FakePage;
+use Tuqan\Classes\Generador_Arboles;
+use Tuqan\Classes\Manejador_Base_Datos;
+
 require_once 'boton.php';
 require_once('Classes/generador_arboles.php');
 require_once('Classes/Manejador_Base_Datos.class.php');
-require_once('HTML/Page.php');
-require_once('Classes/FormatoPagina.php');
+require_once('Classes/FakePage.php');
 
 
 function arbol_permisos($iUserid, $sLogin, $sPass, $sBdatos)
 {
     $oDb = new Manejador_Base_Datos($sLogin, $sPass, $sBdatos);
-    $sTabla = 'menu';
     $aCampos = array('case when menu.menu like \'%administracion%\' then \'Administracion\' else \'Usuarios\' end as nodosuperior', 'submenu', 'nodo',
         'etiqueta', 'menu.permisos[' . $iUserid . ']', 'menu.id', 'botones_idiomas.valor', 'botones.permisos[' . $iUserid . ']', 'botones.id');
     $oDb->iniciar_Consulta('SELECT');
     $oDb->construir_Campos($aCampos);
     $oDb->construir_Tablas(array('menu', 'botones', 'botones_idiomas'));
-//He cambiado el order para que los id que metemos en sesion vayan conforme a lo que metemos en los arboles
-//$oDb->construir_Order(array('nodosuperior,nodo,id'));
+
     $oDb->construir_Order(array('nodosuperior,submenu,nodo,menu.id,botones.id'));
     $oDb->construir_Where(array('menu.id=botones.menu', 'botones_idiomas.boton=botones.id', "botones_idiomas.idioma='" . $_SESSION['idioma'] . "'"));
     $oDb->consulta();
@@ -116,8 +118,8 @@ function arbol_permisos($iUserid, $sLogin, $sPass, $sBdatos)
         }
     }
 
-    $oPagina = new HTML_Page();
-    $oPagina->addScript('javascript/cursor.js', "text/javascript");
+    $oPagina = new FakePage();
+    $oPagina->addScript('/javascript/cursor.js', "text/javascript");
     $oPagina->addStyleDeclaration('/css/tuqan.ccs', 'text/css');
 
     $sPremenu = $menu->Pinta_Arbol();
@@ -183,7 +185,7 @@ function ver_arbol_permisos($iUserid, $sLogin, $sPass, $sBdatos)
         }
     }
 
-    $oPagina = new HTML_Page();
+    $oPagina = new FakePage();
     $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
     $sPremenu = $menu->Pinta_Arbol();
     $oPagina->addBodyContent("<div id=\"arbol_centro\">" . $sPremenu . "</div>");
@@ -337,7 +339,7 @@ function permisos_documentos($iUserid, $bUsuario, $sLogin, $sPass, $sBdatos)
 
 
 
-    $oPagina = new HTML_Page();
+    $oPagina = new FakePage();
     $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
 
     $sPremenu = $menu->Pinta_Arbol();

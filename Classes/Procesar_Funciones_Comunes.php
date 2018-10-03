@@ -2,8 +2,6 @@
 namespace Tuqan\Classes;
 
 use \boton;
-use \HTML_Page;
-use \Estilo_Pagina;
 use \encriptador;
 use \desplegable;
 use \htmlcleaner;
@@ -715,9 +713,8 @@ class Procesar_Funciones_Comunes
 
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
         $sPolitica = $aParametros['numeroDeFila'];
-        $oPagina = new HTML_Page();
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+        $oPagina = new FakePage();
+        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $_SESSION['subirfichero'] = $aParametros['idtipo'];
         if (($aParametros['idtipo'] == iIdManual) OR ($aParametros['idtipo'] == iIdPolitica)) {
@@ -811,9 +808,8 @@ class Procesar_Funciones_Comunes
     function procesa_Adjunto($sAccion, $aParametros)
     {
         $iAdjunto = $aParametros['numeroDeFila'];
-        $oPagina = new HTML_Page();
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+        $oPagina = new FakePage();
+        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $_SESSION['subirfichero'] = 'adjunto';
 
@@ -946,9 +942,8 @@ class Procesar_Funciones_Comunes
 
     function procesa_Flujograma($sAccion, $aParametros)
     {
-        $oPagina = new HTML_Page();
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+        $oPagina = new FakePage();
+        $oPagina->addStyleDeclaration('/css/tuqan', 'text/css');
 
 
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -1117,25 +1112,14 @@ class Procesar_Funciones_Comunes
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
         $_SESSION['subirfichero'] = 'documento';
 
-        $oPagina = new HTML_Page();
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+        $oPagina = new FakePage();
+        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
 
-        $sNavegador = $_SESSION['navegador'];
-
-        if ($sNavegador == "Microsoft Internet Explorer") {
-            $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"/coger.php\" method=\"post\">" .
-                "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
-                "<input type=\"hidden\" name=\"documento\" value=\"" . $aParametros['iddoc'] . "\">" .
-                "<input name=\"userfile\" type=\"file\"><input type=\"submit\" value=" . gettext('sBotonEnviar') . " onMouseOver=\"this.className='b_activo'\" " .
-                "onMouseOut=\"this.className='b_focus'\"></form>";
-
-        } else {
-            $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"/coger.php\" method=\"post\">" .
+        $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"/coger.php\" method=\"post\">" .
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\" value=\"" . $aParametros['iddoc'] . "\">" .
                 "<input name=\"userfile\" type=\"file\"><input class=\"b_activo\" type=\"submit\" value=" . gettext('sBotonEnviar') . "></form>";
-        }
+
 
 
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -1560,9 +1544,8 @@ class Procesar_Funciones_Comunes
 
     function procesa_NuevaVersion_Documento($aParametros)
     {
-        $oPagina = new HTML_Page();
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+        $oPagina = new FakePage();
+        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 
         $_SESSION['subirfichero'] = $aParametros[0];
@@ -1828,9 +1811,8 @@ class Procesar_Funciones_Comunes
      */
     function procesa_EditarVersion_Documento($aParametros)
     {
-        $oPagina = new HTML_Page();
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+        $oPagina = new FakePage();
+        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $_SESSION['subirfichero'] = $aParametros[0];
 

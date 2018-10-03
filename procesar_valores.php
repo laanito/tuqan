@@ -1,46 +1,51 @@
 <?php
 /**
-* LICENSE see LICENSE.md file
+* license see license.md file
  */
 
-if (isset($_POST['idvalor'])) {
-    $iIdValor = $_POST['idvalor'];
+use tuqan\classes\fakepage;
+use tuqan\classes\manejador_base_datos;
+
+if (isset($_post['idvalor'])) {
+    $iidvalor = $_post['idvalor'];
 } else {
-    $iIdProceso = $_POST['proceso'];
-    $iIdIndicador = $_POST['indicador'];
+    $iidproceso = $_post['proceso'];
+    $iidindicador = $_post['indicador'];
 }
-$fValor = $_POST['valor'];
-if (!isset($_SESSION)) {
+$fvalor = $_post['valor'];
+if (!isset($_session)) {
     session_start();
 }
 require_once 'boton.php';
-require_once 'Manejador_Base_Datos.class.php';
-require_once 'HTML/Page.php';
+require_once 'classes/manejador_base_datos.class.php';
+require_once 'classes/fakepage.php';
 include_once 'include.php';
-$oPagina = new HTML_Page();
+$opagina = new fakepage();
 
-$oPagina->addStyleDeclaration('/css/tuqan', 'text/css');
+$opagina->addstyledeclaration('/css/tuqan', 'text/css');
 
-$oVolver = new boton($sBotonVolver, "parent.atras(-3)", "noafecta");
-//Sacamos si habia algun valor ya para el indicador
-$oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-if (isset($iIdValor)) {
-    $sFecha = date('c');
-    $oBaseDatos->iniciar_Consulta('UPDATE');
-    $oBaseDatos->construir_SetSin(array('fecha', 'valor'),
-        array('array_append(fecha,\'' . $sFecha . '\')', 'array_append(valor,\'' . $fValor . '\')')
+$ovolver = new boton($sbotonvolver, "parent.atras(-3)", "noafecta");
+//sacamos si habia algun valor ya para el indicador
+$obasedatos = new manejador_base_datos($_session['login'], $_session['pass'], $_session['db']);
+if (isset($iidvalor)) {
+    $sfecha = date('c');
+    $obasedatos->iniciar_consulta('update');
+    $obasedatos->construir_setsin(array('fecha', 'valor'),
+        array('array_append(fecha,\'' . $sfecha . '\')', 'array_append(valor,\'' . $fvalor . '\')')
     );
-    $oBaseDatos->construir_Tablas(array('valores'));
-    $oBaseDatos->construir_Where(array('id=' . $iIdValor));
-    $oBaseDatos->consulta();
+    $obasedatos->construir_tablas(array('valores'));
+    $obasedatos->construir_where(array('id=' . $iidvalor));
+    $obasedatos->consulta();
 } else {
-    $oBaseDatos->iniciar_Consulta('INSERT');
-    $oBaseDatos->construir_Campos(array('proceso', 'indicador', 'valor', 'fecha'));
-    $oBaseDatos->construir_Value(array($iIdProceso, $iIdIndicador, '{' . $fValor . '}', '{now()}'));
-    $oBaseDatos->construir_Tablas(array('valores'));
-    $oBaseDatos->construir_Where(array('id=' . $iIdValor));
-    $oBaseDatos->consulta();
+    $obasedatos->iniciar_consulta('insert');
+    $obasedatos->construir_campos(array('proceso', 'indicador', 'valor', 'fecha'));
+    $obasedatos->construir_value(array($iidproceso, $iidindicador, '{' . $fvalor . '}', '{now()}'));
+    $obasedatos->construir_tablas(array('valores'));
+    $obasedatos->construir_where(array('id=' . $iidvalor));
+    $obasedatos->consulta();
 }
-echo "<p style=\"color: #66377e; font-size: 8pt;\" class=\"valores\">" . gettext('sInsCorrecta') . "</p>" . $oVolver->to_Html();
+$opagina->addbodycontent("<p style=\"color: #66377e; font-size: 8pt;\" class=\"valores\">" .
+    gettext('sinscorrecta') . "</p>" . $ovolver->to_html());
+$opagina->display();
 
 

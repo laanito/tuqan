@@ -13,10 +13,8 @@ namespace Tuqan;
  * @version 1.0b
  */
 
-require_once 'PEAR.php';
 require_once 'vendor/autoload.php';
-require_once 'HTML/Page.php';
-require_once 'Classes/FormatoPagina.php';
+require_once 'Classes/FakePage.php';
 require_once 'Classes/Manejador_De_Peticiones.php';
 require_once 'Classes/Manejador_Ayuda.php';
 require_once 'Classes/Manejador_Editor.php';
@@ -29,23 +27,17 @@ require_once 'encriptador.php';
 require_once 'constantes.inc.php';
 require_once 'Classes/Procesador_De_Peticiones.php';
 
+use Tuqan\Classes\FakePage;
 use Tuqan\Classes\Manejador_Base_Datos;
 use Tuqan\Classes\Generador_Arboles;
-use Tuqan\Classes\Formato_Pagina;
 
 if (!isset($_SESSION)) {
     session_start();
 }
 $PHPSESSID = session_name();
 $sAccion = $_REQUEST['action'];
-if ($sAccion == 'logout') {
-    $aParametros = array('logout');
-}
+
 //Para el superusuario los permisos son automaticos
-$anchura = $_SESSION['ancho'];
-$altura = $_SESSION['alto'];
-$browser = $_SESSION['navegador'];
-$sistema = $_SESSION['sistema_operativo'];
 
 $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 $sTabla = 'menu';
@@ -101,21 +93,12 @@ if (is_array($aMenu)) {
 }
 //vamos a meter aqui un Page
 
-$oEstilo = new \Estilo_Pagina($anchura, $altura, $browser);
-$formatoPagina =new Formato_Pagina();
-$aParametros = $formatoPagina->variables_Pagina($browser, $sistema);
 
-$oPagina = new \HTML_Page(array(
-    'charset' => $aParametros[0],
-    'language' => $aParametros[1],
-    'cache' => $aParametros[2],
-    'lineend' => $aParametros[3]
-));
+$oPagina = new FakePage();
 
-$oPagina->addStyleDeclaration($oEstilo, 'text/css');
+$oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
 
-
-$oPagina->addScript('javascript/TreeMenu.js', 'text/javascript');
+$oPagina->addScript('/javascript/TreeMenu.js', 'text/javascript');
 $oPagina->addBodyContent($sPremenu);
 $oPagina->display();
 

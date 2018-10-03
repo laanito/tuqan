@@ -1,16 +1,17 @@
 <?php
 
-require_once('Manejador_Base_Datos.class.php');
-require_once('HTML/Page.php');
-require_once('HTML/CSS.php');
-require_once('generador_arboles.php');
+use Tuqan\Classes\arbol_listas;
+use Tuqan\Classes\FakePage;
+
+
+require_once 'Classes/FakePage.php';
+require_once 'Classes/generador_arboles.php';
+require_once 'items.php';
+require_once 'include.php';
+
 if (!isset($_SESSION)) {
     session_start();
 }
-require_once 'items.php';
-require_once 'Manejador_Base_Datos.class.php';
-require_once 'include.php';
-require_once 'generador_arboles.php';
 $aDatos['pkey'] = 'menu_nuevo.id';
 $aDatos['padre'] = 'menu_nuevo.padre';
 $aDatos['etiqueta'] = 'menu_idiomas_nuevo.valor';
@@ -21,15 +22,13 @@ $sCondicion = "menu_nuevo.id=menu_idiomas_nuevo.menu and menu_idiomas_nuevo.idio
 $aDatos['condicion'] = $sCondicion;
 $oArbol = new arbol_listas($aDatos, 0);
 $oArbol->genera_arbol_drag_and_drop();
-$oEstilo = new HTML_CSS();
-$oCSSOpciones['filename'] = 'lib/css/drag-drop-folder-tree.css';
-$oPagina = new HTML_Page();
-$oPagina->addStyleSheet('lib/css/drag-drop-folder-tree.css', 'text/css');
-$oPagina->addStyleSheet('lib/css/context-menu.css', 'text/css');
+$oPagina = new FakePage();
+$oPagina->addStyleDeclaration('/lib/css/drag-drop-folder-tree.css', 'text/css');
+$oPagina->addStyleDeclaration('/lib/css/context-menu.css', 'text/css');
 $oPagina->addBodyContent($oArbol->to_Html());
-$oPagina->addScript('lib/js/ajax.js', 'text/javascript');
-$oPagina->addScript('lib/js/drag-drop-folder-tree.js', 'text/javascript');
-$oPagina->addScript('lib/js/context-menu.js', 'text/javascript');
+$oPagina->addScript('/lib/js/ajax.js', 'text/javascript');
+$oPagina->addScript('/lib/js/drag-drop-folder-tree.js', 'text/javascript');
+$oPagina->addScript('/lib/js/context-menu.js', 'text/javascript');
 $oPagina->addBodyContent('<form>');
 $oPagina->addBodyContent('<input type=\"button\" onclick=\"treeObj.saveTree()\" value=\"Guardar\">');
 $oPagina->addBodyContent('<input type=\"button\" onclick=\"parent.sndReq(\'atras\',\'\',0)\" value=\"Volver\">');
