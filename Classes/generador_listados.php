@@ -14,7 +14,6 @@ namespace Tuqan\Classes;
  *
  * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
- * @TODO elegir numero de elementos por pagina
  */
 
 use \HTML_Table;
@@ -135,6 +134,8 @@ class generador_listados
 
     private $aEventos;
 
+    private $sTabla;
+
 
 
     function __construct(
@@ -248,13 +249,6 @@ class generador_listados
                 $aContenido = (array('&nbsp;'));
                 $cont = $oTable->addRow($aContenido, null, 'TR');
 
-                //Colores de la tabla
-                $altRow = array('class' => 'filaimpar');
-                $oTable->altRowAttributes(0, null, $altRow, 'TR');
-
-                $altRow = array('class' => 'filapar');
-                $oTable->altRowAttributes(1, null, $altRow, 'TR');
-
 
                 //Añadimos las checkbox si hay 1 o mas botones que afectan a alguna fila
                 if ((count($this->aBotones) > 0) || (count($this->aBotonesFila) > 0)) {
@@ -274,9 +268,7 @@ class generador_listados
 
                     if ($key == 'id') {
                         $_SESSION['pagina'][] = $value;
-                    } else if ($key == 'destinatario') {
-                        //Si es destinatario lo ignoramos dado que este dato solo lo usamos para el filtro de checkbox de arriba
-                    } else {
+                    } else if ($key !== 'destinatario') {
                         if (strlen($value) < 15) {
                             $aContenido = array('<nobr><b>' . stripslashes($value) . '</b></nobr>');
                             $oTable->setCellContents($i + 1, $iColumna, $aContenido, 'TD');
@@ -341,50 +333,10 @@ class generador_listados
                     $sHtml .= $oBoton->to_Html();
                 }
             }
-
-            $aTableAttrs = array('class' => 'subtabla');
-            $oSubTabla = new HTML_Table($aTableAttrs);
-
-            $sHtml .= "<br /><br />";
-
-            $aContenido = (array('&nbsp;'));
-            $oSubTabla->addRow($aContenido, null, 'TR');
-
-            if (is_array($this->aBuscador)) {
-                for ($iContador = 0; $iContador < count($this->aBuscador['nombres']); $iContador++) {
-                    $sDefecto = $_SESSION['where'][$this->aBuscador['campos'][$iContador]];
-                    $sHtml .= "<TD>"
-                        . $this->aBuscador['nombres'][$iContador] . ":" .
-                        "</TD>" .
-                        "<TD>" .
-                        "<INPUT TYPE=TEXT NAME=\"" . $this->aBuscador['campos'][$iContador] .
-                        "\" VALUE=\"" . $sDefecto . "\">" .
-                        "</TD>";
-                }
-                if (is_array($this->aDesplegable)) {
-                    foreach ($this->aDesplegable as $oDesplegable) {
-                        if (!$oDesplegable->esNPag()) {
-                            $aContenido = (array($oDesplegable->to_Html()));
-                            $oSubTabla->addCol($aContenido, null, 'TD');
-                        }
-                    }
-                }
-                //$this->agrega_Boton(gettext('sBotonBusqueda'),"sndReq('".$this->sModulo.":listado:general:listado','',1,'".$this->sAccion.separador."1".separador.$this->sOrder
-                //                ." ".$this->sSentidoOrder."')","noafecta");
-                $this->agrega_Boton(gettext('sBotonBusqueda'), "sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador . "1" . separador . $this->sOrder
-                    . " " . $this->sSentidoOrder . "')", "noafecta");
-                $oBoton = end($this->aBotonesNoAfectan);
-
-
-                $sHtml .= $oSubTabla->toHtml();
-                $sHtml .= $oBoton->to_Html() . "<br />";
-            } else {
-                $sHtml .= $oSubTabla->toHtml();
-            }
+            $sHtml .=$this->buscadores();
             $sHtml .= "</div>";
         } else {
             $sHtml = "<div align='center'>" . gettext('sNoFila') . "<br />";
-
             if (is_array($this->aBotonesNoAfectan)) {
                 foreach ($this->aBotonesNoAfectan as $oBoton) {
                     $sHtml .= $oBoton->to_Html();
@@ -397,67 +349,55 @@ class generador_listados
                     $sHtml .= $oBoton->to_Html();
                 }
             }
-            $sHtml .= "<br /><br />";
-
-            $aTableAttrs = array('class' => 'subtabla');
-            $oSubTabla = new HTML_Table($aTableAttrs);
-
-            $aContenido = (array('&nbsp;'));
-            $oSubTabla->addRow($aContenido, null, 'TR');
-
-            if (is_array($this->aBuscador)) {
-                /*                 foreach ($this->aBuscador as $sValor)
-                                 {
-                                     $sDefecto="";
-                                     if ($_SESSION['where']!=null)
-                                     {
-                                         if (array_key_exists($sValor,$_SESSION['where']))
-                                         {
-                                             $sDefecto=$_SESSION['where'][$sValor];
-                                         }
-                                     }
-
-                                     $aContenido = (array($sValor));
-                                     $oSubTabla->addCol($aContenido,null,'TD');
-
-                                     $aContenido = (array("<INPUT TYPE=TEXT NAME=\"".$sValor."\" VALUE=\"".$sDefecto."\">"));
-                                     $oSubTabla->addCol($aContenido,null,'TD');
-                                 }*/
-                for ($iContador = 0; $iContador < count($this->aBuscador['nombres']); $iContador++) {
-                    $sDefecto = $_SESSION['where'][$this->aBuscador['campos'][$iContador]];
-                    $sHtml .= "<TD>"
-                        . $this->aBuscador['nombres'][$iContador] . ":" .
-                        "</TD>" .
-                        "<TD>" .
-                        "<INPUT TYPE=TEXT NAME=\"" . $this->aBuscador['campos'][$iContador] .
-                        "\" VALUE=\"" . $sDefecto . "\">" .
-                        "</TD>";
-                }
-                if (is_array($this->aDesplegable)) {
-                    foreach ($this->aDesplegable as $oDesplegable) {
-                        if (!$oDesplegable->esNPag()) {
-                            $aContenido = (array($oDesplegable->to_Html()));
-                            $oSubTabla->addCol($aContenido, null, 'TD');
-                        }
-                    }
-                }
-                $this->agrega_Boton(gettext('sBotonBusqueda'), "sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador . "1" . separador . $this->sOrder
-                    . " " . $this->sSentidoOrder . "')", "noafecta");
-                $oBoton = end($this->aBotonesNoAfectan);
-
-                $sHtml .= $oSubTabla->toHtml();
-
-                $sHtml .= $oBoton->to_Html() . "<br /><br />";
-            } else {
-                $sHtml .= $oSubTabla->toHtml();
-            }
-
+            $sHtml .=$this->buscadores();
             $sHtml .= "</div>";
         }
-        //    echo "<TEXTAREA name='thetext' rows='80' cols='120'>".$sHtml."</TEXTAREA>";die();
         return $sHtml;
     }
     //Fin muestra_Pagina
+
+
+    private function buscadores() {
+        $sHtml ='';
+        $sHtml .= "<br /><br />";
+
+        $aTableAttrs = array('class' => 'subtabla');
+        $oSubTabla = new HTML_Table($aTableAttrs);
+
+        $aContenido = (array('&nbsp;'));
+        $oSubTabla->addRow($aContenido, null, 'TR');
+
+        if (is_array($this->aBuscador)) {
+            for ($iContador = 0; $iContador < count($this->aBuscador['nombres']); $iContador++) {
+                $sDefecto = $_SESSION['where'][$this->aBuscador['campos'][$iContador]];
+                $sHtml .= "<TD>"
+                    . $this->aBuscador['nombres'][$iContador] . ":" .
+                    "</TD>" .
+                    "<TD>" .
+                    "<INPUT TYPE=TEXT NAME=\"" . $this->aBuscador['campos'][$iContador] .
+                    "\" VALUE=\"" . $sDefecto . "\">" .
+                    "</TD>";
+            }
+            if (is_array($this->aDesplegable)) {
+                foreach ($this->aDesplegable as $oDesplegable) {
+                    if (!$oDesplegable->esNPag()) {
+                        $aContenido = (array($oDesplegable->to_Html()));
+                        $oSubTabla->addCol($aContenido, null, 'TD');
+                    }
+                }
+            }
+            $this->agrega_Boton(gettext('sBotonBusqueda'), "sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador . "1" . separador . $this->sOrder
+                . " " . $this->sSentidoOrder . "')", "noafecta");
+            $oBoton = end($this->aBotonesNoAfectan);
+
+            $sHtml .= $oSubTabla->toHtml();
+
+            $sHtml .= $oBoton->to_Html() . "<br /><br />";
+        } else {
+            $sHtml .= $oSubTabla->toHtml();
+        }
+        return $sHtml;
+    }
 
     /**
      *     Este metodo añade eventos a realizar cuando pulsamos en un elemento de los listados, los eventos son
@@ -466,7 +406,6 @@ class generador_listados
      * @param string $sAccion es la accion que dispara dicho evento
      * @access public
      */
-
     public function agrega_Evento($sTipo, $sAccion)
     {
         $this->aEventos[$sTipo] = $sAccion;
@@ -506,7 +445,7 @@ class generador_listados
     /**
      *     Añadimos un desplegable al listado
      * @param string $sBoton el nombre y label del boton
-     * @param string $sOnclick la accion asociada al boton
+     * @param string $sAccion la accion asociada al boton
      * @param array $aOpciones el array con las opciones
      * @param string $sNombre el nombre del campo, para las de elementos por listado null
      * @access public
@@ -528,8 +467,7 @@ class generador_listados
     /**
      * Esta funcion nos pone los links necesarios entre el pagina anterior y el pagina siguiente, es el metodo
      * del PAGER modificado para que las peticiones vayan por nuestro manejador AJAX
-     * @TODO debe recibir el action que envia el AJAX
-     * @param object PEAR:PAGER
+     * @param object PEAR::PAGER
      * @return string con los links
      * @access private
      */
@@ -542,13 +480,15 @@ class generador_listados
             if ($i != $pager->_currentPage) {
                 $pager->range[$i] = false;
                 $pager->_linkData[$pager->_urlVar] = $i;
-                $links .= "<b onMouseOver=\"this.className='encima'\" onmouseout=\"this.className='fuera'\" onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador . $i . separador . $this->sOrder .
+                $links .= "<b onMouseOver=\"this.className='encima'\" onmouseout=\"this.className='fuera'\"".
+                    " onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
+                    $this->sAccion . separador . $i . separador . $this->sOrder .
                     " " . $this->sSentidoOrder . "')\">" . $i . "&nbsp</b>";
-                $cadena = "sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador . $i . separador . $this->sOrder .
-                    " " . $this->sSentidoOrder . "')";
             } else {
                 $pager->range[$i] = true;
-                $links .= "<b onMouseOver=\"this.className='encima'\" onmouseout=\"this.className='fuera'\" onclick=\"sndReq('general:busqueda:comun:nuevo:listado',' ',1,'" . $this->sAccion . separador . $i . separador . $this->sOrder .
+                $links .= "<b onMouseOver=\"this.className='encima'\"".
+                    " onmouseout=\"this.className='fuera'\" onclick=\"sndReq('general:busqueda:comun:nuevo:listado',' ',1,'" .
+                    $this->sAccion . separador . $i . separador . $this->sOrder .
                     " " . $this->sSentidoOrder . "')\">[" . $i . "]&nbsp</b>";
             }
             $links .= $pager->_spacesBefore
@@ -560,7 +500,7 @@ class generador_listados
 
     /**
      * @param object PEAR::DB instance
-     * @param string db query
+     * @param object db query
      * @param array  PEAR::Pager options
      * @param boolean Disable pagination (get all results)
      * @param integer fetch mode constant
@@ -571,7 +511,6 @@ class generador_listados
      * @return array with links and paged data
      * @access private
      */
-
     private function Pager_Wrapper_DB(&$db, $disabled = false, $fetchMode = DB_FETCHMODE_ASSOC, $dbparams = null)
     {
         $query = $this->oDb->to_String_Consulta();
