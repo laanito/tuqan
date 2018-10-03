@@ -16,10 +16,10 @@ namespace Tuqan\Classes;
  * @version 1.0b
  */
 
-use \HTML_Table;
 use \boton;
 use \desplegable;
 use \Pager;
+use Surface\Surface;
 
 class generador_listados
 {
@@ -199,21 +199,22 @@ class generador_listados
 
             //Tabla de listados de los registros
             $aTableAttrs = array('class' => 'table table-responsive');
-            $oTable = new HTML_Table($aTableAttrs, 0, true);
-
+            $oTable = new Surface($aTableAttrs) ;
+            $headerContent =array();
 
             //Si hay algun boton que afecte a mas de una fila ponemos las cabeceras de las checkbox
             if (count($this->aBotones) > 0) {
                 $aContenido = "<input type=checkbox id='checkarriba' onclick='marcardesmarcar()'>";
-                $oTable->setHeaderContents(0,0, $aContenido, null);
+                $headerContent[]=$aContenido;
             } else if (count($this->aBotonesFila) > 0) {
                 $aContenido = '';
-                $oTable->setHeaderContents(0,0, $aContenido, null);;
+                $headerContent[]=$aContenido;
 
             }
             if (is_array($paged_data['data'][0])) {
                 $iterador = 0;
                 foreach (array_keys($paged_data['data'][0]) as $key => $value) {
+
                     /**
                      *     Aqui comprobamos si es la columna por la que vamos a ordenar, para poner el icono de la flecha y para
                      *    poder enviar la peticion por el order correspondiente dependiendo del que ya estuviera (ASC o DESC)
@@ -231,59 +232,44 @@ class generador_listados
                             $newOrder = "";
                             $glyphIcon = '';
                         }
+
                         $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
                             $this->sAccion . separador . $iterador . separador . $value . " ".$newOrder . "')\"";
-                        $aContenido = $value.$glyphIcon;
-                        $oTable->setHeaderContents(0, $key, $aContenido, $aAtributos);
+                        $aContenido = '<span'.$aAtributos.'>'.$value.'</span>'.$glyphIcon;
+                        $headerContent[$key]=$aContenido;
                         $iterador++;
                     }
                 }
-
+            $oTable->setHead($headerContent);
             }
 
             for ($i = 0; $i < count($paged_data['data']); $i++) {
                 //Cada fila de los registros
-                $aContenido = (array('&nbsp;'));
-                $cont = $oTable->addRow($aContenido, null, 'TR');
-
-
+                $rowContent = array();
                 //Añadimos las checkbox si hay 1 o mas botones que afectan a alguna fila
                 if ((count($this->aBotones) > 0) || (count($this->aBotonesFila) > 0)) {
 
                     //Añadimos aqui un filtro especial para los mensajes, para que las checkbox de los mensajes generales salgan inhabilitadas
                     if ($this->sAccion) {
-
-                        $aContenido = array('<div align=\"center\"><INPUT TYPE=CHECKBOX NAME=\'' . $i .
-                            '\' onclick=\'comprobar_Botones()\' VALUE=aplicable></div>');
-                        $oTable->setCellContents($cont, 0, $aContenido, 'TD');
+                        $aContenido = array('<INPUT TYPE=CHECKBOX NAME=\'' . $i .
+                            '\' onclick=\'comprobar_Botones()\' VALUE=aplicable>');
+                        $rowContent[] =$aContenido;
                     }
-
                 }
-
-                $iColumna = 0;
                 foreach ($paged_data['data'][$i] as $key => $value) {
-
                     if ($key == 'id') {
                         $_SESSION['pagina'][] = $value;
                     } else if ($key !== 'destinatario') {
-                        if (strlen($value) < 15) {
-                            $aContenido = array('<nobr><b>' . stripslashes($value) . '</b></nobr>');
-                            $oTable->setCellContents($i + 1, $iColumna, $aContenido, 'TD');
-
-                        } else {
-                            $aContenido = array('<b>' . stripslashes($value) . '</b>');
-                            $oTable->setCellContents($i + 1, $iColumna, $aContenido, 'TD');
-
-                        }
-
+                        $aContenido = array('<b>' . stripslashes($value) . '</b>');
+                        $rowContent[] = $aContenido;
                     }
-                    $iColumna++;
                 }
+                $oTable->addRow($rowContent);
             }
 
             //Fin Tabla de registros
-            $sTabla = $oTable->toHtml();
-            $sHtml .= $sTabla . "</center>";
+            $sTabla = $oTable->render();
+            $sHtml .= $sTabla . "</div>";
 
             //Aqui metemos texto por si alguna opcion lo necesita
             if ($this->sTexto != null) {
@@ -359,10 +345,9 @@ class generador_listados
         $sHtml .= "<br /><br />";
 
         $aTableAttrs = array('class' => 'subtabla');
-        $oSubTabla = new HTML_Table($aTableAttrs);
+        $oSubTabla = new Surface($aTableAttrs);
 
-        $aContenido = (array('&nbsp;'));
-        $oSubTabla->addRow($aContenido, null, 'TR');
+        $rowContent = array();
 
         if (is_array($this->aBuscador)) {
             for ($iContador = 0; $iContador < count($this->aBuscador['nombres']); $iContador++) {
@@ -378,20 +363,20 @@ class generador_listados
             if (is_array($this->aDesplegable)) {
                 foreach ($this->aDesplegable as $oDesplegable) {
                     if (!$oDesplegable->esNPag()) {
-                        $aContenido = (array($oDesplegable->to_Html()));
-                        $oSubTabla->addCol($aContenido, null, 'TD');
+                        $aContenido = ($oDesplegable->to_Html());
+                        $rowContent[] = $aContenido;
                     }
                 }
             }
             $this->agrega_Boton(gettext('sBotonBusqueda'), "sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador . "1" . separador . $this->sOrder
                 . " " . $this->sSentidoOrder . "')", "noafecta");
             $oBoton = end($this->aBotonesNoAfectan);
-
-            $sHtml .= $oSubTabla->toHtml();
+            $oSubTabla->addRow($rowContent);
+            $sHtml .= $oSubTabla->render();
 
             $sHtml .= $oBoton->to_Html() . "<br /><br />";
         } else {
-            $sHtml .= $oSubTabla->toHtml();
+            $sHtml .= $oSubTabla->render();
         }
         return $sHtml;
     }

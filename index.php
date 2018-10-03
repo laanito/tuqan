@@ -8,7 +8,6 @@ include 'include.php';
 require_once 'PEAR.php';
 require_once 'vendor/autoload.php';
 require_once 'HTML/TreeMenu.php';
-require_once 'HTML/Table.php';
 require_once 'Pager/Pager.php';
 
 

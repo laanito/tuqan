@@ -18,6 +18,7 @@
     "ext-gettext": "*",
     "anahkiasen/former": "4.1.7",
     "ext-pdo_pgsql": "*",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "jamesmcfadden/surface": "dev-master"
   }
 }
