@@ -17,6 +17,7 @@
     "monolog/monolog": "~1.23",
     "ext-gettext": "*",
     "anahkiasen/former": "4.1.7",
-    "ext-pgsql": "*"
+    "ext-pdo_pgsql": "*",
+    "ext-pdo": "*"
   }
 }

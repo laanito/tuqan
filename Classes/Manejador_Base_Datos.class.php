@@ -18,7 +18,7 @@ namespace Tuqan\Classes;
 /**
  * Class Manejador_Base_Datos
  */
-class Manejador_Base_Datos extends \DB
+class Manejador_Base_Datos extends \PDO
 {
 
     // Attributos
@@ -83,7 +83,7 @@ class Manejador_Base_Datos extends \DB
     /**
      *    Este son los datos devueltos, un objeto DB_result
      * @access private
-     * @var object
+     * @var \PDOStatement
      */
 
     private $oResultado;
@@ -117,25 +117,10 @@ class Manejador_Base_Datos extends \DB
         $this->sHost = $sServidorEtc;
         $this->sPort = $iPuertoEtc;
         $this->sTipo_Bd = $sTipoBdEtc;
+        $this->oConexion = parent::__construct($this->dsn());
     }
     //Fin Manejador_Base_Datos
 
-    /**
-     *    Destructor
-     *
-     * @access public
-     */
-    function __destruct()
-    {
-        //    echo "destruyendo";
-        if (\DB::isConnection($this->oConexion)) {
-            $this->desconexion();
-        }
-        if (is_object($this->oQuery)) {
-            $this->oQuery->__destruct();
-        }
-    }
-    //Fin destructor
 
     /**
      *    Aqui controlamos todos los errores que puedan darse al realizar operaciones con
@@ -167,7 +152,6 @@ class Manejador_Base_Datos extends \DB
     public function consulta($sSql = null)
     {
         $sConsulta = $this->to_String_Consulta();
-        $this->conexion();
         if (is_null($sSql)) {
             $this->oResultado = $this->oConexion->query($sConsulta);
         } else {
@@ -184,9 +168,9 @@ class Manejador_Base_Datos extends \DB
      * @param integer $mode fetch mode
      * @return array
      */
-    public function coger_Fila($bSlash = true, $mode = DB_FETCHMODE_ORDERED)
+    public function coger_Fila($bSlash = true, $mode = \PDO::FETCH_NUM)
     {
-        $mTmp = $this->oResultado->fetchRow($mode);
+        $mTmp = $this->oResultado->fetch($mode);
         if (is_array($mTmp)) {
             foreach ($mTmp as $sKey => $sValor) {
                 if ($bSlash) {
@@ -218,16 +202,6 @@ class Manejador_Base_Datos extends \DB
      */
     public function conexion()
     {
-
-        if(isset($_SESSION['encodingapache'])) {
-            $sEncoding = $_SESSION['encodingapache'];
-        }
-        else {
-           $sEncoding ='UTF-8';
-        }
-        $dsn = $this->sTipo_Bd . "://" . $this->sUser . ":" . $this->sPasswd . "@" . $this->sHost . ":" . $this->sPort . "/" . $this->sDb;
-        $this->oConexion = $this->connect($dsn, false);
-        pg_set_client_encoding($this->oConexion->connection, $sEncoding);
         $this->manejo_Errores('conexion');
     }
     //Fin conexion
@@ -636,8 +610,7 @@ class Manejador_Base_Datos extends \DB
 
     public function desconexion()
     {
-        $sValor = $this->oConexion->disconnect();
-        //$this->manejo_Errores('desconexion',$sValor);
+        $this->oConexion->disconnect();
     }
     //Fin desconexion
 
@@ -648,7 +621,7 @@ class Manejador_Base_Datos extends \DB
      */
     public function crear_LOB()
     {
-        return pg_lo_create($this->oConexion->connection);
+        return $this->oConexion->pgsqlLOBCreate($this->oConexion->connection);
     }
 
     /**
@@ -658,7 +631,7 @@ class Manejador_Base_Datos extends \DB
      */
     public function abrir_LOB($iOid, $sModo)
     {
-        return pg_lo_open($this->oConexion->connection, $iOid, $sModo);
+        return $this->oConexion->pgsqlLOBOpen($iOid, $sModo);
     }
 
     /**
@@ -668,7 +641,7 @@ class Manejador_Base_Datos extends \DB
      */
     public function escribir_LOB($iBlob, $sContenido)
     {
-        return pg_lo_write($iBlob, $sContenido);
+        return stream_copy_to_stream($sContenido, $iBlob);
     }
 
     /**
@@ -678,7 +651,7 @@ class Manejador_Base_Datos extends \DB
      */
     public function cerrar_LOB($iBlob)
     {
-        return pg_lo_close($iBlob);
+        return true;
     }
 
     /**
@@ -688,7 +661,7 @@ class Manejador_Base_Datos extends \DB
      */
     public function destruir_LOB($iBlob)
     {
-        return pg_lo_unlink($this->oConexion->connection, $iBlob);
+        return $this->oConexion->pgsqlLOBUnlink($iBlob);
     }
 
     /**
@@ -698,11 +671,15 @@ class Manejador_Base_Datos extends \DB
      */
     public function leer_LOB_Completo($iBlob)
     {
-        pg_lo_read_all($iBlob);
+        $stream = $this->oConexion->pgsqlLOBOpen($iBlob, 'r');
+        header("Content-type: application/octet-stream");
+        fpassthru($stream);
     }
 
     public function leer_LOB_Imagen($iBlob, $sLength)
     {
-        return (pg_lo_read($iBlob, $sLength));
+        $stream = $this->oConexion->pgsqlLOBOpen($iBlob, 'r');
+        header("Content-type: application/octet-stream");
+        fpassthru($stream);
     }
 }

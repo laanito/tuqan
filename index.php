@@ -7,8 +7,6 @@ include 'include.php';
  */
 require_once 'PEAR.php';
 require_once 'vendor/autoload.php';
-require_once 'DB.php';
-require_once 'DB/pgsql.php';
 require_once 'HTML/Page.php';
 require_once 'HTML/TreeMenu.php';
 require_once 'HTML/Table.php';
