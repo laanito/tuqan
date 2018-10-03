@@ -513,7 +513,7 @@ class generador_listados
         TuqanLogger::debug("Query in wrapper: ",['query' => $query]);
         if (!array_key_exists('totalItems', $this->aOpcionesPager)) {
             $this->oDb->consulta($query);
-            $totalItems = (int)$this->oDb->rowCount();
+            $totalItems = (int)$this->oDb->oResultado->rowCount();
             //}
             $this->aOpcionesPager['totalItems'] = $totalItems;
         }
@@ -578,5 +578,4 @@ class generador_listados
         return $page;
     }
     //Fin Page_Wrapper_DB
-
 }
