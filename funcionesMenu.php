@@ -32,7 +32,6 @@ require_once 'Classes/generador_SQL.php';
 require_once 'Classes/Config.php';
 require_once 'encriptador.php';
 require_once 'constantes.inc.php';
-require_once 'estilo.php';
 require_once 'Classes/Procesador_De_Peticiones.php';
 
 use Tuqan\Classes\Manejador_Base_Datos;

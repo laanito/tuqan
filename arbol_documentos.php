@@ -25,12 +25,9 @@ function pinta_arbol($iUserid, $bUsuario = true)
 {
     $sPremenu = permisos_documentos($iUserid, $bUsuario, $_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 
-    require_once('estilo_arbol.php');
-    $oEstilo_Arbol = new Estilo_Arbol($_SESSION['ancho'], $_SESSION['navegador']);
-
     $oPagina = new HTML_Page();
 
-    $oPagina->addStyleDeclaration($oEstilo_Arbol, 'text/css');
+    $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
     $oPagina->addScript('javascript/TreeMenu.js', 'text/javascript');
     $oPagina->addScript('javascript/cursor.js', 'text/javascript');
 

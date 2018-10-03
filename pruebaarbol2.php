@@ -3,7 +3,6 @@
 * LICENSE see LICENSE.md file
  */
 
-require_once 'estilo.php';
 require_once 'HTML/Page.php';
 require_once 'FormatoPagina.php';
 require_once 'boton.php';
@@ -64,7 +63,6 @@ foreach ($aMenu as $i => $valor) {
     }
 }
 $sPremenu = $menu->Pinta_Arbol();
-$oEstilo = new Estilo_Pagina($anchura, $altura, $browser);
 $aParametros = variables_Pagina($browser, $sistema);
 
 $oPagina = new HTML_Page(array(
@@ -74,7 +72,7 @@ $oPagina = new HTML_Page(array(
     'lineend' => $aParametros[3]
 ));
 
-$oPagina->addStyleDeclaration($oEstilo, 'text/css');
+$oPagina->addStyleDeclaration('/css/tuqan', 'text/css');
 $oPagina->addScript('javascript/TreeMenu.js', 'text/javascript');
 $oPagina->addBodyContent($sPremenu);
 $oPagina->addBodyContent("<br /><br /><P ALIGN=\"right\">Utilice el boton aceptar para guardar los cambios<br /><br />");

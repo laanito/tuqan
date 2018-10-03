@@ -9,7 +9,6 @@
 require_once 'boton.php';
 require_once('Classes/generador_arboles.php');
 require_once('Classes/Manejador_Base_Datos.class.php');
-require_once('estilo.php');
 require_once('HTML/Page.php');
 require_once('Classes/FormatoPagina.php');
 
@@ -116,15 +115,12 @@ function arbol_permisos($iUserid, $sLogin, $sPass, $sBdatos)
             }
         }
     }
-    require_once('estilo_arbol.php');
 
-    $oEstilo_Arbol = new Estilo_Arbol($_SESSION['ancho'], $_SESSION['navegador']);
     $oPagina = new HTML_Page();
     $oPagina->addScript('javascript/cursor.js', "text/javascript");
-    $oPagina->addStyleDeclaration($oEstilo_Arbol, 'text/css');
+    $oPagina->addStyleDeclaration('/css/tuqan.ccs', 'text/css');
 
     $sPremenu = $menu->Pinta_Arbol();
-//$oPagina->addBodyContent($sPremenu);
 
     $oPagina->addBodyContent("<div id=\"arbol_centro\">" . $sPremenu . "</div>");
     return $oPagina->toHTML();
@@ -186,11 +182,9 @@ function ver_arbol_permisos($iUserid, $sLogin, $sPass, $sBdatos)
             }
         }
     }
-    require_once('estilo_arbol.php');
 
-    $oEstilo_Arbol = new Estilo_Arbol($_SESSION['ancho'], $_SESSION['navegador']);
     $oPagina = new HTML_Page();
-    $oPagina->addStyleDeclaration($oEstilo_Arbol, 'text/css');
+    $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
     $sPremenu = $menu->Pinta_Arbol();
     $oPagina->addBodyContent("<div id=\"arbol_centro\">" . $sPremenu . "</div>");
     return $oPagina->toHTML();
@@ -283,42 +277,7 @@ function permisos_documentos($iUserid, $bUsuario, $sLogin, $sPass, $sBdatos)
 
         $aMenu[$aIterador[0]][$aIterador[1]] = asignar_Menu($aIterador[9]);
         $aPermisos[$aIterador[0]][$aIterador[1]] = asignar_Permisos($aIterador);
-        //Bloque sustituido por 2 funciones, mantenemos un tiempo por motivos de seguridad 20/1/2006
-//    $aMenu[$aIterador[0]][$aIterador[1]]['Ver']=$aIterador[9];
-        /*if($aIterador[2]=='t')
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Ver']=1;
-        else
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Ver']=0;
-    //    $aMenu[$aIterador[0]][$aIterador[1]]['Nueva Version']=$aIterador[9];
-        if($aIterador[3]=='t')
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Nueva Version']=1;
-        else
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Nueva Version']=0;
-    //    $aMenu[$aIterador[0]][$aIterador[1]]['Modificar']=$aIterador[9];
-        if($aIterador[4]=='t')
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Modificar']=1;
-        else
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Modificar']=0;
-    //    $aMenu[$aIterador[0]][$aIterador[1]]['Revisar']=$aIterador[9];
-        if($aIterador[5]=='t')
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Revisar']=1;
-        else
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Revisar']=0;
-    //    $aMenu[$aIterador[0]][$aIterador[1]]['Aprobar']=$aIterador[9];
-        if($aIterador[6]=='t')
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Aprobar']=1;
-        else
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Aprobar']=0;
-    //    $aMenu[$aIterador[0]][$aIterador[1]]['Historico']=$aIterador[9];
-        if($aIterador[7]=='t')
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Historico']=1;
-        else
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Historico']=0;
-    //    $aMenu[$aIterador[0]][$aIterador[1]]['Tareas']=$aIterador[9];
-        if($aIterador[8]=='t')
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Tareas']=1;
-        else
-            $aPermisos[$aIterador[0]][$aIterador[1]]['Tareas']=0;*/
+
         if ($aIterador[2] == 't' || $aIterador[3] == 't' || $aIterador[4] == 't' || $aIterador[5] == 't' || $aIterador[6] == 't' || $aIterador[7] == 't' || $aIterador[8] == 't') {
             $aPermisos[$aIterador[0]]['valor_raiz'] = 1;
             $aPermisos[$aIterador[0]][$aIterador[1]]['valor_raiz'] = 1;
@@ -338,48 +297,10 @@ function permisos_documentos($iUserid, $bUsuario, $sLogin, $sPass, $sBdatos)
                 $aMenu[$aIterador[0]][$aIterador[1]] = asignar_Menu($aIterador[9]);
                 $aPermisos[$aIterador[0]][$aIterador[1]] = asignar_Permisos($aIterador);
 
-                //Bloque sustituido por 2 funciones, mantenemos un tiempo por motivos de seguridad 20/1/2006
-                /*
-                $aMenu[$aIterador[0]][$aIterador[1]]['Ver']=$aIterador[9];
-                if($aIterador[2]=='t')
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Ver']=1;
-                else
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Ver']=0;
-                $aMenu[$aIterador[0]][$aIterador[1]]['Nueva Version']=$aIterador[9];
-                if($aIterador[3]=='t')
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Nueva Version']=1;
-                else
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Nueva Version']=0;
-                $aMenu[$aIterador[0]][$aIterador[1]]['Modificar']=$aIterador[9];
-                if($aIterador[4]=='t')
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Modificar']=1;
-                else
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Modificar']=0;
-                $aMenu[$aIterador[0]][$aIterador[1]]['Revisar']=$aIterador[9];
-                if($aIterador[5]=='t')
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Revisar']=1;
-                else
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Revisar']=0;
-                $aMenu[$aIterador[0]][$aIterador[1]]['Aprobar']=$aIterador[9];
-                if($aIterador[6]=='t')
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Aprobar']=1;
-                else
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Aprobar']=0;
-                $aMenu[$aIterador[0]][$aIterador[1]]['Historico']=$aIterador[9];
-                if($aIterador[7]=='t')
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Historico']=1;
-                else
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Historico']=0;
-                $aMenu[$aIterador[0]][$aIterador[1]]['Tareas']=$aIterador[9];
-                if($aIterador[8]=='t')
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Tareas']=1;
-                else
-                    $aPermisos[$aIterador[0]][$aIterador[1]]['Tareas']=0;*/
                 if ($aIterador[2] == 't' || $aIterador[3] == 't' || $aIterador[4] == 't' || $aIterador[5] == 't' || $aIterador[6] == 't' || $aIterador[7] == 't' || $aIterador[8] == 't') {
                     $aPermisos[$aIterador[0]]['valor_raiz'] = 1;
                     $aPermisos[$aIterador[0]][$aIterador[1]]['valor_raiz'] = 1;
                 }
-                //$_SESSION['filas_arbol'][$i]=$aIterador[9];
                 $_SESSION['codigo_arbol'][$i] = $aIterador[10];
                 $_SESSION['nombre_arbol'][$i] = $aIterador[1];
                 $i++;
@@ -415,15 +336,11 @@ function permisos_documentos($iUserid, $bUsuario, $sLogin, $sPass, $sBdatos)
     }
 
 
-    require_once('estilo.php');
-
-    $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
 
     $oPagina = new HTML_Page();
-    $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+    $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
 
     $sPremenu = $menu->Pinta_Arbol();
     $oPagina->addBodyContent($sPremenu);
     return $oPagina->toHTML();
 }
-

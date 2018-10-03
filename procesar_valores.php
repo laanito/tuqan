@@ -16,12 +16,10 @@ if (!isset($_SESSION)) {
 require_once 'boton.php';
 require_once 'Manejador_Base_Datos.class.php';
 require_once 'HTML/Page.php';
-require_once 'estilo.php';
 include_once 'include.php';
-$oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
 $oPagina = new HTML_Page();
 
-$oPagina->addStyleDeclaration($oEstilo, 'text/css');
+$oPagina->addStyleDeclaration('/css/tuqan', 'text/css');
 
 $oVolver = new boton($sBotonVolver, "parent.atras(-3)", "noafecta");
 //Sacamos si habia algun valor ya para el indicador

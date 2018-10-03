@@ -8,7 +8,6 @@
 require_once "Upload.php";
 require_once "boton.php";
 require_once 'HTML/Page.php';
-require_once 'estilo.php';
 require_once 'constantes.inc.php';
 require 'etc/qnova.conf.php';
 require_once 'Manejador_Base_Datos.class.php';
@@ -44,9 +43,8 @@ $sTiempoLimiteInicial = ini_get('max_execution_time');
 ini_set('memory_limit', $sMemoriaHtml2Pdf);
 ini_set('max_execution_time', $sMaxTiempoHtml2Pdf);
 
-$oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $_SESSION['navegador']);
 $oPagina = new HTML_Page();
-$oPagina->addStyleDeclaration($oEstilo, 'text/css');
+$oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
 
 $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 $oBD = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -237,7 +235,7 @@ if ($file->isValid()) {
             $aRevision = $oBD->coger_Fila();
             $iExtension = $aRevision['id'];
 
-            //Tamaño
+            //Tamaï¿½o
             $iTipo = $aRevision[0];
             $iIdProceso = $_POST['documento'];
 
@@ -387,7 +385,7 @@ if ($file->isValid()) {
                         $oPagina->addBodyContent("<b>".gettext('File Uploaded')."</b><br /><br />");
                     }
                     //Ahora debemos introducir los datos en la tabla correspondiente, lo haremos de forma escalonada para no
-                    //agotar la memoriaç
+                    //agotar la memoriaï¿½
                 } else {
                     $sTabla = "contenido_binario";
                     $oBaseDatos->iniciar_Consulta('INSERT');

@@ -68,7 +68,6 @@ class boton
 
     public function to_Html()
     {
-        require_once('estilo.php');
         $sNavegador = $_SESSION['navegador'];
         $sDisabled='';
 
