@@ -10,16 +10,15 @@ namespace Tuqan\Classes;
  * Esta clase es la encargada de realizar los listados que se mostraran en
  * pantalla
  *
-
  *
  * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
  */
 
-use \HTML_Table;
 use \boton;
 use \desplegable;
 use \Pager;
+use Surface\Surface;
 
 class generador_listados
 {
@@ -189,10 +188,7 @@ class generador_listados
     {
         unset($_SESSION['pagina']);
         $_SESSION['pagina'] = array();
-        $dsn = $this->oDb->dsn();
-        $oMiDb = $this->oDb->connect($dsn);
-        TuqanLogger::debug("Calling Pagger_wrapper ", ['dsn' => $dsn]);
-        $paged_data = $this->Pager_Wrapper_DB($oMiDb);
+        $paged_data = $this->Pager_Wrapper_DB();
         if (is_object($paged_data)) {
             TuqanLogger::debug("Error en la llamada:",$paged_data);
         }
@@ -202,21 +198,22 @@ class generador_listados
 
             //Tabla de listados de los registros
             $aTableAttrs = array('class' => 'table table-responsive');
-            $oTable = new HTML_Table($aTableAttrs, 0, true);
-
+            $oTable = new Surface($aTableAttrs) ;
+            $headerContent =array();
 
             //Si hay algun boton que afecte a mas de una fila ponemos las cabeceras de las checkbox
             if (count($this->aBotones) > 0) {
                 $aContenido = "<input type=checkbox id='checkarriba' onclick='marcardesmarcar()'>";
-                $oTable->setHeaderContents(0,0, $aContenido, null);
+                $headerContent[]=$aContenido;
             } else if (count($this->aBotonesFila) > 0) {
                 $aContenido = '';
-                $oTable->setHeaderContents(0,0, $aContenido, null);;
+                $headerContent[]=$aContenido;
 
             }
             if (is_array($paged_data['data'][0])) {
                 $iterador = 0;
                 foreach (array_keys($paged_data['data'][0]) as $key => $value) {
+
                     /**
                      *     Aqui comprobamos si es la columna por la que vamos a ordenar, para poner el icono de la flecha y para
                      *    poder enviar la peticion por el order correspondiente dependiendo del que ya estuviera (ASC o DESC)
@@ -234,59 +231,45 @@ class generador_listados
                             $newOrder = "";
                             $glyphIcon = '';
                         }
+
                         $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
                             $this->sAccion . separador . $iterador . separador . $value . " ".$newOrder . "')\"";
-                        $aContenido = $value.$glyphIcon;
-                        $oTable->setHeaderContents(0, $key, $aContenido, $aAtributos);
+                        $aContenido = '<span '.$aAtributos.'>'.$value.'</span>'.$glyphIcon;
+                        $headerContent[]=$aContenido;
                         $iterador++;
                     }
                 }
-
             }
-
+            $rows=array();
             for ($i = 0; $i < count($paged_data['data']); $i++) {
                 //Cada fila de los registros
-                $aContenido = (array('&nbsp;'));
-                $cont = $oTable->addRow($aContenido, null, 'TR');
-
-
+                $rowContent = array();
                 //Añadimos las checkbox si hay 1 o mas botones que afectan a alguna fila
                 if ((count($this->aBotones) > 0) || (count($this->aBotonesFila) > 0)) {
 
                     //Añadimos aqui un filtro especial para los mensajes, para que las checkbox de los mensajes generales salgan inhabilitadas
                     if ($this->sAccion) {
-
-                        $aContenido = array('<div align=\"center\"><INPUT TYPE=CHECKBOX NAME=\'' . $i .
-                            '\' onclick=\'comprobar_Botones()\' VALUE=aplicable></div>');
-                        $oTable->setCellContents($cont, 0, $aContenido, 'TD');
+                        $aContenido = '<INPUT TYPE=CHECKBOX NAME=\'' . $i .
+                            '\' onclick=\'comprobar_Botones()\' VALUE=aplicable>';
+                        $rowContent[] =$aContenido;
                     }
-
                 }
-
-                $iColumna = 0;
                 foreach ($paged_data['data'][$i] as $key => $value) {
-
                     if ($key == 'id') {
                         $_SESSION['pagina'][] = $value;
                     } else if ($key !== 'destinatario') {
-                        if (strlen($value) < 15) {
-                            $aContenido = array('<nobr><b>' . stripslashes($value) . '</b></nobr>');
-                            $oTable->setCellContents($i + 1, $iColumna, $aContenido, 'TD');
-
-                        } else {
-                            $aContenido = array('<b>' . stripslashes($value) . '</b>');
-                            $oTable->setCellContents($i + 1, $iColumna, $aContenido, 'TD');
-
-                        }
-
+                        $aContenido = '<b>' . stripslashes($value) . '</b>';
+                        $rowContent[] = $aContenido;
                     }
-                    $iColumna++;
                 }
+                $rows[]=$rowContent;
             }
 
             //Fin Tabla de registros
-            $sTabla = $oTable->toHtml();
-            $sHtml .= $sTabla . "</center>";
+            $sTabla = $oTable->setHead($headerContent)
+                ->addRows($rows)
+                ->render();
+            $sHtml .= $sTabla . "</div>";
 
             //Aqui metemos texto por si alguna opcion lo necesita
             if ($this->sTexto != null) {
@@ -362,10 +345,9 @@ class generador_listados
         $sHtml .= "<br /><br />";
 
         $aTableAttrs = array('class' => 'subtabla');
-        $oSubTabla = new HTML_Table($aTableAttrs);
+        $oSubTabla = new Surface($aTableAttrs);
 
-        $aContenido = (array('&nbsp;'));
-        $oSubTabla->addRow($aContenido, null, 'TR');
+        $rowContent = array();
 
         if (is_array($this->aBuscador)) {
             for ($iContador = 0; $iContador < count($this->aBuscador['nombres']); $iContador++) {
@@ -381,20 +363,20 @@ class generador_listados
             if (is_array($this->aDesplegable)) {
                 foreach ($this->aDesplegable as $oDesplegable) {
                     if (!$oDesplegable->esNPag()) {
-                        $aContenido = (array($oDesplegable->to_Html()));
-                        $oSubTabla->addCol($aContenido, null, 'TD');
+                        $aContenido = ($oDesplegable->to_Html());
+                        $rowContent[] = $aContenido;
                     }
                 }
             }
             $this->agrega_Boton(gettext('sBotonBusqueda'), "sndReq('general:busqueda:comun:nuevo:listado','',1,'" . $this->sAccion . separador . "1" . separador . $this->sOrder
                 . " " . $this->sSentidoOrder . "')", "noafecta");
             $oBoton = end($this->aBotonesNoAfectan);
-
-            $sHtml .= $oSubTabla->toHtml();
+            $oSubTabla->addRow($rowContent);
+            $sHtml .= $oSubTabla->render();
 
             $sHtml .= $oBoton->to_Html() . "<br /><br />";
         } else {
-            $sHtml .= $oSubTabla->toHtml();
+            $sHtml .= $oSubTabla->render();
         }
         return $sHtml;
     }
@@ -499,7 +481,6 @@ class generador_listados
     //Fin pon_Links
 
     /**
-     * @param object PEAR::DB instance
      * @param object db query
      * @param array  PEAR::Pager options
      * @param boolean Disable pagination (get all results)
@@ -511,17 +492,13 @@ class generador_listados
      * @return array with links and paged data
      * @access private
      */
-    private function Pager_Wrapper_DB(&$db, $disabled = false, $fetchMode = DB_FETCHMODE_ASSOC, $dbparams = null)
+    private function Pager_Wrapper_DB($disabled = false, $fetchMode = \PDO::FETCH_ASSOC, $dbparams = null)
     {
         $query = $this->oDb->to_String_Consulta();
         TuqanLogger::debug("Query in wrapper: ",['query' => $query]);
         if (!array_key_exists('totalItems', $this->aOpcionesPager)) {
-            $res =& $db->query($query, $dbparams);
-            if (\PEAR::isError($res)) {
-                return $res;
-            }
-            $totalItems = (int)$res->numRows();
-            $res->free();
+            $this->oDb->consulta($query);
+            $totalItems = (int)$this->oDb->rowCount();
             //}
             $this->aOpcionesPager['totalItems'] = $totalItems;
         }
@@ -564,29 +541,13 @@ class generador_listados
         );
         list($page['from'], $page['to']) = $pager->getOffsetByPageId();
 
-        /**
-         *     Hacemos la consulta limitada para obtener un numero prefijado de datos
-         */
-
-        //Arreglo del fallo cuando no tenemos select
-        $iPaginas = 20;
-        if ($this->aOpcionesPager['perPage'] != null) {
-            $iPaginas = $this->aOpcionesPager['perPage'];
-        }
-        $res = ($disabled) ?
-            $db->limitQuery($query, 0, $totalItems, $dbparams) :
-            $db->limitQuery($query, $page['from'] - 1, $iPaginas, $dbparams);
-        $pera = new \PEAR();
-        if ($pera->isError($res)) {
-            return $res;
-        }
 
         /**
          *     Añadimos los datos al listado
          */
         $row=array();
         $page['data'] = array();
-        while ($res->fetchInto($row, $fetchMode)) {
+        while ($row=$this->oDb->coger_Fila(true, $fetchMode)) {
             $page['data'][] = $row;
         }
         if ($disabled) {
@@ -602,5 +563,4 @@ class generador_listados
         return $page;
     }
     //Fin Page_Wrapper_DB
-
 }

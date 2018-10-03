@@ -7,9 +7,7 @@ include 'include.php';
  */
 require_once 'PEAR.php';
 require_once 'vendor/autoload.php';
-require_once 'HTML/Page.php';
 require_once 'HTML/TreeMenu.php';
-require_once 'HTML/Table.php';
 require_once 'Pager/Pager.php';
 
 
@@ -41,11 +39,11 @@ require_once 'Classes/User.php';
 require_once 'Classes/AjaxHandler.php';
 require_once 'Classes/FormManager.php';
 require_once 'Classes/FormElement.php';
+require_once 'Classes/FakePage.php';
 
 /**
  * Misc
  */
-require_once 'Classes/FormatoPagina.php';
 require_once 'Classes/generador_SQL.php';
 require_once 'Classes/Config.php';
 require_once 'encriptador.php';

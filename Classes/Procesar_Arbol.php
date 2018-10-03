@@ -1,9 +1,6 @@
 <?php
 namespace Tuqan\Classes;
 
-use \Generador_Arboles;
-use \Estilo_Pagina;
-use \HTML_Page;
 use \boton;
 
 class Procesar_Arbol
@@ -11,8 +8,11 @@ class Procesar_Arbol
     /**
      *     Esta es nuestra funcion recursiva, le pasamos el arbol donde iran todos los nodos, el nodo padre, es decir al
      *  que tenemos que enganchar los nodos que saquemos, el nivel maximo sobre el que permitiremos recursividad
+     * @param Generador_Arboles $oArbol
+     * @param $oPadre
+     * @param $iNivel
+     * @param null $iIdPadre
      */
-
     function sacar_hijos(Generador_Arboles &$oArbol, &$oPadre, $iNivel, $iIdPadre = null)
     {
 
@@ -32,7 +32,7 @@ class Procesar_Arbol
             while ($aIterador = $oDb->coger_Fila()) {
                 $oArbol->valor_check(0, $aIterador[0]);
                 $nodo = $oArbol->Nuevo_Nodo($aIterador[1], 'a3', true);
-                sacar_hijos($oArbol, $nodo, $iNivel + 1, $aIterador[0]);
+                $this->sacar_hijos($oArbol, $nodo, $iNivel + 1, $aIterador[0]);
                 $aHijos[] = $aIterador[0];
                 $oArbol->Situa_Nodo($nodo, $oPadre);
             }
@@ -42,31 +42,19 @@ class Procesar_Arbol
 
     /**
      * Esta funcion nos muestra todos los procesos en forma de arbol
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
      */
-
     function procesa_Arbol_Procesos($sAccion, $aParametros)
     {
-        $browser = $_SESSION['navegador'];
-        $sistema = $_SESSION['sistema_operativo'];
-
-
         $sProviene = $aParametros['proviene'];
-        $oEstilo = new Estilo_Pagina($_SESSION['ancho'], $_SESSION['alto'], $browser);
 
-        $formatoPagina =new Formato_Pagina();
-        $aParametros = $formatoPagina->variables_Pagina($browser, $sistema);
-
-
-        $oPagina = new HTML_Page(array(
-            'charset' => $aParametros[0],
-            'language' => $aParametros[1],
-            'cache' => $aParametros[2],
-            'lineend' => $aParametros[3]
-        ));
-        $oPagina->addScript('javascript/TreeMenu.js', "text/javascript");
-        $oPagina->addScript('javascript/radio.js', "text/javascript");
-        $oPagina->addScript('javascript/cursor.js', "text/javascript");
-        $oPagina->addStyleDeclaration($oEstilo, 'text/css');
+        $oPagina = new FakePage();
+        $oPagina->addScript('/javascript/TreeMenu.js', "text/javascript");
+        $oPagina->addScript('/javascript/radio.js', "text/javascript");
+        $oPagina->addScript('/javascript/cursor.js', "text/javascript");
+        $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
 
         $oProcesos = new Generador_Arboles();
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -110,7 +98,7 @@ class Procesar_Arbol
                  *  el nivel y la id del nodo correspondiente
                  */
 
-                sacar_hijos($oProcesos, $nodo_padre, 2, $aIterador[0]);
+                $this->sacar_hijos($oProcesos, $nodo_padre, 2, $aIterador[0]);
                 $oProcesos->Situa_Nodo($nodo_padre);
             }
         }
@@ -147,7 +135,7 @@ class Procesar_Arbol
     }
 
 
-    function procesa_arbol($sTipo, $aParametros = null, $sAccion)
+    function procesa_arbol($sTipo, $aParametros = null, $sAccion=null)
     {
         switch ($sTipo) {
             case 'menu':

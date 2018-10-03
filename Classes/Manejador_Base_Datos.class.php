@@ -72,13 +72,6 @@ class Manejador_Base_Datos extends \PDO
 
     private $sDb;
 
-    /**
-     *    Este es el objeto manejador de conexion a la base de datos
-     * @access private
-     * @var object
-     */
-
-    private $oConexion;
 
     /**
      *    Este son los datos devueltos, un objeto DB_result
@@ -117,7 +110,7 @@ class Manejador_Base_Datos extends \PDO
         $this->sHost = $sServidorEtc;
         $this->sPort = $iPuertoEtc;
         $this->sTipo_Bd = $sTipoBdEtc;
-        $this->oConexion = parent::__construct($this->dsn());
+        parent::__construct($this->dsn());
     }
     //Fin Manejador_Base_Datos
 
@@ -132,10 +125,10 @@ class Manejador_Base_Datos extends \PDO
      */
     private function manejo_Errores($sMotivo, $mValor = false)
     {
-        if (is_a($this->oConexion, 'PEAR_Error')) {
+        if (is_a($this, 'PEAR_Error')) {
             TuqanLogger::error(
                 'Database Error',
-                ['smotivo' => $sMotivo, 'mvalor' => $mValor, 'error' => $this->oConexion]
+                ['smotivo' => $sMotivo, 'mvalor' => $mValor, 'error' => $this->errorInfo()]
             );
         }
     }
@@ -153,9 +146,9 @@ class Manejador_Base_Datos extends \PDO
     {
         $sConsulta = $this->to_String_Consulta();
         if (is_null($sSql)) {
-            $this->oResultado = $this->oConexion->query($sConsulta);
+            $this->oResultado = $this->query($sConsulta);
         } else {
-            $this->oResultado = $this->oConexion->query($sSql);
+            $this->oResultado = $this->query($sSql);
         }
         $this->manejo_Errores('consulta');
     }
@@ -194,11 +187,14 @@ class Manejador_Base_Datos extends \PDO
      */
     public function dsn()
     {
-        return $this->sTipo_Bd . "://" . $this->sUser . ":" . $this->sPasswd . "@" . $this->sHost . ":" . $this->sPort . "/" . $this->sDb;
+        $dsn = $this->sTipo_Bd . ':' . 'dbname='. $this->sDb . ';'.
+            'user='.$this->sUser .';'.'password='.$this->sPasswd.
+            ';'.'host='.$this->sHost;
+        return $dsn;
     }
 
     /**
-     * @param string $tipo
+     * @deprecated
      */
     public function conexion()
     {
@@ -498,6 +494,7 @@ class Manejador_Base_Datos extends \PDO
      *
      * @access public
      * @param array $aSets
+     * @param array $aValues
      */
     public function construir_Set($aSets, $aValues)
     {
@@ -544,7 +541,7 @@ class Manejador_Base_Datos extends \PDO
     {
         $this->conexion();
 
-        $this->oResultado = $this->oConexion->query("COMMIT;");
+        $this->oResultado = $this->query("COMMIT;");
         $this->manejo_Errores('consulta');
     }
     //Fin hacer_Commit
@@ -558,7 +555,7 @@ class Manejador_Base_Datos extends \PDO
     {
         $this->conexion();
 
-        $this->oResultado = $this->oConexion->query("ROLLBACK;");
+        $this->oResultado = $this->query("ROLLBACK;");
         $this->manejo_Errores('consulta');
     }
     //Fin hacer_Rollback
@@ -572,8 +569,8 @@ class Manejador_Base_Datos extends \PDO
     public function comienza_transaccion()
     {
         $this->conexion();
-        $this->oResultado = $this->oConexion->query("BEGIN;");
-        $this->oConexion->autoCommit(false);
+        $this->oResultado = $this->query("BEGIN;");
+        $this->autoCommit(false);
         $this->manejo_Errores('consulta');
     }
 
@@ -583,8 +580,8 @@ class Manejador_Base_Datos extends \PDO
     public function termina_transaccion()
     {
         $this->conexion();
-        $this->oResultado = $this->oConexion->query("END;");
-        $this->oConexion->autoCommit(true);
+        $this->oResultado = $this->query("END;");
+        $this->autoCommit(true);
         $this->manejo_Errores('consulta');
     }
 
@@ -610,9 +607,20 @@ class Manejador_Base_Datos extends \PDO
 
     public function desconexion()
     {
-        $this->oConexion->disconnect();
+        return true;
     }
-    //Fin desconexion
+
+    /**
+     *    get rowcount
+     *
+     * @access public
+     */
+
+    public function rowCount()
+    {
+        return $this->oResultado->rowCount();
+    }
+
 
     /**
      *     Creacion de un LOB
@@ -621,7 +629,7 @@ class Manejador_Base_Datos extends \PDO
      */
     public function crear_LOB()
     {
-        return $this->oConexion->pgsqlLOBCreate($this->oConexion->connection);
+        return $this->pgsqlLOBCreate($this->connection);
     }
 
     /**
@@ -631,7 +639,7 @@ class Manejador_Base_Datos extends \PDO
      */
     public function abrir_LOB($iOid, $sModo)
     {
-        return $this->oConexion->pgsqlLOBOpen($iOid, $sModo);
+        return $this->pgsqlLOBOpen($iOid, $sModo);
     }
 
     /**
@@ -661,7 +669,7 @@ class Manejador_Base_Datos extends \PDO
      */
     public function destruir_LOB($iBlob)
     {
-        return $this->oConexion->pgsqlLOBUnlink($iBlob);
+        return $this->pgsqlLOBUnlink($iBlob);
     }
 
     /**
@@ -671,14 +679,14 @@ class Manejador_Base_Datos extends \PDO
      */
     public function leer_LOB_Completo($iBlob)
     {
-        $stream = $this->oConexion->pgsqlLOBOpen($iBlob, 'r');
+        $stream = $this->pgsqlLOBOpen($iBlob, 'r');
         header("Content-type: application/octet-stream");
         fpassthru($stream);
     }
 
     public function leer_LOB_Imagen($iBlob, $sLength)
     {
-        $stream = $this->oConexion->pgsqlLOBOpen($iBlob, 'r');
+        $stream = $this->pgsqlLOBOpen($iBlob, 'r');
         header("Content-type: application/octet-stream");
         fpassthru($stream);
     }

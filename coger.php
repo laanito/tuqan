@@ -1,16 +1,15 @@
 <?php
-/**
- * Created on 30-jun-2006
- *
- * Last edited on 19-feb-2018
- */
+
+
+use Tuqan\Classes\FakePage;
+use Tuqan\Classes\Manejador_Base_Datos;
 
 require_once "Upload.php";
 require_once "boton.php";
-require_once 'HTML/Page.php';
+require_once 'Classes/FakePage.php';
 require_once 'constantes.inc.php';
 require 'etc/qnova.conf.php';
-require_once 'Manejador_Base_Datos.class.php';
+require_once 'Classes/Manejador_Base_Datos.class.php';
 require_once 'encriptador.php';
 
 $css =& new encriptador();
@@ -43,7 +42,7 @@ $sTiempoLimiteInicial = ini_get('max_execution_time');
 ini_set('memory_limit', $sMemoriaHtml2Pdf);
 ini_set('max_execution_time', $sMaxTiempoHtml2Pdf);
 
-$oPagina = new HTML_Page();
+$oPagina = new FakePage();
 $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
 
 $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);

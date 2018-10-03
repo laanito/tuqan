@@ -3,8 +3,7 @@
 * LICENSE see LICENSE.md file
  */
 
-require_once 'HTML/Page.php';
-require_once 'FormatoPagina.php';
+require_once 'Classes/FakePage.php';
 require_once 'boton.php';
 /*$aMenu= array ('Documentos' => array ('Doc. Vigor' => 'documentacion:vigor',
                                               'Doc. Borrador' => 'documentacion:borra',
@@ -17,8 +16,8 @@ require_once 'boton.php';
                        'Registros' => array ('listado'=>'documentacion:listadoregistros'),
                        'Normativa' => array ('Doc. Externa' => 'documentacion:externa'));
 */
-require_once('Manejador_Base_Datos.class.php');
-require_once('generador_arboles.php');
+require_once('Classes/Manejador_Base_Datos.class.php');
+require_once('Classes/generador_arboles.php');
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -65,7 +64,7 @@ foreach ($aMenu as $i => $valor) {
 $sPremenu = $menu->Pinta_Arbol();
 $aParametros = variables_Pagina($browser, $sistema);
 
-$oPagina = new HTML_Page(array(
+$oPagina = new FakePage(array(
     'charset' => $aParametros[0],
     'language' => $aParametros[1],
     'cache' => $aParametros[2],

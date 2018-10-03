@@ -1,13 +1,14 @@
 <?php
 
-require_once('Manejador_Base_Datos.class.php');
-require_once('HTML/Page.php');
-require_once('HTML/CSS.php');
-require_once('generador_arboles.php');
+use Tuqan\Classes\arbol_listas;
+use Tuqan\Classes\FakePage;
+use Tuqan\Classes\Manejador_Base_Datos;
+
+require_once 'Classes/FakePage.php';
 require_once 'items.php';
-require_once 'Manejador_Base_Datos.class.php';
+require_once 'Classes/Manejador_Base_Datos.class.php';
 require_once 'include.php';
-require_once 'generador_arboles.php';
+require_once 'Classes/generador_arboles.php';
 require_once 'boton.php';
 
 if (!isset($_SESSION)) {
@@ -56,16 +57,14 @@ function arbol_permisos($iId)
     }
     $oArbol->aOpciones['permisos'] = true;
     $oArbol->genera_arbol_drag_and_drop_permisos($iId, $aIteradorPrimero[0]);
-    $oEstilo = new HTML_CSS();
-    $oCSSOpciones['filename'] = 'lib/css/drag-drop-folder-tree.css';
-    $oPagina = new HTML_Page();
-    $oPagina->addStyleSheet('lib/css/drag-drop-folder-tree.css', 'text/css');
+    $oPagina = new FakePage();
+    $oPagina->addStyleDeclaration('/lib/css/drag-drop-folder-tree.css', 'text/css');
     $oVolver = new boton(gettext('sBotonVolver'), "parent.sndReq('administracion:modulos:listado:nuevo','',0)", "noafecta");
     $sBoton = "<br />" . $oVolver->to_Html() . "<br /><br />";
     $oPagina->addBodyContent($sBoton);
     $oPagina->addBodyContent($oArbol->to_Html());
-    $oPagina->addScript('lib/js/ajax.js', 'text/javascript');
-    $oPagina->addScript('lib/js/drag-drop-folder-tree.js', 'text/javascript');
+    $oPagina->addScript('/lib/js/ajax.js', 'text/javascript');
+    $oPagina->addScript('/lib/js/drag-drop-folder-tree.js', 'text/javascript');
     $oPagina->addBodyContent("<script type='text/javascript'>" .
         "treeObj = new JSDragDropTree();
         treeObj.setTreeId('arbol_menu');
@@ -76,7 +75,6 @@ function arbol_permisos($iId)
     $oPagina->addBodyContent("</div>");
     $oPagina->addBodyContent("<div id=\"contenedor_derecha\">");
     $oPagina->addBodyContent("</div>");
-    $oPagina->addStyleSheet($oEstilo);
     return $oPagina->toHtml();
 }
 
@@ -127,10 +125,8 @@ function arbol_permisos_verPerfil($iPerfil)
     }
     $oArbol->aOpciones['permisos'] = true;
     $oArbol->genera_arbol_drag_and_drop_permisos($iId, $aIteradorPrimero[0]);
-    $oEstilo = new HTML_CSS();
-    $oCSSOpciones['filename'] = 'lib/css/drag-drop-folder-tree.css';
-    $oPagina = new HTML_Page();
-    $oPagina->addStyleSheet('lib/css/drag-drop-folder-tree.css', 'text/css');
+    $oPagina = new FakePage();
+    $oPagina->addStyleDeclaration('lib/css/drag-drop-folder-tree.css', 'text/css');
     $oPagina->addBodyContent($oArbol->to_Html());
     $oPagina->addScript('lib/js/ajax.js', 'text/javascript');
     $oPagina->addScript('lib/js/drag-drop-folder-tree.js', 'text/javascript');
@@ -141,6 +137,5 @@ function arbol_permisos_verPerfil($iPerfil)
         treeObj.setMessageMaximumDepthReached('Maximum depth reached'); // If you want to show a message when maximum depth is reached, i.e. on drop.
         treeObj.initTree();
         </script>");//,'text/javascript');
-    $oPagina->addStyleSheet($oEstilo);
     return $oPagina->toHtml();
 }
