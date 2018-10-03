@@ -620,6 +620,7 @@ class Manejador_Base_Datos extends \PDO
         return $this->oResultado->rowCount();
     }
 
+
     /**
      *     Creacion de un LOB
      *

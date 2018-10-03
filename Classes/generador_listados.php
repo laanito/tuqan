@@ -562,7 +562,7 @@ class generador_listados
          */
         $row=array();
         $page['data'] = array();
-        while ($this->oDb->fetchInto($row, $fetchMode)) {
+        while ($row=$this->oDb->coger_Fila($fetchMode)) {
             $page['data'][] = $row;
         }
         if ($disabled) {
