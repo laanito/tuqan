@@ -240,9 +240,8 @@ class generador_listados
                         $iterador++;
                     }
                 }
-            $oTable->setHead($headerContent);
             }
-
+            $rows=array();
             for ($i = 0; $i < count($paged_data['data']); $i++) {
                 //Cada fila de los registros
                 $rowContent = array();
@@ -264,11 +263,13 @@ class generador_listados
                         $rowContent[] = $aContenido;
                     }
                 }
-                $oTable->addRow($rowContent);
+                $rows[]=$rowContent;
             }
 
             //Fin Tabla de registros
-            $sTabla = $oTable->render();
+            $sTabla = $oTable->setHead($headerContent)
+                ->addRows($rowContent)
+                ->render();
             $sHtml .= $sTabla . "</div>";
 
             //Aqui metemos texto por si alguna opcion lo necesita
