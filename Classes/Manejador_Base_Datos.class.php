@@ -194,7 +194,7 @@ class Manejador_Base_Datos extends \PDO
     }
 
     /**
-     * @param string $tipo
+     * @deprecated
      */
     public function conexion()
     {
@@ -494,6 +494,7 @@ class Manejador_Base_Datos extends \PDO
      *
      * @access public
      * @param array $aSets
+     * @param array $aValues
      */
     public function construir_Set($aSets, $aValues)
     {
