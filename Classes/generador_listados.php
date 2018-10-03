@@ -235,7 +235,7 @@ class generador_listados
 
                         $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
                             $this->sAccion . separador . $iterador . separador . $value . " ".$newOrder . "')\"";
-                        $aContenido = '<span'.$aAtributos.'>'.$value.'</span>'.$glyphIcon;
+                        $aContenido = '<span '.$aAtributos.'>'.$value.'</span>'.$glyphIcon;
                         $headerContent[]=$aContenido;
                         $iterador++;
                     }
