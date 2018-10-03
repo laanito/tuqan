@@ -236,7 +236,7 @@ class generador_listados
                         $aAtributos = "onclick=\"sndReq('general:busqueda:comun:nuevo:listado','',1,'" .
                             $this->sAccion . separador . $iterador . separador . $value . " ".$newOrder . "')\"";
                         $aContenido = '<span'.$aAtributos.'>'.$value.'</span>'.$glyphIcon;
-                        $headerContent[$key]=$aContenido;
+                        $headerContent[]=$aContenido;
                         $iterador++;
                     }
                 }
@@ -251,8 +251,8 @@ class generador_listados
 
                     //Añadimos aqui un filtro especial para los mensajes, para que las checkbox de los mensajes generales salgan inhabilitadas
                     if ($this->sAccion) {
-                        $aContenido = array('<INPUT TYPE=CHECKBOX NAME=\'' . $i .
-                            '\' onclick=\'comprobar_Botones()\' VALUE=aplicable>');
+                        $aContenido = '<INPUT TYPE=CHECKBOX NAME=\'' . $i .
+                            '\' onclick=\'comprobar_Botones()\' VALUE=aplicable>';
                         $rowContent[] =$aContenido;
                     }
                 }
@@ -260,7 +260,7 @@ class generador_listados
                     if ($key == 'id') {
                         $_SESSION['pagina'][] = $value;
                     } else if ($key !== 'destinatario') {
-                        $aContenido = array('<b>' . stripslashes($value) . '</b>');
+                        $aContenido = '<b>' . stripslashes($value) . '</b>';
                         $rowContent[] = $aContenido;
                     }
                 }
