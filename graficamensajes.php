@@ -4,7 +4,6 @@ namespace Tuqan;
 
 require_once 'Image/Graph.php';
 require_once 'Classes/generadorGraficas.php';
-require_once 'DB.php';
 require_once 'Classes/Manejador_Base_Datos.class.php';
 
 use Tuqan\Classes\Manejador_Base_Datos;

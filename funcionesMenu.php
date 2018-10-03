@@ -5,12 +5,9 @@ namespace Tuqan;
  *
 * LICENSE see LICENSE.md file
  *
- * version temporal de menus que utiliza el generador de menus pero no
- * la base de datos.
+ * version temporal de menus que utiliza el generador de menus
  * Actualmente es llamado directamente por el iframe.
  * @TODO utilizar el manejador de peticiones
- * @TODO utilizar HTML_Page
- * @TODO utilizar CSS
  *
  * @author Luis Alberto Amigo Navarro <u>lamigo@praderas.org</u>
  * @version 1.0b
@@ -18,8 +15,6 @@ namespace Tuqan;
 
 require_once 'PEAR.php';
 require_once 'vendor/autoload.php';
-require_once 'DB.php';
-require_once 'DB/pgsql.php';
 require_once 'HTML/Page.php';
 require_once 'Classes/FormatoPagina.php';
 require_once 'Classes/Manejador_De_Peticiones.php';
