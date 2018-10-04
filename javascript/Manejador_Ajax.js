@@ -745,9 +745,9 @@ function handleResponse() {
                 let error = document.createElement("textarea");
                 error.setAttribute('cols', 120);
                 error.setAttribute('rows', 80);
-                }
                 error.value = response;
                 destino.appendChild(error);
+                }
             while (update[i] != null) {
                 if (update[i].length >= 1) {
                     switch (update[i - 1]) {
