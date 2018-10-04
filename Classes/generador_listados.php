@@ -198,7 +198,7 @@ class generador_listados
 
             //Tabla de listados de los registros
             $aTableAttrs = array('class' => 'table table-responsive');
-            $oTable = new Surface($aTableAttrs) ;
+            $oTable = new Surface($aTableAttrs);
             $headerContent =array();
 
             //Si hay algun boton que afecte a mas de una fila ponemos las cabeceras de las checkbox

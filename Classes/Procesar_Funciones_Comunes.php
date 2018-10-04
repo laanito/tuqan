@@ -7,6 +7,7 @@ use \desplegable;
 use \htmlcleaner;
 use \AnualCalendar;
 use \BaseCalendar;
+use Surface\Surface;
 
 class Procesar_Funciones_Comunes
 {
@@ -179,27 +180,22 @@ class Procesar_Funciones_Comunes
      * @param $aProcesos
      * @param $aDatos
      * @param $iNumero
-     * @return string
+     * @return array
      */
     function devuelve_Datos($aProcesos, $aDatos, $iNumero)
     {
-        $sHtml = "";
+        $result = array();
         if ((is_array($aProcesos)) && (is_array($aDatos))) {
             foreach ($aProcesos as $sKey => $sValor) {
                 if (is_array($aDatos[$sKey])) {
-                    $sHtml .= "<td>";
-                    $sHtml .= $aDatos[$sKey][$iNumero];
-                    $sHtml .= "</td>";
+                    $result[]=$aDatos[$sKey][$iNumero];
                 } //Si son indicadores devolvemos el array
-                else if ($iNumero == 3) {
-                    $sHtml .= $aDatos[$sKey][$iNumero];
-                } else {
-                    $sHtml .= "<td>";
-                    $sHtml .= "</td>";
+                 else {
+                     $result[]='';
                 }
             }
         }
-        return $sHtml;
+        return $result;
     }
 
     /**
@@ -209,9 +205,7 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Matriz_Procesos($sAccion, $aParametros)
     {
-
         $oVolver = new boton(gettext('sPCVolver'), "atras(-1)", "noafecta");
-
         $iId = $aParametros['numeroDeFila'];
         $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 
@@ -228,7 +222,6 @@ class Procesar_Funciones_Comunes
                 $oDb->construir_Tablas(array('contenido_procesos,documentos'));
                 $oDb->construir_Where(array('contenido_procesos.proceso=' . $sValor, 'contenido_procesos.documento=documentos.id',
                     'documentos.estado=' . iVigor));
-                //echo "contenedor|<br />".$oDb->to_String_Consulta();
                 $oDb->consulta();
                 if ($aIterador = $oDb->coger_Fila()) {
                     $aDatos[] = $aIterador;
@@ -237,10 +230,11 @@ class Procesar_Funciones_Comunes
                     $aDatos[] = "vacio";
                 }
             }
-            $sHtml = "<table class=\"matriz\">";
-            $sHtml .= "<tr class=\"titulos_matriz\">";
-            $sHtml .= "<td>";
-            $sHtml .= "</td>";
+            $aTableAttrs = array('class' => 'table table-responsive');
+            $oTable = new Surface($aTableAttrs);
+            $header=array();
+            $rows=array();
+            $header[]='';
             foreach ($aProcesos as $sValor) {
                 $oDb->iniciar_Consulta('SELECT');
                 $oDb->construir_Campos(array('nombre'));
@@ -248,42 +242,34 @@ class Procesar_Funciones_Comunes
                 $oDb->construir_Where(array('id=' . $sValor));
                 $oDb->consulta();
                 if ($aIterador = $oDb->coger_Fila()) {
-                    $sHtml .= "<td>" . $aIterador[0] . "</td>";
+                    $header[]= $aIterador[0];
                 }
             }
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrProv') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 0);
+            $row = array();
+            $row[] =  "<b>" . gettext('sMatrProv') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 0) as $value){
+                $row[]=$value;
+            }
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrEntrada') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 1) as $value){
+                $row[]=$value;
+            }
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrPropietario') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 2) as $value){
+                $row[]=$value;
+            }
 
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrIndic') . "</b>";
 
-            $sHtml .= "</tr>";
-
-            $sHtml .= "<tr>";
-            if ($aDatos)
-                $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrEntrada') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 1);
-
-
-            $sHtml .= "<tr>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrPropietario') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 2);
-            $sHtml .= "<tr>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrIndic') . "</b>";
-            $sHtml .= "</td>";
             if (isset($iIdFicha)) {
                 foreach ($aProcesos as $sValor) {
                     $oDb->iniciar_Consulta('SELECT');
@@ -292,57 +278,66 @@ class Procesar_Funciones_Comunes
                     $oDb->construir_Where(array('indicadores.id=any(contenido_procesos.indicadores)',
                         'contenido_procesos.id=' . $iIdFicha));
                     $oDb->consulta();
-                    $sHtml .= "<td>";
+                    $cell = "<ul>";
                     while ($aIterador = $oDb->coger_Fila()) {
-                        $sHtml .= "- " . $aIterador[0] . "<br />";
+                        $cell .= "<li>" . $aIterador[0] . "</li>";
                     }
-                    $sHtml .= "</td>";
+                    $cell .= "</ul>";
+                    $row[]=$cell;
                 }
             }
-            $sHtml .= "<tr>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrSalida') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 4);
-            $sHtml .= "<tr>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrCliente') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 5);
-            $sHtml .= "<tr>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrInstal') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 6);
-            $sHtml .= "<tr>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrDocAsoc') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 7);
-            $sHtml .= "<tr>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sMatrReg') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= $this->devuelve_Datos($aProcesos, $aDatos, 8);
-            $sHtml .= "<tr>";
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrSalida') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 4) as $value){
+                $row[]=$value;
+            }
+
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrCliente') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 5) as $value){
+                $row[]=$value;
+            };
+
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrInstal') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 6) as $value){
+                $row[]=$value;
+            };
+
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrDocAsoc') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 7) as $value){
+                $row[]=$value;
+            };
+
+            $rows[]=$row;
+            // new line
+            $row=array();
+            $row[] =  "<b>" . gettext('sMatrReg') . "</b>";
+            foreach($this->devuelve_Datos($aProcesos, $aDatos, 8) as $value){
+                $row[]=$value;
+            };
+
+            $rows[]=$row;
+            // new line
+            $row=array();
+
             /**
              * Sacamos los flujogramas de las fichas de procesos, nos llega el array aProcesos, del cual sacamos
              * el proceso en cuestion, sacamos los flujogramas de la ficha del proceso y agrupamos en columna
              */
             if (isset($iIdFicha)) {
-                $sHtml .= "<td>";
-                $sHtml .= "<b>" . gettext('sBotonFlujog') . ": </b>";
-                $sHtml .= "</td>";
+
+                $row[] = "<b>" . gettext('sBotonFlujog') . ": </b>";
+
                 foreach ($aProcesos as $sValor) {
                     $oDb->iniciar_Consulta('SELECT');
                     $oDb->construir_Campos(array('flujogramas.id'));
@@ -350,17 +345,20 @@ class Procesar_Funciones_Comunes
                     $oDb->construir_Where(array('flujogramas.proceso=contenido_procesos.id', 'procesos.id=' . $sValor,
                         'contenido_procesos.proceso=procesos.id'));
                     $oDb->consulta();
-                    $sHtml .= "<td>";
+                    $cell= "";
                     while ($aIterador = $oDb->coger_Fila()) {
-                        $sHtml .= "<img src=\"muestrabinario.php?id=" . $aIterador[0] .
+                        $cell .= "<img src=\"muestrabinario.php?id=" . $aIterador[0] .
                             "&tipo=imagent\" onclick=\"window.open('paginaBinario.php?id=" . $aIterador[0] .
                             "&tipo=imagen','proceso','top=0,left=0,directories=no,height=1024,location=no,menubar=no,resizable=no,scrollbars=yes,status=no,toolbar=no,width=1280')\";/><br />";
                     }
-                    $sHtml .= "</td>";
+                    $row[]=$cell;
                 }
             }
-            $sHtml .= "</tr>";
-            $sHtml .= "</table>";
+            $rows[]=$row;
+            $sTabla = $oTable->setHead($header)
+                ->addRows($rows)
+                ->render();
+            $sHtml .= "$sTabla";
         }
         $sHtml .= "<br />" . $oVolver->to_Html();
         return $sHtml;

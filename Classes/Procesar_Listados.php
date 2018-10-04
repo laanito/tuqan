@@ -1556,7 +1556,7 @@ class Procesar_Listados
                 $sTabla = 'equipos';
                 $aBuscar = array('nombres' => array(gettext('sMCNumeroControl'), gettext('sMCDescripcion')),
                     'campos' => array('numero', 'descripcion'));
-                $aCampos = array('id', "numero as \"" . gettext('sPCNumeroControl') . "\"", "descripcion as \"" . gettext('sPCDescripcion') . "\"");
+                $aCampos = array('id', "numero as \"" . gettext('sMCNumeroControl') . "\"", "descripcion as \"" . gettext('sPCDescripcion') . "\"");
                 $oDb->iniciar_Consulta('SELECT');
                 $oDb->construir_Campos($aCampos);
                 $oDb->construir_Tablas(array('equipos'));
