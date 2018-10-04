@@ -8,28 +8,6 @@ let tiempoPeticion = 10000;
 setCookie('ed', '0');
 //window.onload = iniciar_Qnova;
 // convert all characters to lowercase to simplify testing
-let agt = navigator.userAgent.toLowerCase();
-
-// *** BROWSER VERSION ***
-// Note: On IE5, these return 4, so use is_ie5up to detect IE5.
-let is_major = parseInt(navigator.appVersion);
-let is_minor = parseFloat(navigator.appVersion);
-
-// Note: Opera and WebTV spoof Navigator.  We do strict client detection.
-// If you want to allow spoofing, take out the tests for opera and webtv.
-let is_nav = ((agt.indexOf('mozilla') !== -1) && (agt.indexOf('spoofer') === -1)
-    && (agt.indexOf('compatible') === -1) && (agt.indexOf('opera') === -1)
-    && (agt.indexOf('webtv') === -1) && (agt.indexOf('hotjava') === -1));
-let is_nav6up = (is_nav && (is_major >= 5));
-let is_gecko = (agt.indexOf('gecko') !== -1);
-
-
-let is_ie = ((agt.indexOf("msie") !== -1) && (agt.indexOf("opera") === -1));
-let is_ie4 = (is_ie && (is_major === 4) && (agt.indexOf("msie 4") !== -1));
-let is_ie4up = (is_ie && (is_major >= 4));
-
-let is_opera = (agt.indexOf("opera") !== -1);
-let is_opera7 = (is_opera && is_major >= 7) || agt.indexOf("opera 7") !== -1;
 
 
 /**
@@ -47,17 +25,14 @@ function initialize() {
     iniciar_Qnova();
 }
 
-
-//Con esta funcion volvemos atras desde el editor, simplemente lo ocultamos
-function atraseditor() {
-    ap_showWaitMessage('diveditor', 0, 2);
-    ap_showWaitMessage('contenedor', 1, 2);
-}
-
+/**
+ *
+ * @param numero
+ */
 function atras(numero) {
     //Ponemos todas las check sin marcar o podemos tener problemas
-    check = document.getElementsByTagName("input");
-    i = 0;
+    let check = document.getElementsByTagName("input");
+    let i = 0;
     for (i = 0; i < check.length; i++) {
         if ((check[i].type === "checkbox") && (check[i].value === "aplicable")) {
             check[i].checked = false;
@@ -84,14 +59,13 @@ function guardando(div) {
 /**
  * Esta funcion la usa ap_showWaitMessage para asociar el estilo de la division a la barra y asi poder
  * ocultarla o mostrarla
+ *
+ * @param name
+ * @returns {CSSStyleDeclaration}
  */
-
 function ap_getObj(name) {
     if (document.getElementById) {
         return document.getElementById(name).style;
-    }
-    else if (document.all) {
-        return document.all[name].style;
     }
     else if (document.layers) {
         return document.layers[name];
@@ -101,30 +75,28 @@ function ap_getObj(name) {
 /**
  * Esta funcion es a la que llamamos para que nos muestre o nos oculte la barra de cargando
  *
+ * @param div
+ * @param flag
+ * @param tipo
  */
-
 function ap_showWaitMessage(div, flag, tipo) {
     if (tipo === 1) {
         cargando(div);
     }
-    else if (tipo === 2) {
-
-    }
-    else {
+    else if (tipo !== 2) {
         guardando(div);
     }
-    var x = ap_getObj(div);
+    let x = ap_getObj(div);
     x.visibility = (flag) ? 'visible' : 'hidden'
 }
 
 /**
  * Esta funcion se usa en proveedores:productos para cambiar los valores de la suma
  */
-
 function puntuacion() {
-    var suma = 0;
-    check = document.getElementsByTagName("input");
-    //camposuma=document.getElementById("camposuma");
+    let suma = 0;
+    let i;
+    let check = document.getElementsByTagName("input");
     for (i = 0; i < check.length; i++) {
         if (check[i].type === "checkbox") {
             if (check[i].checked === true) {
@@ -151,12 +123,9 @@ function puntuacion() {
  * todas las checkbox del listado
  */
 function marcardesmarcar() {
-    checkeado = false;
-    if (document.getElementById("checkarriba").checked === true) {
-        checkeado = true;
-    }
-    check = document.getElementsByTagName("input");
-    i = 0;
+    let checkeado = document.getElementById("checkarriba").checked === true;
+    let check = document.getElementsByTagName("input");
+    let i;
     for (i = 0; i < check.length; i++) {
         if ((check[i].type === "checkbox") && (check[i].value === "aplicable")) {
             check[i].checked = checkeado;
@@ -171,8 +140,9 @@ function marcardesmarcar() {
  * activar, si solo 1 se activan los botones de fila, con 1 o mas el boton de eliminar
  */
 function comprobar_Botones() {
-    check = document.getElementsByTagName("input");
-    marcados = 0;
+    let check = document.getElementsByTagName("input");
+    let marcados = 0;
+    let i =0;
     var noborra = false;
     for (i = 0; i < check.length; i++) {
         if (check[i].type === "checkbox") {
@@ -224,15 +194,15 @@ function comprobar_Botones() {
 
 /**
  *    Esta funcion obtendra el numero de la fila que tiene el checkbox marcado
+ * @param doc
+ * @returns {number}
  */
-
 function cogerUnicaCheck(doc) {
     var esnulo = false;
     var iNumero = -1;
     if (doc.getElementById("checkarriba") == null) {
         esnulo = true;
     }
-//    checkarriba=doc.getElementById("checkarriba");
     check = doc.getElementsByTagName("input");
     i = 0;
     while ((iNumero === -1) && (i < check.length)) {
@@ -256,13 +226,16 @@ function cogerUnicaCheck(doc) {
 /**
  *    Esta funcion obtendra un String con los checkbox del listado, en cada posicion habra un 1 o 0 si esta o no
  * marcado
+ *
+ * @param doc
+ * @returns {string}
  */
 function cogerCheckBox(doc) {
     var sResCadena = "";
     var sBotCadena = "";
     var sValor = "";
-    check = doc.getElementsByTagName("input");
-    i = 0;
+    let check = doc.getElementsByTagName("input");
+    let i;
     for (i = 0; i < check.length; i++) {
         if ((check[i].type === "checkbox") && ((check[i].value === "aplicable") || (check[i].id === "aplicable"))) {
             if (check[i].checked === true) {
@@ -290,11 +263,15 @@ function cogerCheckBox(doc) {
     return sResCadena;
 }
 
+/**
+ *
+ * @param doc
+ * @returns {string}
+ */
 function cogerValueCheckBox(doc) {
-    var sResCadena = "";
-    var sValor = "";
-    check = doc.getElementsByTagName("input");
-    i = 0;
+    let sResCadena = "";
+    let check = doc.getElementsByTagName("input");
+    let i;
     for (i = 0; i < check.length; i++) {
         if ((check[i].type === "checkbox") && (check[i].name === "aplicable")) {
             if (check[i].checked === true) {
@@ -306,10 +283,14 @@ function cogerValueCheckBox(doc) {
     return sResCadena;
 }
 
+/**
+ *
+ * @returns {string}
+ */
 function cogerCampos() {
-    var sResCadena = separador;
-    var sResSelect = separador;
-    select = document.getElementsByTagName("select");
+    let sResCadena = separador;
+    let  sResSelect = separador;
+    let select = document.getElementsByTagName("select");
     var selectVacios = true;
     for (i = 0; i < select.length; i++) {
         if (select[i].name === 'paginas') {
@@ -321,8 +302,8 @@ function cogerCampos() {
             sResSelect = separadorCadenas + select[i].name + separadorCadenas + select[i].value;
         }
     }
-    text = document.getElementsByTagName("input");
-    var todosVacios = true;
+    let text = document.getElementsByTagName("input");
+    let todosVacios = true;
     for (i = 0; i < text.length; i++) {
         if (text[i].type === "text") {
             if (text[i].value.length > 0) {
@@ -339,8 +320,9 @@ function cogerCampos() {
 
 /**
  *     Esta funcion nos crea una nueva instancia para crear una peticion
+ *
+ * @returns {object}
  */
-
 function createRequestObject() {
     var ro;
     var browser = navigator.appName;
@@ -361,6 +343,9 @@ function errorEspera() {
 /**
  * Al igual que las anteriores funciones para obtener la checkbox marcada esta funcion nos devuelve el value del radio button
  * marcado o 0 en caso de ninguno
+ *
+ * @param doc
+ * @returns {any[]}
  */
 function cogerRadio(doc) {
     let radio = doc.getElementsByTagName("input");
@@ -456,20 +441,23 @@ function filtroEditor(action) {
     return proceso;
 }
 
-
+/**
+ *
+ * @param doc
+ * @returns {string}
+ */
 function cogerCheckBoxPerfiles(doc) {
-    var aCadenas = "";
-    var sVerCadena = "";
-    var sNuevoCadena = "";
-    var sModificarCadena = "";
-    var sRevisarCadena = "";
-    var sAprobarCadena = "";
-    var sHistoricoCadena = "";
-    var sTareasCadena = "";
-    var nombre = "";
-
-    check = doc.getElementsByTagName("input");
-    i = 0;
+    let aCadenas = "";
+    let sVerCadena = "";
+    let sNuevoCadena = "";
+    let sModificarCadena = "";
+    let sRevisarCadena = "";
+    let sAprobarCadena = "";
+    let sHistoricoCadena = "";
+    let sTareasCadena = "";
+    let nombre = "";
+    let check = doc.getElementsByTagName("input");
+    let i = 0;
     for (i = 0; i < check.length; i++) {
         if ((check[i].type === "checkbox")) {
             var cbox;
@@ -551,17 +539,20 @@ function cogerCheckBoxPerfiles(doc) {
     aCadenas += sAprobarCadena;
     aCadenas += sHistoricoCadena;
     aCadenas += sTareasCadena;
-
     return aCadenas;
 }
 
+/**
+ *
+ * @param doc
+ * @returns {string}
+ */
 function cogerCheckBoxPermisos(doc) {
-    var nombre = "";
-    var sCadena = "";
-    var aId = [];
-    var aPermisos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    check = doc.getElementsByTagName("input");
-    i = 0;
+    let sCadena = "";
+    let aId = [];
+    let aPermisos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let check = doc.getElementsByTagName("input");
+    let i = 0;
     for (i = 0; i < check.length; i++) {
         if ((check[i].type === "checkbox")) {
             aId = check[i].id.split('_');
@@ -583,7 +574,7 @@ function cogerCheckBoxPermisos(doc) {
 function sndReq(action, sesion, tipo, datos) {
     let address = '/ajax';
     // Comprobamos que no se esta cursando otra peticion
-    proceso = 1;
+    let proceso = 1;
     document.body.style.cursor = "wait";
     if (http == null) {
         trocearAction = action.split(':');
@@ -599,10 +590,10 @@ function sndReq(action, sesion, tipo, datos) {
             }
 
             case 'radio': {
-                framearbol = document.getElementById("arbol");
-                docarbol = framearbol.contentWindow.document;
-                devolver = cogerRadio(docarbol);
-                iIdMarcada = devolver[0];
+                let framearbol = document.getElementById("arbol");
+                let docarbol = framearbol.contentWindow.document;
+                let devolver = cogerRadio(docarbol);
+                let iIdMarcada = devolver[0];
                 if (iIdMarcada === 0) {
                     if (trocearAction[3] !== "nuevo") {
                         alert('No ha seleccionado ningun elemento');
@@ -680,7 +671,7 @@ function sndReq(action, sesion, tipo, datos) {
                 break;
             }
             case 'permisos': {
-                aux = document.getElementById("diviframe");
+                let aux = document.getElementById("diviframe");
                 frame = aux.getElementsByTagName("IFRAME")[0];
                 contenedor_derecha = frame.contentWindow.document;
                 datos = cogerCheckBoxPermisos(contenedor_derecha);
@@ -691,16 +682,15 @@ function sndReq(action, sesion, tipo, datos) {
             address += '/form';
         }
 
-
         proceso = filtroEditor(trocearAction[2]);
         if (action.length < 1) {
             proceso = 0;
         }
         if (proceso === 1) {
-            temporizador = window.setTimeout("errorEspera()", tiempoPeticion);
+            let temporizador = window.setTimeout("errorEspera()", tiempoPeticion);
             setCookie('temporizador', temporizador);
             /*ap_showWaitMessage('wait',1 ,tipo);*/
-            http = createRequestObject();
+            let http = createRequestObject();
             http.open('post', address, true);
             http.onload = handleResponse;
             var data = new FormData();
@@ -720,20 +710,18 @@ function sndReq(action, sesion, tipo, datos) {
  * Esta funcion es la que nos procesa los datos de vuelta del php y se encarga de poner
  * la variable php a 0 para poder volver a cursar peticiones y ademas quita la barra de cargando
  */
-
 function handleResponse() {
     if (http.readyState === 4) {
-        var response = http.responseText;
-        var update = [];
-        var quitar = true;
-        update = response.split('|');
+        let response = http.responseText;
+        let quitar = true;
+        let update = response.split('|');
         //document.getElementById('contenedor').innerHTML=update[0];
         if (response.indexOf('|' !== -1)) {
             /**
              * En caso de que la longitud de la cadena devuelta sea menor o igual a 1 querra
              * decir que tenemos un error con lo cual no mostramos nada.
              */
-            i = 1;
+            let i = 1;
             /**
              * Si lo que queremos es desconectarnos anulamos todas las cookies y volvemos a index
              */
@@ -753,18 +741,13 @@ function handleResponse() {
              * y, en el caso en que tengamos que hacerlo, tambien el menu de la izquierda
              */
             if (update[i] === null) {
-                destino = document.getElementById("contenedor");
-                if (is_ie) {
-                    error = document.createElement("<TEXTAREA name='thetext' rows='80' cols='120'>" + response + "</TEXTAREA>");
-                }
-                else {
-                    error = document.createElement("textarea");
-                    error.setAttribute('cols', 120);
-                    error.setAttribute('rows', 80);
+                let destino = document.getElementById("contenedor");
+                let error = document.createElement("textarea");
+                error.setAttribute('cols', 120);
+                error.setAttribute('rows', 80);
                 }
                 error.value = response;
                 destino.appendChild(error);
-            }
             while (update[i] != null) {
                 if (update[i].length >= 1) {
                     switch (update[i - 1]) {
@@ -830,12 +813,12 @@ function handleResponse() {
                             break;
                         }
                         case "formulario": {
-                            aForm = update[i].split(separador);
-                            formframe = document.getElementById("form");
-                            frame = formframe.contentWindow.document;
-                            elementos = frame.getElementsByTagName("input");
-                            noencontrado = true;
-                            i = 0;
+                            let aForm = update[i].split(separador);
+                            let formframe = document.getElementById("form");
+                            let frame = formframe.contentWindow.document;
+                            let elementos = frame.getElementsByTagName("input");
+                            let noencontrado = true;
+                            let i = 0;
                             while ((noencontrado) && (i < elementos.length)) {
                                 if (elementos[i].name === aForm[1]) {
                                     elementos[i].value = aForm[0];
@@ -861,19 +844,18 @@ function handleResponse() {
                             break;
                         }
                         case "sacareditor": {
-                            aParaEditor = update[i].split(separadorCadenas);
-                            editorframe = document.getElementById("FCKEDITOR");
+                            let aParaEditor = update[i].split(separadorCadenas);
+                            let editorframe = document.getElementById("FCKEDITOR");
                             //Ponemos aqui contentWindow para que funcione tambien en ie, con contentdocument no funciona
-                            frame = editorframe.contentWindow.document;
+                            let frame = editorframe.contentWindow.document;
                             frame.getElementById("codigodoc").value = aParaEditor[1];
                             frame.getElementById("nombredoc").value = aParaEditor[2];
-                            //@TODO posible conflicto con ifram de formularios
-                            editorinterno = frame.getElementsByTagName("IFRAME")[0];
+                            let editorinterno = frame.getElementsByTagName("IFRAME")[0];
                             //Ponemos aqui contentWindow para que funcione tambien en ie, con contentdocument no funciona
-                            frameinterno = editorinterno.contentWindow.document;
-                            editormasinterno = frameinterno.getElementsByTagName("IFRAME")[0];
-                            framemasinterno = editormasinterno.contentWindow.document;
-                            bodyframe = framemasinterno.getElementsByTagName("BODY")[0];
+                            let frameinterno = editorinterno.contentWindow.document;
+                            let editormasinterno = frameinterno.getElementsByTagName("IFRAME")[0];
+                            let framemasinterno = editormasinterno.contentWindow.document;
+                            let bodyframe = framemasinterno.getElementsByTagName("BODY")[0];
                             bodyframe.innerHTML = aParaEditor[0];
                             document.getElementById('contenedor').innerHTML = " ";
                             ap_showWaitMessage('contenedor', 0, 2);
@@ -882,23 +864,18 @@ function handleResponse() {
                             break;
                         }
                         case "contenedor_derecha": {
-                            aux = document.getElementById("diviframe");
-                            frame = aux.getElementsByTagName("IFRAME")[0];
-                            contenedor_derecha = frame.contentWindow.document;
+                            let aux = document.getElementById("diviframe");
+                            let frame = aux.getElementsByTagName("IFRAME")[0];
+                            let contenedor_derecha = frame.contentWindow.document;
                             contenedor_derecha.getElementById(update[i - 1]).innerHTML = update[i];
                             break;
                         }
                         default: {
-                            destino = document.getElementById("contenedor");
-                            if (is_ie) {
-                                var error = document.createElement("<TEXTAREA name='thetext' rows='80' cols='120'>" + response + "</TEXTAREA>");
-                            }
-                            else {
-                                error = document.createElement("textarea");
-                                error.setAttribute('cols', 120);
-                                error.setAttribute('rows', 80);
-                                error.value = response;
-                            }
+                            let destino = document.getElementById("contenedor");
+                            let error = document.createElement("textarea");
+                            error.setAttribute('cols', 120);
+                            error.setAttribute('rows', 80);
+                            error.value = response;
                             destino.appendChild(error);
                             break;
                         }
@@ -923,7 +900,6 @@ function handleResponse() {
          * Liberamos para que se puedan hacer otras peticiones
          */
         http = null;
-
         temporizador = getCookie('temporizador');
         clearTimeout(temporizador);
         delCookie('temporizador');
