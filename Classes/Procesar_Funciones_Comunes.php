@@ -15,6 +15,10 @@ class Procesar_Funciones_Comunes
     /**
      * Esta funcion
      * nos verifica una accion mejora
+     *
+     * @param $sAccion array
+     * @param $aParametros array
+     * @return string
      */
     function procesa_Verificar_Mejora($sAccion, $aParametros)
     {
@@ -49,7 +53,6 @@ class Procesar_Funciones_Comunes
      * @param $aParametros
      * @return string
      */
-
     function procesar_Permisos_Documentos($aParametros)
     {
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -81,7 +84,10 @@ class Procesar_Funciones_Comunes
         return "contenedor|" . gettext('sPNPermisosAct') . "<br />" . $oVolver->to_Html();
     }
 
-
+    /**
+     * @param $aParametros
+     * @return string
+     */
     function procesar_Permisos($aParametros)
     {
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -114,7 +120,11 @@ class Procesar_Funciones_Comunes
 
     }
 
-
+    /**
+     * @param null $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Cerrar_Mejora($sAccion = null, $aParametros)
     {
         $iIdMejora = $_SESSION['pagina'][$aParametros['numeroDeFila']];
@@ -155,7 +165,11 @@ class Procesar_Funciones_Comunes
         return ($oCalendario->displayAgno());
     }
 
-
+    /**
+     * @param $iNivel
+     * @param $iIdPadre
+     * @return array
+     */
     function sacar_Id_Procesos($iNivel, $iIdPadre)
     {
         $aNodos = array();
@@ -443,6 +457,11 @@ class Procesar_Funciones_Comunes
     }
 
 
+    /**
+     * @param integer $iFila
+     * @param integer $iId
+     * @return string
+     */
     function mostrar_Documento($iFila = null, $iId = null)
     {
         if ($iFila != null) {
@@ -450,17 +469,12 @@ class Procesar_Funciones_Comunes
         } else {
             $iDocumento = $iId;
         }
-        $Config = new Config();
         $oBoton = new boton(gettext('sPCOVolver'), "atras(-1)", "noafecta");
 
         /**
          *    tenemos que sacar por un lado codigo,revision,estado y revisado por de documentos y luego el contenido
          * de contenido_texto
          */
-        $sMemoriaInicial = ini_get('memory_limit');
-        $sTiempoLimiteInicial = ini_get('max_execution_time');
-        ini_set('memory_limit', $Config->sMemoriaHtml2Pdf);
-        ini_set('max_execution_time', $Config->sMaxTiempoHtml2Pdf);
 
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oBaseDatos->iniciar_Consulta('SELECT');
@@ -561,14 +575,10 @@ class Procesar_Funciones_Comunes
                         }
                     }
                 }
-
-
             }
         } else {
             $sHtml = "contenedor|" . gettext('sNoPermisoDoc') . "<br />" . $oBoton->to_Html();
         }
-        ini_set('memory_limit', $sMemoriaInicial);
-        ini_set('max_execution_time', $sTiempoLimiteInicial);
         return $sHtml;
     }
 
@@ -644,7 +654,6 @@ class Procesar_Funciones_Comunes
         }
         //Si es null debemos ponerlo a {}
         if (strlen($sCriterios) == 0) {
-            $aCriterio = array('{', '}');
             $oBaseDatos->iniciar_Consulta('UPDATE');
             $oBaseDatos->construir_Set(array('criterios'),
                 array('{}'));
@@ -890,7 +899,10 @@ class Procesar_Funciones_Comunes
         return $sHtml;
     }
 
-
+    /**
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Ver_Tarea($aParametros)
     {
 
@@ -937,7 +949,11 @@ class Procesar_Funciones_Comunes
         return $sHtml;
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Flujograma($sAccion, $aParametros)
     {
         $oPagina = new FakePage();
@@ -982,28 +998,20 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Where(array('id>5'));
         $oBaseDatos->construir_Order(array('extension'));
         $oBaseDatos->consulta();
-        $aTipos = array();
-        $bPrimero = true;
         $sHtml .= gettext('sFSoportados');
         while ($aIterador = $oBaseDatos->coger_Fila()) {
             $sHtml .= $aIterador[0] . " ";
         }
-
-
         $oPagina->addBodyContent($sHtml . "<br /><br />");
         $oPagina->addBodyContent($oVolver->to_Html());
 
         return $oPagina->toHTML();
-
-        //return $sHtml."<br />".$oVolver->to_Html();
-
     }
 
     /**
      * @param $aParametros
      * @return string
      */
-
     function asignar_Area($aParametros)
     {
 
@@ -1023,7 +1031,11 @@ class Procesar_Funciones_Comunes
         return "contenedor|" . $sHtml;
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function subir_Fichero($sAccion, $aParametros)
     {
         
@@ -1033,6 +1045,11 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function subir_Fichero_Flujo($sAccion, $aParametros)
     {
         
@@ -1041,6 +1058,10 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
+    /**
+     * @param $sAccion
+     * @return string
+     */
     function subir_Fichero_Politica($sAccion)
     {
         $sPolitica = $sAccion;
@@ -1049,7 +1070,10 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
-
+    /**
+     * @param $sAccion
+     * @return string
+     */
     function subir_Fichero_Objetivo($sAccion)
     {
         $sPolitica = $sAccion;
@@ -1058,6 +1082,10 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
+    /**
+     * @param $sAccion
+     * @return string
+     */
     function subir_Fichero_Manual($sAccion)
     {
         
@@ -1067,6 +1095,10 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
+    /**
+     * @param $sAccion
+     * @return string
+     */
     function subir_Fichero_Pg($sAccion)
     {
         
@@ -1076,6 +1108,10 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
+    /**
+     * @param $sAccion
+     * @return string
+     */
     function subir_Fichero_Pe($sAccion)
     {
         
@@ -1085,15 +1121,22 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
+    /**
+     * @param $sAccion
+     * @return string
+     */
     function subir_Fichero_Ma($sAccion)
     {
-        
         $sPolitica = 'MA';
         return "contenedor|<iframe id=\"formsubir\" src=\"/ajax/form?action=ma:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
+    /**
+     * @param $sAccion
+     * @return string
+     */
     function subir_Fichero_Externo($sAccion)
     {
         
@@ -1103,7 +1146,11 @@ class Procesar_Funciones_Comunes
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Subir_Fichero($sAccion, $aParametros)
     {
 
@@ -1117,9 +1164,6 @@ class Procesar_Funciones_Comunes
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\" value=\"" . $aParametros['iddoc'] . "\">" .
                 "<input name=\"userfile\" type=\"file\"><input class=\"b_activo\" type=\"submit\" value=" . gettext('sBotonEnviar') . "></form>";
-
-
-
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oBaseDatos->iniciar_Consulta('SELECT');
         $oBaseDatos->construir_Campos(array('extension'));
@@ -1131,8 +1175,6 @@ class Procesar_Funciones_Comunes
         while ($aIterador = $oBaseDatos->coger_Fila()) {
             $sHtml .= $aIterador[0] . " ";
         }
-
-
         $oPagina->addBodyContent($sHtml . "<br />");
         $oPagina->addBodyContent($oVolver->to_Html());
         return $oPagina->toHTML();
@@ -1387,9 +1429,7 @@ class Procesar_Funciones_Comunes
 
                 $iCont++;
             }
-
             $sHtml .= "</table></div><br />";
-
         } else {
             $sHtml = "<table>" . gettext('sProcNoDef') . "</table>";
         }
@@ -1399,7 +1439,11 @@ class Procesar_Funciones_Comunes
         return $sHtml;
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Matriz_Indicadores($sAccion, $aParametros)
     {
 
@@ -1495,8 +1539,6 @@ class Procesar_Funciones_Comunes
         $oDb->construir_Order(array('indicadores.id asc'));
         $oDb->consulta();
         while ($aIteradorInterno = $oDb->coger_Fila()) {
-            //$sHtml.=$aIterador[1]."<br />";
-
             $sHtml .= "<tr>";
             $sHtml .= "<td>";
             $sHtml .= " ";
@@ -1523,11 +1565,8 @@ class Procesar_Funciones_Comunes
             $sHtml .= $aIteradorInterno[7] . "/" . $aIteradorInterno[8];
             $sHtml .= "</td>";
             $sHtml .= "</tr>";
-
         }
-
         $sHtml .= "</table>";
-
         $sHtml .= "<br /><br />" . $oVolver->to_Html();
         return "contenedor|" . $sHtml;
 
@@ -1539,18 +1578,13 @@ class Procesar_Funciones_Comunes
      * @param $aParametros
      * @return string
      */
-
     function procesa_NuevaVersion_Documento($aParametros)
     {
         $oPagina = new FakePage();
         $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-
         $_SESSION['subirfichero'] = $aParametros[0];
-
         $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">");
-
-
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
 
         //Sacamos el id del contenido proceso que apunta a nuestro documento
@@ -1568,7 +1602,6 @@ class Procesar_Funciones_Comunes
         }
         $sHtml .= "<input name=\"userfile\" type=\"file\"><input class=\"b_activo\" type=\"submit\" value=\"" .
             gettext('sBotonEnviar') . "\"></form>";
-
         $oBaseDatos->iniciar_Consulta('SELECT');
         $oBaseDatos->construir_Campos(array('extension'));
         $oBaseDatos->construir_Tablas(array('tipos_fichero'));
@@ -1717,8 +1750,6 @@ class Procesar_Funciones_Comunes
                     $oBaseDatos->construir_Tablas(array('mensajes'));
                     $oBaseDatos->consulta();
                     $oBaseDatos->termina_transaccion();
-
-
                     $sHtml = "contenedor|" . gettext('sDocAprobado') . "<br />" . $oVolver->to_Html();
                 }
             } else {
@@ -1736,7 +1767,6 @@ class Procesar_Funciones_Comunes
      * @param $aParametros
      * @return string
      */
-
     function procesa_Revisar_Documento($aParametros)
     {
         $Config=new Config();
@@ -1798,8 +1828,6 @@ class Procesar_Funciones_Comunes
             $sHtml = gettext('sRevision') . "<br />";
             $sHtml .= $oVolver->to_Html();
         }
-
-
         return $sHtml;
     }
 
@@ -1813,10 +1841,7 @@ class Procesar_Funciones_Comunes
         $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $_SESSION['subirfichero'] = $aParametros[0];
-
         $oPagina->addBodyContent("<form enctype=\"multipart/form-data\" action=\"/coger.php\" method=\"post\">");
-
-
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
 
         //Sacamos el id del contenido proceso que apunta a nuestro documento
@@ -2090,7 +2115,6 @@ class Procesar_Funciones_Comunes
      * @param $aParametros
      * @return string
      */
-
     function procesar_NuevaVersionProceso($sAccion, $aParametros)
     {
 
@@ -2206,9 +2230,7 @@ class Procesar_Funciones_Comunes
      */
     function procesa_SacarEditor($sAccion, $aParametros)
     {
-
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-
         $oBaseDatos->iniciar_Consulta('SELECT');
         $oBaseDatos->construir_Tablas(array($_SESSION['tabla']));
         $oBaseDatos->construir_Where(array('(id=\'' . $_SESSION['pagina'][$aParametros['numeroDeFila']] . '\')'));
@@ -2237,7 +2259,6 @@ class Procesar_Funciones_Comunes
      */
     function nueva_Revision_Programa($sAccion, $aParametros)
     {
-
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $iIdProg = $_SESSION['pagina'][$aParametros['numeroDeFila']];
@@ -2258,7 +2279,6 @@ class Procesar_Funciones_Comunes
         }
         $sHtml .= $oVolver->to_Html();
         return $sHtml;
-
     }
 
 
@@ -2267,10 +2287,8 @@ class Procesar_Funciones_Comunes
      * @param array $aParametros
      * @return String
      */
-
     function hacerVigente($sAccion, $aParametros)
     {
-
         $iId = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oBaseDatos->comienza_transaccion();
@@ -2327,15 +2345,11 @@ class Procesar_Funciones_Comunes
         if ($aIterador = $oBaseDatos->coger_Fila()) {
             $sDocumentos = $aIterador[0];
         }
-
         $sDocumentos = trim($sDocumentos, "{}");
         $aDocumentos = explode(",", $sDocumentos);
-
         $aTrocear = explode(separadorCadenas, $aParametros['filas']);
         $aFilas = str_split($aTrocear[0]);
-        $aElegidos = array();
 
-        $aUltimo = count($aDocumentos);
         //Comenzamos una transaccion
         $oBaseDatos->comienza_transaccion();
         for ($iContador = 0; $iContador < (count($aFilas)); $iContador++) {
@@ -2382,8 +2396,6 @@ class Procesar_Funciones_Comunes
     {
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-
         $iIdAuditoria = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         //Iniciamos la transaccion
         $oBaseDatos->comienza_transaccion();
@@ -2441,7 +2453,6 @@ class Procesar_Funciones_Comunes
                     }
                 }
             }
-
         }
         $oBaseDatos->termina_transaccion();
         return "Auditoria Copiada<br />" . $oVolver->to_Html();
@@ -2544,7 +2555,6 @@ class Procesar_Funciones_Comunes
      * @param $aDatos
      * @return string
      */
-
     function altabaja_Alumnos($sCodigo, $aDatos)
     {
         $oVolver = new boton(gettext('sMCVolver'), "atras(-1)", "noafecta");
@@ -2612,7 +2622,6 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Grafica_Indicadores($sAccion, $aParametros)
     {
-
         if (($aParametros['numeroDeFila'] != -1) && ($aParametros['numeroDeFila'] != null)) {
             $_SESSION['indicadorgrafica'] = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         }
@@ -2697,7 +2706,6 @@ class Procesar_Funciones_Comunes
      */
     function procesa_AltaBaja_Filas_Arbol($aParametros)
     {
-
         $oVolver = new boton(gettext('sPCOVolver'), "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 
@@ -2780,11 +2788,8 @@ class Procesar_Funciones_Comunes
      * @param array $aParametros
      * @return String
      */
-
     function procesa_Calendario_Mes($aParametros)
     {
-
-
         $iMes = $aParametros['mes'];
         $newCal = new BaseCalendar($aParametros['procesa']);
         $sCal = "<table class=\"mensual\" bgcolor=\"#ffffff\" border =0>";
@@ -2810,7 +2815,6 @@ class Procesar_Funciones_Comunes
      * @param string $sAccion
      * @return String
      */
-
     function procesa_FilaAForm($sAccion, $aParametros)
     {
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -2861,7 +2865,6 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->consulta();
         $aFila = $oBaseDatos->coger_Fila();
         $sDato = $aFila[0];
-
         $sHtml = $iId . separador . $sCampo . separador . $sDato;
         return $sHtml;
     }
@@ -2873,10 +2876,8 @@ class Procesar_Funciones_Comunes
      * @param $aParametros
      * @return string
      */
-
     function procesa_Alta_Baja($sAccion, $aParametros)
     {
-
         $iCurso = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         $oBoton = new boton("Volver", "atras(-1)", "noafecta");
 
@@ -2893,7 +2894,6 @@ class Procesar_Funciones_Comunes
         if ($aIterador = $oDb->coger_Fila()) {
             $sEstadoCurso = $aIterador[0];
         }
-
         if ($sEstadoCurso == gettext('sEstadoAbierto')) {
 
             /**
@@ -3016,7 +3016,11 @@ class Procesar_Funciones_Comunes
         return $sHtml;
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function subir_Fichero_Adjunto($sAccion, $aParametros)
     {
         return "contenedor|<iframe id=\"formsubir\" src=\"/ajax/form?action=auditorias:iframe:upload:nuevo:adjunto&sesion=&datos=" .
@@ -3028,8 +3032,12 @@ class Procesar_Funciones_Comunes
     /**
      *     Esta es nuestra funcion recursiva, le pasamos el arbol donde iran todos los nodos, el nodo padre, es decir al
      *  que tenemos que enganchar los nodos que saquemos, el nivel maximo sobre el que permitiremos recursividad
+     *
+     * @param $oArbol object
+     * @param $oPadre object
+     * @param $iNivel integer
+     * @param integer $iIdPadre
      */
-
     function sacar_hijos(&$oArbol, &$oPadre, $iNivel, $iIdPadre = null)
     {
 
@@ -3047,7 +3055,7 @@ class Procesar_Funciones_Comunes
             while ($aIterador = $oDb->coger_Fila()) {
                 $oArbol->valor_check(0, $aIterador[0]);
                 $nodo = $oArbol->Nuevo_Nodo($aIterador[1], 'a3', true);
-                sacar_hijos($oArbol, $nodo, $iNivel + 1, $aIterador[0]);
+                $this->sacar_hijos($oArbol, $nodo, $iNivel + 1, $aIterador[0]);
                 $aHijos[] = $aIterador[0];
                 $oArbol->Situa_Nodo($nodo, $oPadre);
             }
@@ -3120,7 +3128,10 @@ class Procesar_Funciones_Comunes
         return $sHtml . "<br />" . $oVolver->to_Html();
     }
 
-
+    /**
+     * @param $aParametros
+     * @return string
+     */
     function procesa_nuevaversion_Objetivos($aParametros)
     {
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
@@ -3165,6 +3176,10 @@ class Procesar_Funciones_Comunes
         return $sDevolver;
     }
 
+    /**
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Aprobar_Objetivos($aParametros)
     {
 
@@ -3180,7 +3195,6 @@ class Procesar_Funciones_Comunes
 
         if ($aIterador[0] == 4) {
             //Pasamos el otro objetivo a historico
-
             $oBaseDatos->iniciar_Consulta('UPDATE');
             $oBaseDatos->pon_Set('estado', 6);
             $oBaseDatos->pon_Set('activo', 'f');
@@ -3196,8 +3210,6 @@ class Procesar_Funciones_Comunes
             $oBaseDatos->construir_Tablas(array('objetivos_globales'));
             $oBaseDatos->construir_Where(array('id=' . $iId));
             $oBaseDatos->consulta();
-
-
             $sDevolver = "contenedor|" . gettext('sDocAprobado') . "<br />" . $oVolver->to_Html();
         } else {
             $sDevolver = "alert|El documento debe estar en estado revisado para poder ser aprobado";
@@ -3211,7 +3223,6 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Aprobar_Objetivos_Indicadores($aParametros)
     {
-
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $iId = $_SESSION['pagina'][$aParametros['numeroDeFila']];
@@ -3221,7 +3232,6 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Where(array('id=' . $iId));
         $oBaseDatos->consulta();
         $aIterador = $oBaseDatos->coger_Fila();
-
         if ($aIterador[0] == 4) {
             $oBaseDatos->iniciar_Consulta('UPDATE');
             $oBaseDatos->construir_Set(array('estado', 'aprobadopor', 'fecha_aprobacion'),
@@ -3305,7 +3315,6 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Grafica_Mensajes($sMenu, $aParamtros)
     {
-
         $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oVolver = new boton(gettext('sPCVolver'), "atras(-1)", "noafecta");
         $oDb->iniciar_consulta('SELECT');
@@ -3337,7 +3346,6 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Permisos_Botones($aParametros)
     {
-
         $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oDbBotones = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oDbCount = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -3367,7 +3375,6 @@ class Procesar_Funciones_Comunes
         $sHtml .= "</tr>";
 
         // selecciona los permisos para el boton
-        $sTabla = 'perfiles';
         $aCampos = array('id', "nombre as \"" . gettext('sPNNombre') . "\"");
         $oDb->iniciar_Consulta('SELECT');
         $oDb->construir_Campos($aCampos);
@@ -3380,7 +3387,6 @@ class Procesar_Funciones_Comunes
             if ($aIterador[0] > 0) {
                 $sHtml .= "<tr>";
                 $sHtml .= "<td>" . $aIterador[1] . "<td>";
-                $sTabla = 'botones';
                 $aCampos = array('id', "permisos[$aIterador[0]] as permisos");
                 $oDbBotones->iniciar_Consulta('SELECT');
                 $oDbBotones->construir_Campos($aCampos);
@@ -3393,7 +3399,6 @@ class Procesar_Funciones_Comunes
                 } else {
                     $sHtml .= "<INPUT TYPE=CHECKBOX ID=\"permisos_" . $aIterador[0] . "\" NAME=\"permisos" . $aIterador[0] . "\" checked>";
                 }
-
                 $sHtml .= "</td>";
                 $sHtml .= "</tr>";
             }
@@ -3414,7 +3419,6 @@ class Procesar_Funciones_Comunes
             "noafecta"
         );
         $sHtml .= "<br />" . $oPermisos->to_Html();
-//          }
         return ($sHtml);
     }
 
@@ -3428,7 +3432,6 @@ class Procesar_Funciones_Comunes
         $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oDbMenu = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oDbCount = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $oVolver=new boton(gettext('sPCVolver'),"atras(-1)","noafecta");
         $iIdMenu = $aParametros['id'];
         $_SESSION['idMenu'] = $aParametros['id'];
 
@@ -3449,7 +3452,6 @@ class Procesar_Funciones_Comunes
         $sHtml .= "</tr>";
 
         // selecciona los permisos para el boton
-        $sTabla = 'perfiles';
         $aCampos = array('id', "nombre as \"" . gettext('sPNNombre') . "\"");
         $oDb->iniciar_Consulta('SELECT');
         $oDb->construir_Campos($aCampos);
@@ -3461,8 +3463,7 @@ class Procesar_Funciones_Comunes
         while ($aIterador = $oDb->coger_Fila()) {
             if ($aIterador[0] > 0) {
                 $sHtml .= "<tr>";
-                $sHtml .= "<td>" . $aIterador[1] . "<td>";
-                $sTabla = 'menu_nuevo';
+                $sHtml .= "<td>" . $aIterador[1] . "</td><td>";
                 $aCampos = array('id', "permisos[$aIterador[0]] as permisos");
                 $oDbMenu->iniciar_Consulta('SELECT');
                 $oDbMenu->construir_Campos($aCampos);
@@ -3470,7 +3471,6 @@ class Procesar_Funciones_Comunes
                 $oDbMenu->construir_Where(array('id=' . $iIdMenu));
                 $oDbMenu->consulta();
                 $aPermisos = $oDbMenu->coger_Fila();
-
                 if ($aPermisos[1] == 'f') {
                     $sHtml .= "<INPUT TYPE=CHECKBOX ID=\"permisos_" .
                         $aIterador[0] . "\" NAME=\"permisos" . $aIterador[0] . "\">";
@@ -3482,10 +3482,7 @@ class Procesar_Funciones_Comunes
                 $sHtml .= "</tr>";
             }
         }
-
         $sHtml .= "</table>";
-
-        $sTabla = 'perfiles';
         $aCampos = array("count(id)");
         $oDbCount->iniciar_Consulta('SELECT');
         $oDbCount->construir_Campos($aCampos);
@@ -3616,5 +3613,4 @@ class Procesar_Funciones_Comunes
         }
         return "contenedor|" . $sHtml . "<br />" . $oVolver->to_Html();
     }
-
 }
