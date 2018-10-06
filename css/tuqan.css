@@ -181,7 +181,13 @@ ul.nav li:hover > ul.dropdown-submenu {
 
 .logos {
     background-color: #393938;
-    padding-top: 60px;
+    padding-top: 30px;
+    color: #BE1622;
+}
+
+.logos a {
+    color: #cc1622;
+    text-decoration: none;
 }
 
 #logos img {
