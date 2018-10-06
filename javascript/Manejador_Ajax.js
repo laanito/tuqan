@@ -1,10 +1,10 @@
 //@version 0.3.5a
 
 window.onload = initialize;
-let separador = 'ZZZ';
-let separadorCadenas = 'YYY';
-let http = null;
-let tiempoPeticion = 10000;
+const separador = 'ZZZ';
+const separadorCadenas = 'YYY';
+var http = null;
+const tiempoPeticion = 10000;
 setCookie('ed', '0');
 //window.onload = iniciar_Qnova;
 // convert all characters to lowercase to simplify testing
@@ -690,7 +690,7 @@ function sndReq(action, sesion, tipo, datos) {
             let temporizador = window.setTimeout("errorEspera()", tiempoPeticion);
             setCookie('temporizador', temporizador);
             /*ap_showWaitMessage('wait',1 ,tipo);*/
-            let http = createRequestObject();
+            http = createRequestObject();
             http.open('post', address, true);
             http.onload = handleResponse;
             var data = new FormData();
