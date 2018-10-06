@@ -1864,74 +1864,47 @@ class Procesar_Funciones_Comunes
         $oDb->construir_Tablas(array('productos'));
         $oDb->construir_Where(array('id=' . $iIdProducto));
         $oDb->consulta();
-
-
-        if ($aIterador = $oDb->coger_Fila()) {
+        $aIterador = $oDb->coger_Fila();
+        if ($aIterador) {
             $aCriterios = str_split($aIterador[0]);
             $iValorActual = $aIterador[1];
         }
-
         $iSuma = 0;
-        $sHtml = "<table id=\"criterios\">";
-        $sHtml .= "<tr>";
-        $sHtml .= "<th class=\"tcriterios\"></th>";
-        $sHtml .= "<th class=\"tcriterios\">" . gettext('sCritnombre') . "</th>";
-        $sHtml .= "<th class=\"tcriterios\">" . gettext('sCritValoracion') . "</th>";
-        $sHtml .= "</tr>";
+        $aTableAttrs = array('class' => 'table table-responsive');
+        $oTable = new Surface($aTableAttrs);
+        $headerContent =array('',gettext('sCritnombre'), gettext('sCritValoracion'));
+        $rows=array();
         unset ($_SESSION['pagina']);
         $_SESSION['tabla'] = 'criterios_homologacion';
-
-        // Para poner las filas de colores
-
-        $i = 0;
         while ($aIterador = $oBaseDatos->coger_Fila()) {
-            $i = $i + 1;
-
-            if ($i % 2) {
-                $sHtml .= "<tr class=\"filapar\">";
-            } else {
-                $sHtml .= "<tr class=\"filaimpar\">";
-            }
-
             $_SESSION['pagina'][] = $aIterador[0];
-
-            $sHtml .= "<td>";
             if (in_array($aIterador[0], $aCriterios)) {
-                $sHtml .= "<INPUT TYPE=CHECKBOX id=\"aplicable\" name=\"ch:" .
+                $aplica = "<input TYPE=CHECKBOX id=\"aplicable\" name=\"ch:" .
                     $aIterador[0] . "\" onclick=\"puntuacion()\" CHECKED=true VALUE=\"" . $aIterador[2] . "\">";
-            } else {
-                $sHtml .= "<INPUT TYPE=CHECKBOX id=\"aplicable\" name=\"ch:" .
-                    $aIterador[0] . "\" onclick=\"puntuacion()\" VALUE=\"" . $aIterador[2] . "\">";
-            }
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[1];
-            $sHtml .= "</td>";
-            $sHtml .= "<td id=\"td:" . $aIterador[0] . "\">";
-            if (in_array($aIterador[0], $aCriterios)) {
-                $sHtml .= $aIterador[2];
+                $suma = $aIterador[2];
                 $iSuma += $aIterador[2];
             } else {
-                $sHtml .= 0;
+                $aplica = "<input TYPE=CHECKBOX id=\"aplicable\" name=\"ch:" .
+                    $aIterador[0] . "\" onclick=\"puntuacion()\" VALUE=\"" . $aIterador[2] . "\">";
+                $suma = 0;
             }
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
+            $rows[]=array($aplica, $aIterador[1], $suma);
         }
-        $sHtml .= "</table>";
-        $sHtml .= "<br /><br /><br />";
-        $sHtml .= "<div class=\"puntuacion\"><b>" . gettext('sCritPuntuacion') . " &nbsp;&nbsp;&nbsp;</b>";
+        $sTabla = $oTable->setHead($headerContent)
+            ->addRows($rows)
+            ->render();
+
+        $sHtml = $sTabla."<div class=\"puntuacion\"><b>" . gettext('sCritPuntuacion') . " &nbsp;&nbsp;&nbsp;</b>";
         $sHtml .= "<input id=\"camposuma\" Value=\"" . $iSuma . "\" disabled=\"disabled\"></div>";
-        $sHtml .= "<br /></br><br /><br />";
 
         if ($iSuma < $iValorActual) {
             $sHtml .= "<div class=\"nohomologado\"><b>" . gettext('sCritNoHomol') .
-                " &nbsp;&nbsp;&nbsp;</b>" . $iSuma . "/" . $iValorActual . "</div><br />";
+                "</b>" . $iSuma . "/" . $iValorActual . "</div><br />";
         } else {
             $sHtml .= "<div class=\"homologado\"><b>" . gettext('sCritHomol') .
-                " &nbsp;&nbsp;&nbsp;</b>" . $iSuma . "/" . $iValorActual . "</div><br />";
+                "</b>" . $iSuma . "/" . $iValorActual . "</div>";
         }
-        $sHtml .= "<br />" . $oVolver->to_Html() . $oRevisar->to_Html();
-
+        $sHtml .= "<div>" . $oVolver->to_Html() . $oRevisar->to_Html()."</div>";
         return $sHtml;
     }
 
@@ -3280,7 +3253,6 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Permisos_Menu($aParametros)
     {
-
         $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oDbMenu = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oDbCount = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
