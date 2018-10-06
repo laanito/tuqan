@@ -19,6 +19,7 @@
     "anahkiasen/former": "4.1.7",
     "ext-pdo_pgsql": "*",
     "ext-pdo": "*",
-    "jamesmcfadden/surface": "dev-master"
+    "jamesmcfadden/surface": "dev-master",
+    "ext-gd": "*"
   }
 }

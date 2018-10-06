@@ -21,7 +21,6 @@ $aDivCalidad = array('inicio' => gettext('sInicio'),
     'procesos' => gettext('sProcesos'),
     'indicadores' => gettext('sIndicadores'),
     'maspectos' => gettext('sAspectos'),
-
 );
 /**
  *     Este menu es para medioambiente solo

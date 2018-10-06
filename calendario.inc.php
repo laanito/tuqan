@@ -26,13 +26,10 @@
 
 class BaseCalendar
 {
-
-    private $calLinkto = "http://www.yourdomain.com/folder";
     private $calBorder = "0";
     private $calWidth = "100%";
     private $calBGCellColor = "#FFA748";
     private $calBGCellToday = "#0088FF";
-    private $calTextColor = "#46154F";
     private $campo;
 
     /**
@@ -57,7 +54,7 @@ class BaseCalendar
 
         switch ($month) {
             case "Jan":
-                return gettext('sEn');
+                return gettext('sEne');
                 break;
             case "Apr":
                 return gettext('sAbr');
@@ -198,8 +195,6 @@ class AnualCalendar
     private $calBGCellColor = "#FFA748";    // #6699CC";
     private $calBGCellToday = "#0088FF";                // #66ff66";
     private $calBGCellRevision = "#F718FF";        //#898988";
-    private $calTextColor = "#000000";
-    private $campo;
     private $aFechas;
     private $sAccion;
 

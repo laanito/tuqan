@@ -105,7 +105,6 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->comienza_transaccion();
         foreach ($aParametros['id'] as $key => $value) {
             for ($iIterador = 0; $iIterador < $iNumPerfiles; $iIterador++) {
-                //echo $aPerfiles[$iIterador].'['.$key.']'.' '.$aValores[$value[$iIterador]].' ';
                 $oBaseDatos->iniciar_Consulta('UPDATE');
                 $oBaseDatos->construir_Set(array($aPerfiles[$iIterador] . '[' . $key . ']'),
                     array($aValores[$value[$iIterador]]));
@@ -378,7 +377,11 @@ class Procesar_Funciones_Comunes
         return $sHtml;
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function procesa_AltaBaja_DocumentoProceso($sAccion, $aParametros)
     {
         $oVolver = new boton(gettext('sPCVolver'), "atras(-1)", "noafecta");
@@ -500,34 +503,23 @@ class Procesar_Funciones_Comunes
             }
 
             //Ahora mostramos dependiendo si es un documento normal, un documento de un proceso o un documento externo
-            if (($aIterador[5] < iIdExterno) || ($aIterador[5] == iIdHt) || ($aIterador[5] == iIdFichaMa)) {
+            if (($aIterador[5] < iIdExterno) || ($aIterador[5] == iIdAai) || ($aIterador[5] == iIdFichaMa)) {
                 //Es que es un documento normal
-                $sHtml = "<table class=\"documento\">";
-                $sHtml .= "<tr>";
-                $sHtml .= "<td class=\"doc_largo\"><span class=\"campo\">" . gettext('sDocumento') .
-                    " &nbsp;&nbsp;&nbsp;&nbsp;</span>";
+                $aTableAttrs = array('class' => 'table table-responsive documento');
+                $oTable = new Surface($aTableAttrs);
+                $rows=array();
+                $row = array();
+                $row[]= "<span class=\"campo\">" . gettext('sDocumento') ."</span>" . $aIterador[1];
+                $rows[]=$row;
+                $row = array();
+                $row[]= "<span class=\"campo\">" . gettext('sDocRevision') ."</span>" . $aIterador[2];
+                $row[]= "<span class=\"campo\">" . gettext('sDocEstado') ."</span>" . $aIterador[3];
+                $row[]= "<span class=\"campo\">" . gettext('sDocRevisado') ."</span>" . $aUsuario[0];
+                $rows[]=$row;
+                $sTabla = $oTable->addRows($rows)
+                    ->render();
+                $sHtml = $sTabla;
 
-                $sHtml .= $aIterador[0] . "&nbsp;&nbsp;&nbsp;&nbsp;</td><td>" . $aIterador[1] . "</td>";
-
-                $sHtml .= "</tr>";
-
-                $sHtml .= "<tr>";
-                $sHtml .= "<td><span class=\"campo\">" . gettext('sDocRevision') . "&nbsp;&nbsp;&nbsp;&nbsp;</span>";
-                $sHtml .= $aIterador[2] . "</td>";
-                //$sHtml.="</tr>";
-
-                //$sHtml.="<tr>";
-                $sHtml .= "<td><span class=\"campo\">" . gettext('sDocEstado') . " &nbsp;&nbsp;&nbsp;&nbsp;</span>";
-                $sHtml .= $aIterador[3] . "</td>";
-                //$sHtml.="<tr>";
-
-
-                //$sHtml.="<tr>";
-                $sHtml .= "<td><span class=\"campo\">" . gettext('sDocRevisado') . " &nbsp;&nbsp;&nbsp;&nbsp;</span>";
-                $sHtml .= $aUsuario[0] . "</td>";
-                $sHtml .= "</tr>";
-
-                $sHtml .= "</table><hr>";
                 //Ahora sacamos el contenido
                 $oBaseDatos->iniciar_Consulta('SELECT');
                 $oBaseDatos->construir_Campos(array('contenido'));
@@ -537,22 +529,18 @@ class Procesar_Funciones_Comunes
                 if ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
                     $oLimpiador = new htmlcleaner();
                     $sContenido = $oLimpiador->cleanup($aIteradorInterno[0]);
-                    $sHtml .= "<div align='center'><table class=\"cuerpo_doc\">";
-                    $sHtml .= "<tr>";
-                    $sHtml .= "<td class=\"cd1\">";
+                    $sHtml .= "<div align='center'>";
                     $sHtml .= $sContenido;
-                    $sHtml .= "</td>";
-                    $sHtml .= "</tr>";
-                    $sHtml .= "</table></center>";
+                    $sHtml .= "</div>";
                 }
                 $sHtml .= "<br /><hr>" . $oBoton->to_Html();
                 $sHtml = "contenedor|" . $sHtml;
-            } else if (($aIterador[5] == iIdExterno) || ($aIterador[5] == iIdPoliticaM) || ($aIterador[5] == iIdPoliticaC)) {
+            } else if (($aIterador[5] == iIdExterno) || ($aIterador[5] == iIdPolitica)) {
                 //Si es un documento externo lo sacamos por pantalla
                 $sHtml = "contenedor|<iframe id=\"docext\" src=\"muestrabinario.php?id=" . $iDocumento .
                     "&tipo=documento\" width=\"100%\" height=\"600px\" frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
             } else {
-                //Primero vemos si el documento es en vigor, en caso contrario no podemos ensear una ficha
+                //Primero vemos si el documento es en vigor, en caso contrario no podemos mostrar una ficha
                 $oBaseDatos->iniciar_Consulta('SELECT');
                 $oBaseDatos->construir_Campos(array('estado'));
                 $oBaseDatos->construir_Tablas(array('documentos'));
@@ -590,10 +578,9 @@ class Procesar_Funciones_Comunes
 
     function procesa_Nuevo_Documento($aParametros)
     {
-
         $_SESSION['tipodoc'] = $aParametros['tipo'];
         $_SESSION['idtipo'] = $aParametros['idtipo'];
-        if ($_SESSION['idtipo'] == iIdManual) {
+        if ($_SESSION['idtipo'] == iIdManual ) {
             $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
             $oBaseDatos->iniciar_Consulta('SELECT');
             $oBaseDatos->construir_Campos(array('id'));
@@ -603,24 +590,15 @@ class Procesar_Funciones_Comunes
             if ($aEstado = $oBaseDatos->coger_Fila()) {
                 $oBoton = new boton(gettext('sPCOVolver'), "atras(-1)", "noafecta");
                 return $sHtml = "contenedor|" . gettext('sYaManual') . "<br />" . $oBoton->to_Html();
-            } else {
-                if ($aParametros['editor'] == 0) {
-                    //Esto quiere decir que el editor aun no esta creado por lo que debemos crearlo
-                    $sHtml = "diveditor|<iframe id=\"FCKEDITOR\" src=\"fckeditor.php?codigo=&nombre=&datos=\" width=\"100%\" height=\"600px\"" .
-                        "frameborder=\"0\" scrolling=\"auto\" style=\"z-index: 0\"><\iframe>|";
-                } else {
-                    $sHtml = "sacareditor|" . gettext('sDocNuevo') . $aParametros['tipo'] . separadorCadenas . separadorCadenas . separadorCadenas . "0";
-                }
             }
+        }
+        if ($aParametros['editor'] == 0) {
+            //Esto quiere decir que el editor aun no esta creado por lo que debemos crearlo
+            $sHtml = "diveditor|<iframe id=\"FCKEDITOR\" src=\"fckeditor.php?codigo=&nombre=&datos=\" width=\"100%\" height=\"600px\"" .
+                "frameborder=\"0\" scrolling=\"auto\" style=\"z-index: 0\"><\iframe>|";
         } else {
-            if ($aParametros['editor'] == 0) {
-                //Esto quiere decir que el editor aun no esta creado por lo que debemos crearlo
-                $sHtml = "diveditor|<iframe id=\"FCKEDITOR\" src=\"fckeditor.php?codigo=&nombre=&datos=\" width=\"100%\" height=\"600px\"" .
-                    "frameborder=\"0\" scrolling=\"auto\" style=\"z-index: 0\"><\iframe>|";
-            } else {
 
-                $sHtml = "sacareditor|" . gettext('sDocNuevo') . $aParametros['tipo'] . separadorCadenas . separadorCadenas . separadorCadenas . "0";
-            }
+            $sHtml = "sacareditor|" . gettext('sDocNuevo') . $aParametros['tipo'] . separadorCadenas . separadorCadenas . separadorCadenas . "0";
         }
         return $sHtml;
     }
@@ -632,17 +610,14 @@ class Procesar_Funciones_Comunes
      * @param string $sAccion
      * @return String
      */
-
     function procesa_AltaBaja_Criterios($sAccion, $aParametros)
     {
         $oVolver = new boton(gettext('sMCVolver'), "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $aSplit = explode(":", $sAccion);
-
         $aTroceo = explode(separadorCadenas, $aParametros['filas']);
         $aFilas = str_split($aTroceo[0]);
         $sHtml = "";
-        //$aConsultas= array();
         //Sacamos los criterios que teniamos
         $oBaseDatos->iniciar_Consulta('SELECT');
         $oBaseDatos->construir_Campos(array('criterios'));
@@ -664,7 +639,6 @@ class Procesar_Funciones_Comunes
             $aCriterios = str_split($sCriterios);
         }
         //En $aCriterios tenemos todos los criterios del producto actualmente
-        $aUltimo = count($aCriterios);
         //Comenzamos una transaccion
         $oBaseDatos->comienza_transaccion();
         for ($iContador = 0; $iContador < (count($aFilas)); $iContador++) {
@@ -794,11 +768,9 @@ class Procesar_Funciones_Comunes
             while ($aIterador = $oBaseDatos->coger_Fila()) {
                 $sHtml .= $aIterador[0] . " ";
             }
-            //$oPagina->addBodyContent("<div id=\"subirfichero\">");
             $oPagina->addBodyContent("<br/><br/>");
             $oPagina->addBodyContent($sHtml . "<br/><br/>");
             $oPagina->addBodyContent($oVolver->to_Html());
-            //$oPagina->addBodyContent("</div>");
         } else {
             if ($aParametros['idtipo'] == iIdManual) {
                 $oPagina->addBodyContent("<div align='center'>" . gettext('sPFCExisteManual') . "<br />" . $oVolver->to_Html() . "</div>");
@@ -811,7 +783,11 @@ class Procesar_Funciones_Comunes
         return $oPagina->toHTML();
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Adjunto($sAccion, $aParametros)
     {
         $iAdjunto = $aParametros['numeroDeFila'];
@@ -836,15 +812,12 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Where(array('id<6'));
         $oBaseDatos->construir_Order(array('extension'));
         $oBaseDatos->consulta();
-        $aTipos = array();
-        $bPrimero = true;
         $sHtml .= gettext('sFSoportados');
         while ($aIterador = $oBaseDatos->coger_Fila()) {
             $sHtml .= $aIterador[0] . " ";
         }
         $oPagina->addBodyContent($sHtml . "<br />");
         $oPagina->addBodyContent($oVolver->to_Html());
-
         return $oPagina->toHTML();
     }
 
@@ -858,7 +831,6 @@ class Procesar_Funciones_Comunes
     function procesa_Ver($aParametros)
     {
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos->iniciar_Consulta('SELECT');
         $oBaseDatos->construir_Tablas(array($_SESSION['tabla']));
@@ -924,29 +896,16 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->consulta();
         $aFila = $oBaseDatos->coger_Fila();
         $_SESSION['documentodetalles'] = $aFila[4];
-        $sHtml = "<table class=\"tareas\">";
-        $sHtml .= "<tr>";
-        $sHtml .= "<td class=\"campo\">" . gettext('sTareaEnviada') . " &nbsp;&nbsp;&nbsp;&nbsp;</td>";
-        $sHtml .= "<td>" . $aFila[0] . "</td>";
-        $sHtml .= "</tr>";
-
-        $sHtml .= "<tr>";
-        $sHtml .= "<td class=\"campo\">" . gettext('sTareaEjecutar') . " &nbsp;&nbsp;&nbsp;&nbsp;</td>";
-        $sHtml .= "<td>" . $aFila[1] . "</td>";
-        $sHtml .= "</tr>";
-
-        $sHtml .= "<tr>";
-        $sHtml .= "<td class=\"campo\">" . gettext('sTareaDoc') . " &nbsp;&nbsp;&nbsp;&nbsp;</td>";
-        $sHtml .= "<td>" . $aFila[2] . "</td>";
-        $sHtml .= "</tr>";
-
-        $sHtml .= "<tr>";
-        $sHtml .= "<td class=\"campo\">" . gettext('sTareaDesc') . " &nbsp;&nbsp;&nbsp;&nbsp;</td>";
-        $sHtml .= "<td>" . $aFila[3] . "</td>";
-        $sHtml .= "</tr>";
-        $sHtml .= "</table><br />";
-        $sHtml .= $oDocumento->to_Html() . $oVolver->to_Html();
-        return $sHtml;
+        $aTableAttrs = array('class' => 'table table-responsive tareas');
+        $oTable = new Surface($aTableAttrs);
+        $rows =array();
+        $rows[]=array(gettext('sTareaEnviada'),$aFila[0]);
+        $rows[]=array(gettext('sTareaEjecutar'),$aFila[1]);
+        $rows[]=array(gettext('sTareaDoc'),$aFila[2]);
+        $rows[]=array(gettext('sTareaDesc'),$aFila[3]);
+        $sTabla = $oTable->addRows($rows)
+            ->render();
+        return $sTabla . $oDocumento->to_Html() . $oVolver->to_Html();
     }
 
     /**
@@ -1004,7 +963,6 @@ class Procesar_Funciones_Comunes
         }
         $oPagina->addBodyContent($sHtml . "<br /><br />");
         $oPagina->addBodyContent($oVolver->to_Html());
-
         return $oPagina->toHTML();
     }
 
@@ -1052,7 +1010,6 @@ class Procesar_Funciones_Comunes
      */
     function subir_Fichero_Flujo($sAccion, $aParametros)
     {
-        
         $iIdCurso = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         return "contenedor|<iframe id=\"formsubir\" src=\"/ajax/form?action=catalogo:flujograma:upload:iframe&sesion=&datos=  width=\"100%\"" .
             " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
@@ -1088,7 +1045,6 @@ class Procesar_Funciones_Comunes
      */
     function subir_Fichero_Manual($sAccion)
     {
-        
         $sPolitica = $sAccion;
         return "contenedor|<iframe id=\"formsubir\" src=\"/ajax/form?action=manual:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
@@ -1101,7 +1057,6 @@ class Procesar_Funciones_Comunes
      */
     function subir_Fichero_Pg($sAccion)
     {
-        
         $sPolitica = 'PG';
         return "contenedor|<iframe id=\"formsubir\" src=\"/ajax/form?action=pg:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
@@ -1114,7 +1069,6 @@ class Procesar_Funciones_Comunes
      */
     function subir_Fichero_Pe($sAccion)
     {
-        
         $sPolitica = 'PE';
         return "contenedor|<iframe id=\"formsubir\" src=\"/ajax/form?action=pe:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
@@ -1156,10 +1110,8 @@ class Procesar_Funciones_Comunes
 
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
         $_SESSION['subirfichero'] = 'documento';
-
         $oPagina = new FakePage();
         $oPagina->addStyleDeclaration('/css/tuqan.css', 'text/css');
-
         $sHtml = "<form class=\"fichero\" enctype=\"multipart/form-data\" accept=\"" . gettext('sTipos') . "\" action=\"/coger.php\" method=\"post\">" .
                 "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"100000000\">" . gettext('sEnviarFichero') . " " .
                 "<input type=\"hidden\" name=\"documento\" value=\"" . $aParametros['iddoc'] . "\">" .
@@ -1187,10 +1139,9 @@ class Procesar_Funciones_Comunes
      * @param $sAccion
      * @param $aParametros
      * @param null $iId
-     * @param bool $bBoton
      * @return string
      */
-    function procesa_Ver_Ficha_Proceso($sAccion, $aParametros, $iId = null, $bBoton = true)
+    function procesa_Ver_Ficha_Proceso($sAccion, $aParametros, $iId = null)
     {
 
         $oVolver = new boton(gettext('sPCVolver'), "atras(-1)", "noafecta");
@@ -1271,40 +1222,18 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->consulta();
         if ($aIterador = $oBaseDatos->coger_Fila()) {
             $sHtml = "<div id=\"proceso\">";
-
             $sHtml .= "<p class=\"t_proceso\">" . gettext('sProcFicha') . "&nbsp;&nbsp;" .
-                $aIterador[8] . "&nbsp;&nbsp;" . $aIterador[7] . "</p><br />";
-            $sHtml .= "<table class=\"tabla_ficha\">";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td class=\"celda\">";
-            $sHtml .= "<b>" . gettext('sProcProv') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[0];
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td class=\"celda\">";
-            $sHtml .= "<b>" . gettext('sProcEntradas') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[1];
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td class=\"celda\">";
-            $sHtml .= "<b>" . gettext('sProcEntradas') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[2];
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
-            //Sacamos los indicadores
-            $sHtml .= "<tr>";
-            $sHtml .= "<td class=\"celda\">";
-            $sHtml .= "<b>" . gettext('sProcInd') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td><table class=\"tabla_ficha\" border=0>";
+                $aIterador[8] . "&nbsp;&nbsp;" . $aIterador[7] . "</p>";
+            $aTableAttrs = array('class' => 'table table-responsive tareas tabla_ficha');
+            $oTable = new Surface($aTableAttrs);
+            $rows =array();
+            $rows[]=array("<b>".gettext('sProcProv')."</b>",$aIterador[0]);
+            $rows[]=array("<b>".gettext('sProcEntradas')."</b>",$aIterador[1]);
+            $rows[]=array("<b>".gettext('sProcEntradas')."</b>",$aIterador[2]);
+
+            $subTable = new Surface($aTableAttrs);
+            $subRows=array();
+
             if (isset($iId)) {
                 $oBaseDatos->iniciar_Consulta('SELECT');
                 $oBaseDatos->construir_Campos(array('indicadores.nombre'));
@@ -1320,18 +1249,17 @@ class Procesar_Funciones_Comunes
                     'documentos.estado=' . iVigor));
             }
             $oBaseDatos->consulta();
-
             while ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
-                $sHtml .= "<tr><td>-" . $aIteradorInterno[0] . "</td></tr>";
+                $subRows[]= $aIteradorInterno[0];
             }
-            $sHtml .= "</table></td>";
-            $sHtml .= "</tr>";
+            $subTabla = $subTable->addRows($subRows)
+                ->render();
+            $rows[]=array("<b>".gettext('sProcInd')."</b>",$subTabla);
+            $subTable = new Surface($aTableAttrs);
+            $subRows=array();
+
             //Sacamos los anexos
-            $sHtml .= "<tr>";
-            $sHtml .= "<td class=\"celda\">";
-            $sHtml .= "<b>" . gettext('sBotonDocAx') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td><table class=\"tabla_ficha\" border=0>";
+
             if (isset($iId)) {
                 $oBaseDatos->iniciar_Consulta('SELECT');
                 $oBaseDatos->construir_Campos(array('documentos.codigo||\' \'||documentos.nombre'));
@@ -1349,41 +1277,15 @@ class Procesar_Funciones_Comunes
             $oBaseDatos->consulta();
 
             while ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
-                $sHtml .= "<tr><td>-" . $aIteradorInterno[0] . "</td></tr>";
+                $subRows[]= $aIteradorInterno[0];
             }
-            $sHtml .= "</table></td>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sProcSalidas') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[3];
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sProcCliente') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[4];
-            $sHtml .= "</td>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sProcInstal') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[5];
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= "<b>" . gettext('sProcIndicacion') . "</b>";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIterador[6];
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
+            $subTabla = $subTable->addRows($subRows)
+                ->render();
+            $rows[]=array("<b>".gettext('sBotonDocAx')."</b>",$subTabla);
+            $rows[]=array("<b>".gettext('sProcSalidas')."</b>",$aIterador[3]);
+            $rows[]=array("<b>".gettext('sProcCliente')."</b>",$aIterador[4]);
+            $rows[]=array("<b>".gettext('sProcInstal')."</b>",$aIterador[5]);
+            $rows[]=array("<b>".gettext('sProcIndicacion')."</b>",$aIterador[6]);
 
             if (isset($iId)) {
                 $oBaseDatos->iniciar_Consulta('SELECT');
@@ -1401,41 +1303,20 @@ class Procesar_Funciones_Comunes
             $oBaseDatos->consulta();
             $iCont = 1;
             while ($aIterador = $oBaseDatos->coger_Fila()) {
-                $sHtml .= "<tr>";
-                $sHtml .= "<td>";
-                $sHtml .= "<b>" . gettext('sBotonFlujog') . ": " . $iCont . "</b>";
-                $sHtml .= "</td>";
-                $sHtml .= "<td align=\"center\">";
-                if ($bBoton) {
-                    $sHtml .= "<img style=cursor:pointer src=\"muestrabinario.php?id=" . $aIterador[0] . "&tipo=imagent\" onclick=\"window.open('paginaBinario.php?id=" . $aIterador[0] . "&tipo=imagen','proceso','top=0,left=0,directories=no,height=1024,location=no,menubar=no,resizable=no,scrollbars=yes,status=no,toolbar=no,width=1280')\";/>";
-                } /**
-                 *    Si entramos por aqui es que queremos imprimir la ficha por lo que lo que haremos es sacarla a un fichero
-                 *  temporal y luego lo borraremos
-                 */
-                else {
-                    poner_Miniatura($aIterador[0], $iCont);
-                    $sHtml .= "<img src=\"../../../tmp/temporal" . $iCont . "\">";
-                    if ($iCont % 2 == 0) {
-                        if ($iCont == 2) {
-                            $sHtml .= "</table><br /><br /><br /><br /><br /><br /><br /><br />";
-                        } else {
-                            $sHtml .= "</table><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />";
-                        }
-                        $sHtml .= "<table class=\"tabla_ficha\">";
-                    }
-                }
-                $sHtml .= "</td>";
-                $sHtml .= "</tr>";
-
+                $image = "<img style=cursor:pointer src=\"muestrabinario.php?id=" .
+                    $aIterador[0] . "&tipo=imagent\" onclick=\"window.open('paginaBinario.php?id=" .
+                    $aIterador[0] . "&tipo=imagen','proceso','top=0,left=0,directories=no,height=1024,".
+                    "location=no,menubar=no,resizable=no,scrollbars=yes,status=no,toolbar=no,width=1280')\";/>";
+                $rows[]=array("<b>" . gettext('sBotonFlujog') . ": " . $iCont . "</b>",$image);
                 $iCont++;
             }
-            $sHtml .= "</table></div><br />";
+            $sTabla = $oTable->addRows($rows)
+                ->render();
+            $sHtml = $sTabla."</div>";
         } else {
             $sHtml = "<table>" . gettext('sProcNoDef') . "</table>";
         }
-        if ($bBoton) {
             $sHtml .= "<br />" . $oVolver->to_Html();
-        }
         return $sHtml;
     }
 
@@ -1446,37 +1327,22 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Matriz_Indicadores($sAccion, $aParametros)
     {
-
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $sHtml = "<table id=\"indicadores\">";
-        $sHtml .= "<tr class=\"tit_indicadores\">";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIProceso');
-        $sHtml .= "</td>";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIIndicador');
-        $sHtml .= "</td>";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIValorIn');
-        $sHtml .= "</td>";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIValorTol');
-        $sHtml .= "</td>";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIObj');
-        $sHtml .= "</td>";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIMedicion');
-        $sHtml .= "</td>";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIAnalisis');
-        $sHtml .= "</td>";
-        $sHtml .= "<td>";
-        $sHtml .= gettext('sMIResponsable');
-        $sHtml .= "</td>";
-        $sHtml .= "</tr>";
+        $aTableAttrs = array('class' => 'table table-responsive indicadores');
+        $oTable = new Surface($aTableAttrs);
+        $headerContent =array(
+            gettext('sMIProceso'),
+            gettext('sMIIndicador'),
+            gettext('sMIValorIn'),
+            gettext('sMIValorTol'),
+            gettext('sMIObj'),
+            gettext('sMIMedicion'),
+            gettext('sMIAnalisis'),
+            gettext('sMIResponsable'),
+        );
+        $rows=array();
         $oBaseDatos->iniciar_Consulta('SELECT');
         $oBaseDatos->construir_Campos(array('id,nombre'));
         $oBaseDatos->construir_Tablas(array('procesos'));
@@ -1496,35 +1362,16 @@ class Procesar_Funciones_Comunes
             $oDb->construir_Order(array('indicadores.id asc'));
             $oDb->consulta();
             while ($aIteradorInterno = $oDb->coger_Fila()) {
-                //$sHtml.=$aIterador[1]."<br />";
-
-                $sHtml .= "<tr>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIterador[1];
-                $sHtml .= "</td>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIteradorInterno[0];
-                $sHtml .= "</td>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIteradorInterno[1];
-                $sHtml .= "</td>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIteradorInterno[2];
-                $sHtml .= "</td>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIteradorInterno[3];
-                $sHtml .= "</td>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIteradorInterno[4];
-                $sHtml .= "</td>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIteradorInterno[5] . "/" . $aIteradorInterno[6];
-                $sHtml .= "</td>";
-                $sHtml .= "<td>";
-                $sHtml .= $aIteradorInterno[7] . "/" . $aIteradorInterno[8];
-                $sHtml .= "</td>";
-                $sHtml .= "</tr>";
-
+                $rows[]=array(
+                    $aIterador[1],
+                    $aIteradorInterno[0],
+                    $aIteradorInterno[1],
+                    $aIteradorInterno[2],
+                    $aIteradorInterno[3],
+                    $aIteradorInterno[4],
+                    $aIteradorInterno[5] . "/" . $aIteradorInterno[6],
+                    $aIteradorInterno[7] . "/" . $aIteradorInterno[8]
+                );
             }
         }
         $oDb->iniciar_Consulta('SELECT');
@@ -1539,35 +1386,21 @@ class Procesar_Funciones_Comunes
         $oDb->construir_Order(array('indicadores.id asc'));
         $oDb->consulta();
         while ($aIteradorInterno = $oDb->coger_Fila()) {
-            $sHtml .= "<tr>";
-            $sHtml .= "<td>";
-            $sHtml .= " ";
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIteradorInterno[0];
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIteradorInterno[1];
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIteradorInterno[2];
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIteradorInterno[3];
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIteradorInterno[4];
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIteradorInterno[5] . "/" . $aIteradorInterno[6];
-            $sHtml .= "</td>";
-            $sHtml .= "<td>";
-            $sHtml .= $aIteradorInterno[7] . "/" . $aIteradorInterno[8];
-            $sHtml .= "</td>";
-            $sHtml .= "</tr>";
+            $rows[]=array(
+                $aIterador[1],
+                $aIteradorInterno[0],
+                $aIteradorInterno[1],
+                $aIteradorInterno[2],
+                $aIteradorInterno[3],
+                $aIteradorInterno[4],
+                $aIteradorInterno[5] . "/" . $aIteradorInterno[6],
+                $aIteradorInterno[7] . "/" . $aIteradorInterno[8]
+            );
         }
-        $sHtml .= "</table>";
-        $sHtml .= "<br /><br />" . $oVolver->to_Html();
+        $sTabla = $oTable->setHead($headerContent)
+            ->addRows($rows)
+            ->render();
+        $sHtml = $sTabla . $oVolver->to_Html();
         return "contenedor|" . $sHtml;
 
     }
@@ -1797,8 +1630,8 @@ class Procesar_Funciones_Comunes
             }
         }
         if ($bICS) {
-            $sPassEmp = $css->decrypt($Config->sPassEtc, $clave);
-            $oDbEmpresas = new Manejador_Base_Datos($Config->sLoginEtc, $sPassEmp, $Config->sDbEtc);
+            $sPassEmp = $css->decrypt(Config::$sPassEtc, $clave);
+            $oDbEmpresas = new Manejador_Base_Datos(Config::$sLoginEtc, $sPassEmp, Config::$sDbEtc);
             $oDbEmpresas->iniciar_Consulta('SELECT');
             $oDbEmpresas->construir_Campos(array('login_bbdd', 'pass_bbdd', 'nombre_bbdd'));
             $oDbEmpresas->construir_Tablas(array('qnova_bbdd'));

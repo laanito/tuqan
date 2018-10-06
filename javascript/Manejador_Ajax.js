@@ -100,7 +100,7 @@ function puntuacion() {
     for (i = 0; i < check.length; i++) {
         if (check[i].type === "checkbox") {
             if (check[i].checked === true) {
-                checkid = check[i].name.split(':');
+                let checkid = check[i].name.split(':');
                 //Las lineas comentadas no funcionan en ie, asi funcionan en ambos
                 //columna=document.getElementById("td:"+checkid[1]);
                 document.getElementById("td:" + checkid[1]).innerHTML = check[i].value;
@@ -108,7 +108,7 @@ function puntuacion() {
                 suma += Number(check[i].value);
             }
             else {
-                checkid = check[i].name.split(':');
+                let checkid = check[i].name.split(':');
                 //columna=document.getElementById("td:"+checkid[1]);
                 document.getElementById("td:" + checkid[1]).innerHTML = 0;
                 //columna.innerHTML=0;

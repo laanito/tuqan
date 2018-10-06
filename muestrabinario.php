@@ -1,4 +1,7 @@
 <?php
+
+use Tuqan\Classes\Manejador_Base_Datos;
+
 /**
 * LICENSE see LICENSE.md file
  */
@@ -42,17 +45,13 @@ function resizeImage($img)
 if (!isset($_SESSION)) {
     session_start();
 }
-require_once 'Manejador_Base_Datos.class.php';
+require_once 'Classes/Manejador_Base_Datos.class.php';
 require_once 'constantes.inc.php';
 require 'etc/qnova.conf.php';
 include_once 'include.php';
 
 $iId = $_GET['id'];
 $sTipo = $_GET['tipo'];
-$sMemoriaInicial = ini_get('memory_limit');
-$sTiempoLimiteInicial = ini_get('max_execution_time');
-ini_set('memory_limit', $sMemoriaHtml2Pdf);
-ini_set('max_execution_time', $sMaxTiempoHtml2Pdf);
 $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
 
 if (($iId != null) || ($sTipo != "politica") || ($sTipo != "objetivos")) {
@@ -243,5 +242,4 @@ if (($iId != null) || ($sTipo != "politica") || ($sTipo != "objetivos")) {
 } else {
     echo "No existe el archivo pedido";
 }
-ini_set('memory_limit', $sMemoriaInicial);
-ini_set('max_execution_time', $sTiempoLimiteInicial);
+
