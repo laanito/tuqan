@@ -181,12 +181,7 @@ class generador_listados
         $this->sTabla = $sTabla;
         $this->aBuscador = $aBusca;
         $this->sTexto = $sTexto;
-
-        unset($_SESSION['where']);
-        if ($aWhere != "limpiar") {
-            $_SESSION['where'] = $aWhere;
-        }
-        unset($_SESSION['tabla']);
+        $_SESSION['where'] = $aWhere;
         $_SESSION['tabla'] = $sTabla;
     }
     //Fin __construct
