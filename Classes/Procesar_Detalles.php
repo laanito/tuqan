@@ -905,7 +905,7 @@ class Procesar_Detalles
                 gettext('sPMRiesgoMedio') . "' else '" . gettext('sPMRiesgoAlto') . "' end as \"" . gettext('sPMValoracion') . "\""
             ));
             $oBaseDatos->construir_Tablas(array('aspectos', 'tipo_aspectos', 'tipo_impactos', 'tipo_probabilidad', 'tipo_severidad',
-                '(select aspectos.id, ' . Config::$sFormulaMatrizAmbientales . ' as significancia from aspectos,tipo_severidad, tipo_probabilidad ' .
+                '(select aspectos.id, ' . $sFormulaMatrizAmbientales . ' as significancia from aspectos,tipo_severidad, tipo_probabilidad ' .
                 'where aspectos.severidad=tipo_severidad.id AND aspectos.probabilidad=tipo_probabilidad.id)as pp',
                 'tipo_impactos_idiomas', 'tipo_severidad_idiomas', 'tipo_probabilidad_idiomas'
             ));
