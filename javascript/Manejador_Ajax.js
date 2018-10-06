@@ -337,7 +337,7 @@ function createRequestObject() {
 function errorEspera() {
     http = null;
     ap_showWaitMessage('wait', 0, 1);
-    document.getElementById('contenedor').innerHTML = "<p>No ha llegado respuesta en el tiempo estimado, por favor vuelva a intentarlo <br /> Si persiste el error p?ngase en contacto con el administrador de la aplicación</p>";
+    document.getElementById('contenedor').innerHTML = "<p>No ha llegado respuesta en el tiempo estimado, por favor vuelva a intentarlo <br /> Si persiste el error pongase en contacto con el administrador de la aplicación</p>";
 }
 
 /**
@@ -713,8 +713,8 @@ function sndReq(action, sesion, tipo, datos) {
 function handleResponse() {
     if (http.readyState === 4) {
         let response = http.responseText;
-        let quitar = true;
-        let update = response.split('|');
+        var quitar = true;
+        var update = response.split('|');
         //document.getElementById('contenedor').innerHTML=update[0];
         if (response.indexOf('|' !== -1)) {
             /**
