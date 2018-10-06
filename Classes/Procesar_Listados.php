@@ -1717,7 +1717,6 @@ class Procesar_Listados
         //Procesamos los posibles where via textfields
 
         if (isset($aParametros['where'])) {
-
             if ($aParametros['where'] == "limpiar") {
                 $aParametros['where'] = "limpiar";
             } else {
@@ -1732,6 +1731,8 @@ class Procesar_Listados
                     $oDb->pon_Where($sKey . " LIKE '%" . $sValor . "%'");
                 }
             }
+        } else {
+            $aParametros['where'] = "limpiar";
         }
 
         //Procesamos los posibles where via desplegables

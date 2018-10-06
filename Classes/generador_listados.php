@@ -135,7 +135,20 @@ class generador_listados
 
     private $sTabla;
 
-
+    /**
+     * generador_listados constructor.
+     * @param $sAccion
+     * @param $oDb
+     * @param $sPagina
+     * @param int $iNumeroLinks
+     * @param int $iElementosPorPagina
+     * @param string $sOrder
+     * @param string $sSentidoOrder
+     * @param string $sTabla
+     * @param string $aWhere
+     * @param array $aBusca
+     * @param string $sTexto
+     */
 
     function __construct(
         $sAccion,

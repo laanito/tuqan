@@ -11,7 +11,6 @@ use Surface\Surface;
 
 class Procesar_Funciones_Comunes
 {
-
     /**
      * Esta funcion
      * nos verifica una accion mejora
@@ -2674,8 +2673,8 @@ class Procesar_Funciones_Comunes
         $oDb->construir_Tablas(array('cursos', 'tipo_estados_curso'));
         $oDb->construir_Where(array('cursos.id=' . $iCurso, 'cursos.estado=tipo_estados_curso.id'));
         $oDb->consulta();
-
-        if ($aIterador = $oDb->coger_Fila()) {
+        $aIterador = $oDb->coger_Fila();
+        if ($aIterador) {
             $sEstadoCurso = $aIterador[0];
         }
         if ($sEstadoCurso == gettext('sEstadoAbierto')) {
@@ -2690,10 +2689,11 @@ class Procesar_Funciones_Comunes
             $oDb->construir_Campos($aCampos);
             $oDb->construir_Tablas(array('alumnos'));
             $oDb->construir_Where(array('alumnos.curso=' . $iCurso, 'alumnos.usuario=' . $_SESSION['userid']));
-            $oDb->consulta();
-            if ($aIterador = $oDb->coger_Fila()) {
-                $sInscrito = $aIterador[0];
-                $sVerificado = $aIterador[1];
+            $oDb->consulta(\PDO::FETCH_ASSOC);
+            $aIterador = $oDb->coger_Fila();
+            if ($aIterador) {
+                $sInscrito = $aIterador['inscrito'];
+                $sVerificado = $aIterador['verificado'];
             } else {
                 $sInscrito = null;
                 $sVerificado = null;
