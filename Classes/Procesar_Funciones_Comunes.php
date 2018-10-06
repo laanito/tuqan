@@ -1099,7 +1099,6 @@ class Procesar_Funciones_Comunes
      */
     function subir_Fichero_Externo($sAccion)
     {
-        
         $sPolitica = 'Externo';
         return "contenedor|<iframe id=\"formsubir\" src=\"/ajax/form?action=externo:iframe&sesion=&datos=" .
             $sPolitica . "\"  width=\"100%\"" .
@@ -1113,7 +1112,6 @@ class Procesar_Funciones_Comunes
      */
     function procesa_Subir_Fichero($sAccion, $aParametros)
     {
-
         $oVolver = new boton("Volver", "parent.atras(-2)", "noafecta");
         $_SESSION['subirfichero'] = 'documento';
         $oPagina = new FakePage();
@@ -1511,91 +1509,52 @@ class Procesar_Funciones_Comunes
         if ($aIterador) {
             //Comprobamos que su estado era o revisado o pendiente de aprobar
             if (($aIterador[2] == iRevisado) || ($aIterador[2] == iPendAprobacion)) {
-                if (($_SESSION['empresa'] == 'ICS') && (($aIterador[3] == iIdPolitica) || ($aIterador[3] == iIdPg))) {
-                    //Debemos de hacer las actualizaciones en TODAS las bases de datos
-                    $sPassEmp = $css->decrypt($Config->sPassEtc, $clave);
-                    $oDbEmpresas = new Manejador_Base_Datos($Config->sLoginEtc, $sPassEmp, $Config->sDbEtc);
-                    $oDbEmpresas->iniciar_Consulta('SELECT');
-                    $oDbEmpresas->construir_Campos(array('login_bbdd', 'pass_bbdd', 'nombre_bbdd'));
-                    $oDbEmpresas->construir_Tablas(array('qnova_bbdd'));
-                    $oDbEmpresas->consulta();
-                    while ($aIteradorInterno = $oDbEmpresas->coger_Fila()) {
-                        $sPassEmpInt = $css->decrypt($aIteradorInterno[1], $clave);
-                        $oBaseDatos = new Manejador_Base_Datos($aIteradorInterno[0], $sPassEmpInt, $aIteradorInterno[2]);
-                        $oBaseDatos->comienza_transaccion();
+                //Comprobamos que no hay uno en vigor actualmente, si lo hay lo damos de baja antes de poner en vigor el borrador
+                $oBaseDatos->iniciar_Consulta('UPDATE');
+                $oBaseDatos->construir_Set(array('activo', 'estado'),
+                    array('false', iHistorico));
+                $oBaseDatos->construir_Tablas(array('documentos'));
+                $oBaseDatos->construir_Where(array('codigo=\'' . $aIterador[0] . '\'',
+                    'nombre=\'' . $aIterador[1] . '\'',
+                    'estado=\'' . iVigor . '\''));
+                $oBaseDatos->consulta();
+
+
+                //Una vez puesto a inactivo el documento vigor si lo hubiera pasamos a poner como vigor nuestro borrador
+
+                $oBaseDatos->iniciar_Consulta('UPDATE');
+                $oBaseDatos->construir_SetSin(array('aprobado_por', 'estado', 'fecha_aprobacion'),
+                    array($aParametros['userid'], iVigor, 'now()'));
+                $oBaseDatos->construir_Tablas(array('documentos'));
+                $oBaseDatos->construir_Where(array('id=\'' . $aParametros['docid'] . '\''));
+                $oBaseDatos->consulta();
+                //Si el documento es de un proceso ponemos la version al proceso
+                if ($aIterador[3] == iIdProceso) {
+                    $oBaseDatos->iniciar_Consulta('SELECT');
+                    $oBaseDatos->construir_Campos(array('procesos.id'));
+                    $oBaseDatos->construir_Tablas(array('procesos', 'contenido_procesos'));
+                    $oBaseDatos->construir_Where(array('contenido_procesos.documento=' . $aParametros['docid'],
+                        'contenido_procesos.proceso=procesos.id'
+                    ));
+                    $oBaseDatos->consulta();
+                    if ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
                         $oBaseDatos->iniciar_Consulta('UPDATE');
-                        $oBaseDatos->construir_Set(array('activo', 'estado'),
-                            array('false', iHistorico));
-                        $oBaseDatos->construir_Tablas(array('documentos'));
-                        $oBaseDatos->construir_Where(array('codigo=\'' . $aIterador[0] . '\'',
-                            'nombre=\'' . $aIterador[1] . '\'',
-                            'estado=\'' . iVigor . '\''));
+                        $oBaseDatos->construir_Set(array('revision'),
+                            array($aIterador[4]));
+                        $oBaseDatos->construir_Tablas(array('procesos'));
+                        $oBaseDatos->construir_Where(array('id=' . $aIteradorInterno[0]));
                         $oBaseDatos->consulta();
-                        $oBaseDatos->iniciar_Consulta('UPDATE');
-                        $oBaseDatos->construir_SetSin(array('aprobado_por', 'estado', 'fecha_aprobacion'),
-                            array($aParametros['userid'], iVigor, 'now()'));
-                        $oBaseDatos->construir_Tablas(array('documentos'));
-                        $oBaseDatos->construir_Where(array('codigo=\'' . $aIterador[0] . '\'',
-                            'nombre=\'' . $aIterador[1] . '\'',
-                            'estado=\'' . iRevisado . '\''));
-                        $oBaseDatos->consulta();
-                        $oBaseDatos->iniciar_Consulta('INSERT');
-                        $oBaseDatos->construir_Campos(array('titulo', 'contenido', 'destinatario', 'activo', 'origen'));
-                        $oBaseDatos->construir_Value(array('Nueva version del documento: ' . $aIterador[0] . " " .
-                            $aIterador[1], 'Nueva version del documento: ' . $aIterador[0] . $aIterador[1], 0, 't', 0));
-                        $oBaseDatos->construir_Tablas(array('mensajes'));
-                        $oBaseDatos->consulta();
-                        $oBaseDatos->termina_transaccion();
                     }
-                    $sHtml = "contenedor|" . gettext('sDocAprobado') . "<br />" . $oVolver->to_Html();
-                } else {
-                    //Comprobamos que no hay uno en vigor actualmente, si lo hay lo damos de baja antes de poner en vigor el borrador
-                    $oBaseDatos->iniciar_Consulta('UPDATE');
-                    $oBaseDatos->construir_Set(array('activo', 'estado'),
-                        array('false', iHistorico));
-                    $oBaseDatos->construir_Tablas(array('documentos'));
-                    $oBaseDatos->construir_Where(array('codigo=\'' . $aIterador[0] . '\'',
-                        'nombre=\'' . $aIterador[1] . '\'',
-                        'estado=\'' . iVigor . '\''));
-                    $oBaseDatos->consulta();
-
-
-                    //Una vez puesto a inactivo el documento vigor si lo hubiera pasamos a poner como vigor nuestro borrador
-
-                    $oBaseDatos->iniciar_Consulta('UPDATE');
-                    $oBaseDatos->construir_SetSin(array('aprobado_por', 'estado', 'fecha_aprobacion'),
-                        array($aParametros['userid'], iVigor, 'now()'));
-                    $oBaseDatos->construir_Tablas(array('documentos'));
-                    $oBaseDatos->construir_Where(array('id=\'' . $aParametros['docid'] . '\''));
-                    $oBaseDatos->consulta();
-                    //Si el documento es de un proceso ponemos la version al proceso
-                    if ($aIterador[3] == iIdProceso) {
-                        $oBaseDatos->iniciar_Consulta('SELECT');
-                        $oBaseDatos->construir_Campos(array('procesos.id'));
-                        $oBaseDatos->construir_Tablas(array('procesos', 'contenido_procesos'));
-                        $oBaseDatos->construir_Where(array('contenido_procesos.documento=' . $aParametros['docid'],
-                            'contenido_procesos.proceso=procesos.id'
-                        ));
-                        $oBaseDatos->consulta();
-                        if ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
-                            $oBaseDatos->iniciar_Consulta('UPDATE');
-                            $oBaseDatos->construir_Set(array('revision'),
-                                array($aIterador[4]));
-                            $oBaseDatos->construir_Tablas(array('procesos'));
-                            $oBaseDatos->construir_Where(array('id=' . $aIteradorInterno[0]));
-                            $oBaseDatos->consulta();
-                        }
-                    }
-                    //Mandamos un mensaje automatico a todos los usuarios
-                    $oBaseDatos->iniciar_Consulta('INSERT');
-                    $oBaseDatos->construir_Campos(array('titulo', 'contenido', 'destinatario', 'activo', 'origen'));
-                    $oBaseDatos->construir_Value(array('Nueva version del documento: ' . $aIterador[0] .
-                        " " . $aIterador[1], 'Nueva version del documento: ' . $aIterador[0] . $aIterador[1], 0, 't', 0));
-                    $oBaseDatos->construir_Tablas(array('mensajes'));
-                    $oBaseDatos->consulta();
-                    $oBaseDatos->termina_transaccion();
-                    $sHtml = "contenedor|" . gettext('sDocAprobado') . "<br />" . $oVolver->to_Html();
                 }
+                //Mandamos un mensaje automatico a todos los usuarios
+                $oBaseDatos->iniciar_Consulta('INSERT');
+                $oBaseDatos->construir_Campos(array('titulo', 'contenido', 'destinatario', 'activo', 'origen'));
+                $oBaseDatos->construir_Value(array('Nueva version del documento: ' . $aIterador[0] .
+                    " " . $aIterador[1], 'Nueva version del documento: ' . $aIterador[0] . $aIterador[1], 0, 't', 0));
+                $oBaseDatos->construir_Tablas(array('mensajes'));
+                $oBaseDatos->consulta();
+                $oBaseDatos->termina_transaccion();
+                $sHtml = "contenedor|" . gettext('sDocAprobado') . "<br />" . $oVolver->to_Html();
             } else {
                 $oBaseDatos->termina_transaccion();
                 $sHtml = "alert|" . gettext('sNecesitaAprobacion');
