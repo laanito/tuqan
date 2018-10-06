@@ -179,6 +179,13 @@ ul.nav li:hover > ul.dropdown-submenu {
     bottom: 0;
 }
 
+.logos {
+    background-color: #393938;
+    -moz-box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 -2px 2px 0 rgba(0,0,0,0.2);
+}
+
 #logos img {
     padding: 10px;
     max-width: 120px;
