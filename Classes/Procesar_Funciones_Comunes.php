@@ -31,7 +31,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('acciones_mejora'));
         $oBaseDatos->construir_Where(array('id=' . $iIdMejora));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             if ($aIterador[0] == true) {
                 $sHtml = "alert|" . gettext('sAccYaCerrada');
             } else {
@@ -397,7 +398,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('contenido_procesos'));
         $oBaseDatos->construir_Where(array('id=' . $iIdProceso));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sDocumentos = $aIterador[0];
         }
 
@@ -490,7 +492,8 @@ class Procesar_Funciones_Comunes
             $oBaseDatos->pon_Where('documentos.perfil_ver[' . $_SESSION['perfil'] . ']=true');
         }
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             //Ahora si hay un usuario que haya revisado el documento sacamos su nombre
             if ($aIterador[4] != null) {
                 $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -624,7 +627,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('productos'));
         $oBaseDatos->construir_Where(array('id=' . $_SESSION['producto']));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sCriterios = $aIterador[0];
         }
         //Si es null debemos ponerlo a {}
@@ -840,7 +844,8 @@ class Procesar_Funciones_Comunes
             case 'inicio:mensajes':
                 $oBaseDatos->construir_Campos(array('contenido'));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     if ($aIterador[0] != null) {
                         $sHtml = $aIterador[0];
                     } else {
@@ -935,7 +940,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('contenido_procesos'));
         $oBaseDatos->construir_Where(array('documento=' . $_SESSION['documentodetalles']));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $iIdProc = $aIterador[0];
         }
 
@@ -1153,7 +1159,8 @@ class Procesar_Funciones_Comunes
             $oBaseDatos->construir_Tablas(array('contenido_procesos'));
             $oBaseDatos->construir_Where(array('contenido_procesos.documento=' . $_SESSION['documentodetalles']));
             $oBaseDatos->consulta();
-            if ($aIterador = $oBaseDatos->coger_Fila()) {
+            $aIterador = $oBaseDatos->coger_Fila();
+            if ($aIterador) {
                 $iIdContenido = $aIterador[0];
             }
             $oBaseDatos->iniciar_Consulta('SELECT');
@@ -1171,7 +1178,8 @@ class Procesar_Funciones_Comunes
                 $oBaseDatos->construir_Tablas(array('contenido_procesos'));
                 $oBaseDatos->construir_Where(array('contenido_procesos.documento=' . $iId));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $iIdContenido = $aIterador[0];
                 }
                 $oBaseDatos->iniciar_Consulta('SELECT');
@@ -1191,7 +1199,8 @@ class Procesar_Funciones_Comunes
                 $oBaseDatos->construir_Tablas(array('contenido_procesos'));
                 $oBaseDatos->construir_Where(array('contenido_procesos.documento=' . $iId));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $iIdContenido = $aIterador[0];
                 }
 
@@ -1220,7 +1229,8 @@ class Procesar_Funciones_Comunes
             }
         }
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<div id=\"proceso\">";
             $sHtml .= "<p class=\"t_proceso\">" . gettext('sProcFicha') . "&nbsp;&nbsp;" .
                 $aIterador[8] . "&nbsp;&nbsp;" . $aIterador[7] . "</p>";
@@ -1497,7 +1507,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('documentos'));
         $oBaseDatos->construir_Where(array('id=\'' . $aParametros['docid'] . '\''));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             //Comprobamos que su estado era o revisado o pendiente de aprobar
             if (($aIterador[2] == iRevisado) || ($aIterador[2] == iPendAprobacion)) {
                 if (($_SESSION['empresa'] == 'ICS') && (($aIterador[3] == iIdPolitica) || ($aIterador[3] == iIdPg))) {
@@ -1765,7 +1776,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('productos'));
         $oBaseDatos->construir_Where(array('id=' . $_SESSION['producto']));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $iValue = $aIterador[0];
         }
         //Ahora debemos sacar la valoracion total de los criterios elegidos
@@ -1787,7 +1799,8 @@ class Procesar_Funciones_Comunes
         if (count($aElegidos) <= 0) {
             $iSuma = 0;
         } else {
-            if ($aIterador = $oBaseDatos->coger_Fila()) {
+            $aIterador = $oBaseDatos->coger_Fila();
+            if ($aIterador) {
                 $iSuma = $aIterador[0];
             }
         }
@@ -1964,7 +1977,8 @@ class Procesar_Funciones_Comunes
             ') OR (doc2.estado=' . iPendAprobacion . ') OR (doc2.estado=' . iRevisado .
             ')'));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             //Eso es que ya hay un borrador, abortamos
             $sHtml = "alert|" . gettext('sBorraAlert');
         } else {
@@ -1983,7 +1997,8 @@ class Procesar_Funciones_Comunes
             $oBaseDatos->construir_Where(array('id=' . $aParametros['documento']));
             $oBaseDatos->consulta();
 
-            if ($aIterador = $oBaseDatos->coger_Fila()) {
+            $aIterador = $oBaseDatos->coger_Fila();
+            if ($aIterador) {
                 $sVersion = siguiente_Version($aIterador[0]);
 
                 //Ahora creamos un documento nuevo
@@ -2100,7 +2115,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('programa_auditoria'));
         $oBaseDatos->construir_Where(array('id=' . $iIdProg));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sSiguiente = siguiente_Version($aIterador[0]);
             $oBaseDatos->iniciar_Consulta('UPDATE');
             $oBaseDatos->construir_Set(array('revision'),
@@ -2175,7 +2191,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('auditorias'));
         $oBaseDatos->construir_Where(array('id=' . $iIdAuditoria));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sDocumentos = $aIterador[0];
         }
         $sDocumentos = trim($sDocumentos, "{}");
@@ -2237,7 +2254,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('programa_auditoria'));
         $oBaseDatos->construir_Where(array('id=' . $iIdAuditoria));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             //Primero insertamos el programa
             $oBaseDatos->iniciar_Consulta('INSERT');
             $oBaseDatos->construir_Campos(array('nombre', 'revision', 'activo', 'vigente'));
@@ -2275,8 +2293,8 @@ class Procesar_Funciones_Comunes
                     $oBaseDatos->construir_Campos(array('last_value'));
                     $oBaseDatos->construir_Tablas(array('auditorias_id_seq'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
-                        $aIdAuditorias = array();
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $oBaseDatos->iniciar_Consulta('INSERT');
                         $oBaseDatos->construir_Campos(array('auditoria', 'usuario_interno', 'nombre', 'tipo', 'documento', 'activo'));
                         $oBaseDatos->pon_Select('select ' . $aIterador[0] . ',usuario_interno,nombre,tipo,documento,activo from auditores where auditoria=' . $iIdAud);
@@ -2976,7 +2994,8 @@ class Procesar_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('objetivos_globales'));
         $oBaseDatos->construir_Where(array('id=' . $iId));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             if ($aIterador[1] == 1) {
                 //Comprobamos que no haya ya un borrador
                 $oBaseDatos->iniciar_Consulta('SELECT');
