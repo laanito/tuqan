@@ -316,7 +316,8 @@ class Form_Calidad
                 $oBaseDatos->construir_Tablas(array('equipos'));
                 $oBaseDatos->construir_Where(array('id=\'' . $iId . '\''));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $oBaseDatos->iniciar_Consulta('SELECT');
                     if ($aIterador[1] == 't') {
                         $oBaseDatos->construir_Campos(array('to_char(max(fecha_realiza)+interval\'' . $aIterador[0] . ' day\',\'dd\')',

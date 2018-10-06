@@ -32,11 +32,9 @@ function procesa_Ayuda($aParametros)
         $oBaseDatos->construir_Campos(array('id'));
         $oBaseDatos->construir_Tablas(array('menu_nuevo'));
         $oBaseDatos->construir_Where(array('(accion=\'' . $aParametros['accionanterior'] . '\')'));
-
         $oBaseDatos->consulta();
-
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
-
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $oBaseDatos->iniciar_Consulta('SELECT');
             $oBaseDatos->construir_Campos(array('texto'));
             $oBaseDatos->construir_Tablas(array('division_ayuda'));
@@ -69,7 +67,8 @@ function procesa_Ayuda($aParametros)
             $oBaseDatos->construir_Where(array("accion='sndReq(\\'" . $sAccion . "\\',\\'\\',1)' OR accion='parent.sndReq(\\'" . $sAccion . "\\',\\'\\',1)'"));
             $oBaseDatos->consulta();
 
-            if ($aIterador = $oBaseDatos->coger_Fila()) {
+            $aIterador = $oBaseDatos->coger_Fila();
+            if ($aIterador) {
                 $oBaseDatos->iniciar_Consulta('SELECT');
                 $oBaseDatos->construir_Campos(array('texto'));
                 $oBaseDatos->construir_Tablas(array('division_ayuda'));

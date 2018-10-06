@@ -422,7 +422,8 @@ Class Manejador_Funciones_Comunes
         $oBaseDatos->construir_Tablas(array('legislacion_aplicable'));
         $oBaseDatos->construir_Where(array('(id=\'' . $_SESSION['pagina'][$aParametros[0]] . '\')'));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             if ($aIterador[0] != null) {
                 return (array('accion' => 'documentos:legislacion:comun:ver:fila', 'id' => $aIterador[0]));
             } else {

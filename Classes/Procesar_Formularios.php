@@ -43,7 +43,8 @@ class Procesar_Formularios
         $oBaseDatos->construir_Tablas(array('acciones_mejora'));
         $oBaseDatos->construir_Where(array('id=' . $iIdMejora));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             if ($aIterador[0] == true) {
                 $sHtml = "alert|" . gettext('sAccYaCerrada');
                 return $sHtml;
@@ -75,7 +76,8 @@ class Procesar_Formularios
         $oBaseDatos->construir_Tablas(array('auditorias', 'tipo_estado_auditoria'));
         $oBaseDatos->construir_Where(array('(auditorias.id=\'' . $iId . '\')', 'auditorias.estado=tipo_estado_auditoria.id'));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             if ($aIterador[0] == gettext('sRealizado')) {
                 return ("diviframe|<iframe id=\"form\" src=\"/ajax/form?action=formulario&sesion=&datos=" . $sAccion . separador . $iId . "\"  width=\"100%\"" .
                     " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>");

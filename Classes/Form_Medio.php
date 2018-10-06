@@ -79,7 +79,8 @@ class Form_Medio
                     $oBaseDatos->construir_Tablas(array('legislacion_aplicable', 'documentos'));
                     $oBaseDatos->construir_Where(array('(legislacion_aplicable.id=\'' . $iId . '\')', 'documentos.id=legislacion_aplicable.id_ficha'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $sFicha = $aIterador[0];
                     }
                     $oBaseDatos->iniciar_Consulta('SELECT');
@@ -87,7 +88,8 @@ class Form_Medio
                     $oBaseDatos->construir_Tablas(array('legislacion_aplicable', 'documentos'));
                     $oBaseDatos->construir_Where(array('(legislacion_aplicable.id=\'' . $iId . '\')', 'documentos.id=legislacion_aplicable.id_ley'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $sLey = $aIterador[0];
                     }
                 }

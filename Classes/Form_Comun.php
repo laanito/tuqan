@@ -170,7 +170,8 @@ class Form_Comun
                 $oBaseDatos->construir_Tablas(array('cursos', 'usuarios us1'));
                 $oBaseDatos->construir_Where(array('(cursos.id=\'' . $iId . '\')', 'us1.id=cursos.responsable'));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $sUsuario = $aIterador[0];
                 }
                 $oBaseDatos->iniciar_Consulta('SELECT');
@@ -178,7 +179,8 @@ class Form_Comun
                 $oBaseDatos->construir_Tablas(array('cursos', 'documentos'));
                 $oBaseDatos->construir_Where(array('(cursos.id=\'' . $iId . '\')', 'documentos.id=cursos.hoja_firmas'));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $sDocumento = $aIterador[0];
                 }
                 $aFormulario = array('cursos' => array(array('etiqueta' => gettext('sFCOFechaPrev') . ': ', 'columna' => 'fecha_prevista'),
@@ -220,7 +222,8 @@ class Form_Comun
                     $oBaseDatos->construir_Tablas(array('profesores', 'usuarios us1'));
                     $oBaseDatos->construir_Where(array('(profesores.id=\'' . $iId . '\')', 'us1.id=profesores.usuario_interno'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $sUsuarioInterno = $aIterador[0];
                     }
                 }
@@ -272,7 +275,8 @@ class Form_Comun
                     $oBaseDatos->construir_Tablas(array('acciones_mejora', 'usuarios us1'));
                     $oBaseDatos->construir_Where(array('(tareas.id=\'' . $iId . '\')', 'us1.id=tareas.usuario_destino'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $sUsuario = $aIterador[0];
                     }
                 }
@@ -330,7 +334,8 @@ class Form_Comun
                     $oBaseDatos->construir_Tablas(array('acciones_mejora'));
                     $oBaseDatos->construir_Where(array('(acciones_mejora.id=\'' . $iId . '\')'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $_SESSION['formaud'] = $aIterador[0];
                     }
 
@@ -345,7 +350,8 @@ class Form_Comun
                     $oBaseDatos->construir_Tablas(array('acciones_mejora', 'usuarios us1'));
                     $oBaseDatos->construir_Where(array('(acciones_mejora.id=\'' . $iId . '\')', 'us1.id=acciones_mejora.usuario_implantacion'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $sUsuarioImplantacion = $aIterador[0];
                     }
                     $oBaseDatos->iniciar_Consulta('SELECT');

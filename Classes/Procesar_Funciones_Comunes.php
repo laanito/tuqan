@@ -2059,7 +2059,8 @@ class Procesar_Funciones_Comunes
             case 'sacareditor:mensaje':
                 $oBaseDatos->construir_Campos(array('contenido'));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     if ($aIterador[0] != null) {
                         $sHtml = $aIterador[0];
                     } else {

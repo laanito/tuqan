@@ -283,7 +283,8 @@ class Procesar_Listados
         $oBaseDatos->construir_Tablas(array('productos', 'proveedores'));
         $oBaseDatos->construir_Where(array('productos.proveedor=proveedores.id', 'productos.id=' . $iIdProducto));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<table class=\"productos\" >";
             $sHtml .= "<tr>";
             $sHtml .= "<td class=\"alineado1\"><span class=\"campo\">" . gettext('sProdDesc') . "&nbsp;&nbsp;&nbsp;&nbsp;</span></td>";
@@ -327,7 +328,8 @@ class Procesar_Listados
         $oBaseDatos->construir_Tablas(array('incidencias'));
         $oBaseDatos->construir_Where(array('id=' . $iIdIncidencia));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<table class=\"incidencias\">";
             $sHtml .= "<tr>";
             $sHtml .= "<td><span class=\"campo\">" . gettext('sIncFecha') . " &nbsp;&nbsp;&nbsp;&nbsp;</span></td>";
@@ -367,7 +369,8 @@ class Procesar_Listados
         $oBaseDatos->construir_Tablas(array('contactos_proveedores'));
         $oBaseDatos->construir_Where(array('id=' . $iIdContacto));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<table class=\"contactos\">";
             $sHtml .= "<tr>";
             $sHtml .= "<td><span class=\"campo\">" . gettext('sCtcNombre') . " &nbsp;&nbsp;&nbsp;&nbsp;</span></td>";
@@ -640,7 +643,8 @@ class Procesar_Listados
                     $oBaseDatos->construir_Where(array('contenido_procesos.proceso=' . $aParametros['fila'],
                         'contenido_procesos.documento=documentos.id', 'documentos.estado=' . iVigor));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $_SESSION['contenido_proceso'] = $aIterador[0];
                     } else {
                         //Como no vamos a ningun listado quitamos los valores
@@ -1592,7 +1596,8 @@ class Procesar_Listados
                 $oBaseDatos->construir_Tablas(array('equipos'));
                 $oBaseDatos->construir_Where(array('id=\'' . $_SESSION['equipo'] . '\''));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $oBaseDatos->iniciar_Consulta('SELECT');
                     if ($aIterador[1] == 't') {
                         $oBaseDatos->construir_Campos(array('to_char(max(fecha_realiza)+interval\'' . $aIterador[0] . ' day\',\'dd\')',
@@ -3065,7 +3070,8 @@ class Procesar_Listados
         $oBaseDatos->construir_Tablas(array('proveedores'));
         $oBaseDatos->construir_Where(array('id=' . $iIdProveedor));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<table class=\"proveedores\">";
             $sHtml .= "<tr>";
             $sHtml .= "<td class=\"campo\">" . gettext('sProvNombre') . " &nbsp;&nbsp;&nbsp;&nbsp; </td>";
@@ -3132,7 +3138,8 @@ class Procesar_Listados
         $oBaseDatos->construir_Tablas(array('equipos'));
         $oBaseDatos->construir_Where(array('id=' . $iIdEquipo));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<table id=\"ver_equipos\" class=\"ver_docs\">";
             $sHtml .= "<tr>";
             $sHtml .= "<td>";
@@ -3230,7 +3237,8 @@ class Procesar_Listados
 
         $oBaseDatos->consulta();
 
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             //Le quitamos las {} al dato obtenido
             $sPreguntas = ltrim(rtrim($aIterador[0], '}'), '{');
             $aPreguntas = explode(',', $sPreguntas);

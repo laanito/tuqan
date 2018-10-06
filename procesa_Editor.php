@@ -85,7 +85,8 @@ if (isset($_SESSION['iddoc'])) {
     $oBaseDatos->construir_Tablas(array('tipo_documento'));
     $oBaseDatos->construir_Where(array('id=' . $_SESSION['idtipo']));
     $oBaseDatos->consulta();
-    if ($aIterador = $oBaseDatos->coger_Fila()) {
+    $aIterador = $oBaseDatos->coger_Fila();
+    if ($aIterador) {
         $sArrayPermisosVer = $aIterador[0];
         $sArrayPermisosNueva = $aIterador[1];
         $sArrayPermisosModificar = $aIterador[2];
@@ -122,7 +123,8 @@ if (isset($_SESSION['iddoc'])) {
     $oBaseDatos->construir_Campos(array('last_value'));
     $oBaseDatos->construir_Tablas(array('documentos_id_seq'));
     $oBaseDatos->consulta();
-    if ($aIterador = $oBaseDatos->coger_Fila()) {
+    $aIterador = $oBaseDatos->coger_Fila();
+    if ($aIterador) {
         //Ponemos el id del documento para en caso que le demos de nuevo al boton editemos
         $_SESSION['iddoc'] = $aIterador[0];
     }

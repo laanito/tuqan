@@ -29,7 +29,8 @@ class Procesar_Detalles
         $oBaseDatos->construir_Where(array('auditorias.id=' . $iIdAuditoria, 'auditorias.estado=tipo_estado_auditoria.id'));
         $oBaseDatos->consulta();
         $sHtml='';
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<table id=\"auditoria\">";
             $sHtml .= "<tr><td class=\"tauditoria\" colspan=2>" . gettext('sAudNombre') . "</td></tr><br />";
             $sHtml .= "<tr>";
@@ -122,7 +123,8 @@ class Procesar_Detalles
         $oBaseDatos->construir_Tablas(array('mantenimientos'));
         $oBaseDatos->construir_Where(array('id=' . $iIdMantenimiento));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $sHtml = "<table class=\"ver_docs\">";
             $sHtml .= "<tr>";
             $sHtml .= "<td>";
@@ -300,7 +302,8 @@ class Procesar_Detalles
         $oBaseDatos->construir_Tablas(array('documentos', 'contenido_procesos'));
         $oBaseDatos->construir_Where(array('contenido_procesos.proceso=\'' . $iIdProceso . '\'', 'documentos.id=contenido_procesos.documento', 'documentos.estado<>' . iHistorico));
         $oBaseDatos->consulta();
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             //Si existe lo mandamos directamente
             $_SESSION['documentodetalles'] = $aIterador[1];
             $sHtml = "contenedor|" . $this->procesa_Detalles_Documento(-1);
@@ -330,7 +333,8 @@ class Procesar_Detalles
                 $oBaseDatos->construir_Tablas(array('tareas'));
                 $oBaseDatos->construir_Where(array('(id=\'' . $iFila . '\')'));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $iDocumento = $aIterador[0];
                 } else {
                     $iDocumento = $_SESSION['documentodetalles'];
@@ -347,7 +351,8 @@ class Procesar_Detalles
                 $oBaseDatos->construir_Tablas(array('tareas'));
                 $oBaseDatos->construir_Where(array('(id=\'' . $iTarea . '\')'));
                 $oBaseDatos->consulta();
-                if ($aIterador = $oBaseDatos->coger_Fila()) {
+                $aIterador = $oBaseDatos->coger_Fila();
+                if ($aIterador) {
                     $iDocumento = $aIterador[0];
                 } else {
                     $iDocumento = $_SESSION['documentodetalles'];
@@ -372,7 +377,8 @@ class Procesar_Detalles
         $aVigor = null;
         $aBorra = null;
         //Entramos aqui para coger el documento ya este en borrador o vigor y luego si lo hay su contrapartida en borrador o vigor
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             if ($aIterador[3] == iVigor) {
                 $aVigor = array('codigo' => $aIterador[0], 'nombre' => $aIterador[1], 'revision' => $aIterador[2],
                     'estado' => $aIterador[3], 'id' => $aIterador[4], 'revisado' => $aIterador[5],

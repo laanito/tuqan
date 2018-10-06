@@ -78,7 +78,8 @@ if ($file->isValid()) {
     }
 
     $oBaseDatos->consulta();
-    if ($aIterador = $oBaseDatos->coger_Fila()) {
+    $aIterador = $oBaseDatos->coger_Fila();
+    if ($aIterador) {
         //Dependiendo del tipo de fichero preparamos los datos.
         if (($_SESSION['empresa'] == 'ICS') && (($_SESSION['subirfichero'] == iIdPg) || ($_SESSION['subirfichero'] == iIdPolitica))) {
             //Si entramos aqui es por que vamos a insertar o modificar el documento en todas las bases de datos.

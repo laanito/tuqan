@@ -129,7 +129,8 @@ class LoginEmpresa
          *  En caso contrario volvemos a index
          */
 
-        if ($aIterador = $oBaseDatos->coger_Fila()) {
+        $aIterador = $oBaseDatos->coger_Fila();
+        if ($aIterador) {
             $_SESSION['loginempresa'] = 1;
             /**
              *  Si nos hemos logeado bien obtenemos los parametros de conexion a la base de datos

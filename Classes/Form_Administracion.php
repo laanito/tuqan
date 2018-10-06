@@ -159,7 +159,8 @@ class Form_Administracion
                     $oBaseDatos->construir_Tablas(array('usuarios', 'ficha_personal'));
                     $oBaseDatos->construir_Where(array('(usuarios.id=\'' . $iId . '\')', 'ficha_personal.id=usuarios.ficha'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $sFicha = $aIterador[0];
                     }
 
@@ -168,7 +169,8 @@ class Form_Administracion
                     $oBaseDatos->construir_Tablas(array('usuarios', 'requisitos_puesto'));
                     $oBaseDatos->construir_Where(array('(usuarios.id=\'' . $iId . '\')', 'requisitos_puesto.id=usuarios.requisitos'));
                     $oBaseDatos->consulta();
-                    if ($aIterador = $oBaseDatos->coger_Fila()) {
+                    $aIterador = $oBaseDatos->coger_Fila();
+                    if ($aIterador) {
                         $sRequisitos = $aIterador[0];
                     }
                 }
