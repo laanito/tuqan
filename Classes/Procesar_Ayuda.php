@@ -3,8 +3,6 @@ namespace Tuqan\Classes;
 /**
  * Created on 12-sep-2006
  *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
 
 
@@ -88,22 +86,22 @@ function procesa_Ayuda($aParametros)
 
                 $sHtml = '<br /><b>Ayuda</b><br />
                       <p align=\'left\'><b>Inicio--><br />Mensajes--><br />Listados</b><br />
-                      En esta secci�n el usuario ver� en la página una lista con los mensajes ' .
+                      En esta sección el usuario verá en la página una lista con los mensajes ' .
                     'que ha recibido. Estos mensajes pueden ser generados de dos formas: ' .
-                    'por los usuarios desde el m�dulo de formaci�n o por el administrador ' .
-                    'desde el m�dulo de mantenimiento. Siguiendo con la descripci�n del m�dulo,' .
+                    'por los usuarios desde el módulo de formación o por el administrador ' .
+                    'desde el módulo de mantenimiento. Siguiendo con la descripción del módulo,' .
                     ' en esta página de "Mensajes", el usuario ver� que aparecen habilitados dos ' .
                     'botones: "Enviar Mensaje" e "Histórico". Sin embargo, si el usuario selecciona ' .
                     'cualquier mensaje de la lista, podr� "Eliminar" y "Ver" los mensajes.";';
             } elseif ($idioma == 2 && $aAccion[3] == 'inicial') {
                 $sHtml = '<br /><b>Ajuda</b><br />' .
                     '<p aling=\'lef\'><b>Inici--><br />Missatges--><br />Llistats</b><br />' .
-                    'En aquesta secci� l\'usuari veur� en la página una llista amb els missatges' .
+                    'En aquesta secciò l\'usuari veurè en la página una llista amb els missatges' .
                     ' que ha rebut. Aquests missatges poden ser generats de dues formes: pels usuaris' .
-                    ' des del m�dul de formaci� o per l\'administrador des del m�dul de manteniment. ' .
-                    'Seguint amb la descripci� del m�dul, en aquesta página de "Missatges", l\'usuari veur� ' .
-                    'que apareixen habilitats dos botons: "Enviar Missatge" i "Hist�ric". No obstant aix�,' .
-                    ' si l\'usuari selecciona qualsevol missatge de la llista, podr� "Eliminar" i "Veure" ' .
+                    ' des del mòdul de formaciò o per l\'administrador des del mòdul de manteniment. ' .
+                    'Seguint amb la descripciò del mòdul, en aquesta página de "Missatges", l\'usuari veur� ' .
+                    'que apareixen habilitats dos botons: "Enviar Missatge" i "Històric". No obstant això,' .
+                    ' si l\'usuari selecciona qualsevol missatge de la llista, podrà "Eliminar" i "Veure" ' .
                     'els missatges.';
             } else {
                 $sHtml = "No existe ayuda para esta seccion";
