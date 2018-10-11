@@ -9,7 +9,7 @@ namespace Tuqan\Controllers;
 use Tuqan\Classes\Procesar_Listados;
 use Tuqan\Classes\TuqanLogger;
 
-class mensajes
+class Messages
 {
     public function anyIndex()
     {
