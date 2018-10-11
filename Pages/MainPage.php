@@ -46,8 +46,7 @@ class MainPage
         $aDatos['condicion'] = $sCondicion;
         $oArbol = new arbol_listas($aDatos, 0);
         $oArbol->genera_arbol_menu();
-        $sHtml = "submenu|";
-        $sHtml .= $oArbol->to_Html();
+        $sHtml = $oArbol->to_Html();
         return $sHtml;
     }
 
