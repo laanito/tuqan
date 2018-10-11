@@ -102,6 +102,7 @@ class Manejador_Listados
             while ($aIterador = $oBaseDatos->coger_Fila()) {
                 $aBotones[] = array($aIterador[0], $aIterador[1], $aIterador[2]);
             }
+            $aBotones = Botones::getButtons($sMenu_Completo);
             switch ($sAccion) {
                 case 'mejora:listado:ver':
                     $aDatos[1] = gettext('sMCFecha') . " ASC";
@@ -120,24 +121,6 @@ class Manejador_Listados
                     $aBotones = array(array(gettext('sMCSeleccionar'), "sndReq('catalogo:areadoc:listado:ver:fila','',1)", "fila"),
                         array(gettext('sMCVolver'), "atras(-1)", "noafecta"));
                     break;
-
-                case 'inicio:mensajes:ver':
-                    $aDatos[1] = gettext('sMCEnviado') . " ASC";
-                    $aBotones[] = array(gettext('sMCEliminar'), "sndReq('inicio:mensajes:comun:baja:general','',1)", "general");
-                    $aBotones[] = array(gettext('sMCVer'), "sndReq('inicio:mensajes:listado:ver:fila','',1,'inicio:mensajes')", "fila");
-                    $aBotones[] = array(gettext('sMCHistorico'), "sndReq('inicio:historicomensajes:listado:ver','',1)", "noafecta");
-                    break;
-
-                case 'inicio:mensajes:inicial':
-                    {
-                        $aDatos[1] = gettext('sMCEnviado') . " ASC";
-                        $aBotones[] = array(gettext('sMCEliminar'), "sndReq('inicio:mensajes:comun:baja:general','',1)", "general");
-                        $aBotones[] = array(gettext('sMCVer'), "sndReq('inicio:mensajes:listado:ver:fila','',1,'inicio:mensajes')", "fila");
-                        $aBotones[] = array(gettext('sMCHistorico'), "sndReq('inicio:historicomensajes:listado:ver','',1)", "noafecta");
-                        $aBotones[] = array(gettext('sBajarxls'), "sndReq('inicio:mensajes:excel:ver','',1)", "noafecta");
-                        break;
-                    }
-
 
                 case 'editor:documentos:ver':
                     $aDatos[1] = gettext('sMCCodigo') . " ASC";

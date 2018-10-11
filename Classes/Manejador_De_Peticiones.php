@@ -757,8 +757,6 @@ class Manejador_De_Peticiones
                             case 'proveedores:phomologados:ver':
                             case 'mejora:listado:ver':
                             case 'inicio:tareas:ver':
-                            case 'inicio:mensajes:ver':
-                            case 'inicio:mensajes:inicial':
                             case 'formacion:cursos:ver':
                             case 'formacion:inscripcion:ver':
                             case 'formacion:planes:ver':

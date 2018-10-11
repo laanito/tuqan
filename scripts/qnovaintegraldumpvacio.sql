@@ -2433,7 +2433,7 @@ INSERT INTO botones VALUES (174, 63, 'Nuevo', 'sndReq(''documentacion:documenton
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 2);
 INSERT INTO botones VALUES (83, 26, 'Nuevo', 'sndReq(''aambientales:aspecto:formulario:nuevo'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
-INSERT INTO botones VALUES (105, 35, 'Historico', 'sndReq(''inicio:historicomensajes:listado:ver'','''',1)',
+INSERT INTO botones VALUES (105, 35, 'Historico', 'sndReq(''messages:history'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
 INSERT INTO botones VALUES (160, 3, 'Nuevo', 'sndReq(''documentacion:manual:formulario:nuevo'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 2);
@@ -2542,7 +2542,7 @@ INSERT INTO botones VALUES (91, 32, 'Nuevo', 'sndReq(''administracion:usuario:fo
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 2);
 INSERT INTO botones VALUES (95, 33, 'Nuevo', 'sndReq(''administracion:perfil:formulario:nuevo'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 2);
-INSERT INTO botones VALUES (102, 35, 'Nuevo', 'sndReq(''administracion:mensajes:formulario:nuevo'','''',1)',
+INSERT INTO botones VALUES (102, 35, 'Nuevo', 'sndReq(''messages:new'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 2);
 INSERT INTO botones VALUES (32, 8, 'Nuevo', 'sndReq(''documentacion:documentope:formulario:nuevo'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 2);
@@ -2572,7 +2572,7 @@ INSERT INTO botones VALUES (92, 32, 'Dar de Baja', 'sndReq(''administracion:usua
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 3);
 INSERT INTO botones VALUES (96, 33, 'Dar de Baja', 'sndReq(''administracion:perfiles:comun:baja:general'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 3);
-INSERT INTO botones VALUES (103, 35, 'Dar de Baja', 'sndReq(''administracion:mensajes:comun:baja:general'','''',1)',
+INSERT INTO botones VALUES (103, 35, 'Dar de Baja', 'sndReq(''messages:delete'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 3);
 INSERT INTO botones VALUES (106, 36, 'Dar de Baja', 'sndReq(''administracion:tareas:comun:baja:general'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 3);
@@ -2654,7 +2654,7 @@ INSERT INTO botones VALUES (97, 33, 'Editar', 'sndReq(''administracion:perfil:fo
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 4);
 INSERT INTO botones VALUES (127, 33, 'Copiar Perfil', 'sndReq(''administracion:perfil:comun:copiar:fila'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 4);
-INSERT INTO botones VALUES (104, 35, 'Editar', 'sndReq(''administracion:mensajes:formulario:editar:fila'','''',1)',
+INSERT INTO botones VALUES (104, 35, 'Editar', 'sndReq(''messages:edit'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 4);
 INSERT INTO botones VALUES (126, 38, 'Listar', 'sndReq(''documentos:registros:listado:listarfila:fila'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 4);
@@ -2770,7 +2770,7 @@ INSERT INTO botones VALUES (195, 50, '', 'sndReq(''indicadores:objetivos:listado
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 4);
 INSERT INTO botones VALUES (226, 101, NULL, 'sndReq(''aambientales:aspectoemergencia:formulario:editar:fila'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 4);
-INSERT INTO botones VALUES (125, 1, 'Enviar Msj', 'sndReq(''inicio:mensajes:formulario:nuevo'','''',1)',
+INSERT INTO botones VALUES (125, 1, 'Enviar Msj', 'sndReq(''messages:new'','''',1)',
                             '[0:22]={f,f,t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f}', 1);
 INSERT INTO botones VALUES (239, 5, 'Ver PDF', 'sndReq(''documentacion:objetivos:listado:verpdf:fila'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 4);
@@ -2778,7 +2778,7 @@ INSERT INTO botones VALUES (235, 108, NULL, 'sndReq(''administracion:hospitales:
                             '{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}', 2);
 INSERT INTO botones VALUES (236, 108, NULL, 'sndReq(''administracion:hospitales:comun:baja'','''',1)',
                             '{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}', 4);
-INSERT INTO botones VALUES (214, 1, NULL, 'sndReq(''inicio:mensajes:comun:estadisticas'','''',1)',
+INSERT INTO botones VALUES (214, 1, NULL, 'sndReq(''messages:statistics'','''',1)',
                             '[0:22]={f,f,t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f}', 2);
 INSERT INTO botones VALUES (237, 108, NULL, 'sndReq(''administracion:hospitales:comun:generar:fila'','''',1)',
                             '{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}', 4);
@@ -2840,7 +2840,7 @@ INSERT INTO botones VALUES (248, 64, 'Idioma', 'sndReq(''administracion:tipodoci
 INSERT INTO botones VALUES (249, 37, 'Bajar xls', 'sndReq(''administracion:documentossg:excel:ver'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
 INSERT INTO botones VALUES
-  (250, 1, 'Bajar xls', 'sndReq(''inicio:mensajes:excel:ver'','''',1)', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}',
+  (250, 1, 'Bajar xls', 'sndReq(''messages:export'','''',1)', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}',
    1);
 INSERT INTO botones VALUES (251, 3, 'Bajar xls', 'sndReq(''documentos:manual:excel:ver'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
@@ -2894,7 +2894,7 @@ INSERT INTO botones VALUES (274, 32, 'Bajar xls', 'sndReq(''administracion:usuar
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
 INSERT INTO botones VALUES (275, 33, 'Bajar xls', 'sndReq(''administracion:perfiles:excel:ver'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
-INSERT INTO botones VALUES (276, 35, 'Bajar xls', 'sndReq(''administracion:adminmensajes:excel:ver'','''',1)',
+INSERT INTO botones VALUES (276, 35, 'Bajar xls', 'sndReq(''messages:export'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
 INSERT INTO botones VALUES (277, 36, 'Bajar xls', 'sndReq(''administracion:admintareas:excel:ver'','''',1)',
                             '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 1);
@@ -5261,7 +5261,7 @@ VALUES (32, 'administracion:usuarios:listado:ver', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f
 INSERT INTO menu_nuevo
 VALUES (33, 'administracion:perfiles:listado:ver', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 82, 41);
 INSERT INTO menu_nuevo
-VALUES (35, 'administracion:mensajes:listado:ver', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 82, 42);
+VALUES (35, 'messages:get', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 82, 42);
 INSERT INTO menu_nuevo
 VALUES (36, 'administracion:tareas:listado:ver', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 82, 43);
 INSERT INTO menu_nuevo
@@ -5317,7 +5317,7 @@ INSERT INTO menu_nuevo
 VALUES (107, 'administracion:modulos:listado:nuevo', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 74, 73);
 INSERT INTO menu_nuevo VALUES (65, 'inicio', '[0:22]={f,f,t,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,t,f,f,f}', 0, 74);
 INSERT INTO menu_nuevo
-VALUES (1, 'inicio:mensajes:listado:ver', '[0:22]={f,f,t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f}', 65, 75);
+VALUES (1, 'messages:get', '[0:22]={f,f,t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f}', 65, 75);
 INSERT INTO menu_nuevo VALUES (2, 'inicio:tareas:listado:ver', '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 65, 76);
 INSERT INTO menu_nuevo VALUES (66, 'documentacion', '[0:22]={f,f,f,f,f,f,f,t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}', 0, 77);
 INSERT INTO menu_nuevo VALUES (77, NULL, '{f,t,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,f,f,f,f,f}', 66, 78);

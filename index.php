@@ -33,6 +33,7 @@ require_once 'Classes/generador_listados.php';
 /**
  * New Tuqan Classes
  */
+require_once 'Classes/Botones.php';
 require_once 'Classes/TuqanLogger.php';
 require_once 'Classes/Auth.php';
 require_once 'Classes/User.php';
@@ -40,7 +41,7 @@ require_once 'Classes/AjaxHandler.php';
 require_once 'Classes/FormManager.php';
 require_once 'Classes/FormElement.php';
 require_once 'Classes/FakePage.php';
-require_once 'Controllers/Mensajes.php';
+require_once 'Controllers/Messages.php';
 
 /**
  * Misc
@@ -119,7 +120,7 @@ $router->post('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
 $router->get('/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth']);
 $router->get('/main/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth']);
 $router->controller('/ajax','Tuqan\Classes\AjaxHandler',['before' => 'auth']);
-$router->controller('/mensajes','Tuqan\Controllers\Mensajes',['before' => 'auth']);
+$router->controller('/messages','Tuqan\Controllers\Messages',['before' => 'auth']);
 
 $dispatcher =  new Dispatcher($router->getData());
 
