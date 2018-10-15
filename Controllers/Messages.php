@@ -6,7 +6,10 @@
 namespace Tuqan\Controllers;
 
 
-use Tuqan\Classes\Procesar_Listados;
+use boton;
+use Tuqan\Classes\Botones;
+use Tuqan\Classes\generador_listados;
+use Tuqan\Classes\Manejador_Base_Datos;
 use Tuqan\Classes\TuqanLogger;
 
 class Messages
@@ -32,24 +35,7 @@ class Messages
      * @return string
      */
     public function anyGet() {
-        /*
-         *
-                case 'inicio:mensajes:ver':
-                    $aDatos[1] = gettext('sMCEnviado') . " ASC";
-                    $aBotones[] = array(gettext('sMCEliminar'), "sndReq('inicio:mensajes:comun:baja:general','',1)", "general");
-                    $aBotones[] = array(gettext('sMCVer'), "sndReq('inicio:mensajes:listado:ver:fila','',1,'inicio:mensajes')", "fila");
-                    $aBotones[] = array(gettext('sMCHistorico'), "sndReq('inicio:historicomensajes:listado:ver','',1)", "noafecta");
-                    break;
-
-                case 'inicio:mensajes:inicial':
-                    {
-                        $aDatos[1] = gettext('sMCEnviado') . " ASC";
-                        $aBotones[] = array(gettext('sMCEliminar'), "sndReq('inicio:mensajes:comun:baja:general','',1)", "general");
-                        $aBotones[] = array(gettext('sMCVer'), "sndReq('inicio:mensajes:listado:ver:fila','',1,'inicio:mensajes')", "fila");
-                        $aBotones[] = array(gettext('sMCHistorico'), "sndReq('inicio:historicomensajes:listado:ver','',1)", "noafecta");
-                        $aBotones[] = array(gettext('sBajarxls'), "sndReq('inicio:mensajes:excel:ver','',1)", "noafecta");
-                        break;
-                    }
+ /*
 
                             case 'inicio:mensajes:ver:fila' :
                                 $Comunes = new Procesar_Funciones_Comunes();
@@ -80,6 +66,8 @@ class Messages
             "Parameter in case: ",
             ['aParametros'=>$aParametros]
         );*/
+
+
         $action=$_POST['action'];
         if(isset($_POST['datos'])) {
             $aDatos = $_POST['datos'];
@@ -91,8 +79,34 @@ class Messages
             "Arrived Mensajes Controller",
             ["action" => $action, 'aDatos' =>print_r($aDatos,1)]
         );
-        $result = "contenedor|We arrived Messages->anyGet controller";
+        $sTabla = 'mensajes';
+        $aCampos = array('mensajes.id', "mensajes.titulo as \"" . gettext('sPCTitulo') . "\"",
+            "to_char(mensajes.fecha, 'DD/MM/YYYY') as \"" . gettext('sPCEnviado') . "\"",
+            "to_char(mensajes.fecha, 'hh24:mi') as \"" . gettext('sPCHora') . "\"",
+            "usuarios.nombre||' '||usuarios.primer_apellido||' '||usuarios.segundo_apellido as \"" . gettext('sPCRemitente') . "\"");
+        $aBuscar = array('nombres' => array('titulo', 'enviado'),
+            'campos' => array('titulo', 'fecha'));
+        $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+        $oDb->iniciar_Consulta('SELECT');
+        $oDb->construir_Campos($aCampos);
+        $oDb->construir_Tablas(array($sTabla, 'usuarios'));
+        $oDb->construir_Where(array("(destinatario=" . $_SESSION['userid'] . ") OR (destinatario=0)", "(mensajes.activo='t')",
+                "usuarios.id=mensajes.origen"
+            ));
+        $oPager = new generador_listados($action, $oDb, $aDatos['pagina'], $aDatos['numLinks'],
+            $aDatos['numPaginas'], $aDatos['order'], $aDatos['sentido'],
+            $sTabla, $aDatos['where'], $aBuscar);
+        $botones = Botones::getButtons($action);
+        if (is_array($botones)) {
+            foreach ($botones as $aBoton) {
+                $oPager->agrega_Boton($aBoton[0], $aBoton[1], $aBoton[2]);
+            }
+        }
 
+        $oPager->agrega_Desplegable(gettext('sElemPag'),
+            $action, array($aDatos['numPaginas'], 10, 20, 30, 50));
+
+        $result = "contenedor|". $oPager->muestra_Pagina();
         return $result;
     }
 
