@@ -92,9 +92,9 @@ hr:after {
 
     background: #FFF;
 
-    border-radius: 100px;
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
+    border-radius: 100px;
 
     position: absolute;
     margin: 120px auto 20px;
@@ -113,18 +113,18 @@ hr:after {
     width: 100px; height: 100px;
     top: -50px; left: 50px;
 
-    border-radius: 100px;
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
+    border-radius: 100px;
 }
 
 .cloud:before {
     width: 180px; height: 180px;
     top: -90px; right: 50px;
 
-    border-radius: 200px;
     -webkit-border-radius: 200px;
     -moz-border-radius: 200px;
+    border-radius: 200px;
 }
 
 .x1 {
