@@ -103,7 +103,7 @@ class Messages
             $oDb->iniciar_Consulta('SELECT');
             $oDb->construir_Campos($aCampos);
             $oDb->construir_Tablas(array($sTabla, 'usuarios'));
-            $oDb->construir_Where(array("(destinatario=$user) OR (destinatario=0)", "(mensajes.activo='$active'')",
+            $oDb->construir_Where(array("(destinatario=$user) OR (destinatario=0)", "(mensajes.activo='$active')",
                 "usuarios.id=mensajes.origen"
             ));
             $oPager = new generador_listados($action, $oDb, $aDatos['pagina'], $aDatos['numLinks'],
