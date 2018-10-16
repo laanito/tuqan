@@ -67,14 +67,14 @@ class Messages
     {
         $iIdMensaje = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $oVolver = new boton(gettext('sBotonVolver'), "atras(-1)", "noafecta");
+        $oVolver = new boton(gettext('Go Back'), "atras(-1)", "noafecta");
         $oBaseDatos->iniciar_Consulta('SELECT');
         $oBaseDatos->construir_Campos(array('contenido'));
         $oBaseDatos->construir_Tablas(array('mensajes'));
         $oBaseDatos->construir_Where(array('id=\'' . $iIdMensaje . '\''));
         $oBaseDatos->consulta();
         $aFila = $oBaseDatos->coger_Fila();
-        $sHtml = "<p align='center'><br /><span class='titulo'>" . gettext('sContMsj') . ": </span></p><span class='texto'> " .
+        $sHtml = "<p align='center'><br /><span class='titulo'>" . gettext('Message Content') . ": </span></p><span class='texto'> " .
             $aFila[0] . "</span><br /><p align='center'>" . $oVolver->to_Html() . "</p><br /><br />";
         return $sHtml;
     }
@@ -89,11 +89,11 @@ class Messages
         }
         $aFormulario = array(
              'mensajes' => array(
-                 array('etiqueta' => gettext('sFCOContenido') . ': ', 'columna' => 'contenido'),
+                 array('etiqueta' => gettext('Content') . ': ', 'columna' => 'contenido'),
                  array('etiqueta' => '', 'columna' => 'destinatario', 'hidden' => 'null'),
                  array('etiqueta' => '', 'columna' => 'activo', 'hidden' => 't'),
                  array('etiqueta' => '', 'columna' => 'origen', 'hidden' => $_SESSION['userid']),
-                 array('etiqueta' => gettext('sFCOTitulo') . ': ', 'columna' => 'titulo'),
+                 array('etiqueta' => gettext('Title') . ': ', 'columna' => 'titulo'),
                 )
             );
 /*            if ($sTipoForm == 'UPDATE') {
@@ -119,10 +119,10 @@ class Messages
                 $active = 'f';
             }
             $sTabla = 'mensajes';
-            $aCampos = array('mensajes.id', "mensajes.titulo as \"" . gettext('sPCTitulo') . "\"",
-                "to_char(mensajes.fecha, 'DD/MM/YYYY') as \"" . gettext('sPCEnviado') . "\"",
-                "to_char(mensajes.fecha, 'hh24:mi') as \"" . gettext('sPCHora') . "\"",
-                "usuarios.nombre||' '||usuarios.primer_apellido||' '||usuarios.segundo_apellido as \"" . gettext('sPCRemitente') . "\"");
+            $aCampos = array('mensajes.id', "mensajes.titulo as \"" . gettext('Title') . "\"",
+                "to_char(mensajes.fecha, 'DD/MM/YYYY') as \"" . gettext('sent') . "\"",
+                "to_char(mensajes.fecha, 'hh24:mi') as \"" . gettext('Hour') . "\"",
+                "usuarios.nombre||' '||usuarios.primer_apellido||' '||usuarios.segundo_apellido as \"" . gettext('Sender') . "\"");
             $aBuscar = array('nombres' => array('titulo', 'enviado'),
                 'campos' => array('titulo', 'fecha'));
             $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -142,7 +142,7 @@ class Messages
                 }
             }
 
-            $oPager->agrega_Desplegable(gettext('sElemPag'),
+            $oPager->agrega_Desplegable(gettext('Number of Elements per Page'),
                 $action, array($aDatos['numPaginas'], 10, 20, 30, 50));
 
             return $oPager;
