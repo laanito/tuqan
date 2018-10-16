@@ -413,38 +413,6 @@ class Procesar_Listados
 
 
     /**
-     * Esta funcion devuelve el menu superior de calidad o medioambiente
-     * @param String $sAccion
-     * @return String
-     */
-
-    function crea_Menu_Superior($sAccion)
-    {
-        $aDatos['pkey'] = 'menu_nuevo.id';
-        $aDatos['padre'] = 'menu_nuevo.padre';
-        $aDatos['etiqueta'] = 'menu_idiomas_nuevo.valor';
-        $aDatos['accion'] = 'menu_nuevo.accion';
-        $aDatos['tablas'] = array('menu_nuevo', 'menu_idiomas_nuevo', 'idiomas');
-        $aDatos['order'] = 'orden ASC';
-        $sCondicion = "menu_nuevo.id=menu_idiomas_nuevo.menu and menu_idiomas_nuevo.idioma_id=idiomas.id " . "
-    and idiomas.id='" . $_SESSION['idioma'] . "'";
-
-  if ($_SESSION['admin'] == true || $_SESSION['perfil'] == '0') {
-
-        } else {
-             $sCondicion .= " and menu_nuevo.permisos[" . $_SESSION['perfil'] . "]=true";
-         }
-
-        $aDatos['condicion'] = $sCondicion;
-        $oArbol = new arbol_listas($aDatos, 0);
-        $oArbol->genera_arbol_menu();
-        $sHtml = "submenu|";
-        $sHtml .= $oArbol->to_Html();
-        return $sHtml;
-    }
-
-
-    /**
      * Funcion para procesar listados comunes
      * @param $sAccion
      * @param $aParametros
@@ -785,29 +753,6 @@ class Procesar_Listados
 
 
                 break;
-
-            //case 'inicio:mensajes:':
-            case 'inicio:mensajes:ver':
-            case 'inicio:mensajes:inicial':
-                $sTabla = 'mensajes';
-                $aCampos = array('mensajes.id', "mensajes.titulo as \"" . gettext('sPCTitulo') . "\"",
-                    "to_char(mensajes.fecha, 'DD/MM/YYYY') as \"" . gettext('sPCEnviado') . "\"",
-                    "to_char(mensajes.fecha, 'hh24:mi') as \"" . gettext('sPCHora') . "\"",
-                    "usuarios.nombre||' '||usuarios.primer_apellido||' '||usuarios.segundo_apellido as \"" . gettext('sPCRemitente') . "\"");
-                $aBuscar = array('nombres' => array('titulo', 'enviado'),
-                    'campos' => array('titulo', 'fecha'));
-                $oDb->iniciar_Consulta('SELECT');
-                $oDb->construir_Campos($aCampos);
-                $oDb->construir_Tablas(array($sTabla, 'usuarios'));
-                if ($_SESSION['perfil'] != 0) {
-                    $oDb->construir_Where(array("(destinatario=" . $_SESSION['userid'] . ") OR (destinatario=0)", "(mensajes.activo='t')",
-                        "usuarios.id=mensajes.origen"
-                    ));
-                } else {
-                    $oDb->construir_Where(array("usuarios.id=mensajes.origen AND mensajes.activo='t'"));
-                }
-                break;
-
             case 'inicio:historicomensajes:ver':
                 $sTabla = 'mensajes';
                 $aBuscar = array('nombres' => array(gettext('sPLTitulo'), gettext('sPLEnviado')),
@@ -3058,9 +3003,6 @@ class Procesar_Listados
 
     function procesa_Ver_Proveedor($aParametros)
     {
-        require_once 'Manejador_Base_Datos.class.php';
-        require_once 'boton.php';
-
         $iIdProveedor = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         $oBoton = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -3126,11 +3068,13 @@ class Procesar_Listados
         return $sHtml;
     }
 
-
+    /**
+     * @param $sAccion
+     * @param $aParametros
+     * @return string
+     */
     function procesa_Ver_Equipo($sAccion, $aParametros)
     {
-        require_once 'boton.php';
-        require_once 'Manejador_Base_Datos.class.php';
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
         $iIdEquipo = $_SESSION['pagina'][$aParametros['numeroDeFila']];

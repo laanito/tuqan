@@ -551,8 +551,6 @@ class Manejador_Base_Datos extends \PDO
 
     public function hacer_Rollback()
     {
-        $this->conexion();
-
         $this->oResultado = $this->query("ROLLBACK;");
         $this->manejo_Errores('consulta');
     }
@@ -566,7 +564,6 @@ class Manejador_Base_Datos extends \PDO
      */
     public function comienza_transaccion()
     {
-        $this->conexion();
         $this->oResultado = $this->query("BEGIN;");
         $this->autoCommit(false);
         $this->manejo_Errores('consulta');
@@ -577,7 +574,6 @@ class Manejador_Base_Datos extends \PDO
      */
     public function termina_transaccion()
     {
-        $this->conexion();
         $this->oResultado = $this->query("END;");
         $this->autoCommit(true);
         $this->manejo_Errores('consulta');

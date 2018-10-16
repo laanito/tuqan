@@ -14,7 +14,7 @@ setCookie('ed', '0');
  *    Iniciamos qnova con los mensajes del usuario
  */
 function iniciar_Qnova() {
-    sndReq('inicio:mensajes:listado:inicial', '0', 1);
+    sndReq('messages:get', '0', 1);
 }
 
 /**
@@ -578,110 +578,113 @@ function sndReq(action, sesion, tipo, datos) {
     document.body.style.cursor = "wait";
     if (http == null) {
         trocearAction = action.split(':');
-        switch (trocearAction[4]) {
-            case 'fila': {
-                datos = cogerUnicaCheck(document);
-                break;
-            }
-
-            case 'general': {
-                datos = cogerCheckBox(document);
-                break;
-            }
-
-            case 'radio': {
-                let framearbol = document.getElementById("arbol");
-                let docarbol = framearbol.contentWindow.document;
-                let devolver = cogerRadio(docarbol);
-                let iIdMarcada = devolver[0];
-                if (iIdMarcada === 0) {
-                    if (trocearAction[3] !== "nuevo") {
-                        alert('No ha seleccionado ningun elemento');
-                        action = 'ninguna';
-                    }
-                    else {
-                        datos = 0;
-                    }
+        if (trocearAction.length === 2 ){
+            address = '/'+trocearAction[0]+'/'+trocearAction[1];
+        } else {
+            switch (trocearAction[4]) {
+                case 'fila': {
+                    datos = cogerUnicaCheck(document);
+                    break;
                 }
-                else {
-                    if ((trocearAction[3] !== "nuevo") || (devolver[1] < 8)) {
-                        datos = iIdMarcada;
-                    }
-                    else {
-                        //Si el nivel devuelto es 5(la variable marcara 8) no permitimos crear un nuevo nodo
-                        alert('Maximo 5 niveles');
-                        action = 'ninguna';
-                    }
+
+                case 'general': {
+                    datos = cogerCheckBox(document);
+                    break;
                 }
-                break;
-            }
 
-            case 'verPerfil': {
-                datos = cogerOptionPerfil();
-                break;
-            }
-
-            case 'listado': {
-                datos = datos + separador + cogerCampos();
-                break;
-            }
-
-            case 'cerrar': {
-                //Si nos llegan datos los ponemos en los campos del formularios necesarios
-                if (datos != null) {
-                    aForm = datos.split(separador);
-                    formframe = document.getElementById("form");
-                    frame = formframe.contentWindow.document;
-                    elementos = frame.getElementsByTagName("input");
-                    noencontrado = true;
-                    i = 0;
-                    while ((noencontrado) && (i < elementos.length)) {
-                        if (elementos[i].name === aForm[1]) {
-                            elementos[i].value = aForm[0];
-                            noencontrado = false;
+                case 'radio': {
+                    let framearbol = document.getElementById("arbol");
+                    let docarbol = framearbol.contentWindow.document;
+                    let devolver = cogerRadio(docarbol);
+                    let iIdMarcada = devolver[0];
+                    if (iIdMarcada === 0) {
+                        if (trocearAction[3] !== "nuevo") {
+                            alert('No ha seleccionado ningun elemento');
+                            action = 'ninguna';
                         }
                         else {
-                            i++;
+                            datos = 0;
                         }
                     }
-                    noencontrado = true;
-                    i = 0;
-                    while ((noencontrado) && (i < elementos.length)) {
-                        if (elementos[i].name === (aForm[1] + "texto")) {
-                            elementos[i].value = aForm[2];
-                            noencontrado = false;
+                    else {
+                        if ((trocearAction[3] !== "nuevo") || (devolver[1] < 8)) {
+                            datos = iIdMarcada;
                         }
                         else {
-                            i++;
+                            //Si el nivel devuelto es 5(la variable marcara 8) no permitimos crear un nuevo nodo
+                            alert('Maximo 5 niveles');
+                            action = 'ninguna';
                         }
                     }
+                    break;
                 }
-                ap_showWaitMessage('contenedor', 0, 2);
-                ap_showWaitMessage('diviframe', 1, 2);
-                break;
-            }
 
-            case 'grafica': {
-                datos = document.getElementById('desgrafica').value + separador + document.getElementById('modgrafica').value;
-                break;
-            }
+                case 'verPerfil': {
+                    datos = cogerOptionPerfil();
+                    break;
+                }
 
-            case 'actualizar': {
-                datos = cogerCheckBoxPerfiles(document);
-                break;
+                case 'listado': {
+                    datos = datos + separador + cogerCampos();
+                    break;
+                }
+
+                case 'cerrar': {
+                    //Si nos llegan datos los ponemos en los campos del formularios necesarios
+                    if (datos != null) {
+                        aForm = datos.split(separador);
+                        formframe = document.getElementById("form");
+                        frame = formframe.contentWindow.document;
+                        elementos = frame.getElementsByTagName("input");
+                        noencontrado = true;
+                        i = 0;
+                        while ((noencontrado) && (i < elementos.length)) {
+                            if (elementos[i].name === aForm[1]) {
+                                elementos[i].value = aForm[0];
+                                noencontrado = false;
+                            }
+                            else {
+                                i++;
+                            }
+                        }
+                        noencontrado = true;
+                        i = 0;
+                        while ((noencontrado) && (i < elementos.length)) {
+                            if (elementos[i].name === (aForm[1] + "texto")) {
+                                elementos[i].value = aForm[2];
+                                noencontrado = false;
+                            }
+                            else {
+                                i++;
+                            }
+                        }
+                    }
+                    ap_showWaitMessage('contenedor', 0, 2);
+                    ap_showWaitMessage('diviframe', 1, 2);
+                    break;
+                }
+
+                case 'grafica': {
+                    datos = document.getElementById('desgrafica').value + separador + document.getElementById('modgrafica').value;
+                    break;
+                }
+
+                case 'actualizar': {
+                    datos = cogerCheckBoxPerfiles(document);
+                    break;
+                }
+                case 'permisos': {
+                    let aux = document.getElementById("diviframe");
+                    frame = aux.getElementsByTagName("IFRAME")[0];
+                    contenedor_derecha = frame.contentWindow.document;
+                    datos = cogerCheckBoxPermisos(contenedor_derecha);
+                    break;
+                }
             }
-            case 'permisos': {
-                let aux = document.getElementById("diviframe");
-                frame = aux.getElementsByTagName("IFRAME")[0];
-                contenedor_derecha = frame.contentWindow.document;
-                datos = cogerCheckBoxPermisos(contenedor_derecha);
-                break;
+            if (trocearAction[2] === 'formulario') {
+                address += '/form';
             }
         }
-        if (trocearAction[2] === 'formulario') {
-            address += '/form';
-        }
-
         proceso = filtroEditor(trocearAction[2]);
         if (action.length < 1) {
             proceso = 0;

@@ -507,7 +507,6 @@ class generador_listados
         if (!array_key_exists('totalItems', $this->aOpcionesPager)) {
             $this->oDb->consulta($query);
             $totalItems = (int)$this->oDb->rowCount();
-            //}
             $this->aOpcionesPager['totalItems'] = $totalItems;
         }
         $pager = Pager::factory($this->aOpcionesPager);

@@ -35,13 +35,17 @@ class FormManager
      * FormManager constructor.
      * @param $action string
      * @param $aDatos array
+     * @param $fields array
      */
-    public function __construct($action, $aDatos = null)
+    public function __construct($action, $aDatos = null, $fields = null)
     {
         $this->action = $action;
         $this->data = $aDatos;
-        $Form=new Forms();
-        $this->fields = $Form->formulario($this->action);
+        if (is_null($fields)) {
+            $Form = new Forms();
+            $fields = $Form->formulario($this->action);
+        }
+        $this->fields=$fields;
         $this->oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
     }
 

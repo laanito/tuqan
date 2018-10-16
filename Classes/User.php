@@ -64,6 +64,7 @@ class User implements JUser
 
         $this->last_login = new \DateTime();
         $_SESSION['usuarioconectado']=true;
+        $_SESSION['userid']=$this->getId();
         return true;
     }
 

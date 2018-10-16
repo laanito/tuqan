@@ -1,6 +1,8 @@
 <?php
 /**
- * Class that handles ajax requests
+ * Class that handles legacy ajax requests
+ *
+ * Will be step by step removed by controllers
  *
  * @author lamigo
  */

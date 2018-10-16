@@ -702,7 +702,6 @@ class Procesador_De_Peticiones
                         case 'formacion:cursoplan:editar:fila':
                         case 'formacion:cursoplandetalles:editar:fila':
                         case 'formacion:profesor:editar:fila':
-                        case 'inicio:mensajes:nuevo':
                         case 'auditorias:programa:editar:fila':
                         case 'auditorias:programa:nuevo':
                         case 'auditorias:plan:planauditoria:nuevo':
@@ -792,20 +791,6 @@ class Procesador_De_Peticiones
                 case 'listado' :
                     {
                         switch ($sMenu) {
-                            //case 'inicio:mensajes:':
-
-                            case 'inicio:mensajes:inicial':
-                                {
-                                    $ProcesaListado=new Procesar_Listados();
-                                    $this->sHtml = $ProcesaListado->crea_Menu_Superior($sAccion) . "|";
-                                    $this->sHtml .= "contenedor|" . $ProcesaListado->procesa_Listado($sMenu, $this->aParametros);
-                                    break;
-                                }
-                            case 'inicio:mensajes:ver' :
-                                $ProcesaListado=new Procesar_Listados();
-                                $this->sHtml .= "contenedor|" . $ProcesaListado->procesa_Listado($sMenu, $this->aParametros);
-                                break;
-
                             case 'equipos:planmantenimientoid:nuevo':
                             case 'equipos:planmantenimiento:ver:fila':
                             case 'equipos:planmantenimiento:nuevo:fila':
@@ -1079,11 +1064,6 @@ class Procesador_De_Peticiones
                             case 'proveedores:incidencia:ver:fila':
                                 $ProcesaListado=new Procesar_Listados;
                                 $this->sHtml = "contenedor|" . $ProcesaListado->procesa_Ver_Incidencia($this->aParametros);
-                                break;
-
-                            case 'inicio:mensajes:ver:fila' :
-                                $Comunes = new Procesar_Funciones_Comunes();
-                                $this->sHtml = "contenedor|" . $Comunes->procesa_Ver_Mensaje($this->aParametros);
                                 break;
 
                             case 'documentos:preguntashistorico:ver:fila':

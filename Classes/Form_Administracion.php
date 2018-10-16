@@ -113,18 +113,6 @@ class Form_Administracion
     function devuelve_Array_Form($sFormulario, $sTipoForm, $iId)
     {
         switch ($sFormulario) {
-            case 'mensajes':
-                $aFormulario = array('mensajes' => array(array('etiqueta' => gettext('sFAContenido') . ': ', 'columna' => 'contenido'),
-                    array('etiqueta' => '', 'columna' => 'destinatario', 'hidden' => '0'),
-                    array('etiqueta' => '', 'columna' => 'activo', 'hidden' => 't'),
-                    array('etiqueta' => '', 'columna' => 'origen', 'hidden' => $_SESSION['userid']),
-                    array('etiqueta' => gettext('sFATitulo') . ': ', 'columna' => 'titulo'),
-                )
-                );
-                if ($sTipoForm == 'UPDATE') {
-                    $aFormulario['mensajes']['id'] = $iId;
-                }
-                break;
 
             case 'area':
                 $aFormulario = array('areas' => array(array('etiqueta' => gettext('sFANombre') . ': ', 'columna' => 'nombre'),

@@ -859,22 +859,6 @@ class Procesar_Funciones_Comunes
     }
 
 
-    function procesa_Ver_Mensaje($aParametros)
-    {
-        $iIdMensaje = $_SESSION['pagina'][$aParametros['numeroDeFila']];
-        $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $oVolver = new boton(gettext('sBotonVolver'), "atras(-1)", "noafecta");
-        $oBaseDatos->iniciar_Consulta('SELECT');
-        $oBaseDatos->construir_Campos(array('contenido'));
-        $oBaseDatos->construir_Tablas(array('mensajes'));
-        $oBaseDatos->construir_Where(array('id=\'' . $iIdMensaje . '\''));
-        $oBaseDatos->consulta();
-        $aFila = $oBaseDatos->coger_Fila();
-        $sHtml = "<p align='center'><br /><span class='titulo'>" . gettext('sContMsj') . ": </span></p><span class='texto'> " .
-            $aFila[0] . "</span><br /><p align='center'>" . $oVolver->to_Html() . "</p><br /><br />";
-        return $sHtml;
-    }
-
     /**
      * @param $aParametros
      * @return string
