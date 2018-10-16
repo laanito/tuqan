@@ -8,6 +8,7 @@ namespace Tuqan\Controllers;
 
 use boton;
 use Tuqan\Classes\Botones;
+use Tuqan\Classes\FormManager;
 use Tuqan\Classes\generador_listados;
 use Tuqan\Classes\Manejador_Base_Datos;
 use Tuqan\Classes\TuqanLogger;
@@ -78,6 +79,31 @@ class Messages
         return $sHtml;
     }
 
+    function anyNew() {
+        $action=$_POST['action'];
+        if(isset($_POST['datos'])) {
+            $aDatos = $_POST['datos'];
+        }
+        else {
+            $aDatos = array();
+        }
+        $aFormulario = array(
+             'mensajes' => array(
+                 array('etiqueta' => gettext('sFCOContenido') . ': ', 'columna' => 'contenido'),
+                 array('etiqueta' => '', 'columna' => 'destinatario', 'hidden' => 'null'),
+                 array('etiqueta' => '', 'columna' => 'activo', 'hidden' => 't'),
+                 array('etiqueta' => '', 'columna' => 'origen', 'hidden' => $_SESSION['userid']),
+                 array('etiqueta' => gettext('sFCOTitulo') . ': ', 'columna' => 'titulo'),
+                )
+            );
+/*            if ($sTipoForm == 'UPDATE') {
+                $aFormulario['mensajes']['id'] = $iId;
+            }*/
+        $form = new FormManager($action, $aDatos, $aFormulario);
+        $result = 'contenedor|'.$form->process();
+        return $result;
+    }
+
     /**
      * @param $user
      * @param $active
@@ -125,6 +151,4 @@ class Messages
             return false;
         }
     }
-
-
 }

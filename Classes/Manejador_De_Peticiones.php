@@ -599,21 +599,17 @@ class Manejador_De_Peticiones
                             $Form = new Manejador_Formularios();
                             $aParametros = $Form->prepara_Formulario_Inicial_Editar_Comun($this->sCodigo, $this->aDatos);
                             break;
-
-                        case 'inicio:mensajes:nuevo':
                         case 'auditorias:programa:nuevo':
                         case 'auditorias:plan:planauditoria:nuevo':
                             $Form = new Manejador_Formularios();
                             $aParametros = $Form->prepara_Formulario_Inicial_Calidad($sMenu);
                             $aParametros['accion'] = $this->sCodigo;
                             break;
-
                         case 'auditorias:programa:editar:fila':
                             $Form = new Manejador_Formularios();
                             $aParametros = $Form->prepara_Formulario_Inicial_Editar_Comun($sMenu, $this->aDatos);
                             $aParametros['accion'] = $this->sCodigo;
                             break;
-
                         case 'documentos:cuestionario:nuevo:fila':
                             $Form = new Manejador_Formularios();
                             $aParametros = $Form->prepara_Cuestionario($sMenu, $this->aDatos);

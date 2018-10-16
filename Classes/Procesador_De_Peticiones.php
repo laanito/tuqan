@@ -702,7 +702,6 @@ class Procesador_De_Peticiones
                         case 'formacion:cursoplan:editar:fila':
                         case 'formacion:cursoplandetalles:editar:fila':
                         case 'formacion:profesor:editar:fila':
-                        case 'inicio:mensajes:nuevo':
                         case 'auditorias:programa:editar:fila':
                         case 'auditorias:programa:nuevo':
                         case 'auditorias:plan:planauditoria:nuevo':

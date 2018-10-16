@@ -51,22 +51,6 @@ class Form_Comun
     function devuelve_Array_Form($sFormulario, $sTipoForm, $iId)
     {
         switch ($sFormulario) {
-            case 'mensajeusuario':
-                if (!isset($sUsuarioDetectado)) {
-                    $sUsuarioDetectado = "";
-                }
-                $aFormulario = array('mensajes' => array(array('etiqueta' => gettext('sFCOContenido') . ': ', 'columna' => 'contenido'),
-                    array('etiqueta' => gettext('sFCODestinatario') . ': ', 'columna' => 'destinatario', 'hidden' => 'null',
-                        'boton' => array('label' => 'Seleccionar', 'valor' => $sUsuarioDetectado, 'action' => 'parent.sndReq(\'mejora:acmejora:comun:seleccionausuario\',\'\',1,\'mensajes:destinatario\')')),
-                    array('etiqueta' => '', 'columna' => 'activo', 'hidden' => 't'),
-                    array('etiqueta' => '', 'columna' => 'origen', 'hidden' => $_SESSION['userid']),
-                    array('etiqueta' => gettext('sFCOTitulo') . ': ', 'columna' => 'titulo'),
-                )
-                );
-                if ($sTipoForm == 'UPDATE') {
-                    $aFormulario['mensajes']['id'] = $iId;
-                }
-                break;
 
             case 'plan':
                 $aFormulario = array('plan_formacion' => array(array('etiqueta' => gettext('sFCONombre') . ': ', 'columna' => 'nombre'),

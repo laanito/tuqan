@@ -57,18 +57,6 @@ class Forms
 
 
         switch ($aSplit[1]) {
-            // Para la opcion inicio:mensajes:formulario:nuevo
-            case 'mensajes':
-                if ($_SESSION['admin']) {
-                    $Form = new Form_Administracion();
-                    $aFormulario = $Form->devuelve_Array_Form($aSplit[1], $sTipoForm, $iId);
-                    $sCabecera .= gettext('sFMensajeGeneral');
-                } else {
-                    $Form = new Form_Comun();
-                    $aFormulario = $Form->devuelve_Array_Form('mensajeusuario', $sTipoForm, $iId);
-                    $sCabecera .= gettext('sFMensaje');
-                }
-                break;
             // Para la opcion auditorias:programa:nuevo
             case 'programa':
                 $Form = new Form_Calidad();
