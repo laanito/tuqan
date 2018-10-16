@@ -16,7 +16,6 @@ Class Titulos {
     public function __construct()
     {
         $this->aTitulos = array('qnovainicial' => gettext('sTInicio'),
-            'inicio:mensajes:listado:inicial' => gettext('sInicio'),
             'inicio:nuevo:formulario:general' => gettext('sInicio'),
             'inicio' => gettext('sInicio'),
             'documentacion' => gettext('sTDocumentacion'),
@@ -30,12 +29,12 @@ Class Titulos {
             'indicadores' => gettext('sTIndicadores'),
             'logout' => gettext('sTLogout'),
             'mlogout' => gettext('sTLogout2'),
-            'inicio:mensajes:listado:ver' => gettext('sTMensajes'),
-            'inicio:mensajes:formulario:nuevo' => gettext('sTNMensajes'),
-            'inicio:mensajes:comun:estadisticas' => gettext('sTEstMensajes'),
-            'inicio:mensajes:comun:baja:general' => gettext('sTBajaMensajes'),
-            'inicio:mensajes:listado:ver:fila' => gettext('sTVerMensajes'),
-            'inicio:historicomensajes:listado:ver' => gettext('sTVerHistorico'),
+            'messages:view' => gettext('sTMensajes'),
+            'messages:new' => gettext('sTNMensajes'),
+            'messages:statistics' => gettext('sTEstMensajes'),
+            'messages:delete' => gettext('sTBajaMensajes'),
+            'messages:get' => gettext('sTVerMensajes'),
+            'messages:history' => gettext('sTVerHistorico'),
 
             'inicio:tareas:listado:ver' => gettext('sTTareas'),
             'inicio:tareas:comun:ver:fila' => gettext('sTVerTareas'),

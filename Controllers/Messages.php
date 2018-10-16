@@ -35,38 +35,6 @@ class Messages
      * @return string
      */
     public function anyGet() {
- /*
-
-                            case 'inicio:mensajes:ver:fila' :
-                                $Comunes = new Procesar_Funciones_Comunes();
-                                $this->sHtml = "contenedor|" . $Comunes->procesa_Ver_Mensaje($this->aParametros);
-                                break;
-
-                $sTabla = 'mensajes';
-                $aCampos = array('mensajes.id', "mensajes.titulo as \"" . gettext('sPCTitulo') . "\"",
-                    "to_char(mensajes.fecha, 'DD/MM/YYYY') as \"" . gettext('sPCEnviado') . "\"",
-                    "to_char(mensajes.fecha, 'hh24:mi') as \"" . gettext('sPCHora') . "\"",
-                    "usuarios.nombre||' '||usuarios.primer_apellido||' '||usuarios.segundo_apellido as \"" . gettext('sPCRemitente') . "\"");
-                $aBuscar = array('nombres' => array('titulo', 'enviado'),
-                    'campos' => array('titulo', 'fecha'));
-                $oDb->iniciar_Consulta('SELECT');
-                $oDb->construir_Campos($aCampos);
-                $oDb->construir_Tablas(array($sTabla, 'usuarios'));
-                if ($_SESSION['perfil'] != 0) {
-                    $oDb->construir_Where(array("(destinatario=" . $_SESSION['userid'] . ") OR (destinatario=0)", "(mensajes.activo='t')",
-                        "usuarios.id=mensajes.origen"
-                    ));
-                } else {
-                    $oDb->construir_Where(array("usuarios.id=mensajes.origen AND mensajes.activo='t'"));
-                }
-        $Listados = new Manejador_Listados();
-        $aParametros = $Listados->prepara_Listado_Inicial($sMenu, $this->aDatos, $this->sCodigo);
-        $aParametros['accion'] = $this->sCodigo;
-        TuqanLogger::debug(
-            "Parameter in case: ",
-            ['aParametros'=>$aParametros]
-        );*/
-
 
         $action=$_POST['action'];
         if(isset($_POST['datos'])) {
@@ -79,34 +47,13 @@ class Messages
             "Arrived Mensajes Controller",
             ["action" => $action, 'aDatos' =>print_r($aDatos,1)]
         );
-        $sTabla = 'mensajes';
-        $aCampos = array('mensajes.id', "mensajes.titulo as \"" . gettext('sPCTitulo') . "\"",
-            "to_char(mensajes.fecha, 'DD/MM/YYYY') as \"" . gettext('sPCEnviado') . "\"",
-            "to_char(mensajes.fecha, 'hh24:mi') as \"" . gettext('sPCHora') . "\"",
-            "usuarios.nombre||' '||usuarios.primer_apellido||' '||usuarios.segundo_apellido as \"" . gettext('sPCRemitente') . "\"");
-        $aBuscar = array('nombres' => array('titulo', 'enviado'),
-            'campos' => array('titulo', 'fecha'));
-        $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
-        $oDb->iniciar_Consulta('SELECT');
-        $oDb->construir_Campos($aCampos);
-        $oDb->construir_Tablas(array($sTabla, 'usuarios'));
-        $oDb->construir_Where(array("(destinatario=" . $_SESSION['userid'] . ") OR (destinatario=0)", "(mensajes.activo='t')",
-                "usuarios.id=mensajes.origen"
-            ));
-        $oPager = new generador_listados($action, $oDb, $aDatos['pagina'], $aDatos['numLinks'],
-            $aDatos['numPaginas'], $aDatos['order'], $aDatos['sentido'],
-            $sTabla, $aDatos['where'], $aBuscar);
-        $botones = Botones::getButtons($action);
-        if (is_array($botones)) {
-            foreach ($botones as $aBoton) {
-                $oPager->agrega_Boton($aBoton[0], $aBoton[1], $aBoton[2]);
-            }
+
+        $oPager = $this->listMessages($_SESSION['userid'], true, $action, $aDatos );
+        if($oPager) {
+            $result = "contenedor|" . $oPager->muestra_Pagina();
+        } else {
+            $result = "contenedor|". gettext("There was an error, contact your system admin");
         }
-
-        $oPager->agrega_Desplegable(gettext('sElemPag'),
-            $action, array($aDatos['numPaginas'], 10, 20, 30, 50));
-
-        $result = "contenedor|". $oPager->muestra_Pagina();
         return $result;
     }
 
@@ -130,4 +77,54 @@ class Messages
             $aFila[0] . "</span><br /><p align='center'>" . $oVolver->to_Html() . "</p><br /><br />";
         return $sHtml;
     }
+
+    /**
+     * @param $user
+     * @param $active
+     * @param $action
+     * @param null $aDatos
+     * @return generador_listados|bool
+     */
+    private function listMessages($user, $active, $action, $aDatos = null) {
+        try {
+            if($active){
+                $active = 't';
+            } else {
+                $active = 'f';
+            }
+            $sTabla = 'mensajes';
+            $aCampos = array('mensajes.id', "mensajes.titulo as \"" . gettext('sPCTitulo') . "\"",
+                "to_char(mensajes.fecha, 'DD/MM/YYYY') as \"" . gettext('sPCEnviado') . "\"",
+                "to_char(mensajes.fecha, 'hh24:mi') as \"" . gettext('sPCHora') . "\"",
+                "usuarios.nombre||' '||usuarios.primer_apellido||' '||usuarios.segundo_apellido as \"" . gettext('sPCRemitente') . "\"");
+            $aBuscar = array('nombres' => array('titulo', 'enviado'),
+                'campos' => array('titulo', 'fecha'));
+            $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+            $oDb->iniciar_Consulta('SELECT');
+            $oDb->construir_Campos($aCampos);
+            $oDb->construir_Tablas(array($sTabla, 'usuarios'));
+            $oDb->construir_Where(array("(destinatario=$user) OR (destinatario=0)", "(mensajes.activo=$active)",
+                "usuarios.id=mensajes.origen"
+            ));
+            $oPager = new generador_listados($action, $oDb, $aDatos['pagina'], $aDatos['numLinks'],
+                $aDatos['numPaginas'], $aDatos['order'], $aDatos['sentido'],
+                $sTabla, $aDatos['where'], $aBuscar);
+            $botones = Botones::getButtons($action);
+            if (is_array($botones)) {
+                foreach ($botones as $aBoton) {
+                    $oPager->agrega_Boton($aBoton[0], $aBoton[1], $aBoton[2]);
+                }
+            }
+
+            $oPager->agrega_Desplegable(gettext('sElemPag'),
+                $action, array($aDatos['numPaginas'], 10, 20, 30, 50));
+
+            return $oPager;
+        } catch (\Exception $e) {
+            TuqanLogger::error("Exception:", ['Exception' => print_r($e,1)]);
+            return false;
+        }
+    }
+
+
 }
