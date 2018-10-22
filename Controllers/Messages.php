@@ -79,6 +79,9 @@ class Messages
         return $sHtml;
     }
 
+    /**
+     * @return string
+     */
     function anyNew() {
         $action=$_POST['action'];
         if(isset($_POST['datos'])) {
@@ -104,6 +107,13 @@ class Messages
         return $result;
     }
 
+
+    /**
+     * return message statistics
+     */
+    function anyStatistics(){
+        return "contenedor|" . $this->procesa_Grafica_Mensajes();
+    }
     /**
      * @param $user
      * @param $active
@@ -150,5 +160,35 @@ class Messages
             TuqanLogger::error("Exception:", ['Exception' => print_r($e,1)]);
             return false;
         }
+    }
+
+    /**
+     * @return string
+     */
+    function procesa_Grafica_Mensajes()
+    {
+        $oDb = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+        $oVolver = new boton(gettext('sPCVolver'), "atras(-1)", "noafecta");
+        $oDb->iniciar_consulta('SELECT');
+        $oDb->construir_Campos(array('count(id)'));
+        $oDb->construir_Tablas(array('mensajes'));
+        $oDb->consulta();
+        if ($aIterador = $oDb->coger_Fila()) {
+            $iNumeroMensajes = $aIterador[0];
+        }
+        $oDb->iniciar_consulta('SELECT');
+        $oDb->construir_Campos(array('count(id)'));
+        $oDb->construir_Tablas(array('mensajes'));
+        $oDb->construir_Where(array('destinatario=0'));
+        $oDb->consulta();
+        if ($aIterador = $oDb->coger_Fila()) {
+            $iNumeroMensajesGlobales = $aIterador[0];
+        }
+        $sImg = "<img src=\"/graficamensajes.php\">";
+        $sHtml = $sImg . "<br /><br />";
+        $sHtml .= "Mensajes totales en el sistema: " . $iNumeroMensajes . "<br />";
+        $sHtml .= "Mensajes globales: " . $iNumeroMensajesGlobales . "<br />";
+        $sHtml .= $oVolver->to_Html();
+        return $sHtml;
     }
 }

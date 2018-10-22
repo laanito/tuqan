@@ -101,12 +101,6 @@ class Procesador_De_Peticiones
 
                 case 'comun':
                     switch ($sMenu) {
-
-                        case 'inicio:mensajes:estadisticas':
-                            $Comunes = new Procesar_Funciones_Comunes();
-                            $this->sHtml = "contenedor|" . $Comunes->procesa_Grafica_Mensajes($sMenu, $this->aParametros);
-                            break;
-
                         case 'administracion:menu:estructura':
                             $this->sHtml = "contenedor|<iframe id=\"arbol\" src=\"estructura_arbol.php\" width=\"100%\" " .
                                 " frameborder=\"0\"  style=\"z-index: 0\"><\iframe>";
