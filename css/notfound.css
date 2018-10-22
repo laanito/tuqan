@@ -130,6 +130,7 @@ hr:after {
 .x1 {
     top:-50px;
     left:100px;
+    -ms-transform: scale(0.3);
     -webkit-transform: scale(0.3);
     -moz-transform: scale(0.3);
     transform: scale(0.3);
@@ -142,6 +143,7 @@ hr:after {
 .x1_5{
     top:-80px;
     left:250px;
+    -ms-transform: scale(0.3);
     -webkit-transform: scale(0.3);
     -moz-transform: scale(0.3);
     transform: scale(0.3);
@@ -153,6 +155,7 @@ hr:after {
 .x2 {
     left: 250px;
     top:30px;
+    -ms-transform: scale(0.6);
     -webkit-transform: scale(0.6);
     -moz-transform: scale(0.6);
     transform: scale(0.6);
@@ -164,7 +167,7 @@ hr:after {
 
 .x3 {
     left: 250px; bottom: -70px;
-
+    -ms-transform: scale(0.6);
     -webkit-transform: scale(0.6);
     -moz-transform: scale(0.6);
     transform: scale(0.6);
@@ -177,7 +180,7 @@ hr:after {
 
 .x4 {
     left: 470px; bottom: 20px;
-
+    -ms-transform: scale(0.75);
     -webkit-transform: scale(0.75);
     -moz-transform: scale(0.75);
     transform: scale(0.75);
@@ -190,7 +193,7 @@ hr:after {
 
 .x5 {
     left: 200px; top: 300px;
-
+    -ms-transform: scale(0.5);
     -webkit-transform: scale(0.5);
     -moz-transform: scale(0.5);
     transform: scale(0.5);
