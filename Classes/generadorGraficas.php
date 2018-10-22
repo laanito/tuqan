@@ -4,6 +4,9 @@ namespace Tuqan\Classes;
 /*
  *  Generates Graphics
  */
+
+use Image_Graph;
+
 class generadorGrafica
 {
     private $sTipo;
