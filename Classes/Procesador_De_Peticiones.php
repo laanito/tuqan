@@ -1196,8 +1196,7 @@ class Procesador_De_Peticiones
         }
         if ($sAccion != 'logout') {
             $this->sHtml.="|titulo|";
-            $titulo = new Titulos();
-            $this->sHtml .= $titulo->getTitulo($sAccion);
+            $this->sHtml .= Titulos::getTitulo($sAccion);
         }
         return $this->sHtml;
     }
