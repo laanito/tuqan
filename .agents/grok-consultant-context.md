@@ -1,17 +1,18 @@
 # Grok Consultant Context - Tuqan Modernization
 
-**Fecha de creación:** 06/05/2026  
-**Última actualización:** 06/05/2026  
-**Branch actual:** phase-0-strategic-foundation-20250506
+**Creation Date:** 2026-05-06  
+**Last Updated:** 2026-05-06  
+**Current Branch:** phase-0-strategic-foundation-20250506
 
-## Mandato Actual
-- Phase 0: Strategic Foundation (documentación primero).
-- Cero cambios de código fuera de `.agents/` hasta aprobación completa del roadmap.
-- Todo vía branches + PRs.
+## Current Mandate
+- Phase 0: Strategic Foundation (documentation first).
+- Zero code changes outside `.agents/` until the full roadmap is approved and documented.
+- All work through branches + PRs to `master`.
 
-## Reglas Recordadas
-- Documentación primero → Código después.
-- Preservar lógica de negocio.
-- Transparencia total.
+## Remembered Rules
+- Documentation first → Code only after approval.
+- Preserve and evolve business logic (do not rewrite from scratch unless justified).
+- Full transparency: every major step becomes a public blog post.
 
-**Estado actual:** Iniciando Phase 0.
+## Project Philosophy
+"There are projects that don't need to be born from zero: they need a second life."
