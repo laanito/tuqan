@@ -4,3 +4,13 @@ composer.lock
 /.idea/
 vendor
 .idea
+
+# Docker
+.env
+.env.local
+.env.*.local
+docker-compose.override.yml
+*.log
+
+# Keep the Docker template committed
+!.env.docker
