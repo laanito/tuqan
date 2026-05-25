@@ -1,7 +1,7 @@
 # Tuqan PHP 8 + Docker + Testing Migration Plan
 
 **Branch:** `php-migration-plan-docker-testing` (created 2026-05)  
-**Status:** Stage 2 (Testing Harness + PHP 8.3 Baseline) in progress.  
+**Status:** Stage 2 in active progress on branch `stage-2-testing-harness`.  
 **Goal:** Migrate the legacy Tuqan/Qnova ISO 9001/14001 application to a maintainable, tested, PHP 8.3+ state with a 100% Docker-based development environment. Zero reliance on host PHP, nginx, or postgres.
 
 ## Executive Summary
