@@ -113,26 +113,22 @@ docker compose exec app ./vendor/bin/phpunit --configuration phpunit.xml.dist --
 
 ---
 
-## Stage 3 — Config, Secrets & Query Safety
+## Stage 3 — Config, Secrets & Query Safety (In Progress)
 
-**Key Commands:**
+**Approach:**
+- Using native `getenv()` (dotenv package install blocked by legacy dependencies for now — acceptable for Docker-only environment).
+- Started externalizing credentials in `Classes/Config.php`.
+- Updated `.env.docker` and `docker-compose.yml`.
 
-```bash
-# After adding dotenv
-docker compose exec app composer require vlucas/phpdotenv:^5.6
+**Progress so far:**
+- `Config.php` now pulls DB credentials and some settings from environment variables with fallbacks.
+- Sensitive values (DB_USER, DB_PASS, etc.) are no longer hardcoded in the class.
+- Docker environment properly passes variables.
 
-# Test that env vars override hardcoded values
-docker compose exec app php -r '
-require "vendor/autoload.php";
-Tuqan\Classes\Config::initialize();
-echo "DB from Config: " . Tuqan\Classes\Config::$sDbEtc . "\n";
-'
-
-# Verify prepared statement path (new method) works alongside old
-docker compose exec app ./vendor/bin/phpunit --testsuite=Integration -v
-```
-
-**Gate:** No more literal passwords or "localhost" in committed PHP files. At least one high-risk module (Auth/login) uses new safer query path. Tests prove it.
+**Next steps:**
+- Clean up usage of the old `etc/qnova.conf.php`.
+- Add support for prepared statements in `Manejador_Base_Datos`.
+- Refactor at least the Auth/login flow to use safer patterns.
 
 ---
 

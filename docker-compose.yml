@@ -10,11 +10,15 @@ services:
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/99-xdebug.ini
     environment:
       - APP_ENV=dev
-      - DB_HOST=db
-      - DB_PORT=5432
+      - DB_HOST=${DB_HOST:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_TYPE=${DB_TYPE:-pgsql}
       - DB_NAME=${DB_NAME:-qnova}
       - DB_USER=${DB_USER:-qnova}
       - DB_PASS=${DB_PASS:-secret}
+      - APP_LANG_ID=${APP_LANG_ID:-1}
+      - APP_LANG_INITIAL=${APP_LANG_INITIAL:-castellano}
+      - APP_BASE_PATH=${APP_BASE_PATH:-}
     depends_on:
       - db
     networks:

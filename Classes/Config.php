@@ -53,12 +53,16 @@ public static function initialize()
     if(self::$initialized) {
         return;
     }
-    self::$sServidorEtc = "localhost";
-    self::$iPuertoEtc = 5432;
-    self::$sTipoBdEtc = 'pgsql';
-    self::$sLoginEtc = 'qnova';
-    self::$sPassEtc = 'ZTBlMWI2YTBlYmnDeYFE';
-    self::$sDbEtc = 'qnova';
+
+    // Environment-driven configuration (Stage 3)
+    self::$sServidorEtc = getenv('DB_HOST') ?: 'localhost';
+    self::$iPuertoEtc   = (int)(getenv('DB_PORT') ?: 5432);
+    self::$sTipoBdEtc   = getenv('DB_TYPE') ?: 'pgsql';
+    self::$sLoginEtc    = getenv('DB_USER') ?: 'qnova';
+    self::$sPassEtc     = getenv('DB_PASS') ?: '';
+    self::$sDbEtc       = getenv('DB_NAME') ?: 'qnova';
+
+    // Keep legacy hardcoded values for non-sensitive settings (will be moved later)
     self::$sMemoriaHtml2Pdf = '128M';
     self::$sMaxTiempoHtml2Pdf = '240';
     self::$sFormulaMatrizAmbiental= '(3*aspectos.magnitud+2*aspectos.gravedad)*aspectos.frecuencia';
@@ -72,10 +76,11 @@ public static function initialize()
     self::$iValorRiesgoMedio = 3;
     self::$iValorRiesgoAlto = 6;
 
-//Idiomas, posibles valores: 1=>'castellano',2=>'catalan','ingles'
-    self::$sIdioma = '1';
-    self::$sIdiomaInicial = "castellano";
+    //Idiomas, posibles valores: 1=>'castellano',2=>'catalan','ingles'
+    self::$sIdioma = getenv('APP_LANG_ID') ?: '1';
+    self::$sIdiomaInicial = getenv('APP_LANG_INITIAL') ?: "castellano";
     self::$sLogo = 'logo-islanda.png';
+
     self::$sPathUploadEditor = $_SERVER['DOCUMENT_ROOT'].self::$base_path."/userfiles/";
     self::$sPathUploadURL = $_SERVER['DOCUMENT_ROOT'].self::$base_path."/userfiles/";
     self::$sPathXls = "/tmp/";
@@ -84,10 +89,11 @@ public static function initialize()
         'ISO-8859-1' => 'LATIN1',
         'utf-8' => 'UNICODE'
     );
-    self::$base_path='';
+    self::$base_path = getenv('APP_BASE_PATH') ?: '';
 
     self::$template_path = $_SERVER['DOCUMENT_ROOT'].self::$base_path.'/templates/';
-
     self::$cache_path = self::$template_path.'cache/';
+
+    self::$initialized = true;
     }
 }
