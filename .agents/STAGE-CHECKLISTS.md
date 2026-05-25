@@ -1,0 +1,222 @@
+# Stage Checklists & Validation Commands — Tuqan Migration
+
+**How to use this file:**
+- Copy the relevant stage's todo items into a `todo_write` call at the start of the stage.
+- Execute **only** the commands shown (all via docker compose).
+- After each major item, append output + "PASS" or "FAIL + reason" to the Evidence section at the bottom of this file (or in MIGRATION-PLAN.md).
+- Only mark the stage `completed` in your todo list when ALL gates are green and docs are updated.
+
+---
+
+## Stage 1 — Docker Environment (Foundation)
+
+**todo_write items (copy these):**
+
+```json
+[
+  {"id":"1.1","content":"Create Dockerfile, docker-compose.yml, nginx/php configs from DOCKER-ENV.md skeletons","status":"pending"},
+  {"id":"1.2","content":"Add .env.docker + update .gitignore","status":"pending"},
+  {"id":"1.3","content":"Build and start stack; verify PHP 8.3 + all extensions inside container","status":"pending"},
+  {"id":"1.4","content":"Initialize postgres with minimal seed; connect via docker exec psql","status":"pending"},
+  {"id":"1.5","content":"Verify nginx serves static + php-fpm (curl or browser to localhost:8080)","status":"pending"},
+  {"id":"1.6","content":"Document any gotchas (paths, permissions, encoding) in DOCKER-ENV.md","status":"pending"},
+  {"id":"1.7","content":"Update MIGRATION-PLAN.md and this file with full evidence + screenshots if useful","status":"pending"}
+]
+```
+
+**Exact Validation Commands (run in order, capture output):**
+
+```bash
+# Clean previous attempts
+docker compose --env-file .env.docker down -v 2>/dev/null || true
+
+# Build
+docker compose --env-file .env.docker build --no-cache --progress=plain 2>&1 | tail -30
+
+# Start
+docker compose --env-file .env.docker up -d
+
+# 1. PHP version & extensions (MUST be 8.3)
+docker compose exec app php -v
+docker compose exec app php -m | grep -E 'pdo_pgsql|gd|gettext|intl|zip'
+
+# 2. Composer works
+docker compose exec app composer --version
+docker compose exec app composer validate --no-check-all
+
+# 3. DB ready & queryable
+docker compose exec db pg_isready -U qnova
+docker compose exec db psql -U qnova -d qnova -c "SELECT version(); SELECT count(*) FROM information_schema.tables WHERE table_schema='public';"
+
+# 4. Web responds (no 502/500)
+curl -I --max-time 10 http://localhost:8080 || echo "CURL FAILED - check nginx logs"
+docker compose logs --tail=20 web
+
+# 5. App container can see code
+docker compose exec app ls -la /var/www/html | head -10
+docker compose exec app ls -la /var/www/html/.agents | head -5
+```
+
+**Stage 1 Gate (must all be true before proceeding):**
+- [ ] PHP 8.3.x exactly inside `app`
+- [ ] All 7+ required extensions present
+- [ ] Postgres accepts connection and has tables (even if 0 rows)
+- [ ] `curl -I http://localhost:8080` returns 200 or 302 (or 404 from app, not 502)
+- [ ] No permission errors on bind mount
+- [ ] Evidence appended below
+
+**Rollback:** `docker compose down -v && git clean -fd docker/ .env* docker-compose*`
+
+---
+
+## Stage 2 — Testing Harness + PHP 8.3 Baseline
+
+**todo_write items:**
+
+```json
+[
+  {"id":"2.1","content":"Add phpunit + phpstan via composer inside Docker","status":"pending"},
+  {"id":"2.2","content":"Create phpunit.xml.dist + tests/bootstrap.php + basic directory structure","status":"pending"},
+  {"id":"2.3","content":"Write 5+ smoke tests (Config, generador_SQL, simple DB connect)","status":"pending"},
+  {"id":"2.4","content":"First phpunit run (expect some failures — document them)","status":"pending"},
+  {"id":"2.5","content":"phpstan --level=0 on Classes/ + Pages/ (fix only fatal parse issues)","status":"pending"},
+  {"id":"2.6","content":"Add 'php': '^8.2' to composer.json + pin safe dep versions","status":"pending"},
+  {"id":"2.7","content":"All tests that can pass, pass. Evidence + coverage report captured","status":"pending"}
+]
+```
+
+**Validation Commands:**
+
+```bash
+docker compose exec app composer require --dev phpunit/phpunit:^10.5 phpstan/phpstan:^1.11 --with-all-dependencies
+
+# Create dirs (if not done via search_replace)
+docker compose exec app mkdir -p tests/Unit/Classes tests/Integration/Database tests/Fixtures
+
+# Run the very first test suite (will be small)
+docker compose exec app ./vendor/bin/phpunit --version
+
+# PHPStan baseline
+docker compose exec app ./vendor/bin/phpstan --version
+docker compose exec app ./vendor/bin/phpstan analyse Classes/ Pages/ Controllers/ --level=0 --no-progress 2>&1 | tail -20
+
+# Full suite (after writing the example tests)
+docker compose exec app ./vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite=Unit --display-warnings
+```
+
+**Stage 2 Gate:**
+- [ ] phpunit 10.x runs inside container
+- [ ] At least 3 green tests exercising Config + query builder (even if they only test construction)
+- [ ] phpstan level 0 clean on modernized directories (or documented ignores for legacy)
+- [ ] composer.json has explicit PHP constraint
+- [ ] Evidence section updated with `phpunit --coverage-text` output
+
+---
+
+## Stage 3 — Config, Secrets & Query Safety
+
+**Key Commands:**
+
+```bash
+# After adding dotenv
+docker compose exec app composer require vlucas/phpdotenv:^5.6
+
+# Test that env vars override hardcoded values
+docker compose exec app php -r '
+require "vendor/autoload.php";
+Tuqan\Classes\Config::initialize();
+echo "DB from Config: " . Tuqan\Classes\Config::$sDbEtc . "\n";
+'
+
+# Verify prepared statement path (new method) works alongside old
+docker compose exec app ./vendor/bin/phpunit --testsuite=Integration -v
+```
+
+**Gate:** No more literal passwords or "localhost" in committed PHP files. At least one high-risk module (Auth/login) uses new safer query path. Tests prove it.
+
+---
+
+## Stage 4 — Autoload & Class Loading
+
+**Commands:**
+
+```bash
+# Edit composer.json (via search_replace in future stage)
+docker compose exec app composer dump-autoload -o --classmap-authoritative
+
+# Verify a namespaced class loads without manual require
+docker compose exec app php -r '
+require "vendor/autoload.php";
+echo (class_exists("Tuqan\Classes\Config") ? "Autoload OK" : "FAIL");
+'
+```
+
+**Gate:** Removing 50%+ of the manual `require_once` lines in index.php + Pages/ does not break routed pages or tests.
+
+---
+
+## Stage 5 — Legacy Bloat Removal
+
+**Audit Commands (run these to decide what dies):**
+
+```bash
+# Find real usage of FCKeditor (not just its own files)
+docker compose exec app grep -r --include="*.php" "FCKeditor\|fckeditor" . --exclude-dir=javascript --exclude-dir=.git | head -20
+
+# Same for Image/Graph usage outside its tests
+docker compose exec app grep -r --include="*.php" "Image/Graph\|jpgraph\|phplot" . --exclude-dir=Image --exclude-dir=.git | head -10
+
+# Dead root files?
+docker compose exec app grep -r --include="*.php" "require.*arbol_documentos.php\|include.*creaFicha" . --exclude-dir=.git | head -5
+```
+
+**Gate:** After archival/deletes, `docker compose exec app composer install` + full test suite + smoke curl still succeed. Size of image reduced measurably.
+
+---
+
+## Stage 6 — CI
+
+**Validation (after .github/workflows/ci.yml added):**
+
+```bash
+# Local simulation of CI (what the action will do)
+docker compose --env-file .env.docker up -d
+docker compose exec app composer install --no-interaction --prefer-dist
+docker compose exec app ./vendor/bin/phpunit --testsuite=Unit,Integration --fail-on-warning --stop-on-failure
+docker compose exec app ./vendor/bin/phpstan analyse --level=2 --no-progress
+docker compose down
+```
+
+**Gate:** A dummy PR on GitHub shows the workflow green (or local equivalent passes 100%).
+
+---
+
+## Evidence Log (Append After Every Stage)
+
+**Stage 1 — COMPLETED (date here)**
+
+```
+Docker version used: 29.3.1 (macOS)
+PHP inside container:
+PHP 8.3.x (cli) (built: ...)
+pdo_pgsql, gd, gettext, intl, zip, bcmath, opcache all present.
+DB: PostgreSQL 16.x
+curl -I http://localhost:8080 → 200/302 (or expected app 404)
+Evidence file: [paste key output or link to commit]
+Deviations: none / list here
+```
+
+**Stage 2 — ...**
+
+(Repeat pattern for each stage)
+
+---
+
+## General Tips for Agents
+
+- Always run `docker compose exec app composer validate` before committing.
+- If a test is red and you don't understand why, capture full `docker compose logs app` + the exact failing test output.
+- When in doubt, read the current .agents/*.md files again — they are the contract.
+- Update this checklist file with new commands discovered during execution.
+
+**This document turns the high-level plan into an executable checklist that any future agent (or human) can follow with minimal ambiguity.**
