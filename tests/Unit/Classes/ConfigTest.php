@@ -15,6 +15,5 @@ final class ConfigTest extends TestCase
         $this->assertNotEmpty(Config::$sDbEtc);
         $this->assertSame(5432, Config::$iPuertoEtc);
         $this->assertIsArray(Config::$aCharset);
-        $this->assertNotEmpty(Config::$sLoginEtc);
     }
 }

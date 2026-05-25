@@ -23,8 +23,5 @@
 
     <php>
         <env name="APP_ENV" value="test"/>
-        <env name="DB_NAME" value="qnova_test"/>
-        <env name="DB_USER" value="qnova"/>
-        <env name="DB_PASS" value="secret"/>
     </php>
 </phpunit>

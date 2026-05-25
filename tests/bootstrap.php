@@ -10,6 +10,10 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Temporary requires for Stage 2 (until proper autoloading in Stage 4)
+require __DIR__ . '/../Classes/Config.php';
+require __DIR__ . '/../Classes/Manejador_Base_Datos.class.php';
+
 // Basic session handling (many legacy classes expect $_SESSION to exist)
 if (!isset($_SESSION)) {
     session_start();
