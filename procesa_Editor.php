@@ -53,19 +53,13 @@ $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_
 
 if (isset($_SESSION['iddoc'])) {
     $oBaseDatos->comienza_transaccion();
-    $oBaseDatos->iniciar_Consulta('UPDATE');
-    $oBaseDatos->construir_SetSlashes(array('nombre', 'codigo'),
-        array($sNombre, $sCodigo));
-    $oBaseDatos->construir_Tablas(array('documentos'));
-    $oBaseDatos->construir_Where(array('id=\'' . $_SESSION['iddoc'] . '\''));
-    $oBaseDatos->consulta();
 
-    $oBaseDatos->iniciar_Consulta('UPDATE');
-    $oBaseDatos->construir_Set(array('contenido'), array($sContenido));
-    $oBaseDatos->construir_Tablas(array('contenido_texto'));
-    $oBaseDatos->construir_Value(array($sContenido));
-    $oBaseDatos->construir_Where(array('id=\'' . $_SESSION['iddoc'] . '\''));
-    $oBaseDatos->consulta();
+    // Stage 3: Using safer prepared statements
+    $sql1 = "UPDATE documentos SET nombre = ?, codigo = ? WHERE id = ?";
+    $oBaseDatos->consultaPreparada($sql1, [$sNombre, $sCodigo, $_SESSION['iddoc']]);
+
+    $sql2 = "UPDATE contenido_texto SET contenido = ? WHERE id = ?";
+    $oBaseDatos->consultaPreparada($sql2, [$sContenido, $_SESSION['iddoc']]);
 
     $oBaseDatos->termina_transaccion();
     unset ($_SESSION['iddoc']);

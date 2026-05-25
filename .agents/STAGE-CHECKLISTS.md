@@ -125,11 +125,12 @@ docker compose exec app ./vendor/bin/phpunit --configuration phpunit.xml.dist --
 - `etc/qnova.conf.php` also updated to respect env vars (transition support for legacy files).
 - Docker environment properly passes variables.
 - New safer method `consultaPreparada($sql, $params)` added to `Manejador_Base_Datos`.
-- Basic test coverage added for the new method.
+- High-risk methods in `Auth.php` refactored.
+- `procesa_Editor.php` (document editing path) partially refactored to use prepared statements.
 
 **Next steps:**
-- High-risk methods in Auth.php have been refactored to use `consultaPreparada()`.
-- Continue reducing reliance on the old string-concatenation query builder in other areas.
+- Continue identifying and refactoring other risky uses of the old query builder.
+- Further reduce remaining hardcoded credential patterns.
 
 ---
 
