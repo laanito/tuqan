@@ -193,17 +193,34 @@ docker compose down
 
 ## Evidence Log (Append After Every Stage)
 
-**Stage 1 — COMPLETED (date here)**
+**Stage 1 — COMPLETED (2026-05-25)**
 
-```
-Docker version used: 29.3.1 (macOS)
-PHP inside container:
-PHP 8.3.x (cli) (built: ...)
-pdo_pgsql, gd, gettext, intl, zip, bcmath, opcache all present.
-DB: PostgreSQL 16.x
-curl -I http://localhost:8080 → 200/302 (or expected app 404)
-Evidence file: [paste key output or link to commit]
-Deviations: none / list here
+**Branch:** `stage-1-docker-foundation`
+
+**Evidence:**
+
+- Docker version: 29.3.1 (macOS, Docker Desktop)
+- PHP inside container: **PHP 8.3.31** (cli) + Xdebug 3.3.2 + OPcache
+- Extensions confirmed: `pdo_pgsql`, `pgsql`, `gd`, `gettext`, `intl`, `zip`, `bcmath`, `xdebug`
+- PostgreSQL: **16.14** (Alpine) — healthy and accepting connections
+- Nginx: Responding with **HTTP 200** + `X-Powered-By: PHP/8.3.31`
+- Stack started successfully with `docker compose --env-file .env.docker up -d`
+
+**Gotchas / Deviations:**
+- Old `version:` key in docker-compose.yml removed (was generating warning)
+- `PEAR.php` throws a parse error on request (expected legacy code — will be addressed in later stages)
+- No database schema yet (we have no seed script in this stage — planned for later)
+
+**Files added in this stage:**
+- `Dockerfile`
+- `docker-compose.yml`
+- `docker/nginx/tuqan.conf`
+- `docker/php/php.ini`
+- `docker/php/xdebug.ini`
+- `.env.docker`
+- Updated `.gitignore`
+
+All work performed exclusively via Docker commands. No local PHP/nginx/postgres used.
 ```
 
 **Stage 2 — ...**
