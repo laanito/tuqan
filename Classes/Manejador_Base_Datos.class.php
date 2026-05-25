@@ -155,6 +155,27 @@ class Manejador_Base_Datos extends \PDO
     //Fin consulta
 
     /**
+     * Nueva forma recomendada (Stage 3+): Ejecuta una consulta preparada con parámetros.
+     * Esto es más seguro que la concatenación de strings.
+     *
+     * @param string $sql
+     * @param array $params
+     * @return bool
+     */
+    public function consultaPreparada(string $sql, array $params = []): bool
+    {
+        try {
+            $stmt = $this->prepare($sql);
+            $success = $stmt->execute($params);
+            $this->oResultado = $stmt;
+            return $success;
+        } catch (\PDOException $e) {
+            $this->manejo_Errores('consultaPreparada', $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      *    Este es nuestro fetchrow
      * @access public
      * @param bool $bSlash

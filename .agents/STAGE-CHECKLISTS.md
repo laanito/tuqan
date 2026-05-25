@@ -122,13 +122,14 @@ docker compose exec app ./vendor/bin/phpunit --configuration phpunit.xml.dist --
 
 **Progress so far:**
 - `Config.php` now pulls DB credentials and some settings from environment variables with fallbacks.
-- Sensitive values (DB_USER, DB_PASS, etc.) are no longer hardcoded in the class.
+- `etc/qnova.conf.php` also updated to respect env vars (transition support for legacy files).
 - Docker environment properly passes variables.
+- New safer method `consultaPreparada($sql, $params)` added to `Manejador_Base_Datos`.
+- Basic test coverage added for the new method.
 
 **Next steps:**
-- Clean up usage of the old `etc/qnova.conf.php`.
-- Add support for prepared statements in `Manejador_Base_Datos`.
-- Refactor at least the Auth/login flow to use safer patterns.
+- Refactor high-risk areas (e.g. Auth) to use the new prepared statement path.
+- Remove more direct hardcoded credential usage across the codebase.
 
 ---
 

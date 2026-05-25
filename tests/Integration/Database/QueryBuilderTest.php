@@ -13,4 +13,10 @@ final class QueryBuilderTest extends TestCase
         // We don't connect to DB yet in early Stage 2
         $this->assertTrue(class_exists(Manejador_Base_Datos::class));
     }
+
+    public function testConsultaPreparadaMethodExists(): void
+    {
+        $reflection = new \ReflectionClass(Manejador_Base_Datos::class);
+        $this->assertTrue($reflection->hasMethod('consultaPreparada'));
+    }
 }

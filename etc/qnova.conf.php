@@ -2,12 +2,12 @@
 /**
 * LICENSE see LICENSE.md file
  */
-$sServidorEtc = "localhost";
-$iPuertoEtc = 5432;
-$sTipoBdEtc = 'pgsql';
-$sLoginEtc = 'qnova';
-$sPassEtc = 'ZTBlMWI2YTBlYmnDeYFE';
-$sDbEtc = 'qnova';
+$sServidorEtc = getenv('DB_HOST') ?: "localhost";
+$iPuertoEtc = (int)(getenv('DB_PORT') ?: 5432);
+$sTipoBdEtc = getenv('DB_TYPE') ?: 'pgsql';
+$sLoginEtc = getenv('DB_USER') ?: 'qnova';
+$sPassEtc = getenv('DB_PASS') ?: '';
+$sDbEtc = getenv('DB_NAME') ?: 'qnova';
 $sMemoriaHtml2Pdf = '128M';
 $sMaxTiempoHtml2Pdf = '240';
 $sFormulaMatrizAmbiental= '(3*aspectos.magnitud+2*aspectos.gravedad)*aspectos.frecuencia';
