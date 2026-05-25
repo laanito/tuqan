@@ -128,8 +128,8 @@ docker compose exec app ./vendor/bin/phpunit --configuration phpunit.xml.dist --
 - Basic test coverage added for the new method.
 
 **Next steps:**
-- Refactor high-risk areas (e.g. Auth) to use the new prepared statement path.
-- Remove more direct hardcoded credential usage across the codebase.
+- High-risk methods in Auth.php have been refactored to use `consultaPreparada()`.
+- Continue reducing reliance on the old string-concatenation query builder in other areas.
 
 ---
 

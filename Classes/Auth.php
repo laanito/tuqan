@@ -42,11 +42,9 @@ class Auth extends JAuth implements Authz
 
         $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
 
-        $oBaseDatos->iniciar_Consulta('SELECT');
-        $oBaseDatos->construir_Campos(array('id', 'login', 'perfil', 'area', 'password', 'activo'));
-        $oBaseDatos->construir_Tablas(array('usuarios'));
-        $oBaseDatos->construir_Where(array('(id=\'' . $id . '\')'));
-        $oBaseDatos->consulta();
+        // Stage 3: Using safer prepared statement instead of string concatenation
+        $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE id = ?";
+        $oBaseDatos->consultaPreparada($sql, [$id]);
 
         $aIterador = $oBaseDatos->coger_Fila();
         $oBaseDatos->desconexion();
@@ -71,11 +69,9 @@ class Auth extends JAuth implements Authz
 
         $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
 
-        $oBaseDatos->iniciar_Consulta('SELECT');
-        $oBaseDatos->construir_Campos(array('id', 'login', 'perfil', 'area', 'password', 'activo'));
-        $oBaseDatos->construir_Tablas(array('usuarios'));
-        $oBaseDatos->construir_Where(array('(login=\'' . $username . '\')'));
-        $oBaseDatos->consulta();
+        // Stage 3: Using safer prepared statement instead of string concatenation
+        $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE login = ?";
+        $oBaseDatos->consultaPreparada($sql, [$username]);
 
         $aIterador = $oBaseDatos->coger_Fila();
         $oBaseDatos->desconexion();
