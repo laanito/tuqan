@@ -12,16 +12,15 @@ Modernization project of a PHP 5.1 application into modern PHP standards.
 
 ## Current Status (April 27, 2026)
 
-### ✅ Completed
+### ✅ Completed (Partial / Historical)
 - Composer setup with modern dependencies
 - Migration from PEAR::Auth to Jasny/Auth
-- PSR-4 autoloading structure (`Classes/`)
 - Routing implemented with Phroute
-- Forms migrated from PEAR::QuickForm to Former
-- Frontend updated to Bootstrap 5
-- Database layer fully migrated from PEAR::DB to PDO (see closed issue #21)
+- Forms migrated from PEAR::QuickForm to Former (in some areas)
+- Database layer migrated from PEAR::DB to PDO (see closed issue #21)
 - Gettext-based internationalization (`es_ES`)
-- Partial cleanup of old PEAR remnants
+
+**Note:** Some items above (e.g. full PSR-4 autoloading and Bootstrap 5) were listed in earlier status but are incomplete or inaccurate as of 2026. A full audit and Docker-based modernization effort is now underway.
 
 ### 🔄 In Progress
 - Complete removal of remaining PEAR dependencies
@@ -29,8 +28,40 @@ Modernization project of a PHP 5.1 application into modern PHP standards.
 - General code cleanup and modernization
 
 ### 🚧 Important Notes
-The application is **not functional**.  
-It is in an intermediate modernization state. Many legacy patterns still exist.
+**The application is NOT functional and is NOT production ready.**
+
+This is an ongoing modernization project of a very old codebase. It is currently in an intermediate state with significant legacy code, mixed concerns, and incomplete migrations.
+
+---
+
+## Development Environment (2026+)
+
+**All development must be done using Docker.** No local PHP, nginx, or PostgreSQL should be used.
+
+### Quick Start
+
+```bash
+# Start the full environment (PHP 8.3 + nginx + PostgreSQL)
+docker compose --env-file .env.docker up -d --build
+
+# Enter the PHP container
+docker compose exec app bash
+
+# Run composer
+docker compose exec app composer install
+
+# Check PHP version inside the container
+docker compose exec app php -v
+```
+
+The environment includes:
+- PHP 8.3.31 (FPM + CLI) with Xdebug
+- Nginx
+- PostgreSQL 16
+
+See `.agents/DOCKER-ENV.md` and `.agents/STAGE-CHECKLISTS.md` for full details and validation commands.
+
+**Note:** Stage 1 (Docker foundation) has been completed. Later stages will add a proper test harness and continue the modernization.
 
 ---
 
@@ -43,7 +74,7 @@ It is in an intermediate modernization state. Many legacy patterns still exist.
 | Authentication    | PEAR::Auth              | Jasny/Auth               | ✅ Done     |
 | Forms             | PEAR::QuickForm         | Former                   | ✅ Done     |
 | Routing           | Custom                  | Phroute                  | ✅ Done     |
-| Frontend          | Old HTML                | Bootstrap 5              | ✅ Done     |
+| Frontend          | Old HTML                | Bootstrap 3 (legacy)     | Partial     |
 | Localization      | Manual                  | gettext                  | ✅ Done     |
 
 ---
@@ -60,14 +91,28 @@ It is in an intermediate modernization state. Many legacy patterns still exist.
 
 ## How to Contribute / Work on the Project
 
+**All work must be done inside the Docker environment.**
+
 1. Clone the repository
-2. Run `composer install`
-3. Configure the database connection
-4. Test changes thoroughly before pushing
+2. Start the environment:
+   ```bash
+   docker compose --env-file .env.docker up -d --build
+   ```
+3. Install dependencies inside the container:
+   ```bash
+   docker compose exec app composer install
+   ```
+4. Make your changes (edit files locally — they are mounted into the container)
+5. Test your changes using Docker commands only
+6. Commit and open a Pull Request
 
 **Rule of thumb**: Every significant change should maintain or improve existing functionality.
 
+See `.agents/MIGRATION-PLAN.md` for the current modernization roadmap and `.agents/AGENTS.md` for contributor guidelines.
+
 ---
 
-Last updated: April 27, 2026  
+Last updated: May 2026  
 Maintained by laanito + agentic workflow
+
+> **Note**: A formal migration plan is being followed. See the documents in the `.agents/` directory for current status, Docker setup, and upcoming stages.
