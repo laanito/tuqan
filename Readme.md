@@ -115,4 +115,3 @@ See `.agents/MIGRATION-PLAN.md` for the current modernization roadmap and `.agen
 Last updated: May 2026  
 Maintained by laanito + agentic workflow
 
-> **Note**: A formal migration plan is being followed. See the documents in the `.agents/` directory for current status, Docker setup, and upcoming stages.
