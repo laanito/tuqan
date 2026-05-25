@@ -27,6 +27,20 @@ class Auth extends JAuth implements Authz
      */
     protected $perfiles;
 
+    /**
+     * @var Manejador_Base_Datos|null
+     */
+    protected $dbHandler;
+
+    /**
+     * Allows injecting a database handler (useful for testing and decoupling).
+     * If not set, the old session-based creation is used (backward compatible).
+     */
+    public function setDbHandler(Manejador_Base_Datos $handler): void
+    {
+        $this->dbHandler = $handler;
+    }
+
 
     /**
      * Fetch a user by ID
@@ -36,17 +50,18 @@ class Auth extends JAuth implements Authz
      */
     public function fetchUserById($id)
     {
-        $dbName = $_SESSION['db'];
-        $dbUser = $_SESSION['login'];
-        $dbPass = $_SESSION['pass'];
+        if ($this->dbHandler) {
+            $oBaseDatos = $this->dbHandler;
+        } else {
+            $dbName = $_SESSION['db'];
+            $dbUser = $_SESSION['login'];
+            $dbPass = $_SESSION['pass'];
+            $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
+        }
 
-        $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
-
-        $oBaseDatos->iniciar_Consulta('SELECT');
-        $oBaseDatos->construir_Campos(array('id', 'login', 'perfil', 'area', 'password', 'activo'));
-        $oBaseDatos->construir_Tablas(array('usuarios'));
-        $oBaseDatos->construir_Where(array('(id=\'' . $id . '\')'));
-        $oBaseDatos->consulta();
+        // Stage 3: Using safer prepared statement
+        $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE id = ?";
+        $oBaseDatos->consultaPreparada($sql, [$id]);
 
         $aIterador = $oBaseDatos->coger_Fila();
         $oBaseDatos->desconexion();
@@ -65,17 +80,18 @@ class Auth extends JAuth implements Authz
      */
     public function fetchUserByUsername($username)
     {
-        $dbName = $_SESSION['db'];
-        $dbUser = $_SESSION['login'];
-        $dbPass = $_SESSION['pass'];
+        if ($this->dbHandler) {
+            $oBaseDatos = $this->dbHandler;
+        } else {
+            $dbName = $_SESSION['db'];
+            $dbUser = $_SESSION['login'];
+            $dbPass = $_SESSION['pass'];
+            $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
+        }
 
-        $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
-
-        $oBaseDatos->iniciar_Consulta('SELECT');
-        $oBaseDatos->construir_Campos(array('id', 'login', 'perfil', 'area', 'password', 'activo'));
-        $oBaseDatos->construir_Tablas(array('usuarios'));
-        $oBaseDatos->construir_Where(array('(login=\'' . $username . '\')'));
-        $oBaseDatos->consulta();
+        // Stage 3: Using safer prepared statement
+        $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE login = ?";
+        $oBaseDatos->consultaPreparada($sql, [$username]);
 
         $aIterador = $oBaseDatos->coger_Fila();
         $oBaseDatos->desconexion();

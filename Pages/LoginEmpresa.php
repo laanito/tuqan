@@ -19,12 +19,17 @@ class LoginEmpresa
     private $base_path;
 
     /**
+     * @var \Tuqan\Classes\Manejador_Base_Datos|null
+     */
+    private $dbHandler;
+
+    /**
      * LoginEmpresa constructor.
      */
     public function __construct()
     {
         Config::initialize();
-        $css =& new \encriptador();
+        $css = new \encriptador();
         $clave = 'encriptame';
         $this->sLoginEmp = Config::$sLoginEtc;
         $this->sPassEmp = $css->decrypt(trim(Config::$sPassEtc), $clave);
@@ -35,12 +40,21 @@ class LoginEmpresa
     }
 
     /**
+     * Allows injecting a database handler (useful for testing).
+     * Falls back to creating one internally if not set (backward compatible).
+     */
+    public function setDbHandler(\Tuqan\Classes\Manejador_Base_Datos $handler): void
+    {
+        $this->dbHandler = $handler;
+    }
+
+    /**
      * @return string
      */
     public function MuestraPagina()
     {
         try {
-            $oDb = new Manejador_Base_Datos(
+            $oDb = $this->dbHandler ?: new Manejador_Base_Datos(
                 $this->sLoginEmp,
                 $this->sPassEmp,
                 $this->sDbEmp
@@ -114,15 +128,13 @@ class LoginEmpresa
          */
 
         $_SESSION['loginempresa'] = 0;
-        $oBaseDatos = new Manejador_Base_Datos(
+        $oBaseDatos = $this->dbHandler ?: new Manejador_Base_Datos(
             $this->sLoginEmp,
             $this->sPassEmp,
             $this->sDbEmp);
-        $oBaseDatos->iniciar_Consulta('SELECT');
-        $oBaseDatos->construir_Campos(array('id'));
-        $oBaseDatos->construir_Tablas(array('qnova_acl'));
-        $oBaseDatos->construir_Where(array('(login_name=\'' . $_POST['nombre'] . '\')', '(login_pass=\'' . $sClaveMd5 . '\')'));
-        $oBaseDatos->consulta();
+        // Stage 3: Using prepared statement for login (high-risk authentication path)
+        $sql = "SELECT id FROM qnova_acl WHERE login_name = ? AND login_pass = ?";
+        $oBaseDatos->consultaPreparada($sql, [$_POST['nombre'], $sClaveMd5]);
 
         /**
          *  Si ha devuelto algo es que el login es correcto y redireccionamos a principal
@@ -137,11 +149,9 @@ class LoginEmpresa
              *  del usuario
              */
 
-            $oBaseDatos->iniciar_Consulta('SELECT');
-            $oBaseDatos->construir_Campos(array('nombre_bbdd', 'login_bbdd', 'pass_bbdd', 'empresa'));
-            $oBaseDatos->construir_Tablas(array('qnova_bbdd'));
-            $oBaseDatos->construir_Where(array('(id=\'' . $aIterador[0] . '\')'));
-            $oBaseDatos->consulta();
+            // Stage 3: Using prepared statement
+            $sql = "SELECT nombre_bbdd, login_bbdd, pass_bbdd, empresa FROM qnova_bbdd WHERE id = ?";
+            $oBaseDatos->consultaPreparada($sql, [$aIterador[0]]);
 
             if ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
 
@@ -150,7 +160,7 @@ class LoginEmpresa
                  *  previamente ponemos las variables de sesion pertinentes para poder
                  *  realizar la conexion posteriormente
                  */
-                $css =& new \encriptador();
+                $css = new \encriptador();
                 $clave = 'encriptame';
                 $_SESSION['conectado'] = true;
                 $_SESSION['db'] = $aIteradorInterno[0];

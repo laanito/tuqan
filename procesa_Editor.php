@@ -41,6 +41,12 @@ require_once 'HTMLcleaner/htmlcleaner.php';
 if (!isset($_SESSION)) {
     session_start();
 }
+
+// Stage 3 test helper - allows injecting a mock DB handler for this script
+function setDbHandlerForEditor($handler) {
+    global $editorDbHandler;
+    $editorDbHandler = $handler;
+}
 //Limpiamos los caracteres que pueda traer el documento que dan problemas
 // $_SESSION['contenidoDoc']=$_POST['FCKeditor1'];
 //$sContenido = htmlcleaner::cleanup($_POST['FCKeditor1']);
@@ -49,23 +55,28 @@ $sContenido = $_POST['FCKeditor1'];
 $iArea = $_POST['areadoc'];
 $sNombre = $_POST['nombredoc'];
 $sCodigo = $_POST['codigodoc'];
-$oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+
+// Stage 3: Support for testability - can be set externally via setDbHandlerForEditor()
+global $editorDbHandler;
+if (!isset($editorDbHandler)) {
+    $editorDbHandler = null;
+}
+
+if ($editorDbHandler instanceof \Tuqan\Classes\Manejador_Base_Datos) {
+    $oBaseDatos = $editorDbHandler;
+} else {
+    $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+}
 
 if (isset($_SESSION['iddoc'])) {
     $oBaseDatos->comienza_transaccion();
-    $oBaseDatos->iniciar_Consulta('UPDATE');
-    $oBaseDatos->construir_SetSlashes(array('nombre', 'codigo'),
-        array($sNombre, $sCodigo));
-    $oBaseDatos->construir_Tablas(array('documentos'));
-    $oBaseDatos->construir_Where(array('id=\'' . $_SESSION['iddoc'] . '\''));
-    $oBaseDatos->consulta();
 
-    $oBaseDatos->iniciar_Consulta('UPDATE');
-    $oBaseDatos->construir_Set(array('contenido'), array($sContenido));
-    $oBaseDatos->construir_Tablas(array('contenido_texto'));
-    $oBaseDatos->construir_Value(array($sContenido));
-    $oBaseDatos->construir_Where(array('id=\'' . $_SESSION['iddoc'] . '\''));
-    $oBaseDatos->consulta();
+    // Stage 3: Using safer prepared statements
+    $sql1 = "UPDATE documentos SET nombre = ?, codigo = ? WHERE id = ?";
+    $oBaseDatos->consultaPreparada($sql1, [$sNombre, $sCodigo, $_SESSION['iddoc']]);
+
+    $sql2 = "UPDATE contenido_texto SET contenido = ? WHERE id = ?";
+    $oBaseDatos->consultaPreparada($sql2, [$sContenido, $_SESSION['iddoc']]);
 
     $oBaseDatos->termina_transaccion();
     unset ($_SESSION['iddoc']);
@@ -80,11 +91,10 @@ if (isset($_SESSION['iddoc'])) {
         $sVersion = "1.0.0";
     }
     $oBaseDatos->comienza_transaccion();
-    $oBaseDatos->iniciar_Consulta('SELECT');
-    $oBaseDatos->construir_Campos(array('perfil_ver', 'perfil_nueva', 'perfil_modificar', 'perfil_revisar', 'perfil_aprobar', 'perfil_historico', 'perfil_tareas'));
-    $oBaseDatos->construir_Tablas(array('tipo_documento'));
-    $oBaseDatos->construir_Where(array('id=' . $_SESSION['idtipo']));
-    $oBaseDatos->consulta();
+    // Stage 3: Using prepared statement
+    $sql = "SELECT perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas 
+            FROM tipo_documento WHERE id = ?";
+    $oBaseDatos->consultaPreparada($sql, [$_SESSION['idtipo']]);
     $aIterador = $oBaseDatos->coger_Fila();
     if ($aIterador) {
         $sArrayPermisosVer = $aIterador[0];

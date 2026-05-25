@@ -36,5 +36,10 @@
     "platform": {
       "php": "8.2.0"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tuqan\\Tests\\": "tests/"
+    }
   }
 }
