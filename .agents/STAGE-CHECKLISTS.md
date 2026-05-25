@@ -223,9 +223,26 @@ docker compose down
 All work performed exclusively via Docker commands. No local PHP/nginx/postgres used.
 ```
 
-**Stage 2 — ...**
+**Stage 2 — In Progress (as of 2026-05-25)**
 
-(Repeat pattern for each stage)
+**Branch:** `stage-2-testing-harness-php83`
+
+**Evidence so far:**
+
+- Successfully installed `phpunit/phpunit:^10.5` and `phpstan/phpstan:^1.11` inside Docker (after cleaning broken dependencies and adjusting audit config).
+- Created `phpunit.xml.dist`
+- Created basic test directory structure
+- Created `tests/bootstrap.php`
+- Wrote first smoke tests (`ConfigTest`, `QueryBuilderTest`)
+- PHPUnit 10.5.63 runs successfully (tests currently fail due to missing autoloading — expected)
+- PHPStan 1.12.33 runs without errors on analyzed files
+
+**Current blockers / notes:**
+- Legacy dependency tree is very fragile (many security advisories + PHP 7 requirements).
+- No PSR-4 autoloading configured yet → classes not found by tests.
+- `jamesmcfadden/surface` package was removed as it no longer exists on Packagist.
+
+Next focus: Improve test bootstrap + add basic autoloading so tests can actually load classes.
 
 ---
 

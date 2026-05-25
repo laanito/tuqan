@@ -9,6 +9,10 @@
       "email": "lamigo@praderas.org"
     }
   ],
+  "require-dev": {
+    "phpunit/phpunit": "^10.5",
+    "phpstan/phpstan": "^1.11"
+  },
   "require": {
     "setasign/fpdf": "1.8.1",
     "phroute/phroute": "v2.1.0",
@@ -19,7 +23,19 @@
     "anahkiasen/former": "4.1.7",
     "ext-pdo_pgsql": "*",
     "ext-pdo": "*",
-    "jamesmcfadden/surface": "dev-master",
     "ext-gd": "*"
+  },
+  "config": {
+    "audit": {
+      "ignore": ["*"],
+      "block-insecure": false
+    },
+    "allow-plugins": {
+      "kylekatarnls/update-helper": true
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5",
+    "phpstan/phpstan": "^1.11"
   }
 }
