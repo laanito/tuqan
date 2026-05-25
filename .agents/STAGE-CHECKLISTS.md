@@ -120,17 +120,18 @@ docker compose exec app ./vendor/bin/phpunit --configuration phpunit.xml.dist --
 - Started externalizing credentials in `Classes/Config.php`.
 - Updated `.env.docker` and `docker-compose.yml`.
 
-**Progress so far:**
-- `Config.php` now pulls DB credentials and some settings from environment variables with fallbacks.
-- `etc/qnova.conf.php` also updated to respect env vars (transition support for legacy files).
-- Docker environment properly passes variables.
-- New safer method `consultaPreparada($sql, $params)` added to `Manejador_Base_Datos`.
-- High-risk methods in `Auth.php` refactored.
-- `procesa_Editor.php` (document editing path) partially refactored to use prepared statements.
+**Progress so far (Stage 3 - ready for review):**
+- Config externalization across `Config.php` and legacy `etc/qnova.conf.php`.
+- `consultaPreparada()` safer method introduced in `Manejador_Base_Datos`.
+- Critical high-risk paths refactored:
+  - `Auth.php` (user authentication data fetching)
+  - `procesa_Editor.php` (document editing/updates)
+  - `Pages/LoginEmpresa.php` (company login)
+  - `Controllers/Messages.php`
+- Hardcoded password strings removed from main sources.
+- Significant reduction in string-concatenation SQL in sensitive areas.
 
-**Next steps:**
-- Continue identifying and refactoring other risky uses of the old query builder.
-- Further reduce remaining hardcoded credential patterns.
+Stage 3 major goals largely achieved on the highest-risk paths. Remaining legacy query builder usage exists in lower-risk reporting/listing code and can be addressed incrementally.
 
 ---
 

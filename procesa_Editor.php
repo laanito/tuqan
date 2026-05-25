@@ -74,11 +74,10 @@ if (isset($_SESSION['iddoc'])) {
         $sVersion = "1.0.0";
     }
     $oBaseDatos->comienza_transaccion();
-    $oBaseDatos->iniciar_Consulta('SELECT');
-    $oBaseDatos->construir_Campos(array('perfil_ver', 'perfil_nueva', 'perfil_modificar', 'perfil_revisar', 'perfil_aprobar', 'perfil_historico', 'perfil_tareas'));
-    $oBaseDatos->construir_Tablas(array('tipo_documento'));
-    $oBaseDatos->construir_Where(array('id=' . $_SESSION['idtipo']));
-    $oBaseDatos->consulta();
+    // Stage 3: Using prepared statement
+    $sql = "SELECT perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas 
+            FROM tipo_documento WHERE id = ?";
+    $oBaseDatos->consultaPreparada($sql, [$_SESSION['idtipo']]);
     $aIterador = $oBaseDatos->coger_Fila();
     if ($aIterador) {
         $sArrayPermisosVer = $aIterador[0];

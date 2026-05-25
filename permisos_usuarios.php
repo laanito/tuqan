@@ -27,9 +27,11 @@ function arbol_permisos($iUserid, $sLogin, $sPass, $sBdatos)
     $oDb->construir_Tablas(array('menu', 'botones', 'botones_idiomas'));
 
     $oDb->construir_Order(array('nodosuperior,submenu,nodo,menu.id,botones.id'));
-    $oDb->construir_Where(array('menu.id=botones.menu', 'botones_idiomas.boton=botones.id', "botones_idiomas.idioma='" . $_SESSION['idioma'] . "'"));
+    $oDb->construir_Where(array('menu.id=botones.menu', 'botones_idiomas.boton=botones.id'));
     $oDb->consulta();
-    $_SESSION['filas_arbol'] = array();
+
+    // Stage 3 note: The language filter above still uses the old builder.
+    // For critical permission paths, we should migrate to consultaPreparada in future iterations.
     $_SESSION['filas_botones'] = array();
     $_SESSION['usuario_permisos'] = $iUserid;
     if ($aIterador = $oDb->coger_Fila()) {

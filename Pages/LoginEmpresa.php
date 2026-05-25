@@ -118,11 +118,9 @@ class LoginEmpresa
             $this->sLoginEmp,
             $this->sPassEmp,
             $this->sDbEmp);
-        $oBaseDatos->iniciar_Consulta('SELECT');
-        $oBaseDatos->construir_Campos(array('id'));
-        $oBaseDatos->construir_Tablas(array('qnova_acl'));
-        $oBaseDatos->construir_Where(array('(login_name=\'' . $_POST['nombre'] . '\')', '(login_pass=\'' . $sClaveMd5 . '\')'));
-        $oBaseDatos->consulta();
+        // Stage 3: Using prepared statement for login (high-risk authentication path)
+        $sql = "SELECT id FROM qnova_acl WHERE login_name = ? AND login_pass = ?";
+        $oBaseDatos->consultaPreparada($sql, [$_POST['nombre'], $sClaveMd5]);
 
         /**
          *  Si ha devuelto algo es que el login es correcto y redireccionamos a principal
@@ -137,11 +135,9 @@ class LoginEmpresa
              *  del usuario
              */
 
-            $oBaseDatos->iniciar_Consulta('SELECT');
-            $oBaseDatos->construir_Campos(array('nombre_bbdd', 'login_bbdd', 'pass_bbdd', 'empresa'));
-            $oBaseDatos->construir_Tablas(array('qnova_bbdd'));
-            $oBaseDatos->construir_Where(array('(id=\'' . $aIterador[0] . '\')'));
-            $oBaseDatos->consulta();
+            // Stage 3: Using prepared statement
+            $sql = "SELECT nombre_bbdd, login_bbdd, pass_bbdd, empresa FROM qnova_bbdd WHERE id = ?";
+            $oBaseDatos->consultaPreparada($sql, [$aIterador[0]]);
 
             if ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
 
