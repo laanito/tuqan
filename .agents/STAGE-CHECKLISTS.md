@@ -129,11 +129,16 @@ docker compose exec app ./vendor/bin/phpunit --configuration phpunit.xml.dist --
   - `Pages/LoginEmpresa.php`
   - `Controllers/Messages.php`
 - Hardcoded password strings removed from main sources.
-- Added tests:
-  - `ConfigTest`: verifies environment variable reading works.
-  - `QueryBuilderTest`: exercises `consultaPreparada()` with a real in-memory SQLite database.
+- Added tests using PHPUnit mocks (recommended approach for this stage):
+  - `ConfigTest`: verifies environment variable reading.
+  - `QueryBuilderTest`: includes both a lightweight SQLite test + a proper mocked unit test for `consultaPreparada()`.
+  - Created `tests/TestCase.php` with reusable `createMockDbHandler()` helper.
+  - Added mocked test for `Auth.php` (enabled by clean `setDbHandler()` injection).
+- Applied the same clean injection pattern to `LoginEmpresa.php` and added `LoginEmpresaTest.php`.
+- Added injection support (`setDbHandlerForEditor` / `setDbHandlerForMessages`) + tests for `procesa_Editor.php` and `Controllers/Messages.php`.
+- Small syntax fix in `LoginEmpresa.php` (`& new` → `new`) to support PHP 8.3.
 
-This branch is being prepared as a self-contained PR with both the safety improvements and supporting tests.
+Test coverage using PHPUnit mocks has been added for all major classes changed in this Stage 3 work.
 
 ---
 

@@ -19,12 +19,17 @@ class LoginEmpresa
     private $base_path;
 
     /**
+     * @var \Tuqan\Classes\Manejador_Base_Datos|null
+     */
+    private $dbHandler;
+
+    /**
      * LoginEmpresa constructor.
      */
     public function __construct()
     {
         Config::initialize();
-        $css =& new \encriptador();
+        $css = new \encriptador();
         $clave = 'encriptame';
         $this->sLoginEmp = Config::$sLoginEtc;
         $this->sPassEmp = $css->decrypt(trim(Config::$sPassEtc), $clave);
@@ -35,12 +40,21 @@ class LoginEmpresa
     }
 
     /**
+     * Allows injecting a database handler (useful for testing).
+     * Falls back to creating one internally if not set (backward compatible).
+     */
+    public function setDbHandler(\Tuqan\Classes\Manejador_Base_Datos $handler): void
+    {
+        $this->dbHandler = $handler;
+    }
+
+    /**
      * @return string
      */
     public function MuestraPagina()
     {
         try {
-            $oDb = new Manejador_Base_Datos(
+            $oDb = $this->dbHandler ?: new Manejador_Base_Datos(
                 $this->sLoginEmp,
                 $this->sPassEmp,
                 $this->sDbEmp
@@ -114,7 +128,7 @@ class LoginEmpresa
          */
 
         $_SESSION['loginempresa'] = 0;
-        $oBaseDatos = new Manejador_Base_Datos(
+        $oBaseDatos = $this->dbHandler ?: new Manejador_Base_Datos(
             $this->sLoginEmp,
             $this->sPassEmp,
             $this->sDbEmp);
@@ -146,7 +160,7 @@ class LoginEmpresa
                  *  previamente ponemos las variables de sesion pertinentes para poder
                  *  realizar la conexion posteriormente
                  */
-                $css =& new \encriptador();
+                $css = new \encriptador();
                 $clave = 'encriptame';
                 $_SESSION['conectado'] = true;
                 $_SESSION['db'] = $aIteradorInterno[0];

@@ -41,6 +41,12 @@ require_once 'HTMLcleaner/htmlcleaner.php';
 if (!isset($_SESSION)) {
     session_start();
 }
+
+// Stage 3 test helper - allows injecting a mock DB handler for this script
+function setDbHandlerForEditor($handler) {
+    global $editorDbHandler;
+    $editorDbHandler = $handler;
+}
 //Limpiamos los caracteres que pueda traer el documento que dan problemas
 // $_SESSION['contenidoDoc']=$_POST['FCKeditor1'];
 //$sContenido = htmlcleaner::cleanup($_POST['FCKeditor1']);
@@ -49,7 +55,18 @@ $sContenido = $_POST['FCKeditor1'];
 $iArea = $_POST['areadoc'];
 $sNombre = $_POST['nombredoc'];
 $sCodigo = $_POST['codigodoc'];
-$oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+
+// Stage 3: Support for testability - can be set externally via setDbHandlerForEditor()
+global $editorDbHandler;
+if (!isset($editorDbHandler)) {
+    $editorDbHandler = null;
+}
+
+if ($editorDbHandler instanceof \Tuqan\Classes\Manejador_Base_Datos) {
+    $oBaseDatos = $editorDbHandler;
+} else {
+    $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+}
 
 if (isset($_SESSION['iddoc'])) {
     $oBaseDatos->comienza_transaccion();

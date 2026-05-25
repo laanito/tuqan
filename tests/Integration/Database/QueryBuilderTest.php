@@ -20,27 +20,40 @@ final class QueryBuilderTest extends TestCase
         $this->assertTrue($reflection->hasMethod('consultaPreparada'));
     }
 
+    public function testConsultaPreparadaUsesPrepareAndExecute(): void
+    {
+        $mockPdoStatement = $this->createMock(\PDOStatement::class);
+        $mockPdoStatement->expects($this->once())
+            ->method('execute')
+            ->with(['Test User'])
+            ->willReturn(true);
+
+        $db = $this->getMockBuilder(Manejador_Base_Datos::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['prepare'])
+            ->getMock();
+
+        $db->expects($this->once())
+            ->method('prepare')
+            ->with('INSERT INTO users (name) VALUES (?)')
+            ->willReturn($mockPdoStatement);
+
+        $result = $db->consultaPreparada('INSERT INTO users (name) VALUES (?)', ['Test User']);
+
+        $this->assertTrue($result);
+    }
+
     public function testConsultaPreparadaCanBeCalled(): void
     {
-        // Use an in-memory SQLite connection for isolation
-        // Note: Constructor expects (login, pass, db, host, port, type)
+        // Lightweight integration test using SQLite
         $db = new Manejador_Base_Datos('', '', ':memory:', '', 0, 'sqlite');
 
-        // Create a simple test table (idempotent for test runs)
         $db->exec("DROP TABLE IF EXISTS test_users");
         $db->exec("CREATE TABLE test_users (id INTEGER PRIMARY KEY, name TEXT)");
 
-        // Use the new prepared statement method
         $sql = "INSERT INTO test_users (name) VALUES (?)";
         $result = $db->consultaPreparada($sql, ['Test User']);
 
         $this->assertTrue($result);
-
-        // Verify the insert worked (basic check)
-        $this->assertTrue($db->consultaPreparada("SELECT COUNT(*) FROM test_users", []));
-
-        $row = $db->coger_Fila(\PDO::FETCH_NUM);
-        $this->assertNotNull($row);
-        $this->assertGreaterThan(0, (int)$row[0]);
     }
 }

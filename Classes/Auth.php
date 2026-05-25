@@ -27,6 +27,20 @@ class Auth extends JAuth implements Authz
      */
     protected $perfiles;
 
+    /**
+     * @var Manejador_Base_Datos|null
+     */
+    protected $dbHandler;
+
+    /**
+     * Allows injecting a database handler (useful for testing and decoupling).
+     * If not set, the old session-based creation is used (backward compatible).
+     */
+    public function setDbHandler(Manejador_Base_Datos $handler): void
+    {
+        $this->dbHandler = $handler;
+    }
+
 
     /**
      * Fetch a user by ID
@@ -36,13 +50,16 @@ class Auth extends JAuth implements Authz
      */
     public function fetchUserById($id)
     {
-        $dbName = $_SESSION['db'];
-        $dbUser = $_SESSION['login'];
-        $dbPass = $_SESSION['pass'];
+        if ($this->dbHandler) {
+            $oBaseDatos = $this->dbHandler;
+        } else {
+            $dbName = $_SESSION['db'];
+            $dbUser = $_SESSION['login'];
+            $dbPass = $_SESSION['pass'];
+            $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
+        }
 
-        $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
-
-        // Stage 3: Using safer prepared statement instead of string concatenation
+        // Stage 3: Using safer prepared statement
         $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE id = ?";
         $oBaseDatos->consultaPreparada($sql, [$id]);
 
@@ -63,13 +80,16 @@ class Auth extends JAuth implements Authz
      */
     public function fetchUserByUsername($username)
     {
-        $dbName = $_SESSION['db'];
-        $dbUser = $_SESSION['login'];
-        $dbPass = $_SESSION['pass'];
+        if ($this->dbHandler) {
+            $oBaseDatos = $this->dbHandler;
+        } else {
+            $dbName = $_SESSION['db'];
+            $dbUser = $_SESSION['login'];
+            $dbPass = $_SESSION['pass'];
+            $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
+        }
 
-        $oBaseDatos = new Manejador_Base_Datos($dbUser, $dbPass, $dbName);
-
-        // Stage 3: Using safer prepared statement instead of string concatenation
+        // Stage 3: Using safer prepared statement
         $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE login = ?";
         $oBaseDatos->consultaPreparada($sql, [$username]);
 

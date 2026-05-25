@@ -15,6 +15,13 @@ use Tuqan\Classes\TuqanLogger;
 
 class Messages
 {
+
+    // Stage 3 test helper
+    public static function setDbHandlerForMessages($handler)
+    {
+        global $messagesDbHandler;
+        $messagesDbHandler = $handler;
+    }
     public function anyIndex()
     {
         $action=$_POST['action'];
@@ -65,8 +72,16 @@ class Messages
      */
     function getView($aParametros)
     {
+        global $messagesDbHandler;
+
         $iIdMensaje = $_SESSION['pagina'][$aParametros['numeroDeFila']];
-        $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+
+        if ($messagesDbHandler instanceof \Tuqan\Classes\Manejador_Base_Datos) {
+            $oBaseDatos = $messagesDbHandler;
+        } else {
+            $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
+        }
+
         $oVolver = new boton(gettext('Go Back'), "atras(-1)", "noafecta");
         // Stage 3: Using prepared statement
         $sql = "SELECT contenido FROM mensajes WHERE id = ?";
