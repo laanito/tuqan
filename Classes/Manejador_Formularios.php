@@ -87,7 +87,7 @@ class Manejador_Formularios
      * @param $sAccionCompleta
      * @return array
      */
-    function prepara_Nuevo_Documento($sAccion, $aDatos = null, $sAccionCompleta)
+    function prepara_Nuevo_Documento($sAccion, $aDatos = null, $sAccionCompleta = null)
     {
         switch ($sAccion) {
             case 'documentacion:documentopg:nuevo':

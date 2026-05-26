@@ -28,6 +28,14 @@ class MainPage
      */
     private function crea_Menu_Superior()
     {
+        // Defensive guard for bare-minimum home page (no active login/session yet).
+        // With the minimal seed we only have the company/user rows; full menu requires
+        // a logged-in session with 'idioma', 'perfil', etc. Returning early produces
+        // a clean render instead of undefined $_SESSION warnings and DB handler noise.
+        if (!isset($_SESSION) || !isset($_SESSION['idioma']) || empty($_SESSION['idioma'])) {
+            return '<!-- menu requires login session -->';
+        }
+
         $aDatos['pkey'] = 'menu_nuevo.id';
         $aDatos['padre'] = 'menu_nuevo.padre';
         $aDatos['etiqueta'] = 'menu_idiomas_nuevo.valor';
@@ -61,7 +69,7 @@ class MainPage
         }
         $variables = array(
             'UserTitle' => gettext('sUsuario'),
-            'UserName' =>  $_SESSION['nombreUsuario'],
+            'UserName' =>  $_SESSION['nombreUsuario'] ?? 'Guest',
             'submenu' => $this->crea_Menu_Superior(),
         );
         return $template->render($variables);

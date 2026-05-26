@@ -1,0 +1,193 @@
+<?php
+
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Markup;
+use Twig\Sandbox\SecurityError;
+use Twig\Sandbox\SecurityNotAllowedTagError;
+use Twig\Sandbox\SecurityNotAllowedFilterError;
+use Twig\Sandbox\SecurityNotAllowedFunctionError;
+use Twig\Source;
+use Twig\Template;
+
+/* main.twig */
+class __TwigTemplate_70f4ae030118cbb8bea03f0ee3390df613249ed0548e26c31884feb2afc4b7ab extends \Twig\Template
+{
+    public function __construct(Environment $env)
+    {
+        parent::__construct($env);
+
+        $this->parent = false;
+
+        $this->blocks = [
+        ];
+    }
+
+    protected function doDisplay(array $context, array $blocks = [])
+    {
+        // line 1
+        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<!DOCTYPE html
+        PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+        \"http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+
+<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">
+<head>
+    <title>Tuqan</title>
+    <meta name=\"Generator\" content=\"Tuqan\" />
+    <link rel=\"stylesheet\" href=\"/css/tuqan.css\" type=\"text/css\" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"
+          integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\"
+          crossorigin=\"anonymous\">
+
+    <!-- Optional theme -->
+    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\"
+          integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\"
+          crossorigin=\"anonymous\">
+</head>
+<body>
+<div class=\"container-fluid\">
+    <div class=\"row\">
+        <div id=\"cabecera2\">
+            <img class=\"logo_tuqan\" src=\"/images/logotipo-tuqan.svg\" alt=\"Logotipo Tuqan\">
+        </div>
+    </div>
+    <div class=\"row\">
+        <div id=\"cabecera3\">
+            <h1 class=\"titulo_cabecera\">Gestión de Calidad y Medioambiente</h1>
+        </div>
+    </div>
+    <div class=\"row\">
+        <div class=\"collapse navbar-collapse col-md-10\" id=\"submenu\">
+            ";
+        // line 35
+        echo ($context["submenu"] ?? null);
+        echo "
+        </div>
+        <div class=\"col-md-2\" id=\"usermenu\">
+            <ul class=\"nav navbar-nav navbar-right\">
+                <li class=\"dropdown\">
+                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">
+                        <span class=\"glyphicon glyphicon-user\"></span> 
+                        <span>";
+        // line 42
+        echo twig_escape_filter($this->env, ($context["UserTitle"] ?? null), "html", null, true);
+        echo "</span>
+                        <em>";
+        // line 43
+        echo twig_escape_filter($this->env, ($context["UserName"] ?? null), "html", null, true);
+        echo "</em>
+                        <span class=\"glyphicon glyphicon-chevron-down\"></span>
+                    </a>
+                    <ul class=\"dropdown-menu\">
+                        <li>
+                            <div class=\"navbar-login\">
+                                <div class=\"row\">
+                                    <div class=\"col-lg-4\">
+                                        <p class=\"text-center\">
+                                            <span class=\"glyphicon glyphicon-user icon-size\"></span>
+                                        </p>
+                                    </div>
+                                    <div class=\"col-lg-8\">
+                                        <p class=\"text-left\"><strong>Está ud en:</strong></p>
+                                        <p class=\"text-left\" id=\"titulo\"></p>
+                                        <p class=\"text-left\"><strong>Nombre Apellido</strong></p>
+                                        <p class=\"text-left small\">correoElectronico@email.com</p>
+                                        <p class=\"text-left\">
+                                            <a href=\"#\" class=\"btn btn-primary btn-block btn-sm\">Actualizar Datos</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class=\"divider\"></li>
+                        <li>
+                            <div class=\"navbar-login navbar-login-session\">
+                                <div class=\"row\">
+                                    <div class=\"col-lg-12\">
+                                        <p>
+                                            <a href=\"#\" class=\"btn btn-danger btn-block\">Cerrar Sesion</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id=\"BordeIzq\"></div>
+    </div>
+    <div id=\"separador\"></div>
+    <div class=\"row\">
+        <div id=\"contenido\">
+            <div id=\"contenedor\">
+                <div id=\"izquierda\"></div>
+                <div id=\"central\" align=\"center\">
+                </div>
+                <div id=\"derecha\"></div>
+            </div>
+        </div>
+        <div id=\"diveditor\"></div>
+        <div id=\"diviframe\"></div>
+    </div>
+    <div id=\"wait\"></div>
+    <div id=\"divayuda\"></div>
+    <div id=\"ficheros\"></div>
+</div>
+<!-- Footer -->
+
+<footer class=\"page-footer font-small logos navbar-fixed-bottom\">
+
+    <!-- Copyright -->
+    <div class=\"container-fluid text-center\">© 2018 Copyright:
+        <a href=\"https://praderas.org/\"> praderas.org</a>
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+<!-- Latest compiled and minified JavaScript -->
+<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js\"></script>
+<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"
+        integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\"
+        crossorigin=\"anonymous\" type=\"text/javascript\">
+</script>
+<script type=\"text/javascript\" src=\"/javascript/cookies.js\"></script>
+<script type=\"text/javascript\" src=\"/javascript/Manejador_Ajax.js\"></script>
+<script type=\"text/javascript\" src=\"/javascript/ayuda.js\"></script>
+</body>
+</html>
+";
+    }
+
+    public function getTemplateName()
+    {
+        return "main.twig";
+    }
+
+    public function isTraitable()
+    {
+        return false;
+    }
+
+    public function getDebugInfo()
+    {
+        return array (  80 => 43,  76 => 42,  66 => 35,  30 => 1,);
+    }
+
+    /** @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead */
+    public function getSource()
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use getSourceContext() instead.', E_USER_DEPRECATED);
+
+        return $this->getSourceContext()->getCode();
+    }
+
+    public function getSourceContext()
+    {
+        return new Source("", "main.twig", "/var/www/html/templates/main.twig");
+    }
+}

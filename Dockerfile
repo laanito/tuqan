@@ -14,6 +14,7 @@ RUN apt-get update \
         locales \
         unzip \
         git \
+        postgresql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
         pdo \

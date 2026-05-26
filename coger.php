@@ -12,7 +12,7 @@ require 'etc/qnova.conf.php';
 require_once 'Classes/Manejador_Base_Datos.class.php';
 require_once 'encriptador.php';
 
-$css =& new encriptador();
+$css = new encriptador();
 $clave = 'encriptame';
 
 /**

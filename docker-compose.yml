@@ -44,6 +44,10 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS:-secret}
     volumes:
       - tuqan_pgdata:/var/lib/postgresql/data
+      # IMPORTANT: DB initialization for the minimal working app phase is handled
+      # exclusively from the app container via scripts/init-db.sh.
+      # Do NOT mount anything into /docker-entrypoint-initdb.d here — it causes
+      # conflicts with legacy dumps and duplicate key errors on repeated runs.
     ports:
       - "54321:5432"
     networks:
