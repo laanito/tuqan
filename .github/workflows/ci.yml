@@ -39,12 +39,13 @@ jobs:
         # are excluded via phpunit.xml.dist for now (pre-existing load issues from
         # old direct requires). Full strict suite + Integration will be enabled in later stages.
         #
-        # We disable Xdebug here to avoid log/permission noise and failed debug client
-        # connections in CI (Xdebug is only useful locally with an IDE attached).
+        # We set XDEBUG_MODE=off and pass --no-coverage because:
+        # - The image always loads Xdebug (dev setup)
+        # - phpunit.xml.dist requests coverage, which requires xdebug.mode=coverage
+        # - In CI we don't want/need coverage reports yet
         run: |
-          docker compose exec -T app \
-            php -d xdebug.mode=off \
-            ./vendor/bin/phpunit --testsuite=Unit
+          docker compose exec -T -e XDEBUG_MODE=off app \
+            ./vendor/bin/phpunit --testsuite=Unit --no-coverage
 
       - name: Run PHPStan (level 0 — foundation, non-blocking for now)
         # The legacy codebase still produces some errors even at level 0.
@@ -54,8 +55,7 @@ jobs:
         #
         # We disable Xdebug to keep logs clean in CI.
         run: |
-          docker compose exec -T app \
-            php -d xdebug.mode=off \
+          docker compose exec -T -e XDEBUG_MODE=off app \
             ./vendor/bin/phpstan analyse Classes/ Pages/ Controllers/ --level=0 --no-progress
         continue-on-error: true
 
