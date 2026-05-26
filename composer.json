@@ -37,6 +37,20 @@
       "php": "8.2.0"
     }
   },
+  "autoload": {
+    "psr-4": {
+      "Tuqan\\Classes\\": "Classes/",
+      "Tuqan\\Controllers\\": "Controllers/",
+      "Tuqan\\Pages\\": "Pages/"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Tuqan\\Classes\\": "Classes/",
+      "Tuqan\\Controllers\\": "Controllers/",
+      "Tuqan\\Pages\\": "Pages/"
+    }
+  },
   "autoload-dev": {
     "psr-4": {
       "Tuqan\\Tests\\": "tests/"
