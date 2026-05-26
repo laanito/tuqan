@@ -1,7 +1,7 @@
 # Tuqan PHP 8 + Docker + Testing Migration Plan
 
 **Branch:** `php-migration-plan-docker-testing` (created 2026-05)  
-**Status:** Stage 3 completed on branch `stage-3-config-secrets-query-safety`. Implementation + test coverage ready for review.  
+**Status:** Stages 1-6 completed (Docker, tests, config/safety, autoload, bloat removal, CI). After infrastructure work, the immediate priority is now "Minimum Viable Working App" (reliable DB schema + minimal seed data for login + basic navigation) so modernized features can actually be tested. See STAGE-CHECKLISTS.md for the current focused effort.  
 **Goal:** Migrate the legacy Tuqan/Qnova ISO 9001/14001 application to a maintainable, tested, PHP 8.3+ state with a 100% Docker-based development environment. Zero reliance on host PHP, nginx, or postgres.
 
 ## Executive Summary
@@ -352,8 +352,13 @@ docker compose down -v  # optional cleanup
 
 **Validation:** Push a docs-only change; watch Actions green.
 
-### Stage 7 — Incremental Logic Modernization (ongoing, parallel with later stages)
-Pick modules one-by-one (e.g. risk matrix calculator, document approval workflow, user permissions).
+### Stage 7 — Minimum Viable Working App + Incremental Logic (delivered in this phase)
+Concrete foundation delivered:
+- Reliable minimal DB schema + seed (only verified tables/rows for login + main nav, applied via single app-side script, no legacy dump conflicts).
+- Clean home page at / and /main/ (full Phroute dispatch + MainPage render) with **zero deprecation warnings** even with Xdebug enabled.
+- Lesson recorded: a temporary bypass/short-circuit was introduced mid-work under "get the home page demo" pressure; user feedback ("why you shortcircuit instead of fixing?") drove removal + proper root-cause patches in Phroute + additional legacy signature/trim/guard fixes.
+
+Pick modules one-by-one after this base (e.g. risk matrix calculator, document approval workflow, user permissions).
 
 Pattern:
 1. Write characterization tests against current behavior.

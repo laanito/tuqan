@@ -384,7 +384,7 @@ class HTTP_Upload extends HTTP_Upload_Error
                 // there was an error with the form.
                 // Create a faked upload embedding the error
                 $files_code = $files->getCode();
-                $this->files['_error'] =  &new HTTP_Upload_File(
+                $this->files['_error'] =  new HTTP_Upload_File(
                     '_error', null,
                     null, null,
                     null, $files_code,

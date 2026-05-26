@@ -412,7 +412,7 @@ Class Manejador_Funciones_Comunes
 
 
     /* Para preparar legislacion */
-    function prepara_Ver_Legislacion($sCodigo = null, $aParametros)
+    function prepara_Ver_Legislacion($sCodigo = null, $aParametros = null)
     {
         //Debemos sacar el documento asociado a la ley y pasarselo a ver:documento
         require_once 'Manejador_Base_Datos.class.php';

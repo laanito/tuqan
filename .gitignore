@@ -14,3 +14,7 @@ docker-compose.override.yml
 
 # Keep the Docker template committed
 !.env.docker
+
+# Twig compiled templates (generated at runtime)
+templates/cache/*
+!templates/cache/.gitkeep

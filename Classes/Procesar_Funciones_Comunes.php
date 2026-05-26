@@ -124,7 +124,7 @@ class Procesar_Funciones_Comunes
      * @param $aParametros
      * @return string
      */
-    function procesa_Cerrar_Mejora($sAccion = null, $aParametros)
+    function procesa_Cerrar_Mejora($sAccion = null, $aParametros = null)
     {
         $iIdMejora = $_SESSION['pagina'][$aParametros['numeroDeFila']];
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -1478,7 +1478,7 @@ class Procesar_Funciones_Comunes
     function procesa_Aprobar_Documento($aParametros)
     {
         $Config=new Config();
-        $css =& new encriptador();
+        $css = new encriptador();
         $clave = 'encriptame';
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         //Primero sacamos el estado del documento
@@ -1556,7 +1556,7 @@ class Procesar_Funciones_Comunes
     function procesa_Revisar_Documento($aParametros)
     {
         $Config=new Config();
-        $css =& new encriptador();
+        $css = new encriptador();
         $clave = 'encriptame';
         $oVolver = new boton("Volver", "atras(-1)", "noafecta");
         $oBaseDatos = new Manejador_Base_Datos($_SESSION['login'], $_SESSION['pass'], $_SESSION['db']);
@@ -3293,7 +3293,7 @@ class Procesar_Funciones_Comunes
     {
         $Config=new Config();
         $sTemplate = "qnova_lacandelarianew";
-        $css =& new encriptador();
+        $css = new encriptador();
         $clave = 'encriptame';
         $sPassEmp = $css->decrypt(trim($Config->sPassEtc), $clave);
         // Modificacion para seleccion idiomas en index

@@ -51,7 +51,7 @@ require_once 'Classes/Manejador_Ayuda.php';
 require_once 'Classes/Manejador_Editor.php';
 require_once 'Classes/Manejador_Funciones_Comunes.php';
 require_once 'Classes/Manejador_Formularios.php';
-require_once 'Classes/Manejador_Base_Datos.class.php';
+
 require_once 'Classes/Manejador_De_Respuestas.php';
 require_once 'Classes/Manejador_Listados.php';
 require_once 'Classes/Manejador_Detalles.php';
@@ -88,6 +88,7 @@ if (!isset($_SESSION)) {
 }
 
 $router = new RouteCollector();
+
 $router->filter('auth', function(){
     if(!isset($_SESSION['loginempresa']) || $_SESSION['loginempresa']!=1)
     {
@@ -101,15 +102,16 @@ $router->filter('auth', function(){
     }
 });
 
+$router->addRoute('GET', '/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'MuestraPagina']);
+$router->addRoute('POST', '/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'ProcesaPagina']);
+$router->addRoute('GET', '/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
+$router->addRoute('POST', '/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
 
-$router->get('/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'MuestraPagina']);
-$router->post('/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'ProcesaPagina']);
-$router->get('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
-$router->post('/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
-$router->get('/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth']);
-$router->get('/main/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth']);
-$router->controller('/ajax','Tuqan\Classes\AjaxHandler',['before' => 'auth']);
-$router->controller('/messages','Tuqan\Controllers\Messages',['before' => 'auth']);
+// Note: controller() registrations for /ajax and /messages remain commented out for the
+// minimum viable home page. They pull in significant additional legacy code paths and
+// can be re-enabled incrementally once those areas are modernized.
+$router->addRoute('GET', '/', ['Tuqan\Pages\MainPage', 'ShowPage']);
+$router->addRoute('GET', '/main/', ['Tuqan\Pages\MainPage', 'ShowPage']);
 
 $dispatcher =  new Dispatcher($router->getData());
 

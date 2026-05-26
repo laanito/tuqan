@@ -28,17 +28,24 @@
    - Capture output and append to the stage doc as "Evidence".
    - Only mark a todo `completed` when validation passes and docs are updated.
 
-5. **Preserve Business Logic**
+5. **Test + Fix Loop — Root Cause Over Symptom Hiding (Primary Operational Mode)**
+   - The default and mandatory way of working is **Test / Verify → Observe the real symptom → Fix the Root Cause in source code → Re-verify**, repeated until the symptom is gone at the source.
+   - **Never hide symptoms** with short-circuits, bypasses, early returns before the problematic code, `error_reporting` suppression, `XDEBUG_MODE=off`, comments that silence issues, or any other workaround whose only purpose is to make the immediate observation (curl, test run, etc.) look clean.
+   - For **simple pages or smoke scenarios** (e.g. home page rendering, basic navigation, login flow smoke): It is acceptable and preferred to drive the iteration using `curl`, `docker compose exec`, or lightweight shell commands as the verification mechanism.
+   - For **any non-trivial functionality**, business logic, reusable component, or complex flow: You **must** drive the "Test + Fix" loop primarily with unit tests, characterization tests, or automated smoke/integration tests (not just manual curl or ad-hoc commands).
+   - Only claim a task or PR complete when the verification (curl for simple cases, proper tests for complex ones) demonstrates that the root cause has been eliminated in source and no hiding remains.
+
+6. **Preserve Business Logic**
    - Do not rewrite core ISO workflows (document trees, risk matrices, forms, permissions, questionnaires) from scratch.
    - Use strangler-fig / wrapper patterns when modernizing.
    - Every change must have a test (new or regression) that exercises the original logic.
 
-6. **Tool Usage**
+7. **Tool Usage**
    - Prefer dedicated tools: `read_file`, `search_replace`, `list_dir`, `grep` over raw `cat`/`sed`/`grep` in terminal (except for docker commands and git).
    - For docker/php execution: ONLY via `run_terminal_command` with `docker compose ...`.
    - Use `todo_write` at start of any multi-step work.
 
-7. **.agents/ as Single Source of Truth**
+8. **.agents/ as Single Source of Truth**
    - This directory contains the living plan. Update it after every significant step.
    - Do not create scripts or helpers outside `.agents/` until a stage authorizes it (e.g., a `bin/` dir added in Stage 1).
 

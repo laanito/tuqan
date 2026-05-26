@@ -104,9 +104,9 @@ class Manejador_Base_Datos extends \PDO
 
     function __construct($login, $pass, $db, $sServidorEtc='localhost', $iPuertoEtc=5432, $sTipoBdEtc='pgsql')
     {
-        $this->sUser = trim($login);
-        $this->sPasswd = trim($pass);
-        $this->sDb = trim($db);
+        $this->sUser = trim($login ?? '');
+        $this->sPasswd = trim($pass ?? '');
+        $this->sDb = trim($db ?? '');
         $this->sHost = $sServidorEtc;
         $this->sPort = $iPuertoEtc;
         $this->sTipo_Bd = $sTipoBdEtc;

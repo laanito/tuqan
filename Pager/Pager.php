@@ -171,7 +171,7 @@ class Pager
         $classname = 'Pager_' . $mode;
         $classfile = 'Pager' . DIRECTORY_SEPARATOR . $mode . '.php';
         require_once $classfile;
-        $pager =& new $classname($options);
+        $pager = new $classname($options);
         return $pager;
     }
 
