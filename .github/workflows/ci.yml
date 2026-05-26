@@ -29,7 +29,10 @@ jobs:
           exit 1
 
       - name: Composer install (no interaction, prefer dist)
-        run: docker compose exec -T app composer install --no-interaction --prefer-dist
+        # Run as root because of bind mount UID mismatch on GitHub Actions runners.
+        # The container's www-data user cannot write composer.lock / vendor/ on Linux.
+        # This is a very common pattern for Dockerized PHP projects in CI.
+        run: docker compose exec -T -u root app composer install --no-interaction --prefer-dist
 
       - name: Run PHPUnit (Unit suite)
         # Using the stable Unit suite. Legacy entry-point tests under tests/Unit/Scripts/
