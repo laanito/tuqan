@@ -159,6 +159,14 @@ echo (class_exists("Tuqan\Classes\Config") ? "Autoload OK" : "FAIL");
 
 **Gate:** Removing 50%+ of the manual `require_once` lines in index.php + Pages/ does not break routed pages or tests.
 
+**Stage 4 Evidence (this branch):**
+- Added full PSR-4 autoload section for Classes/, Controllers/, Pages/.
+- Renamed the last `.class.php` file.
+- Removed many manual requires (including the duplicate generador_SQL in index.php).
+- Added `AutoloadTest` that proves core classes now load purely via composer autoloader.
+- Existing unit tests continue to pass.
+- `composer dump-autoload -o` succeeds cleanly (with only minor legacy naming warnings that can be addressed later).
+
 ---
 
 ## Stage 5 — Legacy Bloat Removal

@@ -25,33 +25,22 @@ require_once 'Classes/forms.php';
 /**
  * Old Generators
  */
-require_once 'Classes/generador_SQL.php';
 require_once 'Classes/generador_arboles.php';
 require_once 'Classes/generador_listados.php';
 
 
 /**
- * New Tuqan Classes
+ * New Tuqan Classes (loaded via PSR-4 autoloader)
+ * Only a few non-namespaced legacy helpers still need manual require.
  */
-require_once 'Classes/Botones.php';
-require_once 'Classes/TuqanLogger.php';
-require_once 'Classes/Auth.php';
-require_once 'Classes/User.php';
-require_once 'Classes/AjaxHandler.php';
-require_once 'Classes/FormManager.php';
-require_once 'Classes/FormElement.php';
-require_once 'Classes/FakePage.php';
-require_once 'Controllers/Messages.php';
+require_once 'encriptador.php';
+require_once 'constantes.inc.php';
+require_once 'boton.php';
 
 /**
  * Misc
  */
-require_once 'Classes/generador_SQL.php';
-require_once 'Classes/Config.php';
-require_once 'encriptador.php';
-require_once 'constantes.inc.php';
 require_once 'Classes/Titulos.php';
-require_once 'boton.php';
 
 
 /**
