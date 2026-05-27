@@ -110,8 +110,17 @@ $router->addRoute('POST', '/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'Proce
 // Note: controller() registrations for /ajax and /messages remain commented out for the
 // minimum viable home page. They pull in significant additional legacy code paths and
 // can be re-enabled incrementally once those areas are modernized.
-$router->addRoute('GET', '/', ['Tuqan\Pages\MainPage', 'ShowPage']);
-$router->addRoute('GET', '/main/', ['Tuqan\Pages\MainPage', 'ShowPage']);
+// Simple auth gate for the minimal working app:
+// If the user has not completed company login, redirect to the company login form.
+$router->filter('auth_company', function() {
+    if (!isset($_SESSION['loginempresa']) || $_SESSION['loginempresa'] != 1) {
+        header('Location: /login/empresa/');
+        exit;
+    }
+});
+
+$router->addRoute('GET', '/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/main/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth_company']);
 
 $dispatcher =  new Dispatcher($router->getData());
 

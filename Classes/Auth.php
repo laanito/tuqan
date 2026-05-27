@@ -60,7 +60,7 @@ class Auth extends JAuth implements Authz
         }
 
         // Stage 3: Using safer prepared statement
-        $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE id = ?";
+        $sql = "SELECT id, login, perfil, area, pass as password, activo FROM usuarios WHERE id = ?";
         $oBaseDatos->consultaPreparada($sql, [$id]);
 
         $aIterador = $oBaseDatos->coger_Fila();
@@ -90,7 +90,7 @@ class Auth extends JAuth implements Authz
         }
 
         // Stage 3: Using safer prepared statement
-        $sql = "SELECT id, login, perfil, area, password, activo FROM usuarios WHERE login = ?";
+        $sql = "SELECT id, login, perfil, area, pass as password, activo FROM usuarios WHERE login = ?";
         $oBaseDatos->consultaPreparada($sql, [$username]);
 
         $aIterador = $oBaseDatos->coger_Fila();

@@ -14,12 +14,6 @@ class generador_SQL
 {
     // Atributos
 
-    /**
-     *    Esta es la cadena SQl
-     * @access private
-     * @var array
-     */
-
     private $sSql;
 
     /**
@@ -99,37 +93,41 @@ class generador_SQL
     function __construct($sTipo)
     {
         $this->sTipo = $sTipo;
+
+        // Safe initialization to avoid "Creation of dynamic property" deprecation
+        $init = function ($prop) {
+            if (!isset($this->$prop)) {
+                $this->$prop = [];
+            }
+        };
+
         switch ($sTipo) {
             case 'SELECT':
-                $this->aCampos = array();
-                $this->aTablas = array();
-                $this->aWhere = array();
-                $this->aGroup = array();
-                $this->aOrder = array();
-                break;
             case 'SELECT DISTINCT':
-                $this->aCampos = array();
-                $this->aTablas = array();
-                $this->aWhere = array();
-                $this->aGroup = array();
-                $this->aOrder = array();
+                $init('aCampos');
+                $init('aTablas');
+                $init('aWhere');
+                $init('aGroup');
+                $init('aOrder');
+                $init('aWheres');
+                $init('aGroups');
+                $init('aOrders');
                 break;
             case 'INSERT':
-                $this->aTablas = array();
-                $this->aCampos = array();
-                $this->aValues = array();
-                $this->aSelect = array();
+                $init('aTablas');
+                $init('aCampos');
+                $init('aValues');
+                $init('aSelect');
                 break;
             case 'UPDATE':
-                $this->aTablas = array();
-                $this->aSet = array();
-                $this->aWhere = array();
+                $init('aTablas');
+                $init('aSet');
+                $init('aWhere');
                 break;
             case 'BEGIN':
-                $this->aSentencias = array();
+                $init('aSentencias');
                 break;
         }
-        //Fin switch
     }
 
     //Fin __construct
@@ -309,23 +307,23 @@ class generador_SQL
     {
         switch ($this->sTipo) {
             case 'SELECT':
-                if (($this->aCampos[0]) != null) {
+                if (!empty($this->aCampos[0])) {
                     $this->sSql = "SELECT ";
                     //Ponemos los campos
                     $this->concatenar('aCampos');
-                    if ($this->aTablas[0] != null) {
+                    if (!empty($this->aTablas[0])) {
                         $this->sSql .= " FROM ";
                         $this->concatenar('aTablas');
                     }
-                    if ($this->aWheres[0] != null) {
+                    if (!empty($this->aWheres[0])) {
                         $this->sSql .= " WHERE ";
                         $this->concatenar('aWheres');
                     }
-                    if ($this->aGroups[0] != null) {
+                    if (!empty($this->aGroups[0])) {
                         $this->sSql .= " GROUP BY ";
                         $this->concatenar('aGroups');
                     }
-                    if ($this->aOrders[0] != null) {
+                    if (!empty($this->aOrders[0])) {
                         $this->sSql .= " ORDER BY ";
                         $this->concatenar('aOrders');
                     }
@@ -333,23 +331,23 @@ class generador_SQL
                 break;
             case 'SELECT DISTINCT':
                 {
-                    if (($this->aCampos[0]) != null) {
+                    if (!empty($this->aCampos[0])) {
                         $this->sSql = "SELECT DISTINCT ";
                         //Ponemos los campos
                         $this->concatenar('aCampos');
-                        if ($this->aTablas[0] != null) {
+                        if (!empty($this->aTablas[0])) {
                             $this->sSql .= " FROM ";
                             $this->concatenar('aTablas');
                         }
-                        if ($this->aWheres[0] != null) {
+                        if (!empty($this->aWheres[0])) {
                             $this->sSql .= " WHERE ";
                             $this->concatenar('aWheres');
                         }
-                        if ($this->aGroups[0] != null) {
+                        if (!empty($this->aGroups[0])) {
                             $this->sSql .= " GROUP BY ";
                             $this->concatenar('aGroups');
                         }
-                        if ($this->aOrders[0] != null) {
+                        if (!empty($this->aOrders[0])) {
                             $this->sSql .= " ORDER BY ";
                             $this->concatenar('aOrders');
                         }
