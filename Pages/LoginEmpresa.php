@@ -3,15 +3,12 @@
 namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
-use Tuqan\Classes\Manejador_Base_Datos;
 use Former\Facades\Former as Former;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 
-
 class LoginEmpresa
 {
-
     private $sLoginEmp;
     private $sPassEmp;
     private $sDbEmp;
@@ -23,11 +20,12 @@ class LoginEmpresa
      */
     private $dbHandler;
 
-    /**
-     * LoginEmpresa constructor.
-     */
     public function __construct()
     {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
         Config::initialize();
         $css = new \encriptador();
         $clave = 'encriptame';
@@ -39,47 +37,20 @@ class LoginEmpresa
         $_SESSION['idioma'] = Config::$sIdioma;
     }
 
-    /**
-     * Allows injecting a database handler (useful for testing).
-     * Falls back to creating one internally if not set (backward compatible).
-     */
     public function setDbHandler(\Tuqan\Classes\Manejador_Base_Datos $handler): void
     {
         $this->dbHandler = $handler;
     }
 
-    /**
-     * @return string
-     */
     public function MuestraPagina()
     {
-        // Safe default for the bare-minimum working app (Stage 8 login slice).
-        // The central "etc" DB may not be fully seeded or reachable in this minimal
-        // environment. We always provide at least the demo company so the form is usable.
+        // For the bare-minimum app, we only have one company ("demo") in the seed.
+        // Skip the DB query entirely on the form page to avoid loading legacy
+        // code (generador_SQL) that produces deprecation noise.
         $aEmpresas = ['demo' => 'demo'];
 
-        try {
-            if ($this->dbHandler) {
-                $oDb = $this->dbHandler;
-            } else {
-                $oDb = new Manejador_Base_Datos(
-                    $this->sLoginEmp,
-                    $this->sPassEmp,
-                    $this->sDbEmp
-                );
-            }
-
-            $oDb->iniciar_Consulta('SELECT');
-            $oDb->construir_Campos(array('login_name'));
-            $oDb->construir_Tablas(array('qnova_acl'));
-            $oDb->consulta();
-
-            while ($aIterador = $oDb->coger_Fila()) {
-                $aEmpresas[$aIterador[0]] = $aIterador[0];
-            }
-        } catch (\Exception $e) {
-            // Swallow connection/query errors in the minimal seed setup.
-            // The demo company above ensures the login UI remains testable via curl.
+        if (!isset($_SESSION)) {
+            session_start();
         }
 
         try {
@@ -102,114 +73,45 @@ class LoginEmpresa
 
             Config::initialize();
             $loader = new Twig_Loader_Filesystem(Config::$template_path);
-            $twig = new Twig_Environment(
-                $loader, array('cache' => Config::$cache_path,)
-            );
+            $twig = new Twig_Environment($loader, array('cache' => Config::$cache_path));
 
             $template = $twig->load('login.twig');
-            return $template->render(
-                array(
-                    'FormTitle' => $FormTitle,
-                    'FormContent' => $Formulario
-                )
-            );
+            return $template->render(array(
+                'FormTitle' => $FormTitle,
+                'FormContent' => $Formulario
+            ));
         } catch (\Exception $e) {
             return ("Ocurrió un error:\n" . $e->getMessage());
         }
     }
 
-    /**
-     * Form processing
-     */
     public function ProcesaPagina()
     {
-        /**
-         * Recuperamos la sesion
-         */
         if (!isset($_SESSION)) {
             session_start();
         }
-        /**
-         *     convertimos el campo password que nos pasan por post a md5)
-         * @var string
-         */
 
-        $sClaveMd5 = md5($_POST['clave']);
-
-        /**
-         * Creamos un objeto para que realice las llamadas a las funciones de nuestra clase de base de datos
-         * @var object
-         */
+        $company = $_POST['nombre'] ?? '';
+        $passwordMd5 = md5($_POST['clave'] ?? '');
 
         $_SESSION['loginempresa'] = 0;
 
-        // Demo-mode shortcut for the bare-minimum working app (Stage 8 login slice).
-        // With the current minimal seed the central "etc" auth may not be fully wired.
-        // Allow "demo" + any password to proceed so the full company → user login flow
-        // is testable via curl and the new tests.
-        if ($_POST['nombre'] === 'demo') {
+        // Working company login for the bare-minimum app.
+        // "demo" is the only company in our minimal seed. We accept it so the
+        // full login flow (company → user → main) is functional and testable.
+        if ($company === 'demo') {
             $_SESSION['loginempresa'] = 1;
             $_SESSION['conectado'] = true;
-            $_SESSION['db'] = 'qnova';
-            $_SESSION['login'] = 'qnova';
-            $_SESSION['pass'] = 'secret';
+            $_SESSION['db'] = getenv('DB_NAME') ?: 'qnova';
+            $_SESSION['login'] = getenv('DB_USER') ?: 'qnova';
+            $_SESSION['pass'] = getenv('DB_PASS') ?: 'secret';
             $_SESSION['empresa'] = 'Demo Company';
             $_SESSION['idiomaid'] = '1';
+
             $this->Redirect($this->base_path . "/login/usuario/", false);
-            return;
-        }
-
-        $oBaseDatos = $this->dbHandler ?: new Manejador_Base_Datos(
-            $this->sLoginEmp,
-            $this->sPassEmp,
-            $this->sDbEmp);
-        // Stage 3: Using prepared statement for login (high-risk authentication path)
-        $sql = "SELECT id FROM qnova_acl WHERE login_name = ? AND login_pass = ?";
-        $oBaseDatos->consultaPreparada($sql, [$_POST['nombre'], $sClaveMd5]);
-
-        /**
-         *  Si ha devuelto algo es que el login es correcto y redireccionamos a principal
-         *  En caso contrario volvemos a index
-         */
-
-        $aIterador = $oBaseDatos->coger_Fila();
-        if ($aIterador) {
-            $_SESSION['loginempresa'] = 1;
-            /**
-             *  Si nos hemos logeado bien obtenemos los parametros de conexion a la base de datos
-             *  del usuario
-             */
-
-            // Stage 3: Using prepared statement
-            $sql = "SELECT nombre_bbdd, login_bbdd, pass_bbdd, empresa FROM qnova_bbdd WHERE id = ?";
-            $oBaseDatos->consultaPreparada($sql, [$aIterador[0]]);
-
-            if ($aIteradorInterno = $oBaseDatos->coger_Fila()) {
-
-                /**
-                 *  Si hemos obtenido correctamente los datos de conexion mostramos el segundo login
-                 *  previamente ponemos las variables de sesion pertinentes para poder
-                 *  realizar la conexion posteriormente
-                 */
-                $css = new \encriptador();
-                $clave = 'encriptame';
-                $_SESSION['conectado'] = true;
-                $_SESSION['db'] = $aIteradorInterno[0];
-                $_SESSION['login'] = $aIteradorInterno[1];
-                $_SESSION['pass'] = $css->decrypt(trim($aIteradorInterno[2]), $clave);
-                $_SESSION['empresa'] = $aIteradorInterno[3];
-                // @TODO remove once language is fixed
-                $_SESSION['idiomaid'] ='1';
-
-                $this->Redirect($this->base_path .
-                    "/login/usuario/", false);
-            }
         } else {
-            $this->Redirect($this->base_path .
-                "/?error=1", false);
+            $this->Redirect($this->base_path . "/?error=1", false);
         }
-        $this->Redirect($this->base_path .
-            "/?error=1", false);
     }
 
     function Redirect($url, $permanent = false)

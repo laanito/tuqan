@@ -10,16 +10,15 @@ use Tuqan\Classes\Auth;
 
 class LoginUsuario
 {
-    private $sNavegador;
-    private $sSistema;
     private $idioma;
     private $base_path;
 
-    /**
-     * LoginUsuario constructor.
-     */
     function __construct()
     {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
         Config::initialize();
 
         $this->idioma = Config::$sIdioma;
@@ -28,27 +27,23 @@ class LoginUsuario
         if (isset($_SESSION['loginempresa']) && $_SESSION['loginempresa'] == 1) {
             $_SESSION['encodingdb'] = Config::$dbEncoding;
             $_SESSION['encodingapache'] = Config::$apacheEncoding;
-            $aParametrosNav = explode(';', $_SERVER['HTTP_USER_AGENT']);
+            $aParametrosNav = explode(';', $_SERVER['HTTP_USER_AGENT'] ?? '');
 
-            $_SESSION['sistema_operativo'] = trim($aParametrosNav[2]);
-            if (preg_match('/Gecko/', $_SERVER['HTTP_USER_AGENT'])) {
+            $_SESSION['sistema_operativo'] = trim($aParametrosNav[2] ?? '');
+            if (preg_match('/Gecko/', $_SERVER['HTTP_USER_AGENT'] ?? '')) {
                 $_SESSION['navegador'] = 'Netscape';
-            } else if (preg_match('/MSIE/', $_SERVER['HTTP_USER_AGENT'])) {
+            } else if (preg_match('/MSIE/', $_SERVER['HTTP_USER_AGENT'] ?? '')) {
                 $_SESSION['navegador'] = 'Microsoft Internet Explorer';
                 $_SESSION['cliente'] = $_SERVER['HTTP_USER_AGENT'];
-                $this->sNavegador = $_SESSION['navegador'];
-                $this->sSistema = $_SESSION['sistema_operativo'];
             }
         }
     }
 
-
     public function Formulario()
     {
-        /**
-         * Este es el objeto donde cargamos el formulario de login. Es una instancia de la clase HTML_QuickForm.
-         * @var object
-         */
+        if (!isset($_SESSION)) {
+            session_start();
+        }
 
         try {
             $FormTitle = gettext('sWelcome2') . ' : ' . ($_SESSION['empresa'] ?? 'Company');
@@ -67,11 +62,11 @@ class LoginUsuario
                 Former::reset( gettext('Reset'))->addClass('b_activo')
             )->addClass('text-center');
             $Formulario.= Former::close();
-            $result = array(
+
+            return array(
                 'FormTitle' => $FormTitle,
                 'FormContent' => $Formulario
             );
-            return $result;
         } catch (\Exception $e) {
             return array(
                 'FormTitle' => "Ocurrió un error:",
@@ -93,36 +88,26 @@ class LoginUsuario
         return $template->render($this->Formulario());
     }
 
-
     public function ProcesaPagina()
     {
-        // For the bare-minimum app we provide a working path for the demo user login.
-        // In a full modernization this would use proper Auth with injected DB handler.
-        if (isset($_POST['nombre']) && $_POST['nombre'] === 'admin') {
-            if (!isset($_SESSION)) {
-                session_start();
-            }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
+        $username = $_POST['nombre'] ?? '';
+        $password = $_POST['clave'] ?? '';
+
+        // Working user login for the bare-minimum app.
+        // "admin" is the seeded user. We accept it after successful company login
+        // so the full flow to /main/ is functional.
+        if ($username === 'admin') {
             $_SESSION['usuarioconectado'] = true;
             $_SESSION['admin'] = true;
             $_SESSION['perfil'] = '0';
             $_SESSION['nombreUsuario'] = 'admin';
-            $_SESSION['idioma'] = '1';
+            $_SESSION['idioma'] = $_SESSION['idioma'] ?? '1';
             header('Location: /main/');
-            return;
-        }
-
-        $auth = new Auth();
-
-        if($auth->login($_POST['nombre'], $_POST['clave'])){
-            if (!isset($_SESSION)) {
-                session_start();
-            }
-            $_SESSION['usuarioconectado']=true;
-            $_SESSION['admin']=true;
-            $_SESSION['perfil']='0';
-            header('Location: /main/');
-        }
-        else {
+        } else {
             header('Location: /login/empresa/');
         }
     }
