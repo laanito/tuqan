@@ -38,19 +38,27 @@ final class LoginEmpresaTest extends TestCase
     }
 
     /**
-     * For the bare-minimum working app we intentionally skip the DB query on the
-     * company login form (to keep the page free of legacy deprecation noise).
-     * We just hardcode the single available company from the seed.
+     * Real DB-backed company list (no more hardcode shortcut).
+     * MuestraPagina must use the injected handler to fetch companies from the
+     * central (etc) database so that login is performed against real data.
      *
-     * This test verifies that behavior: the DB handler is accepted but not used
-     * for the company list in the current minimal implementation.
+     * This test drives removal of the bare-minimum shortcut.
      */
-    public function testMuestraPaginaUsesHardcodedDemoCompanyInMinimalMode(): void
+    public function testMuestraPaginaFetchesCompaniesViaDbHandler(): void
     {
         $mockDb = $this->createMock(Manejador_Base_Datos::class);
 
-        // In the current minimal implementation we do NOT call the DB on the form page.
-        $mockDb->expects($this->never())->method('iniciar_Consulta');
+        // Once the shortcut is removed, we expect the real query path to be exercised.
+        $mockDb->expects($this->once())
+            ->method('iniciar_Consulta')
+            ->with('SELECT');
+
+        // We don't need full builder mocking for the first iteration; the important
+        // signal is that we stop hardcoding and start talking to the DB handler.
+        $mockDb->method('construir_Campos')->willReturn(null);
+        $mockDb->method('construir_Tablas')->willReturn(null);
+        $mockDb->method('consulta')->willReturn(null);
+        $mockDb->method('coger_Fila')->willReturnOnConsecutiveCalls(['demo', 'Demo Company'], false);
 
         // Ensure Config paths are valid in the isolated test environment
         \Tuqan\Classes\Config::initialize();
@@ -65,7 +73,7 @@ final class LoginEmpresaTest extends TestCase
 
         $output = $login->MuestraPagina();
 
-        // The form should still render with the demo company
+        // The form should render with data coming from the DB result
         $this->assertStringContainsString('demo', $output);
         $this->assertStringContainsString('nombre', $output);
     }

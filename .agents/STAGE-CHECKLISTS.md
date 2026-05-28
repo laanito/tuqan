@@ -465,6 +465,30 @@ This slice delivers a clean, testable, working login flow (company → user → 
 - Fix: Committed + pushed 5368f5d aligning the test. All 10 login tests now pass on re-run inside Docker. The PR branch is now consistent.
 - Lesson reinforced: when changing implementation for root-cause cleanliness, immediately update + commit the driving tests in the same logical change set.
 
+**Next leg of work (new branch after merge of #55): Real DB-backed login — remove remaining shortcuts**
+
+**Objective (user directive):** Remove the database shortcuts/hardcodes so that login (company + user) happens against the real seeded database (not mocks and not big `if ($company === 'demo')` / `if ($username === 'admin')` bypasses in `ProcesaPagina`). Database classes (`Manejador_Base_Datos`, `generador_SQL`, `Auth`) must be in working order (no Xdebug deprecation floods when used for real queries). Include tests that validate the real DB paths.
+
+**Why this matters:** The previous increment delivered a *functional* flow using deliberate shortcuts to keep Xdebug output clean. The next step is to make the "working" version also be the "real" version, exercising and hardening the legacy DB access layer.
+
+**Approach (strict Test + Fix Loop):**
+- Start from master (post #55 merge).
+- New branch: `feat/real-db-auth-no-shortcuts`.
+- Update this checklist and plan before code changes (doc-first).
+- Write/extend tests that expect real DB interaction (using the minimal seed).
+- Remove hardcodes in `LoginEmpresa::MuestraPagina/ProcesaPagina` and `LoginUsuario::ProcesaPagina`.
+- Make `Auth` + `Manejador_Base_Datos` + `generador_SQL` produce clean output when the real paths are exercised.
+- Root-cause fixes only (property declarations, safe query building, better null handling, prepared statements where possible) — no `error_reporting` suppression or bypasses.
+- Verification (inside Docker, Xdebug on):
+  - Full clean `docker compose down -v && up && init-db`
+  - All login-related PHPUnit tests green.
+  - `curl` + browser navigation through company login → user login → /main/ with **zero** Xdebug deprecation/warning tables in responses.
+  - Real DB state changes observable (sessions, context switch from central "etc" DB to company DB).
+
+**Success gate:** A developer can perform the complete login flow end-to-end against the real minimal seed, see correct behavior, and get zero PHP warnings/deprecations in the browser with Xdebug fully enabled.
+
+This continues the incremental modernization while enforcing the no-shortcut discipline.
+
 ### Final clean home page verification (root cause fixes, no short-circuit)
 
 ### Final clean home page verification (root cause fixes, no short-circuit)

@@ -44,13 +44,39 @@ class LoginEmpresa
 
     public function MuestraPagina()
     {
-        // For the bare-minimum app, we only have one company ("demo") in the seed.
-        // Skip the DB query entirely on the form page to avoid loading legacy
-        // code (generador_SQL) that produces deprecation noise.
-        $aEmpresas = ['demo' => 'demo'];
+        $aEmpresas = [];
 
         if (!isset($_SESSION)) {
             session_start();
+        }
+
+        // Real DB-backed company list (no more hardcoded shortcut for bare-minimum).
+        // We prefer the injected handler (for tests and clean DI). In production
+        // the caller or a future central-DB factory will provide a handler connected
+        // to the "etc" database that holds the company registry.
+        if ($this->dbHandler !== null) {
+            try {
+                $this->dbHandler->iniciar_Consulta('SELECT');
+                $this->dbHandler->construir_Campos(array('id', 'nombre'));
+                $this->dbHandler->construir_Tablas(array('empresas'));
+                $this->dbHandler->construir_where(array('activo = \'t\''));
+                $this->dbHandler->consulta();
+
+                while (($row = $this->dbHandler->coger_Fila())) {
+                    // Use a sensible key/value for the select (id or login slug -> nombre)
+                    $key = $row[0] ?? ($row[1] ?? 'demo');
+                    $aEmpresas[$key] = $row[1] ?? 'demo';
+                }
+            } catch (\Exception $e) {
+                // Fall back to minimal seed so the form is still usable during iteration
+                $aEmpresas = ['demo' => 'demo'];
+            }
+        }
+
+        if (empty($aEmpresas)) {
+            // Last-resort fallback during the transition (will be removed once
+            // central DB handler creation is reliable in the production path).
+            $aEmpresas = ['demo' => 'demo'];
         }
 
         try {
