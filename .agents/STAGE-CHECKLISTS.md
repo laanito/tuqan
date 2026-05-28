@@ -514,6 +514,13 @@ This continues the incremental modernization while enforcing the no-shortcut dis
 - Added basic unit tests (`MainPageTest.php` + `LogoutTest.php`).
 - All changes verified with the same clean Docker + Xdebug discipline.
 
+**Twig 1.x deprecation encountered (Node::count / getIterator):**
+- During landing page work, PHP 8.3 surfaced: `Return type of Twig\Node\Node::count() should either be compatible with Countable::count(): int, or the #[\ReturnTypeWillChange] attribute...`
+- Decision: Applied the **same minimal compatibility patch pattern** already used multiple times in this project for other EOL vendor libraries (Illuminate Container/Config, etc.).
+- Patch added to `vendor/twig/twig/src/Node/Node.php` on both `count()` and `getIterator()` with clear comment explaining it is temporary.
+- Full Twig 1.x → 2/3 migration is **not** being started now. It is a non-trivial body of work that should be planned as its own future stage (many template changes + potential custom extensions).
+- After the patch: 0 deprecations on the full login → landing → logout flow with Xdebug enabled.
+
 All work strictly followed Test + Fix Loop with no symptom hiding.
 
 ### Final clean home page verification (root cause fixes, no short-circuit)

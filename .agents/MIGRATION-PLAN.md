@@ -298,6 +298,9 @@ docker compose down -v  # optional cleanup
 - Fix any PHP 8.3 incompat that surface (e.g. deprecated warnings as errors in dev, nulls, etc.).
 - Update composer.json with `"php": "^8.2"` and lock compatible dep versions.
 - Optional: first pass at Twig 2/3? (risky — defer if it touches too much).
+  - As of May 2026 (during bare-minimum + login work): A `Twig\Node\Node::count()` return type deprecation surfaced under PHP 8.3.
+  - Decision: Applied minimal `#[ReturnTypeWillChange]` patch (consistent with prior vendor handling for Illuminate etc.).
+  - Full Twig upgrade remains deferred as a dedicated later stage. See STAGE-CHECKLISTS.md for details.
 
 **Validation:**
 - `docker compose exec app ./vendor/bin/phpunit` → all green.
