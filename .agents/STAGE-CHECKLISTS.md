@@ -505,6 +505,15 @@ This continues the incremental modernization while enforcing the no-shortcut dis
   ```
 - Temporary transition fallbacks left in ProcesaPagina (clearly commented) — main paths succeed with real DB for the seed. Can be removed in follow-up once more legacy call sites are exercised.
 
+**Pre-merge improvements added before merging PR #56:**
+- Added a functional placeholder landing page at `/main/` (enhanced `MainPage.php` + `main.twig`) showing the logged-in user and a clear welcome message (instead of blank page or 404 feel after login).
+- Implemented working logout at `/logout/` (`Pages/Logout.php`):
+  - Clears all Tuqan login-related session keys.
+  - Redirects to `/login/empresa/`.
+- Wired the "Cerrar Sesion" button in the user dropdown to the real logout URL.
+- Added basic unit tests (`MainPageTest.php` + `LogoutTest.php`).
+- All changes verified with the same clean Docker + Xdebug discipline.
+
 All work strictly followed Test + Fix Loop with no symptom hiding.
 
 ### Final clean home page verification (root cause fixes, no short-circuit)

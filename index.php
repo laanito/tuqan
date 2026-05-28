@@ -107,6 +107,10 @@ $router->addRoute('POST', '/login/empresa/', ['Tuqan\Pages\LoginEmpresa', 'Proce
 $router->addRoute('GET', '/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'MuestraPagina']);
 $router->addRoute('POST', '/login/usuario/', ['Tuqan\Pages\LoginUsuario', 'ProcesaPagina']);
 
+// Logout - clears session and returns to company login
+$router->addRoute('GET', '/logout/', ['Tuqan\Pages\Logout', 'ShowPage']);
+$router->addRoute('POST', '/logout/', ['Tuqan\Pages\Logout', 'ShowPage']);
+
 // Note: controller() registrations for /ajax and /messages remain commented out for the
 // minimum viable home page. They pull in significant additional legacy code paths and
 // can be re-enabled incrementally once those areas are modernized.
