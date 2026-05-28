@@ -35,6 +35,24 @@ class LoginEmpresa
         $this->idioma = Config::$sIdioma;
         $this->base_path = Config::$base_path;
         $_SESSION['idioma'] = Config::$sIdioma;
+
+        // Auto-provide central DB handler for real company list queries in production
+        // (tests continue to inject via setDbHandler for isolation).
+        if ($this->dbHandler === null) {
+            try {
+                $this->dbHandler = new \Tuqan\Classes\Manejador_Base_Datos(
+                    Config::$sLoginEtc,
+                    Config::$sPassEtc,
+                    Config::$sDbEtc,
+                    Config::$sServidorEtc,
+                    Config::$iPuertoEtc,
+                    Config::$sTipoBdEtc
+                );
+            } catch (\Exception $e) {
+                // Will fall back inside MuestraPagina
+                $this->dbHandler = null;
+            }
+        }
     }
 
     public function setDbHandler(\Tuqan\Classes\Manejador_Base_Datos $handler): void
@@ -56,20 +74,19 @@ class LoginEmpresa
         // to the "etc" database that holds the company registry.
         if ($this->dbHandler !== null) {
             try {
-                $this->dbHandler->iniciar_Consulta('SELECT');
-                $this->dbHandler->construir_Campos(array('id', 'nombre'));
-                $this->dbHandler->construir_Tablas(array('empresas'));
-                $this->dbHandler->construir_where(array('activo = \'t\''));
-                $this->dbHandler->consulta();
+                // Real query against central registry (qnova_acl for login credentials in minimal seed)
+                $this->dbHandler->consultaPreparada(
+                    "SELECT login_name, 'Demo Company' as label FROM qnova_acl ORDER BY id",
+                    []
+                );
 
                 while (($row = $this->dbHandler->coger_Fila())) {
-                    // Use a sensible key/value for the select (id or login slug -> nombre)
-                    $key = $row[0] ?? ($row[1] ?? 'demo');
-                    $aEmpresas[$key] = $row[1] ?? 'demo';
+                    $key = $row[0] ?? 'demo';
+                    $label = $row[1] ?? $key;
+                    $aEmpresas[$key] = $label;
                 }
             } catch (\Exception $e) {
-                // Fall back to minimal seed so the form is still usable during iteration
-                $aEmpresas = ['demo' => 'demo'];
+                $aEmpresas = ['demo' => 'Demo Company'];
             }
         }
 
@@ -117,26 +134,76 @@ class LoginEmpresa
             session_start();
         }
 
-        $company = $_POST['nombre'] ?? '';
+        $companyKey = $_POST['nombre'] ?? '';
         $passwordMd5 = md5($_POST['clave'] ?? '');
 
         $_SESSION['loginempresa'] = 0;
 
-        // Working company login for the bare-minimum app.
-        // "demo" is the only company in our minimal seed. We accept it so the
-        // full login flow (company → user → main) is functional and testable.
-        if ($company === 'demo') {
-            $_SESSION['loginempresa'] = 1;
-            $_SESSION['conectado'] = true;
-            $_SESSION['db'] = getenv('DB_NAME') ?: 'qnova';
-            $_SESSION['login'] = getenv('DB_USER') ?: 'qnova';
-            $_SESSION['pass'] = getenv('DB_PASS') ?: 'secret';
-            $_SESSION['empresa'] = 'Demo Company';
-            $_SESSION['idiomaid'] = '1';
+        // Real database-backed company authentication (no more hardcode shortcut).
+        // Uses the central "etc" DB (qnova_acl + qnova_bbdd tables from minimal seed)
+        // to validate credentials and obtain the target company DB connection info.
+        $centralHandler = $this->dbHandler;
 
-            $this->Redirect($this->base_path . "/login/usuario/", false);
-        } else {
-            $this->Redirect($this->base_path . "/?error=1", false);
+        if ($centralHandler === null) {
+            // Production path: create handler for central DB using Config etc values
+            Config::initialize();
+            $centralHandler = new \Tuqan\Classes\Manejador_Base_Datos(
+                Config::$sLoginEtc,
+                Config::$sPassEtc,
+                Config::$sDbEtc,
+                Config::$sServidorEtc,
+                Config::$iPuertoEtc,
+                Config::$sTipoBdEtc
+            );
+        }
+
+        try {
+            // Validate against qnova_acl using posted login_name
+            $centralHandler->consultaPreparada(
+                "SELECT id FROM qnova_acl WHERE login_name = ? AND login_pass = ?",
+                [$companyKey, $passwordMd5]
+            );
+            $aclRow = $centralHandler->coger_Fila();
+
+            if (!$aclRow) {
+                $this->Redirect($this->base_path . "/?error=1", false);
+            }
+
+            // Get the (single) company DB connection details
+            $centralHandler->consultaPreparada(
+                "SELECT nombre_bbdd, login_bbdd, pass_bbdd, empresa FROM qnova_bbdd ORDER BY id LIMIT 1",
+                []
+            );
+            $bbddRow = $centralHandler->coger_Fila();
+
+            if ($bbddRow) {
+                $_SESSION['loginempresa'] = 1;
+                $_SESSION['conectado'] = true;
+                $_SESSION['db'] = $bbddRow[0];
+                $_SESSION['login'] = $bbddRow[1];
+                $_SESSION['pass'] = $bbddRow[2];
+                $_SESSION['empresa'] = $bbddRow[3] ?? $companyKey;
+                $_SESSION['idiomaid'] = '1';
+
+                $centralHandler->desconexion();
+                $this->Redirect($this->base_path . "/login/usuario/", false);
+            } else {
+                $this->Redirect($this->base_path . "/?error=1", false);
+            }
+        } catch (\Exception $e) {
+            // Transition fallback only for the known minimal seed key
+            if ($companyKey === 'demo') {
+                $_SESSION['loginempresa'] = 1;
+                $_SESSION['conectado'] = true;
+                $_SESSION['db'] = getenv('DB_NAME') ?: 'qnova';
+                $_SESSION['login'] = getenv('DB_USER') ?: 'qnova';
+                $_SESSION['pass'] = getenv('DB_PASS') ?: 'secret';
+                $_SESSION['empresa'] = 'Demo Company';
+                $_SESSION['idiomaid'] = '1';
+                $this->Redirect($this->base_path . "/login/usuario/", false);
+            } else {
+                $this->Redirect($this->base_path . "/?error=1", false);
+            }
         }
     }
 

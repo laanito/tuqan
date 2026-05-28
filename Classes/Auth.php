@@ -147,7 +147,7 @@ class Auth extends JAuth implements Authz
             $oBaseDatos->iniciar_Consulta('SELECT');
             $oBaseDatos->construir_Campos(array('nombre'));
             $oBaseDatos->construir_Tablas(array('perfiles'));
-            $oBaseDatos->construir_where(array('id<>0', 'perfiles.activo=\'t\''));
+            $oBaseDatos->construir_Where(array('id<>0', 'perfiles.activo=\'t\''));
             $oBaseDatos->consulta();
 
             while (($row = $oBaseDatos->coger_Fila())) {
@@ -176,7 +176,7 @@ class Auth extends JAuth implements Authz
             $oBaseDatos->iniciar_Consulta('SELECT');
             $oBaseDatos->construir_Campos(array('id', 'nombre'));
             $oBaseDatos->construir_Tablas(array('perfiles'));
-            $oBaseDatos->construir_where(array('perfiles.activo=\'t\''));
+            $oBaseDatos->construir_Where(array('perfiles.activo=\'t\''));
             $oBaseDatos->consulta();
             while (($row = $oBaseDatos->coger_Fila())) {
                 $this->perfiles[(int)$row[0]] = $row[1];

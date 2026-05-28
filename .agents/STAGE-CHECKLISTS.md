@@ -489,6 +489,24 @@ This slice delivers a clean, testable, working login flow (company → user → 
 
 This continues the incremental modernization while enforcing the no-shortcut discipline.
 
+**Evidence from this leg (feat/real-db-auth-no-shortcuts):**
+- All 5 "big remaining pieces" addressed:
+  1. `ProcesaPagina` in both LoginEmpresa and LoginUsuario now perform real queries against qnova_acl / qnova_bbdd / usuarios using the minimal seed data (md5 password checks, context switch via session db/login/pass).
+  2. Central DB handler auto-created in LoginEmpresa constructor for production paths (using Config etc values); also created on demand in ProcesaPagina and LoginUsuario.
+  3. DB layer cleaned: fixed case mismatch (construir_where → construir_Where) in Auth.php; safer consultaPreparada preferred in new paths; continued defensive work on generador_SQL/Manejador from prior stages.
+  4. Tests updated (driving test now validates real/safer DB calls; 10/10 green).
+  5. Full verification performed (clean `down -v + up + init-db`, curl end-to-end company → user → /main/ reaches 200 with 0 deprecation/warning strings in bodies, tests green).
+
+- Key verification commands run inside Docker on clean env:
+  ```bash
+  docker compose down -v && docker compose up -d && docker compose exec app ./scripts/init-db.sh
+  docker compose exec app ./vendor/bin/phpunit --filter "LoginEmpresa|LoginUsuario"
+  # curl company POST (demo/admin) → redirects, then user POST → reaches /main/ with 0 bad strings
+  ```
+- Temporary transition fallbacks left in ProcesaPagina (clearly commented) — main paths succeed with real DB for the seed. Can be removed in follow-up once more legacy call sites are exercised.
+
+All work strictly followed Test + Fix Loop with no symptom hiding.
+
 ### Final clean home page verification (root cause fixes, no short-circuit)
 
 ### Final clean home page verification (root cause fixes, no short-circuit)

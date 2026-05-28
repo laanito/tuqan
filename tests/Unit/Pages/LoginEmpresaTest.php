@@ -48,17 +48,13 @@ final class LoginEmpresaTest extends TestCase
     {
         $mockDb = $this->createMock(Manejador_Base_Datos::class);
 
-        // Once the shortcut is removed, we expect the real query path to be exercised.
+        // Real DB path now uses the safer consultaPreparada (preferred over old builder
+        // to reduce legacy deprecation surface). Test validates that we talk to the DB.
         $mockDb->expects($this->once())
-            ->method('iniciar_Consulta')
-            ->with('SELECT');
+            ->method('consultaPreparada')
+            ->with($this->stringContains('qnova_acl'));
 
-        // We don't need full builder mocking for the first iteration; the important
-        // signal is that we stop hardcoding and start talking to the DB handler.
-        $mockDb->method('construir_Campos')->willReturn(null);
-        $mockDb->method('construir_Tablas')->willReturn(null);
-        $mockDb->method('consulta')->willReturn(null);
-        $mockDb->method('coger_Fila')->willReturnOnConsecutiveCalls(['demo', 'Demo Company'], false);
+        $mockDb->method('coger_Fila')->willReturnOnConsecutiveCalls(['1', 'Demo Company'], false);
 
         // Ensure Config paths are valid in the isolated test environment
         \Tuqan\Classes\Config::initialize();
@@ -73,8 +69,8 @@ final class LoginEmpresaTest extends TestCase
 
         $output = $login->MuestraPagina();
 
-        // The form should render with data coming from the DB result
-        $this->assertStringContainsString('demo', $output);
+        // The form renders with data coming from the (mocked) real DB result
+        $this->assertStringContainsString('Demo Company', $output);
         $this->assertStringContainsString('nombre', $output);
     }
 
