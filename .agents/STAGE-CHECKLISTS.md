@@ -521,6 +521,14 @@ This continues the incremental modernization while enforcing the no-shortcut dis
 - Full Twig 1.x → 2/3 migration is **not** being started now. It is a non-trivial body of work that should be planned as its own future stage (many template changes + potential custom extensions).
 - After the patch: 0 deprecations on the full login → landing → logout flow with Xdebug enabled.
 
+**Strategic decision recorded at the end of this PR (pre-merge):**
+
+The repeated need to apply targeted compatibility patches across multiple old libraries (Twig, former Illuminate packages, query builder internals, etc.) during even small UI/feature slices has highlighted a pattern. Continuing this approach for every new piece of functionality risks accumulating a large number of vendor shims, making future maintenance harder and increasing the chance of subtle breakage.
+
+**Decision:** Before undertaking significant new functionality or deeper architectural work, the project should treat a dedicated phase of **"Core Functionality Modernization"** as a required stepping stone. This phase would focus on properly updating (not just patching) the foundational libraries and components that the modernized code paths depend on (Twig, form library, DB access layer modernization, remaining legacy class patterns, etc.).
+
+This is not a return to big-bang rewriting, but a deliberate, staged cleanup of the "modernized but still running on 2010-era dependencies" layer that has been built so far. The goal is to reduce future friction and create a cleaner base for subsequent incremental feature work.
+
 All work strictly followed Test + Fix Loop with no symptom hiding.
 
 ### Final clean home page verification (root cause fixes, no short-circuit)
