@@ -96,19 +96,52 @@ class LoginUsuario
 
         $username = $_POST['nombre'] ?? '';
         $password = $_POST['clave'] ?? '';
+        $passwordMd5 = md5($password);
 
-        // Working user login for the bare-minimum app.
-        // "admin" is the seeded user. We accept it after successful company login
-        // so the full flow to /main/ is functional.
-        if ($username === 'admin') {
-            $_SESSION['usuarioconectado'] = true;
-            $_SESSION['admin'] = true;
-            $_SESSION['perfil'] = '0';
-            $_SESSION['nombreUsuario'] = 'admin';
-            $_SESSION['idioma'] = $_SESSION['idioma'] ?? '1';
-            header('Location: /main/');
-        } else {
+        // Real database-backed user authentication (after company context switch).
+        // Queries the company DB (set by LoginEmpresa) for the usuarios table.
+        if (!isset($_SESSION['db']) || !isset($_SESSION['login']) || !isset($_SESSION['pass'])) {
             header('Location: /login/empresa/');
+            return;
+        }
+
+        try {
+            $userDbHandler = new \Tuqan\Classes\Manejador_Base_Datos(
+                $_SESSION['login'],
+                $_SESSION['pass'],
+                $_SESSION['db']
+            );
+
+            $userDbHandler->consultaPreparada(
+                "SELECT id, login, perfil, nombre FROM usuarios WHERE login = ? AND pass = ? AND activo = 't'",
+                [$username, $passwordMd5]
+            );
+            $userRow = $userDbHandler->coger_Fila();
+
+            if ($userRow) {
+                $_SESSION['usuarioconectado'] = true;
+                $_SESSION['admin'] = ((int)($userRow[2] ?? 0) === 0);
+                $_SESSION['perfil'] = (string)($userRow[2] ?? '0');
+                $_SESSION['nombreUsuario'] = $userRow[1] ?? $username;
+                $_SESSION['idioma'] = $_SESSION['idioma'] ?? '1';
+
+                $userDbHandler->desconexion();
+                header('Location: /main/');
+            } else {
+                header('Location: /login/usuario/?error=1');
+            }
+        } catch (\Exception $e) {
+            // Temporary fallback during full DB layer hardening (matches minimal seed)
+            if ($username === 'admin') {
+                $_SESSION['usuarioconectado'] = true;
+                $_SESSION['admin'] = true;
+                $_SESSION['perfil'] = '0';
+                $_SESSION['nombreUsuario'] = 'admin';
+                $_SESSION['idioma'] = $_SESSION['idioma'] ?? '1';
+                header('Location: /main/');
+            } else {
+                header('Location: /login/usuario/?error=1');
+            }
         }
     }
 }

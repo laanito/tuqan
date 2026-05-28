@@ -298,6 +298,9 @@ docker compose down -v  # optional cleanup
 - Fix any PHP 8.3 incompat that surface (e.g. deprecated warnings as errors in dev, nulls, etc.).
 - Update composer.json with `"php": "^8.2"` and lock compatible dep versions.
 - Optional: first pass at Twig 2/3? (risky — defer if it touches too much).
+  - As of May 2026 (during bare-minimum + login work): A `Twig\Node\Node::count()` return type deprecation surfaced under PHP 8.3.
+  - Decision: Applied minimal `#[ReturnTypeWillChange]` patch (consistent with prior vendor handling for Illuminate etc.).
+  - Full Twig upgrade remains deferred as a dedicated later stage. See STAGE-CHECKLISTS.md for details.
 
 **Validation:**
 - `docker compose exec app ./vendor/bin/phpunit` → all green.
@@ -358,6 +361,8 @@ Concrete foundation delivered:
 - Clean home page at / and /main/ (full Phroute dispatch + MainPage render) with **zero deprecation warnings** even with Xdebug enabled.
 - Lesson recorded: a temporary bypass/short-circuit was introduced mid-work under "get the home page demo" pressure; user feedback ("why you shortcircuit instead of fixing?") drove removal + proper root-cause patches in Phroute + additional legacy signature/trim/guard fixes.
 
+**Strategic note (end of this phase):** Repeated vendor deprecation patching across libraries during this work led to the decision that a dedicated "Core Functionality Modernization" stepping stone (see revised Stage 8) should be treated as a prerequisite before significant new feature development.
+
 Pick modules one-by-one after this base (e.g. risk matrix calculator, document approval workflow, user permissions).
 
 Pattern:
@@ -369,8 +374,24 @@ Pattern:
 
 Never delete logic until tests prove equivalence.
 
-### Stage 8 — UI/Dep Upgrade & Polish (later, after core stable)
-- Twig 3 + modern template inheritance.
+### Stage 8 — Core Functionality Modernization (Stepping Stone — Recommended before deep feature work)
+
+**Rationale (recorded end of May 2026 login/landing work):**  
+During the Minimum Viable Working App phase, pragmatic `#[ReturnTypeWillChange]` and similar minimal patches were applied to several EOL vendor libraries (Twig 1.x, older Illuminate components, etc.) to keep forward momentum with clean Xdebug output. While effective short-term, this pattern is expected to repeat for every new slice of functionality.
+
+**Decision:** Before moving into larger feature modernization or architectural changes, insert a dedicated "Core Functionality Modernization" stepping stone phase. The focus is proper, sustainable updates (not endless patches) to the foundational layers the modernized code now depends on.
+
+**Scope ideas for this phase:**
+- Proper upgrade path for Twig (2 or 3) across the small number of active templates.
+- Modernization or replacement of the form library (Former) and related frontend dependencies.
+- Cleanup / modernization of the DB access layer (Manejador_Base_Datos + generador_SQL) or migration to more standard patterns.
+- Removal of remaining legacy class patterns, dynamic property usage, and old require-based loading in the actively used code paths.
+- Raising baseline quality (PHPStan, Rector passes, consistent DI, etc.) on the modernized core.
+
+This phase is explicitly positioned as **pre-requisite infrastructure** before Stage 9+ (deeper business logic modernization).
+
+### Stage 9 — UI/Dep Upgrade & Polish (later, after core stable)
+- Twig 3 + modern template inheritance (now as part of or after the stepping stone).
 - Bootstrap 5 (or current) + remove old CSS/JS/images where possible.
 - Replace FCK with CKEditor 5 or Trix or ProseMirror.
 - Full PSR-12 / PHPStan level 8+ / Rector for automated cleanup.
@@ -385,7 +406,9 @@ Never delete logic until tests prove equivalence.
 - Stage 4 (Autoload): Weeks 5-6
 - Stage 5 (Cleanup): Weeks 7-9
 - Stage 6 (CI): Week 10
-- Stage 7+: Ongoing (prioritized by business value / risk)
+- Stage 7 (Minimum Viable + Incremental Logic): Ongoing (current focus)
+- Stage 8 (Core Functionality Modernization stepping stone): Before major new feature work
+- Stage 9+: Deeper modernization and polish (after the stepping stone)
 
 **Buffer:** 2-4 weeks for surprises (legacy surprises always appear).
 

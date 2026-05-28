@@ -71,6 +71,8 @@ class MainPage
             'UserTitle' => gettext('sUsuario'),
             'UserName' =>  $_SESSION['nombreUsuario'] ?? 'Guest',
             'submenu' => $this->crea_Menu_Superior(),
+            // Placeholder content for the minimal landing page
+            'LandingMessage' => 'Bienvenido a Tuqan (versión mínima).<br>Has iniciado sesión correctamente. Usa el menú superior o el enlace de cerrar sesión.',
         );
         return $template->render($variables);
     }

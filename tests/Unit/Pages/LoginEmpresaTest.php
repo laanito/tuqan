@@ -38,19 +38,23 @@ final class LoginEmpresaTest extends TestCase
     }
 
     /**
-     * For the bare-minimum working app we intentionally skip the DB query on the
-     * company login form (to keep the page free of legacy deprecation noise).
-     * We just hardcode the single available company from the seed.
+     * Real DB-backed company list (no more hardcode shortcut).
+     * MuestraPagina must use the injected handler to fetch companies from the
+     * central (etc) database so that login is performed against real data.
      *
-     * This test verifies that behavior: the DB handler is accepted but not used
-     * for the company list in the current minimal implementation.
+     * This test drives removal of the bare-minimum shortcut.
      */
-    public function testMuestraPaginaUsesHardcodedDemoCompanyInMinimalMode(): void
+    public function testMuestraPaginaFetchesCompaniesViaDbHandler(): void
     {
         $mockDb = $this->createMock(Manejador_Base_Datos::class);
 
-        // In the current minimal implementation we do NOT call the DB on the form page.
-        $mockDb->expects($this->never())->method('iniciar_Consulta');
+        // Real DB path now uses the safer consultaPreparada (preferred over old builder
+        // to reduce legacy deprecation surface). Test validates that we talk to the DB.
+        $mockDb->expects($this->once())
+            ->method('consultaPreparada')
+            ->with($this->stringContains('qnova_acl'));
+
+        $mockDb->method('coger_Fila')->willReturnOnConsecutiveCalls(['1', 'Demo Company'], false);
 
         // Ensure Config paths are valid in the isolated test environment
         \Tuqan\Classes\Config::initialize();
@@ -65,8 +69,8 @@ final class LoginEmpresaTest extends TestCase
 
         $output = $login->MuestraPagina();
 
-        // The form should still render with the demo company
-        $this->assertStringContainsString('demo', $output);
+        // The form renders with data coming from the (mocked) real DB result
+        $this->assertStringContainsString('Demo Company', $output);
         $this->assertStringContainsString('nombre', $output);
     }
 
