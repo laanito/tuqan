@@ -3,9 +3,9 @@
 namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
-use \Twig_Loader_Filesystem;
+use Twig\Loader\FilesystemLoader;
 use Former\Facades\Former as Former;
-use \Twig_Environment;
+use Twig\Environment;
 use Tuqan\Classes\Auth;
 
 class LoginUsuario
@@ -76,10 +76,10 @@ class LoginUsuario
 
     public function MuestraPagina()
     {
-        $loader = new Twig_Loader_Filesystem(Config::$template_path);
-        $twig = new Twig_Environment($loader, array(
+        $loader = new FilesystemLoader(Config::$template_path);
+        $twig = new Environment($loader, [
             'cache' => Config::$cache_path,
-        ));
+        ]);
         try {
             $template = $twig->load('login.twig');
         } catch (\Exception $e) {

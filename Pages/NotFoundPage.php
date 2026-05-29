@@ -7,8 +7,8 @@
 namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
-use \Twig_Loader_Filesystem;
-use \Twig_Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\Environment;
 
 class NotFoundPage
 {
@@ -21,10 +21,10 @@ class NotFoundPage
      * @return string
      */
     public function ShowPage(){
-        $loader = new Twig_Loader_Filesystem(Config::$template_path);
-        $twig = new Twig_Environment($loader, array(
+        $loader = new FilesystemLoader(Config::$template_path);
+        $twig = new Environment($loader, [
             'cache' => Config::$cache_path,
-        ));
+        ]);
         try {
             $template = $twig->load('notfound.twig');
         } catch (\Exception $e) {
