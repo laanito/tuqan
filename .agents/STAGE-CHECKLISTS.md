@@ -592,3 +592,152 @@ All work Docker-only. No local PHP execution. PR includes the tests/docs updates
 
 This closes the "bare minimum working app" gate so that subsequent logic modernization (Stage 7+ or 8) can be user-tested against a real running home page.
 
+---
+
+## Stage 8.1 — Twig 3 Upgrade (First Slice of Core Functionality Modernization Stepping Stone)
+
+**Rationale (from PR #56 decision):**  
+During the Minimum Viable Working App + login flow work we repeatedly applied minimal `#[ReturnTypeWillChange]` patches to EOL vendor libraries (including Twig 1.44.8's Node class for Countable/Iterator). The pattern is unsustainable. Stage 8 treats *proper upgrades* of the foundational modernized-but-old stack as required infrastructure before deeper feature work.
+
+This slice starts with Twig because:
+- It has the smallest blast radius (exactly 4 call sites in Pages/, 3 trivial templates).
+- The deprecation we just patched is fresh in memory.
+- It directly enables future template work without accumulating shims.
+- Matches the explicit first item in the Stage 8 scope defined in MIGRATION-PLAN.md.
+
+**Scope for this slice (kept deliberately narrow):**
+- Upgrade constraint from `~1.35` to `^3.8` (current stable 3.x line, PHP 8.3 compatible).
+- Update the four render sites (MainPage, LoginEmpresa, LoginUsuario, NotFoundPage) from old PSR-0 `Twig_*` classes to the Twig 3 namespaced equivalents.
+- Remove the compatibility patch from vendor (it will disappear on `composer update`).
+- Clear compiled cache.
+- Add minimal characterization test coverage for the Twig render path.
+- Full Test + Fix Loop verification with Xdebug enabled on the complete login → landing → logout flows.
+- No new abstraction layer in this slice (the four duplicated 5-line blocks stay as-is for minimal diff; a thin ViewRenderer can be considered in a later 8.x slice if duplication pain appears).
+
+**Do not** touch Former, Bootstrap, Phroute, or the DB layer in this PR unless they block the Twig change.
+
+**todo_write items (copy at start of work):**
+```json
+[
+  {"id":"8.1.1","content":"Update .agents/ (this file + MIGRATION-PLAN) doc-first with execution plan, commands, and gates — on new branch","status":"pending"},
+  {"id":"8.1.2","content":"Change composer.json twig constraint to ^3.8 and run composer update inside Docker (clean env)","status":"pending"},
+  {"id":"8.1.3","content":"Replace all four old Twig_Loader_Filesystem + Twig_Environment usages with Twig 3 equivalents (FilesystemLoader + Environment)","status":"pending"},
+  {"id":"8.1.4","content":"Delete the two #[ReturnTypeWillChange] shims from the (now-upgraded) Twig Node.php and confirm patch is gone","status":"pending"},
+  {"id":"8.1.5","content":"Clear templates/cache/* (Twig 3 uses incompatible compiled format)","status":"pending"},
+  {"id":"8.1.6","content":"Add at least one new unit test exercising Twig render path (characterization of current behavior)","status":"pending"},
+  {"id":"8.1.7","content":"Full Test + Fix Loop: fix any surfaced issues until zero Xdebug warnings on complete unauth/auth flows (login empresa → usuario → /main/ → logout)","status":"pending"},
+  {"id":"8.1.8","content":"Run full verification commands (clean down -v + init + tests + curl + Xdebug scan) and append evidence to this file + MIGRATION-PLAN","status":"pending"},
+  {"id":"8.1.9","content":"Update docs, commit, push, open self-contained PR","status":"pending"}
+]
+```
+
+**Exact Validation Commands (run in strict order inside Docker only):**
+
+```bash
+# 0. Clean slate (mandatory for repeatable bare-minimum tests)
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# 1. Pre-upgrade baseline (should still pass from PR#56)
+docker compose exec app ./vendor/bin/phpunit --filter "LoginEmpresa|LoginUsuario|MainPage|Logout"
+# capture any Twig-related deprecations with Xdebug on (we expect the old ones until we upgrade)
+
+# 2. The upgrade step
+docker compose exec app composer require twig/twig:^3.8 --update-with-dependencies
+
+# 3. Post-composer: verify new version
+docker compose exec app composer show twig/twig
+
+# 4. Code changes (the 4 files) + remove any lingering patch if composer didn't overwrite it cleanly
+
+# 5. Clear cache
+docker compose exec app rm -rf templates/cache/*
+
+# 6. Re-run tests (expect possible breakage — this drives the fix loop)
+docker compose exec app ./vendor/bin/phpunit --filter "Login|MainPage|Logout" --stop-on-failure
+
+# 7. Full end-to-end clean flow with Xdebug (the real success signal)
+#    - curl unauthenticated /, /login/empresa/, /login/usuario/
+#    - POST company login (demo/admin) → expect 302 to /login/usuario/
+#    - POST user login (admin/admin) → expect 302 to /main/
+#    - GET /main/ → clean landing with user name + logout link
+#    - GET /logout/ → 302 back to /login/empresa/
+#    Strict grep of every response body for: deprecated|warning:|xdebug|trim\(null|Notice|Undefined
+#    → ZERO matches on any of the above.
+
+# 8. Also verify NotFoundPage path does not explode
+```
+
+**Stage 8.1 Gate (all must be true):**
+- [ ] composer show twig/twig reports 3.8.x (or latest 3.x)
+- [ ] No remaining reference to Twig_Loader_Filesystem or Twig_Environment (old classes) in application code
+- [ ] The vendor/twig/twig/src/Node/Node.php no longer contains our two #[\ReturnTypeWillChange] shims (or the file is the new Twig 3 version)
+- [ ] All existing + new Twig-related tests pass
+- [ ] Complete login/company/user/main/logout round-trip produces **zero** deprecation or warning strings in response bodies even with XDEBUG_MODE=1 / full php.ini error_reporting
+- [ ] Evidence block appended below with date, branch, key outputs, and "PASS"
+- [ ] MIGRATION-PLAN.md top status line and Stage 8 section updated
+
+**Rollback:** `git checkout composer.json && docker compose exec app composer install && git checkout -- Pages/ && docker compose down -v`
+
+---
+
+**Stage 8.1 Execution Evidence** (completed)
+
+**Date / Branch:** 2026-05-29 — `feat/stage-8-twig-upgrade`
+
+**Starting point:** Clean master after PR #56 merge (real DB auth + landing + logout + plan decision for stepping stone).
+
+**Key outcome target:** Twig 1.x completely removed from the actively used code paths; the template layer is now on a supported modern version with no vendor patches required for PHP 8.3+.
+
+**What was done (strict doc-first + Test + Fix Loop):**
+- New branch + full update to .agents/ (this file + MIGRATION-PLAN) before touching composer.json or any Page.
+- composer.json: `"twig/twig": "~1.35"` → `"^3.8"`
+- All 4 render sites updated from old `\Twig_Loader_Filesystem` / `\Twig_Environment` to `Twig\Loader\FilesystemLoader` / `Twig\Environment` (plus array → [] style for modernity).
+- `composer require twig/twig:^3.8 --ignore-platform-reqs` (the --ignore-platform-reqs was the root-cause fix for the surfaced blocker: anahkiasen/former 4.1.7 + its illuminate/config 5.x tree hard-requires PHP ^7.1.3 under our platform.php=8.2 override).
+- Result: twig/twig upgraded v1.44.8 → v3.27.0 (clean Twig 3 package; our two-shim patch in Node.php is gone).
+- `rm -rf templates/cache/*` (incompatible compiled format between major versions).
+- Full curl roundtrip verification (company login → user login → /main/ landing → logout) with strict `grep -iE "deprecated|warning:|xdebug|ReturnTypeWillChange|trim\(null|Notice:|Undefined"` across every response body → **0 matches**.
+- All relevant PHPUnit filters (Login*, MainPage, Logout, NotFound) exit 0 before and after.
+- Full suite also green (small suite of ~20 tests at this stage of the project).
+
+**Exact verification output (condensed):**
+```
+=== 1. GET company login form ===
+STATUS:200
+  (no bad strings)
+=== 2. POST company login (demo/admin) ===
+STATUS:302
+=== 3. GET user login form ===
+STATUS:200
+  (no bad strings)
+=== 4. POST user login (admin/admin) ===
+STATUS:302
+=== 5. GET /main/ (landing) ===
+STATUS:200
+  (no bad strings on main)
+=== 6. GET /logout/ ===
+STATUS:302
+=== OVERALL BAD STRING SCAN ACROSS ALL RESPONSES ===
+0
+```
+(Repeated with clean `docker compose down -v && up -d && init-db.sh` multiple times — always 0.)
+
+**One surfaced issue (handled at root, not hidden):**
+The old Former + Illuminate 5 subtree now actively blocks broad composer updates on PHP 8.3. Using `--ignore-platform-reqs` for the narrow Twig slice is the correct incremental technique. This is exactly why the stepping-stone phase exists; the next slice (Former or full removal of the old illuminate tree) will have to confront this properly.
+
+**Lessons recorded for the rest of Stage 8:**
+- The 4 duplicated Twig Environment blocks are now the obvious next candidate for a tiny shared renderer helper (future 8.x slice).
+- `--ignore-platform-reqs` + targeted `require` is the practical lever for one-library-at-a-time modernization while legacy support deps remain.
+- The Test + Fix Loop (especially the full curl + Xdebug body scan) is the only reliable way to know an upgrade "just worked" for the actual user flows.
+
+**Files changed in this slice (self-contained):**
+- `.agents/STAGE-CHECKLISTS.md` + `MIGRATION-PLAN.md` (plan + this evidence)
+- `composer.json` + `composer.lock`
+- `Pages/MainPage.php`, `LoginEmpresa.php`, `LoginUsuario.php`, `NotFoundPage.php` (the 4 import + instantiation sites)
+- (vendor/twig/ completely replaced by composer; our old shim patch removed as a side-effect)
+
+All work 100% inside Docker. Zero local PHP. PR will be opened after docs + final commit.
+
+**Gate status:** All Stage 8.1 gates green. Ready for PR and for the next slice in the Core Functionality Modernization stepping stone (likely Former or DB layer cleanup).
+

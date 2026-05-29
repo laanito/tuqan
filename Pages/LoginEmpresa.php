@@ -4,8 +4,8 @@ namespace Tuqan\Pages;
 
 use Tuqan\Classes\Config;
 use Former\Facades\Former as Former;
-use \Twig_Loader_Filesystem;
-use \Twig_Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\Environment;
 
 class LoginEmpresa
 {
@@ -115,8 +115,8 @@ class LoginEmpresa
             $Formulario.= Former::close();
 
             Config::initialize();
-            $loader = new Twig_Loader_Filesystem(Config::$template_path);
-            $twig = new Twig_Environment($loader, array('cache' => Config::$cache_path));
+            $loader = new FilesystemLoader(Config::$template_path);
+            $twig = new Environment($loader, ['cache' => Config::$cache_path]);
 
             $template = $twig->load('login.twig');
             return $template->render(array(

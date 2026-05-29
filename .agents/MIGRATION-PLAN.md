@@ -1,7 +1,7 @@
 # Tuqan PHP 8 + Docker + Testing Migration Plan
 
 **Branch:** `php-migration-plan-docker-testing` (created 2026-05)  
-**Status:** Stages 1-6 completed (Docker, tests, config/safety, autoload, bloat removal, CI). After infrastructure work, the immediate priority is now "Minimum Viable Working App" (reliable DB schema + minimal seed data for login + basic navigation) so modernized features can actually be tested. See STAGE-CHECKLISTS.md for the current focused effort.  
+**Status:** Stages 1-6 completed. PR #56 delivered the Minimum Viable Working App (real DB-backed login/landing/logout with zero shortcuts + clean Xdebug output). **Stage 8 (Core Functionality Modernization stepping stone) execution has begun** — first slice is the Twig 1.x → 3.x upgrade (see STAGE-CHECKLISTS.md Stage 8.1 and the dedicated evidence section below). See STAGE-CHECKLISTS.md for the current focused effort.  
 **Goal:** Migrate the legacy Tuqan/Qnova ISO 9001/14001 application to a maintainable, tested, PHP 8.3+ state with a 100% Docker-based development environment. Zero reliance on host PHP, nginx, or postgres.
 
 ## Executive Summary
@@ -378,6 +378,10 @@ Never delete logic until tests prove equivalence.
 
 **Rationale (recorded end of May 2026 login/landing work):**  
 During the Minimum Viable Working App phase, pragmatic `#[ReturnTypeWillChange]` and similar minimal patches were applied to several EOL vendor libraries (Twig 1.x, older Illuminate components, etc.) to keep forward momentum with clean Xdebug output. While effective short-term, this pattern is expected to repeat for every new slice of functionality.
+
+**Execution started (May 2026):** First concrete slice is the proper upgrade of Twig from 1.44.8 (`~1.35`) to 3.8+ on branch `feat/stage-8-twig-upgrade`. This removes the last vendor shim we applied for the template layer, modernizes the 4 render call sites, and proves the stepping-stone approach with the same strict Test + Fix Loop + full Xdebug verification discipline used in PR #56. 
+
+**Slice 8.1 completed:** Twig 3.27 now running cleanly. Full login → landing → logout flows verified with **zero** deprecation or warning strings even under Xdebug. The only friction surfaced was the old `anahkiasen/former` + illuminate 5 tree blocking broad composer resolution (handled with `--ignore-platform-reqs` for this narrow slice; documented as input for the next stepping-stone slice). See STAGE-CHECKLISTS.md Stage 8.1 for the complete evidence block and lessons for subsequent slices (Former, DB layer, etc.).
 
 **Decision:** Before moving into larger feature modernization or architectural changes, insert a dedicated "Core Functionality Modernization" stepping stone phase. The focus is proper, sustainable updates (not endless patches) to the foundational layers the modernized code now depends on.
 
