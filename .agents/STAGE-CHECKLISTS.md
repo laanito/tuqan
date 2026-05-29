@@ -764,9 +764,15 @@ On branch `feat/stage-8-composer-deps-modernization`:
 - No user-visible errors or Xdebug tables in responses
 
 **Current state of the stepping stone:**
-The dependency tree is now significantly more modern. Residual noise is limited to the deep Illuminate baggage still carried by Former 5 (a known limitation until a fuller Former replacement or Illuminate upgrade is done in a later slice).
+The dependency tree is now significantly more modern. 
 
-This represents a very strong completion of the "modernize the composer dependencies" goal before returning to new functionality.
+**Illuminate floor decision (play safe approach):**
+Added explicit root constraint `"illuminate/support": "^8.0"`.
+- This forces Illuminate 8.83.27 (instead of the previous 5.5.44 that Former 5.2 was happily resolving to).
+- Result after clean verification: **0** ReturnType deprecations across the entire login → main → logout flow.
+- This is the minimal modern floor that completely eliminates the deprecation noise without jumping all the way to Illuminate 13 (as allowed by Former's loose constraints).
+
+This keeps the change conservative while solving the core issue.
 
 **Additional defensive improvement made during the same branch (before PR review):**
 During final verification the user reported that `/main/` still rendered the cloud "404" animation (HTTP 200 serving NotFoundPage content) after a successful browser login flow — the exact same behavior that existed before the Twig upgrade.
