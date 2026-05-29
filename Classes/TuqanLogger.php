@@ -84,7 +84,7 @@ class TuqanLogger
     public static function debug($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addDebug($message, $context);
+        self::$logger->debug($message, $context);
     }
 
     /**
@@ -94,7 +94,7 @@ class TuqanLogger
     public static function warning($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addWarning($message, $context);
+        self::$logger->warning($message, $context);
     }
 
     /**
@@ -104,7 +104,7 @@ class TuqanLogger
     public static function alert($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addAlert($message, $context);
+        self::$logger->alert($message, $context);
     }
 
     /**
@@ -114,7 +114,7 @@ class TuqanLogger
     public static function critical($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addCritical($message, $context);
+        self::$logger->critical($message, $context);
     }
 
     /**
@@ -124,7 +124,7 @@ class TuqanLogger
     public static function emergency($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addEmergency($message, $context);
+        self::$logger->emergency($message, $context);
     }
 
     /**
@@ -134,7 +134,7 @@ class TuqanLogger
     public static function error($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addError($message, $context);
+        self::$logger->error($message, $context);
     }
 
     /**
@@ -144,7 +144,7 @@ class TuqanLogger
     public static function info($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addInfo($message, $context);
+        self::$logger->info($message, $context);
     }
 
     /**
@@ -154,6 +154,6 @@ class TuqanLogger
     public static function notice($message, array $context = array())
     {
         self::initialize();
-        self::$logger->addNotice($message, $context);
+        self::$logger->notice($message, $context);
     }
 }
