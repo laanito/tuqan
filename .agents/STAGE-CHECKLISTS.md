@@ -741,3 +741,23 @@ All work 100% inside Docker. Zero local PHP. PR will be opened after docs + fina
 
 **Gate status:** All Stage 8.1 gates green. Ready for PR and for the next slice in the Core Functionality Modernization stepping stone (likely Former or DB layer cleanup).
 
+**Additional defensive improvement made during the same branch (before PR review):**
+During final verification the user reported that `/main/` still rendered the cloud "404" animation (HTTP 200 serving NotFoundPage content) after a successful browser login flow — the exact same behavior that existed before the Twig upgrade.
+
+Root cause (pre-existing): After user login sets `$_SESSION['idioma']`, `MainPage::crea_Menu_Superior()` would proceed to instantiate the legacy `arbol_listas` class, which immediately runs a complex menu query against the minimal seed DB (missing `menu_nuevo` / `menu_idiomas_nuevo` tables + `permisos` array columns). Any exception was swallowed by the top-level catch in `index.php` and turned into `NotFoundPage` (still 200 status).
+
+Fix (exactly as requested): Added a tight try/catch + result guard around the legacy `arbol_listas` block inside `crea_Menu_Superior()`. On any failure (exception, empty result, missing tables, etc.) it now returns a small, clean, non-warning fallback nav item:
+
+```html
+<ul class="nav navbar-nav"><li><a href="#" title="Menú completo disponible cuando la base de datos esté poblada">(Menú)</a></li></ul>
+```
+
+- The real landing page (`main.twig`) now renders correctly (UserName, "Bienvenido a Tuqan...", logout link).
+- Zero additional Xdebug noise or bad strings introduced.
+- The original powerful menu code path remains 100% intact and will automatically activate once a fuller database with the menu tables is used.
+- Debug log (via TuqanLogger) is emitted at debug level so developers can see exactly why the minimal menu appeared.
+
+This change was verified with the project's strict protocol (clean `down -v`, full host curl login flow to :8080, comprehensive bad-string scan across every response) and produced the expected clean result: 0 bad strings, real landing content, graceful fallback in the submenu area.
+
+The Twig 3 upgrade + this small defensive menu fallback together make the post-login experience actually usable on the current minimal seed while preserving the path to the real functionality.
+
