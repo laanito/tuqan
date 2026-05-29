@@ -10,6 +10,38 @@ require_once 'vendor/autoload.php';
 require_once 'HTML/TreeMenu.php';
 require_once 'Pager/Pager.php';
 
+/**
+ * Minimal Illuminate routing bindings required when using
+ * modern Illuminate packages (8+) alongside Former 5.x.
+ * Former explicitly does $app->bindIf('url', 'Illuminate\Routing\UrlGenerator')
+ * which then requires RouteCollectionInterface.
+ */
+$illuminateContainer = \Illuminate\Container\Container::getInstance();
+
+// Bind the interface that UrlGenerator depends on
+$illuminateContainer->bindIf(\Illuminate\Routing\RouteCollectionInterface::class, function () {
+    return new \Illuminate\Routing\RouteCollection();
+});
+
+// Bind the 'url' string that Former looks for
+$illuminateContainer->bindIf('url', function ($app) {
+    $routes = $app[\Illuminate\Routing\RouteCollectionInterface::class];
+    $request = $app->bound('request')
+        ? $app['request']
+        : \Illuminate\Http\Request::createFromGlobals();
+
+    return new \Illuminate\Routing\UrlGenerator($routes, $request);
+});
+
+// Also bind the concrete class for good measure
+$illuminateContainer->bindIf(\Illuminate\Routing\UrlGenerator::class, 'url');
+
+// Initialize Former early with our container.
+// This prevents Former from creating its own empty Container() later
+// (see FormerServiceProvider::make), which was causing the
+// RouteCollectionInterface resolution failure.
+\Former\FormerServiceProvider::make($illuminateContainer);
+
 
 /**
  * Forms

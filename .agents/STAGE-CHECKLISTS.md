@@ -741,6 +741,39 @@ All work 100% inside Docker. Zero local PHP. PR will be opened after docs + fina
 
 **Gate status:** All Stage 8.1 gates green. Ready for PR and for the next slice in the Core Functionality Modernization stepping stone (likely Former or DB layer cleanup).
 
+**Stage 8.2 — Initial execution results (June 2026)**
+
+On branch `feat/stage-8-composer-deps-modernization`:
+
+**Upgrades performed:**
+- monolog/monolog: 1.27.1 → 2.11.0
+- phroute/phroute: 2.1.0 → 2.2.0 (also removed the two custom PHP 8.1+ trim(null) shims we had previously added, as 2.2.0 has its own defensive handling)
+- setasign/fpdf: 1.8.1 → 1.8.6
+- anahkiasen/former: 4.1.7 → 5.2.0
+- jasny/auth: v1.0.1 → v2.2.1
+
+**Code adaptation required:**
+- `TuqanLogger` updated for Monolog 2 (removed old add* shortcut methods).
+- Extensive `#[ReturnTypeWillChange]` patches applied across the Illuminate (and some Symfony) classes still pulled in by Former 5 to eliminate ReturnType deprecations on ArrayAccess/Countable/etc.
+
+**Verification after final noise-hunting round (strict protocol):**
+- Full host curl flow after clean `down -v + init`
+- 5728-byte correct landing page on /main/ with user name visible
+- Only **2** residual deprecation strings across the entire flow (down from 100+), concentrated in one Container call path.
+- Relevant PHPUnit filters all green
+- No user-visible errors or Xdebug tables in responses
+
+**Current state of the stepping stone:**
+The dependency tree is now significantly more modern. 
+
+**Illuminate floor decision (play safe approach):**
+Added explicit root constraint `"illuminate/support": "^8.0"`.
+- This forces Illuminate 8.83.27 (instead of the previous 5.5.44 that Former 5.2 was happily resolving to).
+- Result after clean verification: **0** ReturnType deprecations across the entire login → main → logout flow.
+- This is the minimal modern floor that completely eliminates the deprecation noise without jumping all the way to Illuminate 13 (as allowed by Former's loose constraints).
+
+This keeps the change conservative while solving the core issue.
+
 **Additional defensive improvement made during the same branch (before PR review):**
 During final verification the user reported that `/main/` still rendered the cloud "404" animation (HTTP 200 serving NotFoundPage content) after a successful browser login flow — the exact same behavior that existed before the Twig upgrade.
 
@@ -760,4 +793,54 @@ Fix (exactly as requested): Added a tight try/catch + result guard around the le
 This change was verified with the project's strict protocol (clean `down -v`, full host curl login flow to :8080, comprehensive bad-string scan across every response) and produced the expected clean result: 0 bad strings, real landing content, graceful fallback in the submenu area.
 
 The Twig 3 upgrade + this small defensive menu fallback together make the post-login experience actually usable on the current minimal seed while preserving the path to the real functionality.
+
+---
+
+## Stage 8.2 — Composer Dependencies Modernization (Core of the Stepping Stone)
+
+**Rationale:** After completing the first narrow slice (Twig) and the defensive menu fallback, the project now executes the bulk of the "Core Functionality Modernization" stepping stone: bringing the remaining runtime composer dependencies to modern, supported versions before investing more effort in new functionality.
+
+This directly addresses the recurring friction observed during the Twig work (ancient Former/illuminate tree blocking broad composer resolution) and the earlier patches required for Phroute (trim(null) deprecation).
+
+**Priority libraries (per explicit request):**
+- phroute/phroute (currently v2.1.0 pinned — had defensive patches for PHP 8.1+)
+- jasny/auth (v1.0.1)
+- monolog/monolog (~1.23)
+
+**Other runtime dependencies to address in the same phase:**
+- anahkiasen/former (4.1.7 — the main composer resolution blocker due to Illuminate 5)
+- setasign/fpdf (1.8.1)
+
+**Approach:**
+- One coordinated effort on a single branch rather than many tiny slices.
+- Use `--ignore-platform-reqs` only where strictly necessary for legacy support libraries (documented transparently).
+- Remove all previous vendor-level compatibility patches once the upstream versions support PHP 8.3+ cleanly.
+- Preserve the strict Test + Fix Loop + full Xdebug + curl verification discipline.
+
+**todo_write items (copy at start of work):**
+```json
+[
+  {"id":"8.2.1","content":"Update .agents/ docs (this file + MIGRATION-PLAN) with detailed execution plan — on new branch from master","status":"pending"},
+  {"id":"8.2.2","content":"Audit current installed versions and any remaining vendor patches (phroute RouteCollector, etc.)","status":"pending"},
+  {"id":"8.2.3","content":"Update composer.json constraints to modern supported versions (phroute latest v2, monolog ^2 or ^3, jasny/auth latest, fpdf latest, confront Former)","status":"pending"},
+  {"id":"8.2.4","content":"Run composer require/update inside clean Docker (use --ignore-platform-reqs only where needed for Former/illuminate)","status":"pending"},
+  {"id":"8.2.5","content":"Remove all old vendor patches (phroute trim shim, any others) that are no longer required after upstream upgrades","status":"pending"},
+  {"id":"8.2.6","content":"Adapt application code for any BC breaks in the upgraded libraries (especially Monolog 2/3 handler/logger changes, Phroute if any)","status":"pending"},
+  {"id":"8.2.7","content":"Full Test + Fix Loop: resolve any surfaced issues until zero Xdebug warnings on complete login → /main/ → logout flows","status":"pending"},
+  {"id":"8.2.8","content":"Run full verification (clean down -v + init + tests + host curl flows + strict bad-string scan) and append rich evidence","status":"pending"},
+  {"id":"8.2.9","content":"Update docs, commit, push, open self-contained PR","status":"pending"}
+]
+```
+
+**Success Gates:**
+- All targeted libraries upgraded to modern maintained versions (or explicitly documented why a library was left behind / replaced).
+- No remaining custom `#[ReturnTypeWillChange]` or trim(null) shims in vendor for the upgraded packages.
+- Full unauth + auth flows (company login → user login → /main/ → logout) produce **zero** deprecation/warning/Xdebug strings.
+- Full test suite green.
+- Evidence appended to this file and MIGRATION-PLAN.md.
+
+**Rollback:** `git checkout composer.json && docker compose exec app composer install && git checkout -- . && docker compose down -v`
+
+**Next slice after this:** Former modernization or replacement (or full removal of the old Illuminate subtree) will likely be its own focused follow-up within Stage 8, as it has the highest surface area and risk.
+
 

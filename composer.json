@@ -10,13 +10,14 @@
     }
   ],
   "require": {
-    "setasign/fpdf": "1.8.1",
-    "phroute/phroute": "v2.1.0",
-    "jasny/auth": "v1.0.1",
+    "setasign/fpdf": "^1.8.2",
+    "phroute/phroute": "^2.1.0",
+    "jasny/auth": "^2.0",
     "twig/twig": "^3.8",
-    "monolog/monolog": "~1.23",
+    "monolog/monolog": "^2.9",
     "ext-gettext": "*",
-    "anahkiasen/former": "4.1.7",
+    "anahkiasen/former": "^5.0",
+    "illuminate/support": "^8.0",
     "ext-pdo_pgsql": "*",
     "ext-pdo": "*",
     "ext-gd": "*"
