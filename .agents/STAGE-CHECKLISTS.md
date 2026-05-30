@@ -841,6 +841,120 @@ This directly addresses the recurring friction observed during the Twig work (an
 
 **Rollback:** `git checkout composer.json && docker compose exec app composer install && git checkout -- . && docker compose down -v`
 
-**Next slice after this:** Former modernization or replacement (or full removal of the old Illuminate subtree) will likely be its own focused follow-up within Stage 8, as it has the highest surface area and risk.
+**Next slice after this:** Stage 8.3 (gettext activation + English scaffolding, remove remaining login hardcodes, menu data import "as-is" from legacy dumps, working post-login menu). Former modernization is explicitly deferred per user direction until we actually reach form-using pages.
 
+
+---
+## Stage 8.3 — Gettext, 100% DB-Driven Login, Menu Data "As-Is", Working Post-Login Menu
+
+**Rationale (user directive after 8.2 merge):**  
+With the full composer dependency modernization complete and the app on a clean, modern foundation (zero deprecation noise on the core login→landing→logout flow), it is time to move from "minimum viable" to "actually usable core navigation". The four priorities are the direct next blockers before meaningful business functionality work can begin.
+
+**User-approved scope + explicit decisions:**
+- Login must become 100% database-driven (remove last `demo`/`admin` shortcuts).
+- Gettext must actually work (currently broken silently) + English translation scaffolding started.
+- Menu data must be imported from the legacy database "as-is" so the existing powerful `arbol_listas` generator works without changes to its data model or logic. Only regroup if hard blockers appear.
+- Result: a real working menu after login (retire the defensive fallback added in 8.2).
+
+**Additional enablers added to the plan (agent proposal, user accepted):**
+- Gettext infrastructure hardening (Docker locale generation + include.php consistency).
+- Lightweight incremental data migration mechanism (so future menu rows, reference data, etc. can be added without re-running the entire seed every time).
+
+**Approach (mandatory rules apply):**
+- Doc-first (this section + MIGRATION-PLAN.md updated before any implementation code).
+- Strict "Test + Fix Loop — Root Cause Over Symptom Hiding".
+- All work inside Docker only.
+- Characterization tests + curl flows + full Xdebug scans as primary verification.
+- Self-contained PR with rich evidence.
+
+**todo_write items (copy at start of implementation work):**
+```json
+[
+  {"id":"8.3.1","content":"Update .agents/ (this file + MIGRATION-PLAN.md) doc-first on new branch from master — DONE (this section)","status":"completed"},
+  {"id":"8.3.2","content":"Fix gettext activation: make setlocale succeed reliably in the Docker image + confirm Spanish strings appear","status":"pending"},
+  {"id":"8.3.3","content":"Create English translation scaffolding (Locale/en_US/LC_MESSAGES/qnova.po + .mo) + basic strings for login + main pages","status":"pending"},
+  {"id":"8.3.4","content":"Remove remaining hardcoded demo/admin shortcuts in LoginEmpresa::ProcesaPagina and LoginUsuario::ProcesaPagina; drive with tests + curl","status":"pending"},
+  {"id":"8.3.5","content":"Design + implement minimal incremental data migration mechanism (tracking table + runner for new reference data)","status":"pending"},
+  {"id":"8.3.6","content":"Extract real menu data (menu_nuevo + menu_idiomas_nuevo rows with permissions + translations) from legacy dump (qnova.backup or qnovaintegraldumpvacio) into versioned seed / migration files","status":"pending"},
+  {"id":"8.3.7","content":"Load the as-is menu data on init; verify the legacy arbol_listas generator produces a real multi-level menu after login","status":"pending"},
+  {"id":"8.3.8","content":"Retire (or make conditional) the defensive menu fallback in MainPage::crea_Menu_Superior once real data works","status":"pending"},
+  {"id":"8.3.9","content":"Full Test + Fix Loop: zero Xdebug noise, all new + existing tests green, complete unauth + auth + menu flows via curl + browser","status":"pending"},
+  {"id":"8.3.10","content":"Append rich evidence (commands, outputs, screenshots if useful), update docs, commit, push, open self-contained PR","status":"pending"}
+]
+```
+
+**Exact Validation Commands (run in strict order inside Docker only):**
+
+```bash
+# 0. Clean slate (mandatory for repeatable verification)
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# 1. Pre-work baseline (should still be clean from 8.2)
+docker compose exec app ./vendor/bin/phpunit --filter "LoginEmpresa|LoginUsuario|MainPage|Logout"
+# Full host curl roundtrip (company login → user login → /main/ → logout) with strict bad-string scan
+
+# 2. Gettext fix iteration
+# (edit Dockerfile + include.php + Locale/ as needed)
+docker compose --env-file .env.docker down -v && docker compose --env-file .env.docker up -d --build
+docker compose exec app ./scripts/init-db.sh
+# Verify inside container: locale -a | grep -E 'es_ES|en_US'
+# Verify gettext actually returns translated strings (curl or small test)
+
+# 3. English scaffolding
+# Add Locale/en_US/... + compile .mo; verify switch or config can activate it
+
+# 4. Login hardcode removal
+docker compose exec app ./vendor/bin/phpunit --filter "Login" --stop-on-failure
+# Host curl: full company + user login flows must succeed using only real DB rows (no 'demo'/'admin' string matches in ProcesaPagina logic)
+
+# 5. Incremental migration + menu data import
+# (new migration files + runner)
+docker compose exec app ./scripts/init-db.sh
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT count(*) FROM menu_nuevo;
+  SELECT count(*) FROM menu_idiomas_nuevo;
+  SELECT id, valor FROM menu_idiomas_nuevo LIMIT 10;
+"
+
+# 6. Working menu verification
+# Host browser or curl after full login: the <ul class="nav navbar-nav"> must contain real multi-level menu items (not the "(Menú)" placeholder)
+# Xdebug scan of /main/ response must contain zero deprecation/warning strings
+
+# 7. Final clean verification (repeatable)
+docker compose down -v
+docker compose up -d
+docker compose exec app ./scripts/init-db.sh
+# Run full relevant test filter
+# Full host curl login → /main/ flow + strict grep for bad strings across every response body
+```
+
+**Stage 8.3 Gate (all must be true before claiming done):**
+- [ ] Gettext is active: Spanish strings appear in login + main pages (no raw keys visible).
+- [ ] Basic English .po/.mo exists and can be activated (at minimum login + main landing strings translated).
+- [ ] No remaining `if ($companyKey === 'demo')` or `if ($username === 'admin')` bypasses in the two Login* ProcesaPagina methods.
+- [ ] Real menu data (multiple rows with hierarchy, permissions arrays, and idioma translations) is loaded via the incremental mechanism.
+- [ ] After successful login, /main/ renders a real multi-level menu generated by the legacy arbol_listas path (not the defensive fallback).
+- [ ] Complete unauth + auth + post-login menu flows produce **zero** deprecation/warning/Xdebug strings in response bodies.
+- [ ] All relevant PHPUnit tests (existing Login*/MainPage + any new characterization tests) are green.
+- [ ] Evidence block appended below + MIGRATION-PLAN.md updated.
+- [ ] Self-contained PR opened.
+
+**Rollback:**  
+`git checkout . && docker compose --env-file .env.docker down -v && docker compose --env-file .env.docker up -d && docker compose exec app ./scripts/init-db.sh`
+
+---
+
+**Stage 8.3 Execution Evidence** (to be appended after completion)
+
+**Date / Branch:** 2026-06 — `feat/stage-8.3-gettext-login-menu-data`
+
+**Starting point:** Clean master after Stage 8.2 merge (full composer modernization + zero deprecation noise on core flows).
+
+**Key outcome target:** The application has working localization (Spanish active, English scaffolding present) and a real, usable menu after login driven by legacy data imported as-is.
+
+**Evidence will be captured here using the exact commands above + strict bad-string scans.**
+
+---
 

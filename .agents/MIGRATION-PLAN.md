@@ -1,7 +1,7 @@
 # Tuqan PHP 8 + Docker + Testing Migration Plan
 
 **Branch:** `php-migration-plan-docker-testing` (created 2026-05)  
-**Status:** Stages 1-6 completed. PR #56 delivered the Minimum Viable Working App (real DB-backed login/landing/logout with zero shortcuts + clean Xdebug output). **Stage 8 (Core Functionality Modernization stepping stone) execution has begun** — first slice is the Twig 1.x → 3.x upgrade (see STAGE-CHECKLISTS.md Stage 8.1 and the dedicated evidence section below). See STAGE-CHECKLISTS.md for the current focused effort.  
+**Status:** Stages 1-6 completed. PR #56 delivered the Minimum Viable Working App (real DB-backed login/landing/logout with zero shortcuts + clean Xdebug output). **Stage 8 (Core Functionality Modernization stepping stone) completed** — Twig 3 (8.1) + full composer dependency modernization (8.2: Monolog 2, Phroute 2.2, jasny/auth 2.2, Former 5.2 + Illuminate 8 floor, fpdf, all vendor shims removed). **Stage 8.3 now active** on `feat/stage-8.3-gettext-login-menu-data`: gettext fix + English scaffolding, 100% DB-driven login (remove last hardcodes), menu data import "as-is" from legacy dumps, and working post-login menu. See STAGE-CHECKLISTS.md Stage 8.3 for the detailed plan.  
 **Goal:** Migrate the legacy Tuqan/Qnova ISO 9001/14001 application to a maintainable, tested, PHP 8.3+ state with a 100% Docker-based development environment. Zero reliance on host PHP, nginx, or postgres.
 
 ## Executive Summary
@@ -383,7 +383,19 @@ During the Minimum Viable Working App phase, pragmatic `#[ReturnTypeWillChange]`
 
 **Slice 8.1 completed:** Twig 3.27 now running cleanly. Full login → landing → logout flows verified with **zero** deprecation or warning strings even under Xdebug. The only friction surfaced was the old `anahkiasen/former` + illuminate 5 tree blocking broad composer resolution (handled with `--ignore-platform-reqs` for this narrow slice; documented as input for the next stepping-stone slice).
 
-**Stage 8.2 execution started (June 2026):** Comprehensive modernization of the remaining runtime composer dependencies on branch `feat/stage-8-composer-deps-modernization`. Priority targets: phroute, jasny/auth, monolog (plus fpdf and confrontation of the Former/illuminate blocker). Goal: remove the last major sources of vendor patches and composer resolution pain before investing further in application functionality. See STAGE-CHECKLISTS.md for the detailed 8.2 plan and upcoming evidence.
+**Stage 8.2 completed (June 2026):** Comprehensive modernization of the remaining runtime composer dependencies on branch `feat/stage-8-composer-deps-modernization`. Upgrades: monolog 1→2, phroute 2.1→2.2 (old trim(null) shims removed), jasny/auth 1→2.2, anahkiasen/former 4→5.2, setasign/fpdf, plus explicit root `illuminate/support: ^8.0` floor. All prior vendor `#[ReturnTypeWillChange]` and trim patches removed where upstream now supports PHP 8.3+. Full login → /main/ → logout flows verified with zero deprecation/warning strings under Xdebug. See STAGE-CHECKLISTS.md for full evidence.
+
+**Stage 8.3 execution (current):** On branch `feat/stage-8.3-gettext-login-menu-data`. Four explicit priorities (user-approved):
+1. Make the login flow 100% database-driven — remove the remaining `demo`/`admin` hardcoded shortcuts in `LoginEmpresa::ProcesaPagina` and `LoginUsuario::ProcesaPagina` so the real seeded DB (qnova_acl, qnova_bbdd, usuarios, perfiles) is the only path.
+2. Fix gettext activation (currently silent failure) + prepare English translation scaffolding.
+3. Retrieve real menu data from the legacy database dump (`archive/db-dumps/qnova.backup` / scripts dumps) and load it "as-is" into the current `menu_nuevo` + `menu_idiomas_nuevo` tables so the existing legacy `arbol_listas` generator (in Classes/generador_arboles.php) works without modification.
+4. Deliver a working post-login menu (retire the defensive fallback in `MainPage::crea_Menu_Superior` once real data is present).
+
+**User clarifications recorded for this slice:**
+- Menu strategy: Import and exercise the legacy data model as-is first. Only regroup and redesign if hard blockers appear.
+- Former: Explicitly deferred. No forms are reached in this phase; modernization only makes sense after we can actually exercise the form-using pages.
+
+**Approach:** Same strict discipline as prior slices — doc-first, Test + Fix Loop (tests + curl + full Xdebug body scans), Docker-only, self-contained PR with evidence in both .agents/ files.
 
 **Decision:** Before moving into larger feature modernization or architectural changes, insert a dedicated "Core Functionality Modernization" stepping stone phase. The focus is proper, sustainable updates (not endless patches) to the foundational layers the modernized code now depends on.
 
@@ -412,9 +424,11 @@ This phase is explicitly positioned as **pre-requisite infrastructure** before S
 - Stage 4 (Autoload): Weeks 5-6
 - Stage 5 (Cleanup): Weeks 7-9
 - Stage 6 (CI): Week 10
-- Stage 7 (Minimum Viable + Incremental Logic): Ongoing (current focus)
-- Stage 8 (Core Functionality Modernization stepping stone): Before major new feature work
-- Stage 9+: Deeper modernization and polish (after the stepping stone)
+- Stage 7 (Minimum Viable + Incremental Logic): Completed (PR #56)
+- Stage 8.1 (Twig 3 upgrade): Completed
+- Stage 8.2 (Full composer dependency modernization): Completed
+- Stage 8.3 (Gettext, 100% DB login, menu data "as-is", working post-login menu): Current focus (see STAGE-CHECKLISTS.md)
+- Stage 9+: Deeper business logic modernization and UI/dep polish (after the stepping stone)
 
 **Buffer:** 2-4 weeks for surprises (legacy surprises always appear).
 
@@ -452,5 +466,5 @@ After each stage gate, append a "Stage N — Completed Evidence" section to this
 ---
 
 **Plan Owner:** This session's agent + future agents following AGENTS.md  
-**Last Updated:** 2026-05 (plan creation)  
-**Approval Status:** Pending user review of this document and STAGE-CHECKLISTS.md
+**Last Updated:** 2026-06 (Stage 8.2 completed + 8.3 plan approved on feat/stage-8.3-gettext-login-menu-data)  
+**Approval Status:** Stage 8.3 plan reviewed and approved by user (menu "as-is" first; Former deferred until form pages are reached)
