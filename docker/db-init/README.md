@@ -45,9 +45,28 @@ This uses **only** the verified minimal files (`00-minimal-schema.sql` + `01-min
 
 The automatic Postgres init mechanism is disabled (the `00-apply-schema.sh` is now a safe no-op, and the mount is removed from docker-compose.yml).
 
+## Incremental Data Patches (Stage 8.3+)
+
+We now support **incremental reference data** on top of the minimal base:
+
+- New menu branches, additional companies, reference lists, etc. are added as numbered `.sql` files in `data-patches/`.
+- The `init-db.sh` script tracks applied patches in the `data_patches` table.
+- Patches are applied exactly once, in lexical order, and are safe to re-run.
+- This lets us grow the dataset over time without ever blowing away existing developer data.
+
+Example patch layout:
+```
+data-patches/
+  0001-real-menu-from-legacy.sql
+  0002-additional-aspects.sql
+  ...
+```
+
+To add new data: just drop a new `00XX-*.sql` file with `ON CONFLICT DO NOTHING` (or idempotent) statements. Next `init-db.sh` will pick it up.
+
 ## Important Notes
 
 - The large historical dumps (especially the 27 MB backup) are **not** loaded automatically. They live in `archive/db-dumps/` for manual restore when needed.
 - This setup is intentionally minimal so we can test modernized code quickly and safely.
 
-See `.agents/STAGE-CHECKLISTS.md` (Minimum Viable Working App section) for the current plan and evidence.
+See `.agents/STAGE-CHECKLISTS.md` (Stage 8.3) for the current plan and evidence.

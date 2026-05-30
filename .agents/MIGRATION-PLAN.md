@@ -1,7 +1,7 @@
 # Tuqan PHP 8 + Docker + Testing Migration Plan
 
 **Branch:** `php-migration-plan-docker-testing` (created 2026-05)  
-**Status:** Stages 1-6 completed. PR #56 delivered the Minimum Viable Working App (real DB-backed login/landing/logout with zero shortcuts + clean Xdebug output). **Stage 8 (Core Functionality Modernization stepping stone) completed** — Twig 3 (8.1) + full composer dependency modernization (8.2: Monolog 2, Phroute 2.2, jasny/auth 2.2, Former 5.2 + Illuminate 8 floor, fpdf, all vendor shims removed). **Stage 8.3 now active** on `feat/stage-8.3-gettext-login-menu-data`: gettext fix + English scaffolding, 100% DB-driven login (remove last hardcodes), menu data import "as-is" from legacy dumps, and working post-login menu. See STAGE-CHECKLISTS.md Stage 8.3 for the detailed plan.  
+**Status:** Stages 1-6 completed. **Stage 8 (Core Functionality Modernization) largely completed** — Twig 3, full composer modernization, real DB login (no hardcodes), incremental menu data import, working collapsible top menu from real legacy data, and first Phroute action mapping (colon-to-slash + smart legacy fallback). See STAGE-CHECKLISTS.md for evidence. Next major focus: menu-driven population of real module content.  
 **Goal:** Migrate the legacy Tuqan/Qnova ISO 9001/14001 application to a maintainable, tested, PHP 8.3+ state with a 100% Docker-based development environment. Zero reliance on host PHP, nginx, or postgres.
 
 ## Executive Summary
@@ -385,17 +385,25 @@ During the Minimum Viable Working App phase, pragmatic `#[ReturnTypeWillChange]`
 
 **Stage 8.2 completed (June 2026):** Comprehensive modernization of the remaining runtime composer dependencies on branch `feat/stage-8-composer-deps-modernization`. Upgrades: monolog 1→2, phroute 2.1→2.2 (old trim(null) shims removed), jasny/auth 1→2.2, anahkiasen/former 4→5.2, setasign/fpdf, plus explicit root `illuminate/support: ^8.0` floor. All prior vendor `#[ReturnTypeWillChange]` and trim patches removed where upstream now supports PHP 8.3+. Full login → /main/ → logout flows verified with zero deprecation/warning strings under Xdebug. See STAGE-CHECKLISTS.md for full evidence.
 
-**Stage 8.3 execution (current):** On branch `feat/stage-8.3-gettext-login-menu-data`. Four explicit priorities (user-approved):
-1. Make the login flow 100% database-driven — remove the remaining `demo`/`admin` hardcoded shortcuts in `LoginEmpresa::ProcesaPagina` and `LoginUsuario::ProcesaPagina` so the real seeded DB (qnova_acl, qnova_bbdd, usuarios, perfiles) is the only path.
-2. Fix gettext activation (currently silent failure) + prepare English translation scaffolding.
-3. Retrieve real menu data from the legacy database dump (`archive/db-dumps/qnova.backup` / scripts dumps) and load it "as-is" into the current `menu_nuevo` + `menu_idiomas_nuevo` tables so the existing legacy `arbol_listas` generator (in Classes/generador_arboles.php) works without modification.
-4. Deliver a working post-login menu (retire the defensive fallback in `MainPage::crea_Menu_Superior` once real data is present).
+**Stage 8.3 completed (late May 2026):** On branch `feat/stage-8.3-gettext-login-menu-data`.
+- Login flow made 100% database-driven (all hardcodes removed).
+- Gettext fixed + English scaffolding created.
+- Full real menu hierarchy imported "as-is" via new incremental `data-patches/` system.
+- Working collapsible top menu on the modern landing using real legacy data.
+- Legacy `accion` keys automatically translated to Phroute paths (simple colon → slash replacement).
+- Smart fallback so unmapped actions still preserve navigation.
 
-**User clarifications recorded for this slice:**
-- Menu strategy: Import and exercise the legacy data model as-is first. Only regroup and redesign if hard blockers appear.
-- Former: Explicitly deferred. No forms are reached in this phase; modernization only makes sense after we can actually exercise the form-using pages.
+**User clarifications followed:** Menu data imported as-is; Former still deferred.
 
-**Approach:** Same strict discipline as prior slices — doc-first, Test + Fix Loop (tests + curl + full Xdebug body scans), Docker-only, self-contained PR with evidence in both .agents/ files.
+**Planning for Modules (post-8.3 work):**
+The menu is now the primary driver for content population:
+- Modules will be modernized following the actual hierarchy and order present in the imported `menu_nuevo` data.
+- For each major branch, a thin modern layer (Phroute routes + controllers + templates) will be built.
+- Unmapped legacy actions will continue to land on friendly placeholders that keep the menu visible.
+- Goal: turn the menu from "navigation that mostly 404s or shows placeholders" into "navigation that leads to real (even if initially small) functionality", one vertical slice at a time.
+- This replaces previous big-bang attempts with small, testable, menu-driven increments.
+
+See STAGE-CHECKLISTS.md for detailed evidence of 8.3.
 
 **Decision:** Before moving into larger feature modernization or architectural changes, insert a dedicated "Core Functionality Modernization" stepping stone phase. The focus is proper, sustainable updates (not endless patches) to the foundational layers the modernized code now depends on.
 

@@ -73,3 +73,13 @@ CREATE TABLE IF NOT EXISTS menu_idiomas_nuevo (
 -- Basic indexes for the menu (common in the original schema)
 CREATE INDEX IF NOT EXISTS idx_menu_nuevo_padre ON menu_nuevo (padre);
 CREATE INDEX IF NOT EXISTS idx_menu_idiomas_nuevo_menu ON menu_idiomas_nuevo (menu);
+
+-- ============================================================================
+-- Incremental data migration tracking (Stage 8.3+)
+-- Allows adding new reference data (menus, etc.) over time without re-running
+-- the entire seed. Patches are applied exactly once in lexical order.
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS data_patches (
+    filename   TEXT PRIMARY KEY,
+    applied_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);

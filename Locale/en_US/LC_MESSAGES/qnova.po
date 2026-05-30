@@ -1,0 +1,73 @@
+# Tuqan English translation (scaffolding for Stage 8.3)
+# Based on original Spanish .po
+msgid ""
+msgstr ""
+"Project-Id-Version: Tuqan 8.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-01 00:00+0000\n"
+"PO-Revision-Date: 2026-06-01 00:00+0000\n"
+"Last-Translator: Grok Agent\n"
+"Language-Team: Tuqan\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Core login & navigation strings (visible on current modernized pages)
+msgid "sUsuario"
+msgstr "User:"
+
+msgid "sWelcome2"
+msgstr "To access, enter your User name, Password and click the Accept button"
+
+msgid "sIdentEmpresa"
+msgstr "Company identification"
+
+msgid "sIdIncorrecta"
+msgstr "Incorrect identification"
+
+msgid "sEmpresa"
+msgstr "Company:"
+
+msgid "sClave"
+msgstr "Password:"
+
+msgid "sIdentUsuario"
+msgstr "Company user identification:"
+
+msgid "sSelecEmpresa"
+msgstr "Select company"
+
+msgid "sSelecIdioma"
+msgstr "Select language"
+
+msgid "sIdioma"
+msgstr "English"
+
+# Form buttons (used via Former in login pages)
+msgid "Submit"
+msgstr "Submit"
+
+msgid "Reset"
+msgstr "Reset"
+
+# Main landing page (after login)
+msgid "Bienvenido"
+msgstr "Welcome"
+
+# Common actions (used across the app)
+msgid "sPCVolver"
+msgstr "Back"
+
+msgid "sPNVolver"
+msgstr "Back"
+
+msgid "sAccYaCerrada"
+msgstr "Session already closed"
+
+msgid "sAccVerificada"
+msgstr "Session verified"
+
+# Placeholder for future expansion - many more keys exist in the Spanish .po
+# For any untranslated key, gettext will fall back to the msgid (English-like)

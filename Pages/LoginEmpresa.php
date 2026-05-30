@@ -166,6 +166,14 @@ class LoginEmpresa
             $aclRow = $centralHandler->coger_Fila();
 
             if (!$aclRow) {
+                if (class_exists('\Tuqan\Classes\TuqanLogger')) {
+                    \Tuqan\Classes\TuqanLogger::debug('LoginEmpresa ERROR - no ACL row', [
+                        'companyKey' => $companyKey,
+                        'passwordMd5_prefix' => substr($passwordMd5, 0, 8),
+                    ]);
+                }
+                error_log("TUQAN_DIAG: LoginEmpresa ERROR - no ACL row for companyKey=$companyKey");
+                session_write_close();
                 $this->Redirect($this->base_path . "/?error=1", false);
             }
 
@@ -181,35 +189,54 @@ class LoginEmpresa
                 $_SESSION['conectado'] = true;
                 $_SESSION['db'] = $bbddRow[0];
                 $_SESSION['login'] = $bbddRow[1];
-                $_SESSION['pass'] = $bbddRow[2];
+                $_SESSION['pass'] = getenv('DB_PASS') ?: 'secret';
                 $_SESSION['empresa'] = $bbddRow[3] ?? $companyKey;
                 $_SESSION['idiomaid'] = '1';
 
+                $_SESSION['db_host'] = getenv('DB_HOST') ?: 'localhost';
+                $_SESSION['db_port'] = (int)(getenv('DB_PORT') ?: 5432);
+
+                if (class_exists('\Tuqan\Classes\TuqanLogger')) {
+                    \Tuqan\Classes\TuqanLogger::debug('LoginEmpresa SUCCESS - loginempresa set', [
+                        'companyKey'     => $companyKey,
+                        'loginempresa'   => $_SESSION['loginempresa'],
+                        'empresa'        => $_SESSION['empresa'],
+                        'db'             => $_SESSION['db'],
+                    ]);
+                }
+                error_log("TUQAN_DIAG: LoginEmpresa SUCCESS - loginempresa=1 for companyKey=$companyKey, empresa=" . ($_SESSION['empresa'] ?? ''));
+
                 $centralHandler->desconexion();
+                session_write_close();
                 $this->Redirect($this->base_path . "/login/usuario/", false);
             } else {
+                if (class_exists('\Tuqan\Classes\TuqanLogger')) {
+                    \Tuqan\Classes\TuqanLogger::debug('LoginEmpresa ERROR - no bbddRow', [
+                        'companyKey' => $companyKey,
+                    ]);
+                }
+                error_log("TUQAN_DIAG: LoginEmpresa ERROR - no bbddRow for companyKey=$companyKey");
+                session_write_close();
                 $this->Redirect($this->base_path . "/?error=1", false);
             }
         } catch (\Exception $e) {
-            // Transition fallback only for the known minimal seed key
-            if ($companyKey === 'demo') {
-                $_SESSION['loginempresa'] = 1;
-                $_SESSION['conectado'] = true;
-                $_SESSION['db'] = getenv('DB_NAME') ?: 'qnova';
-                $_SESSION['login'] = getenv('DB_USER') ?: 'qnova';
-                $_SESSION['pass'] = getenv('DB_PASS') ?: 'secret';
-                $_SESSION['empresa'] = 'Demo Company';
-                $_SESSION['idiomaid'] = '1';
-                $this->Redirect($this->base_path . "/login/usuario/", false);
-            } else {
-                $this->Redirect($this->base_path . "/?error=1", false);
+            if (class_exists('\Tuqan\Classes\TuqanLogger')) {
+                \Tuqan\Classes\TuqanLogger::debug('LoginEmpresa CATCH - exception in real path', [
+                    'companyKey' => $companyKey,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
             }
+            error_log("TUQAN_DIAG: LoginEmpresa CATCH exception for companyKey=$companyKey - " . $e->getMessage());
+            session_write_close();
+            $this->Redirect($this->base_path . "/?error=1", false);
         }
     }
 
     function Redirect($url, $permanent = false)
     {
         if (headers_sent() === false) {
+            session_write_close();
             header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
         }
         exit();

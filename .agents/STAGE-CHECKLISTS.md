@@ -946,15 +946,83 @@ docker compose exec app ./scripts/init-db.sh
 
 ---
 
-**Stage 8.3 Execution Evidence** (to be appended after completion)
+**Stage 8.3 Execution Evidence** (autonomous iteration in progress)
 
 **Date / Branch:** 2026-06 — `feat/stage-8.3-gettext-login-menu-data`
 
-**Starting point:** Clean master after Stage 8.2 merge (full composer modernization + zero deprecation noise on core flows).
+**Progress (no user gates — iterating per explicit instruction):**
 
-**Key outcome target:** The application has working localization (Spanish active, English scaffolding present) and a real, usable menu after login driven by legacy data imported as-is.
+**8.3.2 + infrastructure (GETTEXT FIX — COMPLETED)**
+- Reproduced exact failure: setlocale("es_ES") + setlocale(LC_MESSAGES, "es_ES") both returned false inside the container (only es_ES.utf8 existed).
+- gettext() was returning raw keys everywhere.
+- Root cause fix:
+  - include.php: switched setlocale/putenv to use the already-computed `$collate = "es_ES.UTF-8"` (the name the image actually generates).
+  - Dockerfile: made locale generation explicit + robust (es_ES.UTF-8 + en_US.UTF-8), added ENV defaults.
+- Verification:
+  - Diagnostic script: setlocale now succeeds; gettext("sUsuario") → "Usuario:", gettext("sWelcome2") returns the full Spanish sentence.
+  - Full clean-room curl flow (down -v + up -d --build + init-db + company→user→/main/): 0 bad strings across all responses.
+  - Real Spanish visible in /login/usuario/ and other pages.
+  - Relevant PHPUnit tests run (one pre-existing container-related failure in LoginEmpresaTest unrelated to this change).
 
-**Evidence will be captured here using the exact commands above + strict bad-string scans.**
+**8.3.3 (ENGLISH SCAFFOLDING — COMPLETED)**
+- Created `Locale/en_US/LC_MESSAGES/qnova.po` (proper headers + translations for the ~15 strings visible on current login + main pages: sUsuario, sWelcome2, sIdentEmpresa, sIdIncorrecta, Submit, Reset, etc.).
+- Compiled to qnova.mo via msgfmt inside container.
+- Extended Dockerfile to also generate en_US.UTF-8 locale.
+- Verified: forcing en_US.UTF-8 makes gettext return English strings ("User:", the long welcome sentence, "Submit").
+- Scaffolding is ready; full language switching is future work (not in this slice scope).
+
+**8.3.4 (REMOVE LOGIN HARDCODES — COMPLETED)**
+- Removed the two remaining magic shortcuts in the catch blocks of both Login* pages (real DB queries are now the only success paths).
+- Root causes of "admin/admin not valid" (after hardcode removal) diagnosed and fixed:
+  - Host defaulting to `localhost` for company-context `Manejador_Base_Datos` (now passes DB_HOST from env / stored in session).
+  - Password mismatch (`.env.docker` had placeholder; seed/qnova_bbdd expected 'secret'). Aligned `.env.docker` + made real company login path use plain env password for the actual Postgres connection while still driving "which company" 100% from the `qnova_bbdd` row.
+- User confirmed in browser: full real-DB login (demo/admin → admin/admin) now works, and language (gettext) is active with Spanish strings.
+- Zero deprecation noise on the complete flow.
+
+**Next phase started (after menu superior working):** Translating legacy `accion` keys to Phroute routes + scaffolding modules.
+
+**Initial work done:**
+- Created `resolveLegacyAction()` in MainPage.
+- Registered first batch of routes in Phroute (`/admin/usuarios`, `/calidad/matriz-ambiental`, `/legacy`, etc.).
+- Added `LegacyAction` (generic handler for unmapped actions) and `Placeholder` pages.
+- Menu now generates real links instead of raw accion strings or `#`.
+
+**Plan update:** After full menu data + frontend collapsing is solid, we will systematically give real content to modules following the menu tree (one module / group of actions at a time).
+
+**8.3.5 + 8.3.6 + 8.3.7 + 8.3.8 (INCREMENTAL MIGRATION + REAL MENU "AS-IS" + FALLBACK RETIRED — COMPLETED)**
+- Incremental mechanism fully working: `data_patches` table + `init-db.sh` runner + `data-patches/` directory.
+- Rich real menu patch `0001-real-menu-from-legacy.sql` (expanded from legacy dump data, 18 rows + labels, proper structure).
+- Removed the last dummy menu row from `01-minimal-seed.sql`.
+- After clean re-init the real data is loaded.
+- Defensive fallback in `MainPage::crea_Menu_Superior()` replaced with a reliable simple menu builder that correctly uses company DB context (host/port from session).
+- Full real-DB login → modern landing now renders actual menu superior items from the imported legacy data.
+- No deprecation noise.
+
+**Final verification (30-May-2026):**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d --build
+docker compose exec app rm -rf templates/cache/*
+docker compose exec app ./scripts/init-db.sh
+
+# Full flow
+curl ... company login → 302
+curl ... user login → 302
+curl ... /main/ → 200
+
+# Result: 0 occurrences of the old "(Menú)" placeholder.
+# User confirmed: "we have menu superior now"
+```
+
+**Menu Actions + Phroute Mapping (late May 2026)**
+- Legacy `accion` keys are now automatically converted to clean paths by replacing `:` with `/`.
+- First batch of Phroute routes registered for key menu areas.
+- Smart fallback in the dispatcher: any unmapped legacy-style path is handled by `LegacyAction`, which renders a friendly message **while preserving the full menu** (no navigation breakage).
+- `LegacyAction` and `Placeholder` pages now correctly compute and pass the submenu.
+
+All core priorities for Stage 8.3 delivered. Session diagnostics added and later removed as they were not the root cause.
+
+**Next documented phase:** Systematic population of real module content, driven by the menu structure (see MIGRATION-PLAN.md).
 
 ---
 

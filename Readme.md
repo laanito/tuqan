@@ -12,33 +12,28 @@ Modernization project of a PHP 5.1 application into modern PHP standards.
 
 ## Current Status (June 2026)
 
-**Major progress on the "Core Functionality Modernization" stepping stone (Stage 8).**
+**Core Functionality Modernization (Stage 8) — Menu + Action Mapping phase completed.**
 
 ### ✅ What is Working Now
-- Fully Dockerized environment (PHP 8.3 + nginx + PostgreSQL 16) — host PHP is never used.
-- PSR-4 autoloading via Composer.
-- Real database-backed login flow (company selection → context switch → user login) against a minimal curated schema/seed.
-- Working placeholder landing page at `/main/` + real logout.
-- Significant dependency modernization:
-  - Twig upgraded to 3.x
-  - Monolog upgraded to 2.x
-  - Phroute upgraded + legacy patches removed
-  - Former upgraded to 5.x
-  - jasny/auth upgraded to v2
-- Extensive cleanup of PHP 8.1+ deprecation noise (`#[ReturnTypeWillChange]` patches across Illuminate and other legacy code).
-- PHPUnit 10 test suite (characterization + regression tests for the modernized paths).
-- Full Test + Fix Loop discipline with Xdebug enabled and zero-tolerance for warnings in the critical flows.
+- Fully Dockerized environment (PHP 8.3 + nginx + PostgreSQL 16).
+- Real database-backed login (company → user) with zero hardcoded shortcuts.
+- Incremental data migration system (`docker/db-init/data-patches/`) tracked in `data_patches` table.
+- Full real menu hierarchy imported from legacy data (`menu_nuevo` + `menu_idiomas_nuevo`) and rendered as a collapsible top menu on the modern landing page.
+- Legacy `accion` keys (e.g. `medio:aspectos:impactos`) are automatically translated to clean Phroute-style paths (`/medio/aspectos/impactos`).
+- Smart fallback: unmapped legacy actions land on a friendly page that still shows the full menu (no navigation breakage).
+- Gettext fully working (Spanish active) + English translation scaffolding started.
+- All critical flows clean under Xdebug (zero deprecation noise on login → landing → menu).
 
 ### 🔄 Current Focus
-- Completing the composer dependency modernization phase before investing in more business functionality.
-- Reducing residual deprecation noise from the remaining old Illuminate baggage (mostly pulled in via Former).
+- Using the now-functional menu as the driver to populate real content in modules, one area at a time.
+- Expanding Phroute route coverage for the legacy action keys as modules are modernized.
 
 ### 🚧 Important Notes
-- The application has a **functional minimum viable login flow** for testing purposes, but it is **not** a complete replacement for the original legacy Tuqan/Qnova application.
-- Many legacy modules (document control, risk matrices, questionnaires, etc.) are still untouched or only lightly modernized.
+- The application now has a **usable navigation structure** based on real historical menu data.
+- Most modules are still stubs or lightly modernized. The goal is incremental, menu-driven development.
 - **Not production ready.**
 
-See `.agents/MIGRATION-PLAN.md` and `.agents/STAGE-CHECKLISTS.md` for the detailed roadmap and current evidence.
+See `.agents/MIGRATION-PLAN.md` and `.agents/STAGE-CHECKLISTS.md` for the detailed roadmap and evidence.
 
 ---
 
@@ -54,6 +49,9 @@ docker compose --env-file .env.docker up -d --build
 
 # 2. Initialize the minimal database schema + seed (required for login)
 docker compose exec app ./scripts/init-db.sh
+
+# Note: New reference data (e.g. more menu items) is added via docker/db-init/data-patches/*.sql
+# and applied automatically and idempotently by the init script.
 
 # 3. (Optional but recommended during active work) Run tests
 docker compose exec app ./vendor/bin/phpunit

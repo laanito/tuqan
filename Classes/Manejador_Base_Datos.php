@@ -144,8 +144,8 @@ class Manejador_Base_Datos extends \PDO
 
     public function consulta($sSql = null)
     {
-        $sConsulta = $this->to_String_Consulta();
         if (is_null($sSql)) {
+            $sConsulta = $this->to_String_Consulta();
             $this->oResultado = $this->query($sConsulta);
         } else {
             $this->oResultado = $this->query($sSql);
