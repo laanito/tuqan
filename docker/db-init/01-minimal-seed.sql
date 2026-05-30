@@ -32,11 +32,5 @@ INSERT INTO usuarios (id, login, pass, perfil, activo, nombre)
 VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, 't', 'Administrador Demo')
 ON CONFLICT (id) DO NOTHING;
 
--- 5. Minimal menu so MainPage does not crash
-INSERT INTO menu_nuevo (id, padre, orden, accion, permisos, activo) VALUES
-(1, 0, 10, '/main/', '{t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t}', 't')
-ON CONFLICT (id) DO NOTHING;
-
-INSERT INTO menu_idiomas_nuevo (menu, idioma_id, valor) VALUES
-(1, 1, 'Inicio')
-ON CONFLICT (menu, idioma_id) DO NOTHING;
+-- 5. No more dummy menu here — real menu data now comes via
+-- incremental data-patches/ (see 0001-real-menu-from-legacy.sql and later patches).

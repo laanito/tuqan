@@ -32,8 +32,16 @@ RUN apt-get update \
 # Composer v2
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Locale for gettext (matches original es_ES expectations)
-RUN sed -i '/es_ES.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+# Locale for gettext (Spanish + English scaffolding for Stage 8.3)
+RUN sed -i '/es_ES.UTF-8/s/^# //g' /etc/locale.gen \
+    && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+    && locale-gen es_ES.UTF-8 en_US.UTF-8 \
+    && update-locale LANG=es_ES.UTF-8
+
+# Provide sensible defaults (Spanish is the current runtime default)
+ENV LANG=es_ES.UTF-8
+ENV LC_ALL=es_ES.UTF-8
+ENV LC_MESSAGES=es_ES.UTF-8
 
 WORKDIR /var/www/html
 

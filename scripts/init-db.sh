@@ -53,6 +53,30 @@ psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" \
 echo "Minimal seed applied."
 
 echo ""
+echo "Applying incremental data patches (docker/db-init/data-patches/*.sql)..."
+PATCH_DIR="/var/www/html/docker/db-init/data-patches"
+if [ -d "$PATCH_DIR" ]; then
+    for patch in $(ls "$PATCH_DIR"/*.sql 2>/dev/null | sort); do
+        filename=$(basename "$patch")
+        # Check if already applied
+        already=$(psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -tAc \
+            "SELECT 1 FROM data_patches WHERE filename = '$filename';" 2>/dev/null || echo "")
+        if [ "$already" = "1" ]; then
+            echo "  - $filename (already applied)"
+        else
+            echo "  - Applying $filename"
+            psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" \
+                -v ON_ERROR_STOP=1 -f "$patch"
+            psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" \
+                -c "INSERT INTO data_patches (filename) VALUES ('$filename') ON CONFLICT DO NOTHING;"
+        fi
+    done
+else
+    echo "  (no data-patches directory yet)"
+fi
+echo "Data patches applied."
+
+echo ""
 echo "=== Initialization complete ==="
 echo "You can now log in with:"
 echo "  Company login: demo / admin"

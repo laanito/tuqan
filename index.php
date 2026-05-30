@@ -150,6 +150,13 @@ $router->addRoute('POST', '/logout/', ['Tuqan\Pages\Logout', 'ShowPage']);
 // If the user has not completed company login, redirect to the company login form.
 $router->filter('auth_company', function() {
     if (!isset($_SESSION['loginempresa']) || $_SESSION['loginempresa'] != 1) {
+        if (class_exists('\Tuqan\Classes\TuqanLogger')) {
+            \Tuqan\Classes\TuqanLogger::debug('auth_company filter blocked', [
+                'loginempresa_value' => $_SESSION['loginempresa'] ?? 'not set',
+                'uri' => $_SERVER['REQUEST_URI'] ?? ''
+            ]);
+        }
+        error_log("TUQAN_DIAG: auth_company BLOCKED - loginempresa=" . ($_SESSION['loginempresa'] ?? 'NOT SET') . " for URI=" . ($_SERVER['REQUEST_URI'] ?? ''));
         header('Location: /login/empresa/');
         exit;
     }
@@ -158,6 +165,19 @@ $router->filter('auth_company', function() {
 $router->addRoute('GET', '/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/main/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Legacy menu action routes (starting the Phroute mapping) ===
+$router->addRoute('GET', '/legacy', ['Tuqan\Pages\LegacyAction', 'ShowPage'], ['before' => 'auth_company']);
+
+// Example modernized routes for menu items (stubs for now)
+$router->addRoute('GET', '/admin/usuarios', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/perfiles', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/calidad/matriz-ambiental', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/medio/aspectos', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/rrhh/personal', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+
+// No generic catch-all route to avoid conflicts with auth filter and route ordering.
+// Unknown paths are handled gracefully in the exception block below.
+
 $dispatcher =  new Dispatcher($router->getData());
 
 try {
@@ -165,6 +185,21 @@ try {
     $response=$dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     echo $response;
 } catch (\Exception $e) {
+    $requestedPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+
+    // If this looks like a legacy module path (not a known modern route and not login/static),
+    // send it to the nice LegacyAction handler instead of the scary cloud 404.
+    $isLikelyLegacy = !in_array($requestedPath, ['/', '/main/', '/login/empresa/', '/login/usuario/', '/logout/'])
+        && !preg_match('#^/(css|js|images|javascript|lib)/#', $requestedPath)
+        && strpos($requestedPath, '/legacy') !== 0;
+
+    if ($isLikelyLegacy) {
+        // Let LegacyAction handle it (it will read the path as the action)
+        $legacy = new \Tuqan\Pages\LegacyAction();
+        echo $legacy->ShowPage();
+        return;
+    }
+
     TuqanLogger::debug(
         'Page not found: ',
         array(

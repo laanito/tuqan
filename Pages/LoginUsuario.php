@@ -101,15 +101,23 @@ class LoginUsuario
         // Real database-backed user authentication (after company context switch).
         // Queries the company DB (set by LoginEmpresa) for the usuarios table.
         if (!isset($_SESSION['db']) || !isset($_SESSION['login']) || !isset($_SESSION['pass'])) {
+            session_write_close();
             header('Location: /login/empresa/');
             return;
         }
 
         try {
+            // Use host stored during company login if available (supports future per-company hosts).
+            // Falls back to current Docker env (DB_HOST=db inside container).
+            $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
+            $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
+
             $userDbHandler = new \Tuqan\Classes\Manejador_Base_Datos(
                 $_SESSION['login'],
                 $_SESSION['pass'],
-                $_SESSION['db']
+                $_SESSION['db'],
+                $host,
+                $port
             );
 
             $userDbHandler->consultaPreparada(
@@ -126,22 +134,22 @@ class LoginUsuario
                 $_SESSION['idioma'] = $_SESSION['idioma'] ?? '1';
 
                 $userDbHandler->desconexion();
+                session_write_close();
                 header('Location: /main/');
             } else {
+                session_write_close();
                 header('Location: /login/usuario/?error=1');
             }
         } catch (\Exception $e) {
-            // Temporary fallback during full DB layer hardening (matches minimal seed)
-            if ($username === 'admin') {
-                $_SESSION['usuarioconectado'] = true;
-                $_SESSION['admin'] = true;
-                $_SESSION['perfil'] = '0';
-                $_SESSION['nombreUsuario'] = 'admin';
-                $_SESSION['idioma'] = $_SESSION['idioma'] ?? '1';
-                header('Location: /main/');
-            } else {
-                header('Location: /login/usuario/?error=1');
+            // Real error path — no more magic 'admin' shortcut. The try block with real DB query
+            // (using the minimal seed) is now the only success path.
+            if (class_exists('\Tuqan\Classes\TuqanLogger')) {
+                \Tuqan\Classes\TuqanLogger::debug('LoginUsuario ProcesaPagina DB error', [
+                    'username' => $username,
+                    'error' => $e->getMessage()
+                ]);
             }
+            header('Location: /login/usuario/?error=1');
         }
     }
 }
