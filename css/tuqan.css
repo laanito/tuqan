@@ -40,6 +40,9 @@ body {
 #cabecera3 {
     /* background moved to the parent .cabecera-red-bar so the user card is also covered */
     background-color: transparent;
+    display: flex;
+    align-items: center;
+    min-height: 52px; /* approximate height of the red bar */
 }
 
 .titulo_cabecera {
@@ -1327,6 +1330,37 @@ div nobr input {
 
 .sidebar-toggle-header:hover {
     background: rgba(255,255,255,0.35);
+}
+
+/* Home link and toggle in the new module cabecera */
+.cabecera-red-bar #cabecera3 .sidebar-toggle-header,
+.cabecera-red-bar #cabecera3 .home-link {
+    color: #fff;
+    margin-right: 8px;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    text-decoration: none;
+    padding: 4px 6px;
+    border-radius: 3px;
+}
+
+.cabecera-red-bar #cabecera3 .home-link:hover {
+    color: #ffcccc;
+    background: rgba(255,255,255,0.15);
+}
+
+.cabecera-red-bar #cabecera3 .sidebar-toggle-header:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* Reduce padding on title inside cabecera when using flex */
+.cabecera-red-bar #cabecera3 .titulo_cabecera {
+    padding: 8px 0;
+    margin: 0;
+    line-height: 1.2;
 }
 
 .icon-size

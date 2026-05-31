@@ -17,7 +17,63 @@
 <body class="{% block body_class %}{% endblock %}">
 <div class="container-fluid">
     {% block header %}
-    <!-- Optional thin top bar - can be overridden per page -->
+    <!-- Cabecera (red header bar with title + user + home link) -->
+    <div class="row cabecera-red-bar">
+        <div id="cabecera3" class="col-md-8">
+            <button id="sidebar-toggle-header" class="sidebar-toggle-header" aria-label="Toggle sidebar">☰</button>
+            <a href="/main/" class="home-link" title="Ir al Inicio">
+                <span class="glyphicon glyphicon-home"></span>
+            </a>
+            <h1 class="titulo_cabecera">Gestión de Calidad y Medioambiente</h1>
+        </div>
+        <div class="col-md-4" id="usermenu">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span> 
+                        <span>{{ UserTitle }}</span>
+                        <em>{{ UserName }}</em>
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <div class="navbar-login">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p class="text-left" style="margin-bottom: 2px;">
+                                            <strong>{{ UserName }}</strong>
+                                        </p>
+                                        {% if CompanyName %}
+                                        <p class="text-left small text-muted" style="margin-bottom: 2px;">
+                                            {{ CompanyName }}
+                                        </p>
+                                        {% endif %}
+                                        {% if UserEmail %}
+                                        <p class="text-left small" style="margin-bottom: 6px;">
+                                            {{ UserEmail }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="navbar-login navbar-login-session">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p style="margin: 4px 0 0;">
+                                            <a href="/logout/" class="btn btn-danger btn-block btn-sm">Cerrar Sesion</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
     {% endblock %}
 
     <div class="app-body">
@@ -47,23 +103,29 @@
 <script type="text/javascript" src="/javascript/ayuda.js"></script>
 
 <script>
-    // Sidebar toggle (shared)
+    // Sidebar toggle (shared between sidebar and header buttons)
     (function() {
         const body = document.body;
-        const toggle = document.getElementById('sidebar-toggle');
-        if (!toggle) return;
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const headerToggle = document.getElementById('sidebar-toggle-header');
 
-        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        if (isCollapsed) {
-            body.classList.add('sidebar-collapsed');
-            toggle.textContent = '»';
+        function setCollapsed(collapsed) {
+            body.classList.toggle('sidebar-collapsed', collapsed);
+            if (sidebarToggle) sidebarToggle.textContent = collapsed ? '»' : '«';
+            if (headerToggle) headerToggle.textContent = collapsed ? '☰' : '«';
+            localStorage.setItem('sidebarCollapsed', collapsed);
         }
 
-        toggle.addEventListener('click', function() {
-            const collapsed = body.classList.toggle('sidebar-collapsed');
-            toggle.textContent = collapsed ? '»' : '«';
-            localStorage.setItem('sidebarCollapsed', collapsed);
-        });
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        setCollapsed(isCollapsed);
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => setCollapsed(!body.classList.contains('sidebar-collapsed')));
+        }
+
+        if (headerToggle) {
+            headerToggle.addEventListener('click', () => setCollapsed(!body.classList.contains('sidebar-collapsed')));
+        }
     })();
 </script>
 

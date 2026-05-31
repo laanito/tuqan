@@ -56,10 +56,17 @@ class Listado
         }
         $db->desconexion();
 
+        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
+
         $variables = [
             'sidebarMenu'   => $sidebarMenu,
             'usuarios'      => $usuarios,
             'pageTitle'     => 'Usuarios',
+            'UserTitle'     => gettext('sUsuario'),
+            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
+            'CompanyName'   => $_SESSION['empresa'] ?? null,
+            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
+            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
         ];
 
         try {
