@@ -28,10 +28,14 @@ class LegacyAction
         $mainPage = new \Tuqan\Pages\MainPage();
         $submenu = $mainPage->crea_Menu_Superior();
 
+        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
         $variables = [
             'UserTitle' => 'Usuario',
             'UserName'  => $_SESSION['nombreUsuario'] ?? 'Guest',
-            'submenu'   => $submenu,
+            'CompanyName' => $_SESSION['empresa'] ?? null,
+            'UserEmail' => $_SESSION['usuario_email'] ?? null,
+            'UserFullName' => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+            'sidebarMenu' => $mainPage->buildSidebarMenuHtml(),
             'LandingMessage' => '<div class="alert alert-info" style="max-width: 700px;">
                 <h4>Acción legacy</h4>
                 <p>Acción no modernizada todavía: <code>' . htmlspecialchars($action) . '</code></p>

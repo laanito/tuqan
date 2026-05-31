@@ -1,5 +1,12 @@
 <?php
+
 namespace Tuqan;
+
+// Dev helper: force opcache to pick up code changes when using Docker volume mounts.
+// Must be placed AFTER the namespace declaration.
+if (function_exists('opcache_reset')) {
+    opcache_reset();
+}
 
 include 'include.php';
 /**
@@ -169,7 +176,14 @@ $router->addRoute('GET', '/main/', ['Tuqan\Pages\MainPage', 'ShowPage'], ['befor
 $router->addRoute('GET', '/legacy', ['Tuqan\Pages\LegacyAction', 'ShowPage'], ['before' => 'auth_company']);
 
 // Example modernized routes for menu items (stubs for now)
-$router->addRoute('GET', '/admin/usuarios', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/usuarios', ['Tuqan\Pages\Usuarios\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/usuarios/nuevo', ['Tuqan\Pages\Usuarios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/usuarios/editar/{id}', ['Tuqan\Pages\Usuarios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// Legacy menu accion paths for modernized modules (so menu clicks work)
+$router->addRoute('GET', '/administracion/usuarios/listado/ver', ['Tuqan\Pages\Usuarios\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/usuarios/nuevo', ['Tuqan\Pages\Usuarios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/usuarios/editar', ['Tuqan\Pages\Usuarios\Listado', 'ShowPage'], ['before' => 'auth_company']); // go to list for selection
 $router->addRoute('GET', '/admin/perfiles', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/calidad/matriz-ambiental', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/medio/aspectos', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
@@ -190,13 +204,23 @@ try {
     // If this looks like a legacy module path (not a known modern route and not login/static),
     // send it to the nice LegacyAction handler instead of the scary cloud 404.
     $isLikelyLegacy = !in_array($requestedPath, ['/', '/main/', '/login/empresa/', '/login/usuario/', '/logout/'])
-        && !preg_match('#^/(css|js|images|javascript|lib)/#', $requestedPath)
+        && !preg_match('#^/(css|js|images|javascript|lib|admin)/#', $requestedPath)   // exclude modernized /admin/* paths
         && strpos($requestedPath, '/legacy') !== 0;
 
     if ($isLikelyLegacy) {
         // Let LegacyAction handle it (it will read the path as the action)
         $legacy = new \Tuqan\Pages\LegacyAction();
         echo $legacy->ShowPage();
+        return;
+    }
+
+    // For modern paths (especially under /admin/), show the real exception during development
+    // instead of hiding everything behind a generic 404.
+    if (strpos($requestedPath, '/admin/') === 0) {
+        header('Content-Type: text/plain; charset=utf-8');
+        echo "Exception while handling modern route:\n\n";
+        echo $e->getMessage() . "\n\n";
+        echo $e->getTraceAsString();
         return;
     }
 

@@ -385,25 +385,17 @@ During the Minimum Viable Working App phase, pragmatic `#[ReturnTypeWillChange]`
 
 **Stage 8.2 completed (June 2026):** Comprehensive modernization of the remaining runtime composer dependencies on branch `feat/stage-8-composer-deps-modernization`. Upgrades: monolog 1→2, phroute 2.1→2.2 (old trim(null) shims removed), jasny/auth 1→2.2, anahkiasen/former 4→5.2, setasign/fpdf, plus explicit root `illuminate/support: ^8.0` floor. All prior vendor `#[ReturnTypeWillChange]` and trim patches removed where upstream now supports PHP 8.3+. Full login → /main/ → logout flows verified with zero deprecation/warning strings under Xdebug. See STAGE-CHECKLISTS.md for full evidence.
 
-**Stage 8.3 completed (late May 2026):** On branch `feat/stage-8.3-gettext-login-menu-data`.
-- Login flow made 100% database-driven (all hardcodes removed).
-- Gettext fixed + English scaffolding created.
-- Full real menu hierarchy imported "as-is" via new incremental `data-patches/` system.
-- Working collapsible top menu on the modern landing using real legacy data.
-- Legacy `accion` keys automatically translated to Phroute paths (simple colon → slash replacement).
-- Smart fallback so unmapped actions still preserve navigation.
+**Stage 8.3 + extended work (May–June 2026):** On branch `feat/stage-8.3-gettext-login-menu-data`.
+- Login flow made 100% database-driven.
+- Gettext fixed + English scaffolding.
+- **Full real legacy menu** imported via incremental `data-patches/` (0004 + follow-up cleanups 0005–0009).
+- Complete migration from horizontal navbar to **collapsible left sidebar** navigation.
+- First real module work started: User Management (Usuarios listing + create/edit forms scaffolding). POST + validation explicitly deferred to next leg.
 
-**User clarifications followed:** Menu data imported as-is; Former still deferred.
+See STAGE-CHECKLISTS.md (Stage 8.4 section) for full evidence and the decision to pause POST work due to context size.
 
-**Planning for Modules (post-8.3 work):**
-The menu is now the primary driver for content population:
-- Modules will be modernized following the actual hierarchy and order present in the imported `menu_nuevo` data.
-- For each major branch, a thin modern layer (Phroute routes + controllers + templates) will be built.
-- Unmapped legacy actions will continue to land on friendly placeholders that keep the menu visible.
-- Goal: turn the menu from "navigation that mostly 404s or shows placeholders" into "navigation that leads to real (even if initially small) functionality", one vertical slice at a time.
-- This replaces previous big-bang attempts with small, testable, menu-driven increments.
-
-See STAGE-CHECKLISTS.md for detailed evidence of 8.3.
+**Planning for Modules (ongoing):**
+Menu remains the driver. Real vertical slices (starting with Usuarios) will be delivered one at a time with modern pages + the new sidebar chrome.
 
 **Decision:** Before moving into larger feature modernization or architectural changes, insert a dedicated "Core Functionality Modernization" stepping stone phase. The focus is proper, sustainable updates (not endless patches) to the foundational layers the modernized code now depends on.
 
@@ -435,7 +427,8 @@ This phase is explicitly positioned as **pre-requisite infrastructure** before S
 - Stage 7 (Minimum Viable + Incremental Logic): Completed (PR #56)
 - Stage 8.1 (Twig 3 upgrade): Completed
 - Stage 8.2 (Full composer dependency modernization): Completed
-- Stage 8.3 (Gettext, 100% DB login, menu data "as-is", working post-login menu): Current focus (see STAGE-CHECKLISTS.md)
+- Stage 8.3 completed.
+- Stage 8.4 (Full menu structure reference + first real module "Administración → Usuarios"): Current focus (see STAGE-CHECKLISTS.md and reference/*.md)
 - Stage 9+: Deeper business logic modernization and UI/dep polish (after the stepping stone)
 
 **Buffer:** 2-4 weeks for surprises (legacy surprises always appear).

@@ -187,7 +187,7 @@ class Manejador_Base_Datos extends \PDO
         $mTmp = $this->oResultado->fetch($mode);
         if (is_array($mTmp)) {
             foreach ($mTmp as $sKey => $sValor) {
-                if ($bSlash) {
+                if ($bSlash && is_string($sValor)) {
                     $mTmp[$sKey] = stripslashes($sValor);
                 } else {
                     $mTmp[$sKey] = $sValor;

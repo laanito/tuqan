@@ -28,8 +28,8 @@ INSERT INTO perfiles (id, nombre, activo) VALUES
 ON CONFLICT (id) DO NOTHING;
 
 -- 4. Usuarios (in the company database)
-INSERT INTO usuarios (id, login, pass, perfil, activo, nombre)
-VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, 't', 'Administrador Demo')
+INSERT INTO usuarios (id, login, pass, perfil, activo, nombre, apellido, email)
+VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, 't', 'Administrador', 'Demo', 'admin@demo.local')
 ON CONFLICT (id) DO NOTHING;
 
 -- 5. No more dummy menu here — real menu data now comes via

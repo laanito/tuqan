@@ -1,34 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>Tuqan</title>
+    <title>{% block title %}Tuqan{% endblock %}</title>
     <meta name="Generator" content="Tuqan" />
     <link rel="stylesheet" href="/css/tuqan.css" type="text/css" />
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
           crossorigin="anonymous">
+    {% block head %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 <div class="container-fluid">
-    <div class="row">
-        <div id="cabecera2">
-            <img class="logo_tuqan" src="/images/logotipo-tuqan.svg" alt="Logotipo Tuqan">
-        </div>
-    </div>
-    <!-- Red bar now covers the full width including the user card on the right -->
+    {% block header %}
+    <!-- Cabecera (red header bar with title + user + home link) -->
     <div class="row cabecera-red-bar">
         <div id="cabecera3" class="col-md-8">
             <button id="sidebar-toggle-header" class="sidebar-toggle-header" aria-label="Toggle sidebar">☰</button>
+            <a href="/main/" class="home-link" title="Ir al Inicio">
+                <span class="glyphicon glyphicon-home"></span>
+            </a>
             <h1 class="titulo_cabecera">Gestión de Calidad y Medioambiente</h1>
         </div>
         <div class="col-md-4" id="usermenu">
@@ -79,9 +74,9 @@
             </ul>
         </div>
     </div>
-    <!-- Collapsible Left Sidebar + Main Content (Flex layout) -->
+    {% endblock %}
+
     <div class="app-body">
-        <!-- Sidebar -->
         <aside id="sidebar" class="sidebar">
             <div class="sidebar-header">
                 <span class="sidebar-title">Menú</span>
@@ -92,55 +87,23 @@
             </div>
         </aside>
 
-        <!-- Main content -->
         <div class="main-area">
-            <div id="separador"></div>
-            <div class="row">
-                <div id="contenido">
-                    <div id="contenedor">
-                        <div id="izquierda"></div>
-                        <div id="central" align="center">
-                            <div class="alert alert-info" style="margin-top: 30px; max-width: 600px;">
-                                {{ LandingMessage|raw }}
-                            </div>
-                        </div>
-                        <div id="derecha"></div>
-                    </div>
-                </div>
-                <div id="diveditor"></div>
-                <div id="diviframe"></div>
-            </div>
+            {% block content %}{% endblock %}
         </div>
     </div>
-
-    <div id="wait"></div>
-    <div id="divayuda"></div>
-    <div id="ficheros"></div>
 </div>
-<!-- Footer -->
 
-<footer class="page-footer font-small logos navbar-fixed-bottom">
-
-    <!-- Copyright -->
-    <div class="container-fluid text-center">© 2018 Copyright:
-        <a href="https://praderas.org/"> praderas.org</a>
-    </div>
-    <!-- Copyright -->
-
-</footer>
-<!-- Footer -->
-<!-- Latest compiled and minified JavaScript -->
+<!-- Scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous" type="text/javascript">
-</script>
+        crossorigin="anonymous" type="text/javascript"></script>
 <script type="text/javascript" src="/javascript/cookies.js"></script>
 <script type="text/javascript" src="/javascript/Manejador_Ajax.js"></script>
 <script type="text/javascript" src="/javascript/ayuda.js"></script>
 
 <script>
-    // Simple collapsible sidebar
+    // Sidebar toggle (shared between sidebar and header buttons)
     (function() {
         const body = document.body;
         const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -149,27 +112,23 @@
         function setCollapsed(collapsed) {
             body.classList.toggle('sidebar-collapsed', collapsed);
             if (sidebarToggle) sidebarToggle.textContent = collapsed ? '»' : '«';
+            if (headerToggle) headerToggle.textContent = collapsed ? '☰' : '«';
             localStorage.setItem('sidebarCollapsed', collapsed);
         }
 
-        // Restore state
         const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         setCollapsed(isCollapsed);
 
-        // Sidebar internal toggle
         if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                setCollapsed(!body.classList.contains('sidebar-collapsed'));
-            });
+            sidebarToggle.addEventListener('click', () => setCollapsed(!body.classList.contains('sidebar-collapsed')));
         }
 
-        // Header toggle
         if (headerToggle) {
-            headerToggle.addEventListener('click', () => {
-                setCollapsed(!body.classList.contains('sidebar-collapsed'));
-            });
+            headerToggle.addEventListener('click', () => setCollapsed(!body.classList.contains('sidebar-collapsed')));
         }
     })();
 </script>
+
+{% block scripts %}{% endblock %}
 </body>
 </html>

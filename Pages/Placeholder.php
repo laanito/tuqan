@@ -21,10 +21,14 @@ class Placeholder
         $mainPage = new \Tuqan\Pages\MainPage();
         $submenu = $mainPage->crea_Menu_Superior();
 
+        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
         $variables = [
             'UserTitle' => 'Usuario',
             'UserName'  => $_SESSION['nombreUsuario'] ?? 'Guest',
-            'submenu'   => $submenu,
+            'CompanyName' => $_SESSION['empresa'] ?? null,
+            'UserEmail' => $_SESSION['usuario_email'] ?? null,
+            'UserFullName' => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+            'sidebarMenu' => $mainPage->buildSidebarMenuHtml(),
             'LandingMessage' => '<div class="alert alert-warning" style="max-width: 700px;">
                 <h4>Módulo en desarrollo</h4>
                 <p>Este módulo está siendo modernizado. Pronto tendrá contenido real siguiendo la estructura del menú.</p>

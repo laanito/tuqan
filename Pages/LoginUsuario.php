@@ -121,7 +121,7 @@ class LoginUsuario
             );
 
             $userDbHandler->consultaPreparada(
-                "SELECT id, login, perfil, nombre FROM usuarios WHERE login = ? AND pass = ? AND activo = 't'",
+                "SELECT id, login, perfil, nombre, apellido, email FROM usuarios WHERE login = ? AND pass = ? AND activo = 't'",
                 [$username, $passwordMd5]
             );
             $userRow = $userDbHandler->coger_Fila();
@@ -130,7 +130,20 @@ class LoginUsuario
                 $_SESSION['usuarioconectado'] = true;
                 $_SESSION['admin'] = ((int)($userRow[2] ?? 0) === 0);
                 $_SESSION['perfil'] = (string)($userRow[2] ?? '0');
-                $_SESSION['nombreUsuario'] = $userRow[1] ?? $username;
+
+                $nombre   = trim($userRow[3] ?? '');
+                $apellido = trim($userRow[4] ?? '');
+                $email    = trim($userRow[5] ?? '');
+
+                // Display name for navbar trigger: prefer full name, fall back gracefully
+                $fullName = trim($nombre . ' ' . $apellido);
+                $_SESSION['nombreUsuario'] = $fullName ?: ($userRow[1] ?? $username);
+
+                $_SESSION['usuario_login']  = $userRow[1] ?? $username;
+                $_SESSION['usuario_nombre'] = $nombre;
+                $_SESSION['usuario_apellido'] = $apellido;
+                $_SESSION['usuario_email']  = $email ?: null;
+
                 $_SESSION['idioma'] = $_SESSION['idioma'] ?? '1';
 
                 $userDbHandler->desconexion();

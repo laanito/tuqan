@@ -266,7 +266,8 @@ class generador_listados
                     if ($key == 'id') {
                         $_SESSION['pagina'][] = $value;
                     } else if ($key !== 'destinatario') {
-                        $aContenido = '<b>' . stripslashes($value) . '</b>';
+                        $safeValue = is_string($value) ? stripslashes($value) : $value;
+                        $aContenido = '<b>' . $safeValue . '</b>';
                         $rowContent[] = $aContenido;
                     }
                 }

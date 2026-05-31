@@ -44,13 +44,15 @@ CREATE TABLE IF NOT EXISTS perfiles (
 
 -- 4. Usuarios (the actual company users)
 CREATE TABLE IF NOT EXISTS usuarios (
-    id      SERIAL PRIMARY KEY,
-    login   CHARACTER VARYING(64) NOT NULL,
-    pass    CHARACTER VARYING(64),
-    perfil  INTEGER,
-    area    INTEGER,
-    activo  BOOLEAN DEFAULT TRUE,
-    nombre  CHARACTER VARYING(128)
+    id        SERIAL PRIMARY KEY,
+    login     CHARACTER VARYING(64) NOT NULL,
+    pass      CHARACTER VARYING(64),
+    perfil    INTEGER,
+    area      INTEGER,
+    activo    BOOLEAN DEFAULT TRUE,
+    nombre    CHARACTER VARYING(128),
+    apellido  CHARACTER VARYING(128),
+    email     CHARACTER VARYING(128)
 );
 
 -- 5. Menu system (required for MainPage to not crash)
