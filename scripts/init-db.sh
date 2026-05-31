@@ -54,6 +54,7 @@ echo "Minimal seed applied."
 
 echo ""
 echo "Applying incremental data patches (docker/db-init/data-patches/*.sql)..."
+echo "(0004 contains the full real legacy menu for renderer verification)"
 PATCH_DIR="/var/www/html/docker/db-init/data-patches"
 if [ -d "$PATCH_DIR" ]; then
     for patch in $(ls "$PATCH_DIR"/*.sql 2>/dev/null | sort); do

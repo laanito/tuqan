@@ -177,6 +177,88 @@ class MainPage
     }
 
     /**
+     * Builds a vertical, collapsible sidebar menu suitable for the full legacy menu.
+     * Designed for a left sidebar layout.
+     */
+    public function buildSidebarMenuHtml(): string
+    {
+        $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
+        $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
+
+        $db = new \Tuqan\Classes\Manejador_Base_Datos(
+            $_SESSION['login'] ?? '',
+            $_SESSION['pass'] ?? '',
+            $_SESSION['db'] ?? '',
+            $host,
+            $port
+        );
+
+        $db->consulta(
+            "SELECT m.id, m.padre, mi.valor, m.accion 
+             FROM menu_nuevo m
+             JOIN menu_idiomas_nuevo mi ON mi.menu = m.id AND mi.idioma_id = " . intval($_SESSION['idioma'] ?? 1) . "
+             WHERE m.activo = true
+             ORDER BY m.orden"
+        );
+
+        $items = [];
+        while ($row = $db->coger_Fila()) {
+            $accion = $row[3] ?? '';
+            $items[] = [
+                'id'    => $row[0],
+                'padre' => $row[1],
+                'label' => $row[2],
+                'url'   => $this->resolveLegacyAction($accion)
+            ];
+        }
+        $db->desconexion();
+
+        if (empty($items)) {
+            return '<div class="sidebar-empty">No hay menú disponible</div>';
+        }
+
+        // Group by parent
+        $byParent = [];
+        foreach ($items as $it) {
+            $byParent[$it['padre']][] = $it;
+        }
+
+        $build = function($parentId, $level = 0) use (&$build, $byParent) {
+            if (!isset($byParent[$parentId])) return '';
+
+            $html = '<ul class="sidebar-menu' . ($level > 0 ? ' sidebar-submenu' : '') . '">';
+
+            foreach ($byParent[$parentId] as $it) {
+                $hasChildren = isset($byParent[$it['id']]);
+                $itemId = 'sidebar-item-' . $it['id'];
+
+                $html .= '<li class="sidebar-item' . ($hasChildren ? ' has-children' : '') . '">';
+
+                if ($hasChildren) {
+                    $html .= '<a href="#' . $itemId . '" class="sidebar-link" data-toggle="collapse" aria-expanded="' . ($level === 0 ? 'true' : 'false') . '">';
+                    $html .= '<span class="sidebar-label">' . htmlspecialchars($it['label']) . '</span>';
+                    $html .= '<span class="sidebar-caret"></span>';
+                    $html .= '</a>';
+                    $html .= '<div id="' . $itemId . '" class="collapse' . ($level === 0 ? ' in' : '') . '">';
+                    $html .= $build($it['id'], $level + 1);
+                    $html .= '</div>';
+                } else {
+                    $html .= '<a href="' . htmlspecialchars($it['url']) . '" class="sidebar-link">';
+                    $html .= '<span class="sidebar-label">' . htmlspecialchars($it['label']) . '</span>';
+                    $html .= '</a>';
+                }
+
+                $html .= '</li>';
+            }
+
+            $html .= '</ul>';
+            return $html;
+        };
+
+        return $build(0);
+    }
+
+    /**
      * Translates legacy menu "accion" values (e.g. "administracion:usuarios:listado")
      * into real Phroute URLs by replacing colons with slashes.
      * This is the bridge while we modernize modules.
@@ -216,10 +298,14 @@ class MainPage
         } catch (\Exception $e) {
             return ("Error al cargar plantilla: " . $e->getMessage());
         }
+        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
         $variables = array(
             'UserTitle' => gettext('sUsuario'),
             'UserName' =>  $_SESSION['nombreUsuario'] ?? 'Guest',
-            'submenu' => $this->crea_Menu_Superior(),
+            'CompanyName' => $_SESSION['empresa'] ?? null,
+            'UserEmail' => $_SESSION['usuario_email'] ?? null,
+            'UserFullName' => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+            'sidebarMenu' => $this->buildSidebarMenuHtml(),
             // Placeholder content for the minimal landing page
             'LandingMessage' => 'Bienvenido a Tuqan (versión mínima).<br>Has iniciado sesión correctamente. Usa el menú superior o el enlace de cerrar sesión.',
         );

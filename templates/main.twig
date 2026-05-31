@@ -25,16 +25,13 @@
             <img class="logo_tuqan" src="/images/logotipo-tuqan.svg" alt="Logotipo Tuqan">
         </div>
     </div>
-    <div class="row">
-        <div id="cabecera3">
+    <!-- Red bar now covers the full width including the user card on the right -->
+    <div class="row cabecera-red-bar">
+        <div id="cabecera3" class="col-md-8">
+            <button id="sidebar-toggle-header" class="sidebar-toggle-header" aria-label="Toggle sidebar">☰</button>
             <h1 class="titulo_cabecera">Gestión de Calidad y Medioambiente</h1>
         </div>
-    </div>
-    <div class="row">
-        <div class="collapse navbar-collapse col-md-10" id="submenu">
-            {{ submenu|raw }}
-        </div>
-        <div class="col-md-2" id="usermenu">
+        <div class="col-md-4" id="usermenu">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -43,23 +40,24 @@
                         <em>{{ UserName }}</em>
                         <span class="glyphicon glyphicon-chevron-down"></span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-right">
                         <li>
                             <div class="navbar-login">
                                 <div class="row">
-                                    <div class="col-lg-4">
-                                        <p class="text-center">
-                                            <span class="glyphicon glyphicon-user icon-size"></span>
+                                    <div class="col-lg-12">
+                                        <p class="text-left" style="margin-bottom: 2px;">
+                                            <strong>{{ UserName }}</strong>
                                         </p>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <p class="text-left"><strong>Está ud en:</strong></p>
-                                        <p class="text-left" id="titulo"></p>
-                                        <p class="text-left"><strong>Nombre Apellido</strong></p>
-                                        <p class="text-left small">correoElectronico@email.com</p>
-                                        <p class="text-left">
-                                            <a href="#" class="btn btn-primary btn-block btn-sm">Actualizar Datos</a>
+                                        {% if CompanyName %}
+                                        <p class="text-left small text-muted" style="margin-bottom: 2px;">
+                                            {{ CompanyName }}
                                         </p>
+                                        {% endif %}
+                                        {% if UserEmail %}
+                                        <p class="text-left small" style="margin-bottom: 6px;">
+                                            {{ UserEmail }}
+                                        </p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -69,8 +67,8 @@
                             <div class="navbar-login navbar-login-session">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <p>
-                                            <a href="/logout/" class="btn btn-danger btn-block">Cerrar Sesion</a>
+                                        <p style="margin: 4px 0 0;">
+                                            <a href="/logout/" class="btn btn-danger btn-block btn-sm">Cerrar Sesion</a>
                                         </p>
                                     </div>
                                 </div>
@@ -80,24 +78,41 @@
                 </li>
             </ul>
         </div>
-        <div id="BordeIzq"></div>
     </div>
-    <div id="separador"></div>
-    <div class="row">
-        <div id="contenido">
-            <div id="contenedor">
-                <div id="izquierda"></div>
-                <div id="central" align="center">
-                    <div class="alert alert-info" style="margin-top: 30px; max-width: 600px;">
-                        {{ LandingMessage|raw }}
+    <!-- Collapsible Left Sidebar + Main Content (Flex layout) -->
+    <div class="app-body">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-title">Menú</span>
+                <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle menu">«</button>
+            </div>
+            <div class="sidebar-content">
+                {{ sidebarMenu|raw }}
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="main-area">
+            <div id="separador"></div>
+            <div class="row">
+                <div id="contenido">
+                    <div id="contenedor">
+                        <div id="izquierda"></div>
+                        <div id="central" align="center">
+                            <div class="alert alert-info" style="margin-top: 30px; max-width: 600px;">
+                                {{ LandingMessage|raw }}
+                            </div>
+                        </div>
+                        <div id="derecha"></div>
                     </div>
                 </div>
-                <div id="derecha"></div>
+                <div id="diveditor"></div>
+                <div id="diviframe"></div>
             </div>
         </div>
-        <div id="diveditor"></div>
-        <div id="diviframe"></div>
     </div>
+
     <div id="wait"></div>
     <div id="divayuda"></div>
     <div id="ficheros"></div>
@@ -123,5 +138,38 @@
 <script type="text/javascript" src="/javascript/cookies.js"></script>
 <script type="text/javascript" src="/javascript/Manejador_Ajax.js"></script>
 <script type="text/javascript" src="/javascript/ayuda.js"></script>
+
+<script>
+    // Simple collapsible sidebar
+    (function() {
+        const body = document.body;
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const headerToggle = document.getElementById('sidebar-toggle-header');
+
+        function setCollapsed(collapsed) {
+            body.classList.toggle('sidebar-collapsed', collapsed);
+            if (sidebarToggle) sidebarToggle.textContent = collapsed ? '»' : '«';
+            localStorage.setItem('sidebarCollapsed', collapsed);
+        }
+
+        // Restore state
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        setCollapsed(isCollapsed);
+
+        // Sidebar internal toggle
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                setCollapsed(!body.classList.contains('sidebar-collapsed'));
+            });
+        }
+
+        // Header toggle
+        if (headerToggle) {
+            headerToggle.addEventListener('click', () => {
+                setCollapsed(!body.classList.contains('sidebar-collapsed'));
+            });
+        }
+    })();
+</script>
 </body>
 </html>

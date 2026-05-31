@@ -28,12 +28,18 @@ body {
     margin-top: 17px;
 }
 
-#cabecera3 {
+/* Red header bar that now covers both the title and the user card */
+.cabecera-red-bar {
+    background-color: #BE1622;
+    margin-top: -10px;
     -moz-box-shadow: inset 0 3px 3px 2px rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: inset 0 3px 3px 2px rgba(0, 0, 0, 0.2);
     box-shadow: inset 0 3px 3px 2px rgba(0, 0, 0, 0.2);
-    background-color: #BE1622;
-    margin-top: -10px;
+}
+
+#cabecera3 {
+    /* background moved to the parent .cabecera-red-bar so the user card is also covered */
+    background-color: transparent;
 }
 
 .titulo_cabecera {
@@ -66,6 +72,29 @@ body {
     margin: 0;
     color: #BE1622;
     text-decoration: none;
+}
+
+/* User card trigger text must be readable on the red cabecera bar */
+.cabecera-red-bar #usermenu a,
+.cabecera-red-bar #usermenu .dropdown-toggle {
+    color: #fff;
+}
+
+.cabecera-red-bar #usermenu .caret {
+    border-top-color: #fff;
+}
+
+/* Hover and open/highlighted states for the user card on the red bar.
+   Bootstrap's default gray highlight looks terrible on #BE1622 red. */
+.cabecera-red-bar #usermenu .dropdown > .dropdown-toggle:hover,
+.cabecera-red-bar #usermenu .dropdown.open > .dropdown-toggle,
+.cabecera-red-bar #usermenu .dropdown.open > a {
+    background-color: rgba(0, 0, 0, 0.18);
+    color: #fff;
+}
+
+.cabecera-red-bar #usermenu .dropdown.open > .dropdown-toggle .caret {
+    border-top-color: #fff;
 }
 
 #submenu li {
@@ -1155,6 +1184,149 @@ div nobr input {
 .navbar-login-session
 {
     padding: 0 10px;
+}
+
+/* ============================================
+   Collapsible Left Sidebar Navigation
+   ============================================ */
+
+.app-body {
+    display: flex;
+    min-height: calc(100vh - 140px); /* adjust based on header height */
+    position: relative;
+}
+
+.sidebar {
+    width: 240px;
+    min-width: 240px;
+    background-color: #f8f8f8;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width 0.25s ease, min-width 0.25s ease;
+    flex-shrink: 0;
+}
+
+.sidebar-collapsed .sidebar {
+    width: 0;
+    min-width: 0;
+    border-right: none;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    color: #333;
+}
+
+.sidebar-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: 1px solid #ccc;
+    width: 26px;
+    height: 26px;
+    line-height: 22px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    border-radius: 3px;
+}
+
+.sidebar-toggle:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar-content {
+    padding: 8px 0;
+}
+
+.sidebar-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-item {
+    margin: 0;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 8px 14px;
+    color: #333;
+    text-decoration: none;
+    font-size: 12.5px;
+    transition: background-color 0.15s;
+}
+
+.sidebar-link:hover {
+    background-color: #e9e9e9;
+    color: #BE1622;
+}
+
+.sidebar-submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 18px;
+    background-color: #f1f1f1;
+}
+
+.sidebar-submenu .sidebar-link {
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #444;
+}
+
+.sidebar-caret {
+    margin-left: auto;
+    font-size: 10px;
+    transition: transform 0.2s;
+}
+
+.sidebar-item.has-children .sidebar-link[aria-expanded="true"] .sidebar-caret {
+    transform: rotate(180deg);
+}
+
+.main-area {
+    flex: 1;
+    min-width: 0; /* important for flex + overflow */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-collapsed .main-area {
+    margin-left: 0;
+}
+
+/* Header toggle button (always visible) */
+.sidebar-toggle-header {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    font-size: 18px;
+    line-height: 1;
+    border-radius: 3px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.sidebar-toggle-header:hover {
+    background: rgba(255,255,255,0.35);
 }
 
 .icon-size

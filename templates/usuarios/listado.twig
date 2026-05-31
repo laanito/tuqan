@@ -1,0 +1,68 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Usuarios - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Usuarios</h2>
+        <div>
+            <a href="/admin/usuarios/nuevo" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo Usuario
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if usuarios is empty %}
+        <div class="alert alert-info">
+            No hay usuarios registrados todavía.
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Login</th>
+                        <th>Nombre Completo</th>
+                        <th>Email</th>
+                        <th>Perfil</th>
+                        <th>Estado</th>
+                        <th style="width: 140px; text-align: right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td>{{ u.id }}</td>
+                        <td><strong>{{ u.login }}</strong></td>
+                        <td>{{ u.nombre }} {{ u.apellido }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>
+                            <span class="label label-{{ u.perfil == 0 ? 'danger' : 'default' }}">
+                                {{ u.perfil_nombre }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if u.activo %}
+                                <span class="label label-success">Activo</span>
+                            {% else %}
+                                <span class="label label-default">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right;">
+                            <a href="/admin/usuarios/editar/{{ u.id }}" class="btn btn-xs btn-default">Editar</a>
+                            {% if u.id != 1 %}
+                                <a href="/admin/usuarios/borrar/{{ u.id }}" class="btn btn-xs btn-danger" onclick="return confirm('¿Eliminar este usuario?');">Borrar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

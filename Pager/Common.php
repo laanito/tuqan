@@ -812,9 +812,10 @@ class Pager_Common
             foreach (array_keys($var) as $k) {
                 $this->_recursive_stripslashes($var[$k]);
             }
-        } else {
+        } else if (is_string($var)) {
             $var = stripslashes($var);
         }
+        // If it's null, int, bool, etc., leave it untouched to avoid deprecation
     }
 
     // }}}

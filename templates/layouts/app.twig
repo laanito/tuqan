@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>{% block title %}Tuqan{% endblock %}</title>
+    <meta name="Generator" content="Tuqan" />
+    <link rel="stylesheet" href="/css/tuqan.css" type="text/css" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
+    {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<div class="container-fluid">
+    {% block header %}
+    <!-- Optional thin top bar - can be overridden per page -->
+    {% endblock %}
+
+    <div class="app-body">
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-title">Menú</span>
+                <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle menu">«</button>
+            </div>
+            <div class="sidebar-content">
+                {{ sidebarMenu|raw }}
+            </div>
+        </aside>
+
+        <div class="main-area">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous" type="text/javascript"></script>
+<script type="text/javascript" src="/javascript/cookies.js"></script>
+<script type="text/javascript" src="/javascript/Manejador_Ajax.js"></script>
+<script type="text/javascript" src="/javascript/ayuda.js"></script>
+
+<script>
+    // Sidebar toggle (shared)
+    (function() {
+        const body = document.body;
+        const toggle = document.getElementById('sidebar-toggle');
+        if (!toggle) return;
+
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
+            body.classList.add('sidebar-collapsed');
+            toggle.textContent = '»';
+        }
+
+        toggle.addEventListener('click', function() {
+            const collapsed = body.classList.toggle('sidebar-collapsed');
+            toggle.textContent = collapsed ? '»' : '«';
+            localStorage.setItem('sidebarCollapsed', collapsed);
+        });
+    })();
+</script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

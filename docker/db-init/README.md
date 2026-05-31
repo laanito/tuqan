@@ -57,10 +57,22 @@ We now support **incremental reference data** on top of the minimal base:
 Example patch layout:
 ```
 data-patches/
-  0001-real-menu-from-legacy.sql
-  0002-additional-aspects.sql
+  0001-real-menu-from-legacy.sql          -- Core curated hierarchy for login + main nav
+  0002-admin-branch-expansion.sql         -- First module slice (Administración → Usuarios/Perfiles)
+  0003-usuarios-contact-info.sql          -- Extended usuarios with apellido + email columns
+  0004-full-legacy-menu.sql               -- Full real legacy menu (loaded automatically)
+  0005-menu-cleanup.sql                   -- Casing, duplicate removal, and ordering fixes for the full menu
   ...
 ```
+
+**Full legacy menu**:
+The complete real legacy menu is now automatically loaded as part of normal
+`init-db.sh` via `0004-full-legacy-menu.sql` (106 menu items + 212 labels).
+
+This was added so the team can verify and improve the menu renderer + layout
+with the actual production volume instead of a small curated subset.
+
+The patch is idempotent and tracked via the `data_patches` table.
 
 To add new data: just drop a new `00XX-*.sql` file with `ON CONFLICT DO NOTHING` (or idempotent) statements. Next `init-db.sh` will pick it up.
 
