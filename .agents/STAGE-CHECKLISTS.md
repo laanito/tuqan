@@ -1120,6 +1120,13 @@ This leg successfully moved the project from "menu as navigation that mostly 404
 
 **Next documented phase:** Wire up actual create/update logic + validation for the Usuarios module (deferred by explicit request due to context size).
 
+**Accompanying praderasblog article (Series_Order 10):**
+- Created immediately after the leg (per user request after the 2407-line PR #60 push).
+- Title focus: the delivery pace + explicit public self-critique on two recurring agent debugging anti-patterns (premature opcache blame without runtime proof in the container; assuming Phroute route syntax `:id` instead of `{id}` and only checking the help pages after multiple workarounds).
+- PR: https://github.com/laanito/praderasblog/pull/53
+- Both language versions now contain the required links back to this file (Stage 8.4) and `MIGRATION-PLAN.md` (per the updated `.agents/BLOG-POSTING.md` instructions).
+- Hero generated for the article (initially via available image tool; ComfyUI replacement noted as possible follow-up chore per the guide).
+
 ---
 
 

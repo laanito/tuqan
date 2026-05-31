@@ -53,30 +53,30 @@ Image: /assets/images/tuqan-stage-2-hero.webp
 
 - **Series name**: `Tuqan — Modernización`
 - **Series_Slug**: `tuqan-modernization`
-- Always increment `Series_Order` based on the last Tuqan post.
+- Always increment `Series_Order` based on the last Tuqan post (check the live series on the blog for the current highest number).
 
-Current known Tuqan articles (as of May 2026):
-- Phase 0 / Strategic Foundation
-- Stage 1 — PHP 8 + Docker Migration Plan (PR #44)
+The authoritative list of Tuqan articles lives in the "Tuqan — Modernización" series on the blog itself (praderasblog). As of June 2026 the series has reached Series_Order 10 (full legacy menu import, collapsible sidebar, first real module + public self-critique on recurring debugging patterns). Do not rely on the static list below — it is historical.
 
 ## Hero Images
 
-Hero images are generated with **ComfyUI + SDXL**.
+**Preferred process**: Hero images for Tuqan articles are generated with **ComfyUI + SDXL** for visual consistency with the rest of the series.
 
 Relevant tools live in the blog repo:
 - `scripts/comfyui/`
 - `scripts/comfyui/export_cover.py`
-- Various batch scripts and JSON workflows
+- Various batch scripts and JSON workflows (see `sdxl_ubersimple.api.json` etc.)
 
 **For Tuqan articles**, use consistent naming:
-- `tuqan-<stage>-<topic>-hero.webp`
+- `tuqan-<descriptive-slug>-hero.webp` (or `.png` for some earlier agentic-lessons posts)
 
 After generating the image, place it in:
 `assets/images/`
 
+**Practical note (2026-06)**: When ComfyUI is not immediately available or for rapid iteration, the xAI image_gen tool (or equivalent) may be used to produce the initial hero. In that case, a follow-up chore commit on the article PR (or a separate small PR) should replace it with a real ComfyUI-generated WebP, exactly as was done for the "menu red herring" article (see commit 2c7b56b "add real ComfyUI hero"). Always add a `.notes` file next to the hero explaining the generation method and prompt.
+
 ## English Version
 
-1. Create the equivalent file in `content/en/blog/`
+1. Create the equivalent file in `content/blog/en/` (note: the actual deployed structure uses this path, not `content/en/blog/`)
 2. Use the same `Translation_Key`
 3. Translate the content (or mark it for later translation)
 4. Update `Lang: en`
@@ -84,22 +84,28 @@ After generating the image, place it in:
 
 ## Linking Back to Tuqan
 
-Always include clear links to:
-- The relevant GitHub PR(s)
+**Always** include clear links to:
+- The relevant GitHub PR(s) in the Tuqan repo (e.g. the 2407-line PR #60)
 - The Tuqan repository
-- Specific `.agents/` documents when relevant (e.g. `MIGRATION-PLAN.md`, `STAGE-CHECKLISTS.md`)
+- Specific `.agents/` documents (especially `STAGE-CHECKLISTS.md` for the stage evidence and `MIGRATION-PLAN.md`)
 
-Example:
-> Este artículo complementa [PR #45](https://github.com/laanito/tuqan/pull/45) y la documentación en `.agents/`.
+Example (use in both language versions of the article):
+> Este artículo complementa [PR #60](https://github.com/laanito/tuqan/pull/60) (rama `feat/stage-8.3-gettext-login-menu-data`) y la documentación viva en `.agents/STAGE-CHECKLISTS.md` (Stage 8.4) y `MIGRATION-PLAN.md`.
 
 ## Workflow Recommendation (for Agents)
 
-1. Finish the Tuqan stage work + update `.agents/` docs.
-2. Create the Spanish article in `content/blog/`.
-3. Generate or reuse a hero image.
-4. Create the English version (or stub it).
-5. Update any series index pages if needed (`content/blog.md`, etc.).
-6. Commit and push to the blog repo.
+**Mandatory order** (do not skip steps):
+
+1. Finish the Tuqan stage/leg work.
+2. **Update the relevant `.agents/` docs first** (MIGRATION-PLAN.md, STAGE-CHECKLISTS.md evidence sections, and this BLOG-POSTING.md if any conventions have drifted). Capture the self-critique, lessons, and concrete outcomes while they are fresh.
+3. Create the Spanish article in `content/blog/`.
+4. Generate or reuse a hero image (follow the ComfyUI preference + .notes rule above).
+5. Create the English version.
+6. **In both language versions of the article, add explicit links** to the relevant Tuqan `.agents/` documents (example: "Este artículo complementa la documentación en `.agents/STAGE-CHECKLISTS.md` (Stage 8.4) y `MIGRATION-PLAN.md`.").
+7. Update any series index pages if needed (`content/blog.md`, etc.).
+8. Commit and push to the blog repo. Open the PR with a body that references the Tuqan PR(s) and the updated `.agents/` docs.
+
+**Recent policy (as of 2026-05)**: Do **not** include manual "Related reading" or "Artículos relacionados" sections at the end of Tuqan articles. The site has an automatic related module (see the chore commit that removed them from the menu-red-herring article, PR #52 in praderasblog).
 
 ## Notes for Future Agents
 
@@ -109,5 +115,7 @@ Example:
 
 ---
 
-**Last updated:** 2026-05 (before starting Stage 2)
+**Last updated:** 2026-06 (after Series_Order 10 article on full legacy menu + sidebar + first Usuarios module + debugging anti-patterns self-critique; PR #53 in praderasblog)
 **Owner:** Tuqan modernization project
+
+**Note for future agents:** This document (BLOG-POSTING.md) itself must be kept in sync with reality. The article creation for the 2407-line leg (June 2026) revealed several drifts (English path, hero process notes, workflow emphasis on .agents/ updates + links). Treat any new article as an opportunity to improve this guide.
