@@ -12,7 +12,12 @@ Modernization project of a PHP 5.1 application into modern PHP standards.
 
 ## Current Status (June 2026)
 
-**Core Functionality Modernization (Stage 8) — Menu + Action Mapping phase completed.**
+**Core Functionality Modernization (Stage 8) — Stage 8.4 in progress on `feat/stage-8.3-gettext-login-menu-data`.**
+
+- Full real legacy menu imported + multiple cleanup patches.
+- Switched to collapsible left sidebar navigation (solves horizontal space problem with real menu volume).
+- First real module started: User Management — modern listing + create/edit forms scaffolded (POST/validation deferred to next focused leg).
+- See STAGE-CHECKLISTS.md and the PR for details.
 
 ### ✅ What is Working Now
 - Fully Dockerized environment (PHP 8.3 + nginx + PostgreSQL 16).

@@ -1026,3 +1026,101 @@ All core priorities for Stage 8.3 delivered. Session diagnostics added and later
 
 ---
 
+## Stage 8.4 — Full Menu Structure + First Real Module (User Management)
+
+**Rationale:** With the menu system proven and the "red herring" session work behind us, the next leg is to treat the real legacy menu as the authoritative driver for all future feature work. Before building deep functionality we must:
+- Have the planning view of the complete menu (without polluting the dev runtime DB with 120 items).
+- Verify the current renderer + layout does not collapse under realistic volume.
+- Fix the last visible "demo" artifacts (user card).
+- Pick the first vertical slice (Administración → Usuarios) and have a concrete plan + initial tests.
+
+**todo_write items (copy at start of work):**
+```json
+[
+  {"id":"8.4.1","content":"Inventory full legacy menu size/structure from reference dumps","status":"pending"},
+  {"id":"8.4.2","content":"Create reference docs + targeted data patches (not full 120-item load)","status":"pending"},
+  {"id":"8.4.3","content":"Analyze current menu renderer + layout for scalability problems","status":"pending"},
+  {"id":"8.4.4","content":"Design + implement menu hierarchy / resolver / fallback tests","status":"pending"},
+  {"id":"8.4.5","content":"Move User card out of menu row + make 100% DB-driven (real name, company, no fakes)","status":"pending"},
+  {"id":"8.4.6","content":"Document the Administración/Usuarios branch as the concrete first module target with success criteria","status":"pending"},
+  {"id":"8.4.7","content":"Update all planning docs + open PR for the leg","status":"pending"}
+]
+```
+
+**Key Deliverables (this leg):**
+- `reference/legacy-menu-structure.md`
+- `reference/menu-renderer-analysis.md`
+- `reference/first-module-admin-usuarios-plan.md`
+- `docker/db-init/data-patches/0002-admin-branch-expansion.sql`
+- User card layout + data fixes in `templates/main.twig` + Login* + MainPage/LegacyAction/Placeholder
+- New unit tests for action resolver + menu fallbacks
+- Updated STAGE-CHECKLISTS + MIGRATION-PLAN + root README
+
+**Validation Commands:**
+```bash
+# After any data patch change
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d --build
+docker compose exec app ./scripts/init-db.sh
+
+# Menu data visible
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT count(*) FROM menu_nuevo;
+  SELECT id, padre, accion FROM menu_nuevo WHERE padre = 30 ORDER BY orden;
+"
+
+# Full authenticated flow + visual check of new user card (company name, real user name, no fake strings)
+# Browser or curl + grep for new strings
+
+# Tests
+docker compose exec app ./vendor/bin/phpunit --filter "MainPage|menu|resolver" --stop-on-failure
+```
+
+**Stage 8.4 Gate:**
+- [ ] Reference documents exist and are linked from MIGRATION-PLAN.
+- [ ] Admin branch has enough real items in the active patch for planning the first module.
+- [ ] Menu renderer analysis explicitly calls out why the current Bootstrap collapse navbar will not scale to the full legacy tree.
+- [ ] At least the resolver + fallback menu tests are green and committed.
+- [ ] User card shows real data from session (company + user name from DB, not hardcoded Spanish placeholders).
+- [ ] Layout no longer splits the menu row with the user card (visual + code review).
+- [ ] First-module plan document exists with clear MVP pages, risks, and order of work.
+- [ ] Evidence + PR opened.
+
+**Rollback:** Same as 8.3 (data patches are additive and idempotent).
+
+---
+
+**Stage 8.4 Execution Evidence (late May – early June 2026)**
+
+**Major deliverables completed in this leg:**
+
+- Full real legacy menu imported via `0004-full-legacy-menu.sql` (106 menu items + 212 labels). This was the explicit request to have the real volume available for renderer/layout verification.
+- Series of targeted cleanup patches (0005–0009) to fix casing, remove duplicate top-level "Inicio"/"Administración" entries from old curated data, re-parent Usuarios correctly under Aplicacion, and promote Aplicacion as the first child under real Administración.
+- Complete switch from horizontal navbar menu to a proper **collapsible left sidebar** navigation (`buildSidebarMenuHtml()` + new `layouts/app.twig` base + CSS/JS toggle with localStorage persistence). This solved the "too many top-level items" wrapping problem on normal resolutions.
+- First real vertical slice started: **User Management (Usuarios)**.
+  - Modern listing page at `/admin/usuarios` (and legacy path) showing real data from the `usuarios` table + perfil join.
+  - Create + Edit forms scaffolded (`/admin/usuarios/nuevo` and `/admin/usuarios/editar/{id}`) with the sidebar included.
+  - All menu-driven legacy actions for Usuarios now land on the modern pages instead of Placeholder.
+  - POST handling, validation, and full CRUD intentionally deferred to the next working leg (as explicitly requested to avoid context depletion).
+
+**Key files changed/added:**
+- New: `Pages/Usuarios/{Listado,Formulario}.php`, `templates/usuarios/`, `templates/layouts/app.twig`
+- New data patches 0004–0009 under `docker/db-init/data-patches/`
+- Major updates to `index.php` (routing), `MainPage.php` (new sidebar renderer + old horizontal retired for main nav), `css/tuqan.css`, `templates/main.twig`
+- Multiple fixes in `Manejador_Base_Datos.php` and related legacy classes for NULL safety (stripslashes, etc.)
+- Documentation: `reference/` folder + updates to MIGRATION-PLAN.md and this file
+
+**Current status:**
+- GET listing and GET forms work with full sidebar.
+- POST + validation left for the next focused leg.
+- No more obvious "extra Inicio / duplicate Administración" in the sidebar.
+- User confirmed after final fixes: "ok working now"
+
+This leg successfully moved the project from "menu as navigation that mostly 404s" to "menu as driver + first real module scaffolding + modern navigation chrome".
+
+**Next documented phase:** Wire up actual create/update logic + validation for the Usuarios module (deferred by explicit request due to context size).
+
+---
+
+
+
