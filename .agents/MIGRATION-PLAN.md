@@ -428,7 +428,8 @@ This phase is explicitly positioned as **pre-requisite infrastructure** before S
 - Stage 8.1 (Twig 3 upgrade): Completed
 - Stage 8.2 (Full composer dependency modernization): Completed
 - Stage 8.3 completed.
-- Stage 8.4 (Full menu structure reference + first real module "Administración → Usuarios"): Current focus (see STAGE-CHECKLISTS.md and reference/*.md)
+- Stage 8.4 (Full menu structure reference + first real module "Administración → Usuarios"): Completed (PR #60)
+- Stage 8.5 (Perfiles first + Aplicacion/Administracion restructuring + Empresas + Personalizacion scaffolding): In progress on `feat/stage-8.5-profiles-empresas-personalizacion` (see STAGE-CHECKLISTS.md and reference/stage-8.5-*.md)
 - Stage 9+: Deeper business logic modernization and UI/dep polish (after the stepping stone)
 
 **Buffer:** 2-4 weeks for surprises (legacy surprises always appear).
@@ -467,5 +468,5 @@ After each stage gate, append a "Stage N — Completed Evidence" section to this
 ---
 
 **Plan Owner:** This session's agent + future agents following AGENTS.md  
-**Last Updated:** 2026-06 (Stage 8.2 completed + 8.3 plan approved on feat/stage-8.3-gettext-login-menu-data)  
+**Last Updated:** 2026-06 (Stage 8.5 execution started on feat/stage-8.5-profiles-empresas-personalizacion)  
 **Approval Status:** Stage 8.3 plan reviewed and approved by user (menu "as-is" first; Former deferred until form pages are reached)

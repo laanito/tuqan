@@ -184,7 +184,29 @@ $router->addRoute('GET', '/admin/usuarios/editar/{id}', ['Tuqan\Pages\Usuarios\F
 $router->addRoute('GET', '/administracion/usuarios/listado/ver', ['Tuqan\Pages\Usuarios\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/usuarios/nuevo', ['Tuqan\Pages\Usuarios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/usuarios/editar', ['Tuqan\Pages\Usuarios\Listado', 'ShowPage'], ['before' => 'auth_company']); // go to list for selection
-$router->addRoute('GET', '/admin/perfiles', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/perfiles', ['Tuqan\Pages\Perfiles\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/perfiles/nuevo', ['Tuqan\Pages\Perfiles\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/perfiles/editar/{id}', ['Tuqan\Pages\Perfiles\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// Legacy menu accion paths for Perfiles (menu clicks from Aplicacion → Perfiles)
+$router->addRoute('GET', '/administracion/perfiles/listado/ver', ['Tuqan\Pages\Perfiles\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/perfiles/nuevo', ['Tuqan\Pages\Perfiles\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/perfiles/editar', ['Tuqan\Pages\Perfiles\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
+// Scaffolding routes for the other newly structured / modernized menu entries in this leg
+// (full implementations for Empresas, Permisos assignment, Idiomas, and Personalizacion sub-items follow the same pattern)
+$router->addRoute('GET', '/admin/empresas', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/empresas/listado/ver', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/permisos', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/modulos/listado/nuevo', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/idiomas', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/idiomas/listado/nuevo', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+
+// Personalizacion children (all currently stubbed; implemented incrementally in follow-ups)
+$router->addRoute('GET', '/admin/clientes', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/criterios', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipos-mejora', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+
 $router->addRoute('GET', '/calidad/matriz-ambiental', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/medio/aspectos', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/rrhh/personal', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);

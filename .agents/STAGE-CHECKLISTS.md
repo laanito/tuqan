@@ -1129,5 +1129,37 @@ This leg successfully moved the project from "menu as navigation that mostly 404
 
 ---
 
+## Stage 8.5 — Perfiles First + Aplicacion / Administracion Menu Restructuring + Empresas + Personalizacion Scaffolding
+
+**todo_write items (high level):**
+- Menu restructure patch (0010) + empresas table (0011)
+- Perfiles module (full listing + forms, GET)
+- Empresas basic (table + listing)
+- Route scaffolding + Placeholder for remaining items
+- Full verification + docs + PR
+
+**Stage 8.5 Gate (high level):**
+- Sidebar exactly matches requested structure after patches (Personalizacion under Administracion with the 7 items; Empresas + Permisos inside Aplicacion; Mensajes/Tareas outside Aplicacion).
+- Perfiles listing and forms work end-to-end with full modern chrome (no Placeholder).
+- Empresas menu entry shows real data from the new table.
+- All new/renamed menu clicks land on either real modern pages or clean "en desarrollo" with working sidebar.
+- Evidence appended. No regression on Usuarios or existing navigation.
+
+**Stage 8.5 Execution Evidence (June 2026)**
+
+**Major deliverables:**
+- `0010-menu-restructure-aplicacion-personalizacion.sql` (robust, RETURNING-based, verified live after one self-repaired ID collision during development).
+- `0011-empresas-table-and-seed.sql` (minimal backing table + 3 demo rows).
+- Full `Pages/Perfiles/{Listado,Formulario}.php` + templates (exact pattern from Usuarios 8.4, with sidebar + red cabecera).
+- Basic `Pages/Empresas/Listado.php` + template (real data, not placeholder).
+- index.php routes: full modern + legacy paths for Perfiles + scaffolding for all other restructured entries.
+- reference/stage-8.5-...-plan.md (detailed autonomous plan written before code).
+- Live verified menu hierarchy matches the exact user request.
+
+**Branch:** `feat/stage-8.5-profiles-empresas-personalizacion`
+**Status:** Ready for full Docker clean-room verification, commit, and PR.
+
+(Full evidence + gates will be completed in the same PR before merge.)
+
 
 

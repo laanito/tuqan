@@ -1,0 +1,45 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Empresas - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Empresas</h2>
+        <div>
+            <a href="/admin/empresas/nuevo" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nueva Empresa
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if empresas is empty %}
+        <div class="alert alert-info">No hay empresas registradas.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr><th>ID</th><th>Nombre</th><th>Estado</th><th style="width:140px;text-align:right;">Acciones</th></tr>
+                </thead>
+                <tbody>
+                    {% for e in empresas %}
+                    <tr>
+                        <td>{{ e.id }}</td>
+                        <td><strong>{{ e.nombre }}</strong></td>
+                        <td>{% if e.activo %}<span class="label label-success">Activa</span>{% else %}<span class="label label-default">Inactiva</span>{% endif %}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/empresas/editar/{{ e.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Empresas reemplaza al concepto anterior de "Hospitales". La tabla legacy <code>hospitales</code> se mantiene para compatibilidad con código antiguo.
+    </div>
+</div>
+{% endblock %}
