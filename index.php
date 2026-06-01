@@ -195,8 +195,16 @@ $router->addRoute('GET', '/administracion/perfiles/editar', ['Tuqan\Pages\Perfil
 
 // Scaffolding routes for the other newly structured / modernized menu entries in this leg
 // (full implementations for Empresas, Permisos assignment, Idiomas, and Personalizacion sub-items follow the same pattern)
-$router->addRoute('GET', '/admin/empresas', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/administracion/empresas/listado/ver', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/empresas', ['Tuqan\Pages\Empresas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/empresas/listado/ver', ['Tuqan\Pages\Empresas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
+// Legacy child actions for the Empresas menu entry (added by 0010 patch)
+$router->addRoute('GET', '/administracion/empresas/nuevo', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/empresas/editar', ['Tuqan\Pages\Empresas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
+// Modern clean paths for Empresas (for direct links / future use)
+$router->addRoute('GET', '/admin/empresas/nuevo', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/empresas/editar/{id}', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/permisos', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/modulos/listado/nuevo', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/idiomas', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
