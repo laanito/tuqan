@@ -127,6 +127,72 @@
             headerToggle.addEventListener('click', () => setCollapsed(!body.classList.contains('sidebar-collapsed')));
         }
     })();
+
+    // Persist open/closed state of sidebar menu accordions across navigation
+    (function() {
+        const STORAGE_KEY = 'sidebarOpenSections';
+
+        function getOpenSections() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveOpenSections(ids) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+            } catch (e) {}
+        }
+
+        function restoreMenuState() {
+            const openIds = getOpenSections();
+            if (!openIds.length) return;
+
+            openIds.forEach(function(id) {
+                const panel = document.getElementById(id);
+                if (!panel) return;
+
+                panel.classList.add('in');
+                panel.setAttribute('aria-expanded', 'true');
+
+                const trigger = document.querySelector('a.sidebar-link[href="#' + id + '"]');
+                if (trigger) {
+                    trigger.setAttribute('aria-expanded', 'true');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only run inside pages that have our sidebar menu
+            const sidebarContent = document.querySelector('#sidebar .sidebar-content');
+            if (!sidebarContent) return;
+
+            restoreMenuState();
+
+            // Bootstrap 3 collapse events bubble to the sidebar container
+            sidebarContent.addEventListener('show.bs.collapse', function(ev) {
+                const id = ev.target && ev.target.id;
+                if (!id) return;
+
+                const open = getOpenSections();
+                if (open.indexOf(id) === -1) {
+                    open.push(id);
+                    saveOpenSections(open);
+                }
+            });
+
+            sidebarContent.addEventListener('hide.bs.collapse', function(ev) {
+                const id = ev.target && ev.target.id;
+                if (!id) return;
+
+                const open = getOpenSections().filter(function(x) { return x !== id; });
+                saveOpenSections(open);
+            });
+        });
+    })();
 </script>
 
 {% block scripts %}{% endblock %}

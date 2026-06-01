@@ -235,11 +235,13 @@ class MainPage
                 $html .= '<li class="sidebar-item' . ($hasChildren ? ' has-children' : '') . '">';
 
                 if ($hasChildren) {
-                    $html .= '<a href="#' . $itemId . '" class="sidebar-link" data-toggle="collapse" aria-expanded="' . ($level === 0 ? 'true' : 'false') . '">';
+                    // Always render collapsed by default.
+                    // Actual open state is restored client-side from localStorage.
+                    $html .= '<a href="#' . $itemId . '" class="sidebar-link" data-toggle="collapse" aria-expanded="false">';
                     $html .= '<span class="sidebar-label">' . htmlspecialchars($it['label']) . '</span>';
                     $html .= '<span class="sidebar-caret"></span>';
                     $html .= '</a>';
-                    $html .= '<div id="' . $itemId . '" class="collapse' . ($level === 0 ? ' in' : '') . '">';
+                    $html .= '<div id="' . $itemId . '" class="collapse">';
                     $html .= $build($it['id'], $level + 1);
                     $html .= '</div>';
                 } else {
