@@ -1,0 +1,56 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Perfiles - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Perfiles</h2>
+        <div>
+            <a href="/admin/perfiles/nuevo" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo Perfil
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if perfiles is empty %}
+        <div class="alert alert-info">
+            No hay perfiles registrados todavía.
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th style="width: 140px; text-align: right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in perfiles %}
+                    <tr>
+                        <td>{{ p.id }}</td>
+                        <td><strong>{{ p.nombre }}</strong></td>
+                        <td>
+                            {% if p.activo %}
+                                <span class="label label-success">Activo</span>
+                            {% else %}
+                                <span class="label label-default">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right;">
+                            <a href="/admin/perfiles/editar/{{ p.id }}" class="btn btn-xs btn-default">Editar</a>
+                            {# No borrar for core profiles (0/1) in this MVP to avoid breaking existing users #}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

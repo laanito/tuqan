@@ -127,6 +127,71 @@
             headerToggle.addEventListener('click', () => setCollapsed(!body.classList.contains('sidebar-collapsed')));
         }
     })();
+
+    // Persist open/closed state of sidebar menu accordions across navigation
+    // Uses jQuery because Bootstrap 3 fires its events through jQuery.
+    (function() {
+        const STORAGE_KEY = 'sidebarOpenSections';
+
+        function getOpen() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveOpen(ids) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+            } catch (e) {}
+        }
+
+        function restoreMenuState() {
+            const ids = getOpen();
+            if (!ids.length) return;
+
+            ids.forEach(function(id) {
+                const $panel = $('#' + id);
+                if (!$panel.length) return;
+
+                $panel.addClass('in');
+
+                const $trigger = $('a.sidebar-link[href="#' + id + '"]');
+                if ($trigger.length) {
+                    $trigger.attr('aria-expanded', 'true');
+                }
+            });
+        }
+
+        $(function() {
+            // Only activate on pages that actually have our sidebar menu
+            if (!$('#sidebar .sidebar-content').length) return;
+
+            restoreMenuState();
+
+            // Listen using jQuery so we reliably catch Bootstrap's custom events
+            $('#sidebar .sidebar-content')
+                .on('show.bs.collapse', function(ev) {
+                    const id = ev.target && ev.target.id;
+                    if (!id) return;
+
+                    const open = getOpen();
+                    if (open.indexOf(id) === -1) {
+                        open.push(id);
+                        saveOpen(open);
+                    }
+                })
+                .on('hide.bs.collapse', function(ev) {
+                    const id = ev.target && ev.target.id;
+                    if (!id) return;
+
+                    const open = getOpen().filter(function(x) { return x !== id; });
+                    saveOpen(open);
+                });
+        });
+    })();
 </script>
 
 {% block scripts %}{% endblock %}

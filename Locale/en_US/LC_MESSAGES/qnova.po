@@ -52,6 +52,9 @@ msgstr "Submit"
 msgid "Reset"
 msgstr "Reset"
 
+msgid "sPCLimpiar"
+msgstr "Clear"
+
 # Main landing page (after login)
 msgid "Bienvenido"
 msgstr "Welcome"

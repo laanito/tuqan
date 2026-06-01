@@ -12,12 +12,18 @@ Modernization project of a PHP 5.1 application into modern PHP standards.
 
 ## Current Status (June 2026)
 
-**Core Functionality Modernization (Stage 8) — Stage 8.4 in progress on `feat/stage-8.3-gettext-login-menu-data`.**
+**Core Functionality Modernization (Stage 8) — Stage 8.5 completed on `feat/stage-8.5-profiles-empresas-personalizacion`.**
 
-- Full real legacy menu imported + multiple cleanup patches.
-- Switched to collapsible left sidebar navigation (solves horizontal space problem with real menu volume).
-- First real module started: User Management — modern listing + create/edit forms scaffolded (POST/validation deferred to next focused leg).
-- See STAGE-CHECKLISTS.md and the PR for details.
+- Full real legacy menu imported + restructuring patches (0010/0011) — Personalizacion submenu created, Hospitales → Empresas, Permisos moved into Aplicacion, etc.
+- Collapsible left sidebar with persisted accordion state (level 2/3 expansions survive navigation) and collapsed-by-default behavior.
+- Real modules delivered (GET only):
+  - Perfiles (full listing + forms)
+  - Empresas (listing + basic form)
+  - Menus, Idiomas, Permisos (real pages under Aplicacion — fully navigable)
+- Login forms localized.
+- Docker now auto-compiles `.mo` files from `.po` on container start.
+- All changes follow the menu-driven, incremental modernization approach.
+- See `.agents/STAGE-CHECKLISTS.md` (Stage 8.5 section) and the PR for full evidence.
 
 ### ✅ What is Working Now
 - Fully Dockerized environment (PHP 8.3 + nginx + PostgreSQL 16).
@@ -27,10 +33,13 @@ Modernization project of a PHP 5.1 application into modern PHP standards.
 - Legacy `accion` keys (e.g. `medio:aspectos:impactos`) are automatically translated to clean Phroute-style paths (`/medio/aspectos/impactos`).
 - Smart fallback: unmapped legacy actions land on a friendly page that still shows the full menu (no navigation breakage).
 - Gettext fully working (Spanish active) + English translation scaffolding started.
+- `.po` → `.mo` files are automatically compiled on container start (no manual `msgfmt` needed during development).
 - All critical flows clean under Xdebug (zero deprecation noise on login → landing → menu).
+- Real modules (GET-only) under Administración → Aplicacion: Perfiles (complete), Empresas, Menus, Idiomas, Permisos — all navigable with modern chrome.
 
 ### 🔄 Current Focus
 - Using the now-functional menu as the driver to populate real content in modules, one area at a time.
+- Next major step: POST + validation for the modules delivered in Stage 8.5 (Perfiles, Empresas, etc.).
 - Expanding Phroute route coverage for the legacy action keys as modules are modernized.
 
 ### 🚧 Important Notes

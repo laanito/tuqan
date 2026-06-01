@@ -1,0 +1,43 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Menús - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Menús (Estructura y Traducciones)</h2>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    <div class="alert alert-info">
+        Este módulo permite visualizar la estructura actual del menú y sus traducciones. 
+        La edición de orden y traducciones se implementará en una fase posterior.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Padre</th>
+                    <th>Orden</th>
+                    <th>Etiqueta (ES)</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in menus %}
+                <tr>
+                    <td>{{ m.id }}</td>
+                    <td>{{ m.padre ?? '—' }}</td>
+                    <td>{{ m.orden }}</td>
+                    <td><strong>{{ m.label_es ?? '(sin etiqueta)' }}</strong></td>
+                    <td><code style="font-size: 11px;">{{ m.accion ?? '' }}</code></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
