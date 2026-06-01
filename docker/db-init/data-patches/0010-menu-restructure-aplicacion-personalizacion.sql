@@ -10,7 +10,13 @@
 --   - Ensure all affected entries have proper labels in menu_idiomas_nuevo
 --
 -- Idempotent: safe to re-run on any state. Uses existence checks.
--- Robust ID allocation: never hardcodes the new parent id (uses RETURNING).
+--
+-- IMPORTANT (PostgreSQL SERIAL gotcha):
+--   The 0004-full-legacy-menu.sql patch inserts ~100 rows using explicit IDs.
+--   This leaves the menu_nuevo_id_seq sequence pointing at a low number.
+--   Any later INSERT that relies on the default SERIAL value will collide.
+--   Solution used here: always compute a safe ID via MAX(id) + gap for new rows
+--   in this patch (and any future menu-altering patches).
 -- ============================================================================
 
 DO $$
@@ -61,10 +67,14 @@ BEGIN
     UPDATE menu_nuevo SET padre = v_admin_id, orden = 80 WHERE id = v_mensajes_id;
     UPDATE menu_nuevo SET padre = v_admin_id, orden = 81 WHERE id = v_tareas_id;
 
-    -- 4. Create the new Personalizacion parent (let SERIAL allocate, capture via RETURNING)
-    INSERT INTO menu_nuevo (padre, orden, accion, permisos, activo)
-    VALUES (v_admin_id, 70, '', '{t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t}', true)
-    RETURNING id INTO v_personalizacion_id;
+    -- 4. Create the new Personalizacion parent.
+    -- We MUST allocate the ID explicitly (using MAX+gap) because the 0004 full-legacy-menu
+    -- patch inserted hundreds of rows with explicit IDs. This leaves the menu_nuevo_id_seq
+    -- sequence pointing at a low value, so a plain SERIAL INSERT would collide (e.g. id=1).
+    SELECT COALESCE(MAX(id), 0) + 1000 INTO v_personalizacion_id FROM menu_nuevo;
+
+    INSERT INTO menu_nuevo (id, padre, orden, accion, permisos, activo)
+    VALUES (v_personalizacion_id, v_admin_id, 70, '', '{t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t}', true);
 
     -- Labels (castellano primary + English best-effort)
     INSERT INTO menu_idiomas_nuevo (menu, idioma_id, valor)
@@ -87,10 +97,11 @@ BEGIN
     UPDATE menu_nuevo SET padre = v_personalizacion_id, orden = 60 WHERE id = v_tipos_imp_id;
     UPDATE menu_nuevo SET padre = v_personalizacion_id, orden = 70 WHERE id = v_tipo_doc_id;
 
-    -- 6. Add representative child actions under Empresas so the menu is ready for forms
-    INSERT INTO menu_nuevo (padre, orden, accion, permisos, activo) VALUES
-      (v_hospitales_id, 10, 'administracion:empresas:nuevo',  '{t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t}', true),
-      (v_hospitales_id, 20, 'administracion:empresas:editar', '{t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t}', true)
+    -- 6. Add representative child actions under Empresas so the menu is ready for forms.
+    -- Use the same safe high-ID technique (the sequence is not reliable after 0004's explicit IDs).
+    INSERT INTO menu_nuevo (id, padre, orden, accion, permisos, activo) VALUES
+      (v_personalizacion_id + 1, v_hospitales_id, 10, 'administracion:empresas:nuevo',  '{t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t}', true),
+      (v_personalizacion_id + 2, v_hospitales_id, 20, 'administracion:empresas:editar', '{t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t}', true)
     ON CONFLICT DO NOTHING;
 
     RAISE NOTICE 'Patch 0010 completed successfully. New Personalizacion id=% under Administracion. Empresas, Permisos, Personalizacion items all in final positions.', v_personalizacion_id;
