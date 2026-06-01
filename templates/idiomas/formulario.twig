@@ -1,0 +1,35 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/idiomas" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 500px;">
+    <form method="POST" action="#" onsubmit="alert('POST para Idiomas se implementará junto con el resto de formularios en la siguiente fase.'); return false;">
+        <div class="form-group">
+            <label for="nombre">Nombre del Idioma</label>
+            <input type="text" class="form-control" id="nombre" name="nombre"
+                   value="{{ idioma.nombre ?? '' }}" required placeholder="ej: catalan, ingles, frances...">
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Idioma' }}
+            </button>
+            <a href="/admin/idiomas" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            <strong>Nota:</strong> Alta/edición real (POST) diferida. Este módulo se enfoca actualmente en la selección de idiomas disponibles.
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Permisos - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Permisos — Asignación de Menús a Perfiles</h2>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    <div class="alert alert-info">
+        Este módulo permitirá asignar qué menús son visibles para cada perfil (usando la estructura legacy de <code>menu_nuevo.permisos</code>).
+        Por ahora mostramos un resumen de perfiles disponibles.
+    </div>
+
+    <h4>Perfiles del sistema</h4>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in perfiles %}
+                <tr>
+                    <td>{{ p.id }}</td>
+                    <td><strong>{{ p.nombre }}</strong></td>
+                    <td>
+                        {% if p.activo %}
+                            <span class="label label-success">Activo</span>
+                        {% else %}
+                            <span class="label label-default">Inactivo</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/admin/permisos/editar/{{ p.id }}" class="btn btn-xs btn-default">Ver / Editar permisos</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="alert alert-warning" style="margin-top: 20px;">
+        <strong>Nota de implementación:</strong> La vista completa de matriz de permisos (qué menús ve cada perfil) se completará junto con la lógica de POST en la siguiente fase. Actualmente el sistema usa un array de 22 posiciones en la columna <code>permisos</code> de <code>menu_nuevo</code>.
+    </div>
+</div>
+{% endblock %}

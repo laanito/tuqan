@@ -205,10 +205,20 @@ $router->addRoute('GET', '/administracion/empresas/editar', ['Tuqan\Pages\Empres
 // Modern clean paths for Empresas (for direct links / future use)
 $router->addRoute('GET', '/admin/empresas/nuevo', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/empresas/editar/{id}', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/admin/permisos', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/administracion/modulos/listado/nuevo', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/admin/idiomas', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/administracion/idiomas/listado/nuevo', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+// === Aplicacion → Menus, Idiomas, Permisos (Stage 8.5) ===
+$router->addRoute('GET', '/admin/menus', ['Tuqan\Pages\Menus\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/menus/listado/nuevo', ['Tuqan\Pages\Menus\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/menus/nuevo', ['Tuqan\Pages\Menus\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+$router->addRoute('GET', '/admin/idiomas', ['Tuqan\Pages\Idiomas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/idiomas/listado/nuevo', ['Tuqan\Pages\Idiomas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/idiomas/nuevo', ['Tuqan\Pages\Idiomas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/idiomas/editar/{id}', ['Tuqan\Pages\Idiomas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+$router->addRoute('GET', '/admin/permisos', ['Tuqan\Pages\Permisos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/modulos/listado/nuevo', ['Tuqan\Pages\Permisos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/permisos/nuevo', ['Tuqan\Pages\Permisos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/permisos/editar/{id}', ['Tuqan\Pages\Permisos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 
 // Personalizacion children (all currently stubbed; implemented incrementally in follow-ups)
 $router->addRoute('GET', '/admin/clientes', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
