@@ -129,10 +129,11 @@
     })();
 
     // Persist open/closed state of sidebar menu accordions across navigation
+    // Uses jQuery because Bootstrap 3 fires its events through jQuery.
     (function() {
         const STORAGE_KEY = 'sidebarOpenSections';
 
-        function getOpenSections() {
+        function getOpen() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 return raw ? JSON.parse(raw) : [];
@@ -141,56 +142,54 @@
             }
         }
 
-        function saveOpenSections(ids) {
+        function saveOpen(ids) {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
             } catch (e) {}
         }
 
         function restoreMenuState() {
-            const openIds = getOpenSections();
-            if (!openIds.length) return;
+            const ids = getOpen();
+            if (!ids.length) return;
 
-            openIds.forEach(function(id) {
-                const panel = document.getElementById(id);
-                if (!panel) return;
+            ids.forEach(function(id) {
+                const $panel = $('#' + id);
+                if (!$panel.length) return;
 
-                panel.classList.add('in');
-                panel.setAttribute('aria-expanded', 'true');
+                $panel.addClass('in');
 
-                const trigger = document.querySelector('a.sidebar-link[href="#' + id + '"]');
-                if (trigger) {
-                    trigger.setAttribute('aria-expanded', 'true');
+                const $trigger = $('a.sidebar-link[href="#' + id + '"]');
+                if ($trigger.length) {
+                    $trigger.attr('aria-expanded', 'true');
                 }
             });
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Only run inside pages that have our sidebar menu
-            const sidebarContent = document.querySelector('#sidebar .sidebar-content');
-            if (!sidebarContent) return;
+        $(function() {
+            // Only activate on pages that actually have our sidebar menu
+            if (!$('#sidebar .sidebar-content').length) return;
 
             restoreMenuState();
 
-            // Bootstrap 3 collapse events bubble to the sidebar container
-            sidebarContent.addEventListener('show.bs.collapse', function(ev) {
-                const id = ev.target && ev.target.id;
-                if (!id) return;
+            // Listen using jQuery so we reliably catch Bootstrap's custom events
+            $('#sidebar .sidebar-content')
+                .on('show.bs.collapse', function(ev) {
+                    const id = ev.target && ev.target.id;
+                    if (!id) return;
 
-                const open = getOpenSections();
-                if (open.indexOf(id) === -1) {
-                    open.push(id);
-                    saveOpenSections(open);
-                }
-            });
+                    const open = getOpen();
+                    if (open.indexOf(id) === -1) {
+                        open.push(id);
+                        saveOpen(open);
+                    }
+                })
+                .on('hide.bs.collapse', function(ev) {
+                    const id = ev.target && ev.target.id;
+                    if (!id) return;
 
-            sidebarContent.addEventListener('hide.bs.collapse', function(ev) {
-                const id = ev.target && ev.target.id;
-                if (!id) return;
-
-                const open = getOpenSections().filter(function(x) { return x !== id; });
-                saveOpenSections(open);
-            });
+                    const open = getOpen().filter(function(x) { return x !== id; });
+                    saveOpen(open);
+                });
         });
     })();
 </script>
