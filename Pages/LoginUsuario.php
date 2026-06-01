@@ -54,12 +54,12 @@ class LoginUsuario
             $Formulario = (string)Former::framework('TwitterBootstrap3');
             $Formulario.= Former::horizontal_open();
             $Formulario.= Former::text('nombre')
-                ->placeholder(gettext("Insert user name..."))
-                ->label(gettext("User Name"));
-            $Formulario.= Former::password('clave')->label(gettext("Password"));
+                ->placeholder(gettext("sIdentUsuario"))
+                ->label(gettext('sUsuario'));
+            $Formulario.= Former::password('clave')->label(gettext('sClave'));
             $Formulario.= Former::actions(
-                Former::submit( gettext('Submit'))->addClass('b_activo'),
-                Former::reset( gettext('Reset'))->addClass('b_activo')
+                Former::submit( gettext('sEntrar'))->addClass('b_activo'),
+                Former::reset( gettext('sPCLimpiar'))->addClass('b_activo')
             )->addClass('text-center');
             $Formulario.= Former::close();
 

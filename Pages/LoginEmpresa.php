@@ -105,12 +105,12 @@ class LoginEmpresa
             $Formulario = (string)Former::framework('TwitterBootstrap3');
             $Formulario.= Former::horizontal_open();
             $Formulario.= Former::select('nombre')->options($aEmpresas)
-                ->placeholder(gettext("Choose an option..."))
-                ->label(gettext("Company Name"));
-            $Formulario.= Former::password('clave')->label(gettext("Password"));
+                ->placeholder(gettext('sSelecIdioma'))
+                ->label(gettext('sEmpresa'));
+            $Formulario.= Former::password('clave')->label(gettext('sClave'));
             $Formulario.= Former::actions(
-                Former::submit( gettext('Submit'))->addClass('b_activo'),
-                Former::reset( gettext('Reset'))->addClass('b_activo')
+                Former::submit( gettext('sEntrar'))->addClass('b_activo'),
+                Former::reset( gettext('sPCLimpiar'))->addClass('b_activo')
             )->addClass('text-center');
             $Formulario.= Former::close();
 
