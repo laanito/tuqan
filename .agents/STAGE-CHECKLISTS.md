@@ -1147,19 +1147,37 @@ This leg successfully moved the project from "menu as navigation that mostly 404
 
 **Stage 8.5 Execution Evidence (June 2026)**
 
-**Major deliverables:**
-- `0010-menu-restructure-aplicacion-personalizacion.sql` (robust, RETURNING-based, verified live after one self-repaired ID collision during development).
-- `0011-empresas-table-and-seed.sql` (minimal backing table + 3 demo rows).
-- Full `Pages/Perfiles/{Listado,Formulario}.php` + templates (exact pattern from Usuarios 8.4, with sidebar + red cabecera).
-- Basic `Pages/Empresas/Listado.php` + template (real data, not placeholder).
-- index.php routes: full modern + legacy paths for Perfiles + scaffolding for all other restructured entries.
-- reference/stage-8.5-...-plan.md (detailed autonomous plan written before code).
-- Live verified menu hierarchy matches the exact user request.
+**Major deliverables completed in this leg:**
+- Menu restructuring via `0010-menu-restructure-aplicacion-personalizacion.sql` (Personalizacion created under Administración with the exact 7 requested children; Hospitales → Empresas; Permisos moved into Aplicacion; Mensajes/Tareas moved out of Aplicacion). Robust MAX(id)+gap allocation to avoid SERIAL collisions after 0004.
+- `0011-empresas-table-and-seed.sql` — New minimal `empresas` table + demo data.
+- **Perfiles** — Complete modern module (listing + nuevo/editar forms, GET only) following the Usuarios pattern. Fully wired with modern + legacy routes.
+- **Empresas** — Real listing + basic form (replaces the old Hospitales entry).
+- **Menus, Idiomas, Permisos** (under Aplicacion) — All three now have real pages instead of Placeholder:
+  - Menus: Structure + translation listing.
+  - Idiomas: Listing + simple new/edit (limited scope as requested).
+  - Permisos: Profile list with note on future assignment matrix.
+- All Aplicacion menu items under Administración are now navigable with real content (no more "Módulo en desarrollo" for these).
+- Major UX fixes:
+  - Sidebar accordion state (level 2/3 expansions) now persists across navigation via localStorage + jQuery Bootstrap events.
+  - All level-1 sections collapsed by default (much better with full legacy menu volume).
+- Login forms fully localized (buttons now use `sEntrar` / `sPCLimpiar`; labels use existing `sEmpresa`, `sUsuario`, `sClave` keys).
+- Docker improvement: `.mo` files are now automatically regenerated from `.po` on every container start via new `scripts/compile-locales.sh` + entrypoint (plus baked into prod images).
+- All changes follow the established GET-only + modern layout pattern. POST/validation intentionally deferred.
+
+**Files changed (high level):**
+- New: `Pages/{Idiomas,Menus,Perfiles,Permisos}/`, corresponding `templates/`, data patches 0010/0011, `docker/entrypoint.sh`, `scripts/compile-locales.sh`.
+- Major updates: `index.php` (routes), `Pages/MainPage.php`, `templates/layouts/app.twig`, login pages, `.agents/` docs, root `Readme.md`.
 
 **Branch:** `feat/stage-8.5-profiles-empresas-personalizacion`
-**Status:** Ready for full Docker clean-room verification, commit, and PR.
+**Status:** Complete. Ready for review and merge. All gates passed. No regressions on existing Usuarios or navigation.
 
-(Full evidence + gates will be completed in the same PR before merge.)
+**Gates verified:**
+- Sidebar hierarchy exactly matches the user request.
+- Perfiles fully functional with modern chrome.
+- All new/renamed Aplicacion entries land on real pages.
+- Menu state persistence and collapsed-by-default behavior working.
+- Login forms localized.
+- Docker build + runtime now handles locale compilation automatically.
 
 
 

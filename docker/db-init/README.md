@@ -58,10 +58,11 @@ Example patch layout:
 ```
 data-patches/
   0001-real-menu-from-legacy.sql          -- Core curated hierarchy for login + main nav
-  0002-admin-branch-expansion.sql         -- First module slice (Administración → Usuarios/Perfiles)
-  0003-usuarios-contact-info.sql          -- Extended usuarios with apellido + email columns
+  ...
   0004-full-legacy-menu.sql               -- Full real legacy menu (loaded automatically)
-  0005-menu-cleanup.sql                   -- Casing, duplicate removal, and ordering fixes for the full menu
+  0005–0009 — menu cleanup & hierarchy fixes
+  0010-menu-restructure-aplicacion-personalizacion.sql  -- Stage 8.5: Personalizacion + Empresas + Permisos move
+  0011-empresas-table-and-seed.sql                      -- Supporting table for the renamed Empresas entry
   ...
 ```
 
@@ -81,4 +82,6 @@ To add new data: just drop a new `00XX-*.sql` file with `ON CONFLICT DO NOTHING`
 - The large historical dumps (especially the 27 MB backup) are **not** loaded automatically. They live in `archive/db-dumps/` for manual restore when needed.
 - This setup is intentionally minimal so we can test modernized code quickly and safely.
 
-See `.agents/STAGE-CHECKLISTS.md` (Stage 8.3) for the current plan and evidence.
+See `.agents/STAGE-CHECKLISTS.md` (Stage 8.3 / 8.5) for the current plan and evidence.
+
+**Note on translations**: `.po` → `.mo` compilation now happens automatically on every container start (via `scripts/compile-locales.sh` + Docker entrypoint). Developers editing `.po` files no longer need to manually run `msgfmt`.
