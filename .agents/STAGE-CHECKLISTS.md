@@ -1181,3 +1181,52 @@ This leg successfully moved the project from "menu as navigation that mostly 404
 
 
 
+
+---
+
+## Stage 8.6 — POST Handling + Sedes Rename + First Personalizacion Modules (in progress)
+
+**Branch:** `feat/stage-8.6-post-handling-sedes-modules`
+
+**Goal:** Move from GET-only scaffolding to real form POST + validation. Also correct the "Empresas" naming to "Sedes" (user nitpick) and implement at least one additional module from the Personalizacion list.
+
+**Selected scope for this leg (chosen from the plan):**
+- POST + validation for Perfiles (priority, unblocks Usuarios).
+- POST + validation for Sedes (the module formerly known as Empresas).
+- Rename of the module (code, templates, routes, DB table via patch, menu accions/labels via patch 0012).
+- New data patch + full modern + POST implementation for **Clientes** (first concrete module under Personalizacion).
+- Supporting: flash messages on lists, proper form actions, basic validation (required nombre), prepared statements, redirects.
+- Kept PR scope reasonable (no full RBAC matrix or Menus editor yet).
+
+**Key changes:**
+- New/updated data patches: 0012 (empresas→sedes table + menu), 0013 (clientes table + seed).
+- Module rename: Pages/Empresas → Pages/Sedes, templates/empresas → templates/sedes. Updated all queries, namespaces, titles, links, variables (sede/sedes).
+- index.php: POST routes added for Perfiles + Sedes + Clientes. All /empresas references updated to /sedes (modern + legacy paths).
+- Form processing: Added `Procesar()` methods. Validation, INSERT/UPDATE, session flash success/error, redirect to list. Errors redirect back to form.
+- Listados now consume and display flashes (success green, error red) and clear them.
+- Forms: real POST action (modern paths), removed placeholder onsubmit alerts, updated labels and notes.
+- Clientes: full parallel implementation (Listado + Formulario + templates + routes + POST).
+- Docs: updated MIGRATION-PLAN.md + this file. db-init/README.md mentions the new patches.
+
+**Evidence (commands run inside containers):**
+```bash
+docker compose exec app ./scripts/init-db.sh   # (patches applied via direct psql due to early-exit in script when tables>0)
+docker compose exec -T -e PGPASSWORD=secret app psql -h db -U qnova -d qnova -f .../0012-...
+docker compose exec -T -e PGPASSWORD=secret app psql -h db -U qnova -d qnova -f .../0013-...
+docker compose exec -T app php -l Pages/.../Formulario.php Pages/.../Listado.php index.php   # all "No syntax errors"
+```
+
+**DB verification after patches:**
+- Table `sedes` exists (renamed from empresas), menu accions now use "sedes", label "Sedes" for es.
+- Table `clientes` + 2 demo rows, patch recorded.
+- `data_patches` has 0012 and 0013.
+
+**Next in this or follow-up legs (from plan):**
+- More Personalizacion modules (Criterios, Tipos Acc. Mejora, etc.).
+- Deeper Permisos matrix UI (beyond the current read-only profile list).
+- Menus editing (orden + translations via menu_idiomas_nuevo).
+- Possibly Usuarios POST now that Perfiles POST exists.
+- Flash display could be centralized in layouts/app.twig.
+
+**Branch status:** Work in progress on the feature branch. Small focused changes. Ready to commit + PR when user signals.
+

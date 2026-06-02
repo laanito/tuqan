@@ -7,24 +7,24 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
         <div>
-            <a href="/admin/empresas" class="btn btn-default btn-sm">Volver al listado</a>
+            <a href="/admin/sedes" class="btn btn-default btn-sm">Volver al listado</a>
         </div>
     </div>
 </div>
 
 <div style="padding: 20px; max-width: 600px;">
-    <form method="POST" action="#" onsubmit="alert('POST handling for Empresas will be implemented together with the rest of the admin modules.'); return false;">
+    <form method="POST" action="{{ isEdit ? '/admin/sedes/editar/' ~ sede.id : '/admin/sedes/nuevo' }}">
         <div class="form-group">
-            <label for="nombre">Nombre de la Empresa</label>
+            <label for="nombre">Nombre de la Sede</label>
             <input type="text" class="form-control" id="nombre" name="nombre"
-                   value="{{ empresa.nombre ?? '' }}" required>
+                   value="{{ sede.nombre ?? '' }}" required>
         </div>
 
         <div class="form-group">
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="activo" value="1"
-                           {% if not isEdit or empresa.activo %}checked{% endif %}>
+                           {% if not isEdit or sede.activo %}checked{% endif %}>
                     Activa
                 </label>
             </div>
@@ -32,13 +32,13 @@
 
         <div class="form-group" style="margin-top: 20px;">
             <button type="submit" class="btn btn-primary">
-                {{ isEdit ? 'Guardar cambios' : 'Crear Empresa' }}
+                {{ isEdit ? 'Guardar cambios' : 'Crear Sede' }}
             </button>
-            <a href="/admin/empresas" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+            <a href="/admin/sedes" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            <strong>Nota:</strong> El alta/edición real (POST + validación) se completará en la siguiente iteración junto con el resto de los módulos administrativos.
+            <strong>Nota:</strong> Formulario listo para POST. El procesamiento (validación + guardado) se implementa en esta etapa.
         </div>
     </form>
 </div>

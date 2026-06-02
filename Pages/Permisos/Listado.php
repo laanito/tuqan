@@ -57,11 +57,15 @@ class Listado
 
         $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
 
+        $flashSuccess = $_SESSION['permiso_flash_success'] ?? null;
+        unset($_SESSION['permiso_flash_success']);
+
         $variables = [
             'sidebarMenu'  => $sidebarMenu,
             'perfiles'     => $perfiles,
             'menuCount'    => $menuCount,
             'pageTitle'    => 'Permisos (Asignación de Menús)',
+            'flashSuccess' => $flashSuccess,
             'UserTitle'    => gettext('sUsuario'),
             'UserName'     => $_SESSION['nombreUsuario'] ?? 'Guest',
             'CompanyName'  => $_SESSION['empresa'] ?? null,

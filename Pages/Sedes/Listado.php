@@ -1,6 +1,6 @@
 <?php
 
-namespace Tuqan\Pages\Perfiles;
+namespace Tuqan\Pages\Sedes;
 
 use Tuqan\Classes\Config;
 use Twig\Loader\FilesystemLoader;
@@ -17,11 +17,9 @@ class Listado
             'cache' => Config::$cache_path,
         ]);
 
-        // Build the sidebar menu so navigation works on this modern page
         $mainPage = new \Tuqan\Pages\MainPage();
         $sidebarMenu = $mainPage->buildSidebarMenuHtml();
 
-        // Fetch all profiles (simple table)
         $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
         $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
 
@@ -33,13 +31,11 @@ class Listado
             $port
         );
 
-        $db->consulta(
-            "SELECT id, nombre, activo FROM perfiles ORDER BY id"
-        );
+        $db->consulta("SELECT id, nombre, activo FROM sedes ORDER BY id");
 
-        $perfiles = [];
+        $sedes = [];
         while ($row = $db->coger_Fila()) {
-            $perfiles[] = [
+            $sedes[] = [
                 'id'     => $row[0],
                 'nombre' => $row[1],
                 'activo' => $row[2],
@@ -50,14 +46,14 @@ class Listado
         $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
 
         // Flash messages from POST processing (success / error)
-        $flashSuccess = $_SESSION['perfil_flash_success'] ?? null;
-        $flashError   = $_SESSION['perfil_form_error'] ?? null;
-        unset($_SESSION['perfil_flash_success'], $_SESSION['perfil_form_error']);
+        $flashSuccess = $_SESSION['sede_flash_success'] ?? null;
+        $flashError   = $_SESSION['sede_form_error'] ?? null;
+        unset($_SESSION['sede_flash_success'], $_SESSION['sede_form_error']);
 
         $variables = [
             'sidebarMenu'   => $sidebarMenu,
-            'perfiles'      => $perfiles,
-            'pageTitle'     => 'Perfiles',
+            'sedes'         => $sedes,
+            'pageTitle'     => 'Sedes',
             'flashSuccess'  => $flashSuccess,
             'flashError'    => $flashError,
             'UserTitle'     => gettext('sUsuario'),
@@ -68,10 +64,10 @@ class Listado
         ];
 
         try {
-            $template = $twig->load('perfiles/listado.twig');
+            $template = $twig->load('sedes/listado.twig');
             return $template->render($variables);
         } catch (\Exception $e) {
-            return "Error al cargar la plantilla de perfiles: " . $e->getMessage();
+            return "Error al cargar Sedes: " . $e->getMessage();
         }
     }
 }

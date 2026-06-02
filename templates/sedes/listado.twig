@@ -1,0 +1,45 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Sedes - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Sedes</h2>
+        <div>
+            <a href="/admin/sedes/nuevo" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nueva Sede
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if sedes is empty %}
+        <div class="alert alert-info">No hay sedes registradas.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr><th>ID</th><th>Nombre</th><th>Estado</th><th style="width:140px;text-align:right;">Acciones</th></tr>
+                </thead>
+                <tbody>
+                    {% for s in sedes %}
+                    <tr>
+                        <td>{{ s.id }}</td>
+                        <td><strong>{{ s.nombre }}</strong></td>
+                        <td>{% if s.activo %}<span class="label label-success">Activa</span>{% else %}<span class="label label-default">Inactiva</span>{% endif %}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/sedes/editar/{{ s.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Sedes (anteriormente "Empresas", antes "Hospitales"). La tabla legacy <code>hospitales</code> se mantiene solo para compatibilidad histórica.
+    </div>
+</div>
+{% endblock %}

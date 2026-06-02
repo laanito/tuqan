@@ -1,6 +1,6 @@
 <?php
 
-namespace Tuqan\Pages\Empresas;
+namespace Tuqan\Pages\Criterios;
 
 use Tuqan\Classes\Config;
 use Twig\Loader\FilesystemLoader;
@@ -31,11 +31,11 @@ class Listado
             $port
         );
 
-        $db->consulta("SELECT id, nombre, activo FROM empresas ORDER BY id");
+        $db->consulta("SELECT id, nombre, activo FROM criterios ORDER BY id");
 
-        $empresas = [];
+        $criterios = [];
         while ($row = $db->coger_Fila()) {
-            $empresas[] = [
+            $criterios[] = [
                 'id'     => $row[0],
                 'nombre' => $row[1],
                 'activo' => $row[2],
@@ -45,22 +45,28 @@ class Listado
 
         $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
 
+        $flashSuccess = $_SESSION['criterio_flash_success'] ?? null;
+        $flashError   = $_SESSION['criterio_form_error'] ?? null;
+        unset($_SESSION['criterio_flash_success'], $_SESSION['criterio_form_error']);
+
         $variables = [
-            'sidebarMenu'  => $sidebarMenu,
-            'empresas'     => $empresas,
-            'pageTitle'    => 'Empresas',
-            'UserTitle'    => gettext('sUsuario'),
-            'UserName'     => $_SESSION['nombreUsuario'] ?? 'Guest',
-            'CompanyName'  => $_SESSION['empresa'] ?? null,
-            'UserEmail'    => $_SESSION['usuario_email'] ?? null,
-            'UserFullName' => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+            'sidebarMenu'   => $sidebarMenu,
+            'criterios'     => $criterios,
+            'pageTitle'     => 'Criterios',
+            'flashSuccess'  => $flashSuccess,
+            'flashError'    => $flashError,
+            'UserTitle'     => gettext('sUsuario'),
+            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
+            'CompanyName'   => $_SESSION['empresa'] ?? null,
+            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
+            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
         ];
 
         try {
-            $template = $twig->load('empresas/listado.twig');
+            $template = $twig->load('criterios/listado.twig');
             return $template->render($variables);
         } catch (\Exception $e) {
-            return "Error al cargar Empresas: " . $e->getMessage();
+            return "Error al cargar Criterios: " . $e->getMessage();
         }
     }
 }

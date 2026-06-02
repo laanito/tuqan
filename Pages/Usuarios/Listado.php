@@ -58,10 +58,17 @@ class Listado
 
         $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
 
+        // Flash from POST (Usuarios now has full POST support)
+        $flashSuccess = $_SESSION['usuario_flash_success'] ?? null;
+        $flashError   = $_SESSION['usuario_form_error'] ?? null;
+        unset($_SESSION['usuario_flash_success'], $_SESSION['usuario_form_error']);
+
         $variables = [
             'sidebarMenu'   => $sidebarMenu,
             'usuarios'      => $usuarios,
             'pageTitle'     => 'Usuarios',
+            'flashSuccess'  => $flashSuccess,
+            'flashError'    => $flashError,
             'UserTitle'     => gettext('sUsuario'),
             'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
             'CompanyName'   => $_SESSION['empresa'] ?? null,
