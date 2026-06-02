@@ -8,7 +8,7 @@
 </div>
 
 <div style="padding: 20px; max-width: 700px;">
-    <form method="POST" action="">
+    <form method="POST" action="{{ isEdit ? '/admin/usuarios/editar/' ~ usuario.id : '/admin/usuarios/nuevo' }}">
         <div class="form-group">
             <label>Login / Usuario</label>
             <input type="text" name="login" class="form-control" value="{{ usuario ? usuario.login : '' }}" required>
@@ -37,8 +37,9 @@
         <div class="form-group">
             <label>Perfil</label>
             <select name="perfil" class="form-control">
-                <option value="0" {{ usuario and usuario.perfil == 0 ? 'selected' : '' }}>Administrador</option>
-                <option value="1" {{ usuario and usuario.perfil == 1 ? 'selected' : '' }}>Usuario</option>
+                {% for p in perfiles %}
+                <option value="{{ p.id }}" {{ usuario and usuario.perfil == p.id ? 'selected' : '' }}>{{ p.nombre }}</option>
+                {% endfor %}
             </select>
         </div>
 

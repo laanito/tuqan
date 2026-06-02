@@ -1,6 +1,6 @@
 <?php
 
-namespace Tuqan\Pages\Usuarios;
+namespace Tuqan\Pages\Criterios;
 
 use Tuqan\Classes\Config;
 use Twig\Loader\FilesystemLoader;
@@ -17,11 +17,9 @@ class Listado
             'cache' => Config::$cache_path,
         ]);
 
-        // Build the sidebar menu so navigation works on this modern page
         $mainPage = new \Tuqan\Pages\MainPage();
         $sidebarMenu = $mainPage->buildSidebarMenuHtml();
 
-        // Fetch users with their profile name
         $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
         $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
 
@@ -33,40 +31,28 @@ class Listado
             $port
         );
 
-        $db->consulta(
-            "SELECT u.id, u.login, u.nombre, u.apellido, u.email, u.perfil, u.activo,
-                    p.nombre as perfil_nombre
-             FROM usuarios u
-             LEFT JOIN perfiles p ON p.id = u.perfil
-             ORDER BY u.id"
-        );
+        $db->consulta("SELECT id, nombre, activo FROM criterios ORDER BY id");
 
-        $usuarios = [];
+        $criterios = [];
         while ($row = $db->coger_Fila()) {
-            $usuarios[] = [
-                'id'            => $row[0],
-                'login'         => $row[1],
-                'nombre'        => $row[2],
-                'apellido'      => $row[3],
-                'email'         => $row[4],
-                'perfil'        => $row[5],
-                'activo'        => $row[6],
-                'perfil_nombre' => $row[7],
+            $criterios[] = [
+                'id'     => $row[0],
+                'nombre' => $row[1],
+                'activo' => $row[2],
             ];
         }
         $db->desconexion();
 
         $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
 
-        // Flash from POST (Usuarios now has full POST support)
-        $flashSuccess = $_SESSION['usuario_flash_success'] ?? null;
-        $flashError   = $_SESSION['usuario_form_error'] ?? null;
-        unset($_SESSION['usuario_flash_success'], $_SESSION['usuario_form_error']);
+        $flashSuccess = $_SESSION['criterio_flash_success'] ?? null;
+        $flashError   = $_SESSION['criterio_form_error'] ?? null;
+        unset($_SESSION['criterio_flash_success'], $_SESSION['criterio_form_error']);
 
         $variables = [
             'sidebarMenu'   => $sidebarMenu,
-            'usuarios'      => $usuarios,
-            'pageTitle'     => 'Usuarios',
+            'criterios'     => $criterios,
+            'pageTitle'     => 'Criterios',
             'flashSuccess'  => $flashSuccess,
             'flashError'    => $flashError,
             'UserTitle'     => gettext('sUsuario'),
@@ -77,10 +63,10 @@ class Listado
         ];
 
         try {
-            $template = $twig->load('usuarios/listado.twig');
+            $template = $twig->load('criterios/listado.twig');
             return $template->render($variables);
         } catch (\Exception $e) {
-            return "Error al cargar la plantilla de usuarios: " . $e->getMessage();
+            return "Error al cargar Criterios: " . $e->getMessage();
         }
     }
 }
