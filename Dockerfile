@@ -45,6 +45,17 @@ ENV LC_MESSAGES=es_ES.UTF-8
 
 WORKDIR /var/www/html
 
+# Install a small entrypoint that ensures .mo files are always up-to-date
+# from .po sources on every container start (very useful for dev + translations).
+# We place this in the base stage so both dev and prod images inherit the
+# ENTRYPOINT + the guarantee that locales are fresh.
+COPY docker/entrypoint.sh /usr/local/bin/tuqan-entrypoint.sh
+COPY scripts/compile-locales.sh /usr/local/bin/compile-locales.sh
+RUN chmod +x /usr/local/bin/tuqan-entrypoint.sh /usr/local/bin/compile-locales.sh
+
+ENTRYPOINT ["/usr/local/bin/tuqan-entrypoint.sh"]
+CMD ["php-fpm"]
+
 # -------------------------
 # Dev image (with Xdebug)
 # -------------------------
