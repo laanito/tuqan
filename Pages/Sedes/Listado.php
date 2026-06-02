@@ -1,6 +1,6 @@
 <?php
 
-namespace Tuqan\Pages\Empresas;
+namespace Tuqan\Pages\Sedes;
 
 use Tuqan\Classes\Config;
 use Twig\Loader\FilesystemLoader;
@@ -31,11 +31,11 @@ class Listado
             $port
         );
 
-        $db->consulta("SELECT id, nombre, activo FROM empresas ORDER BY id");
+        $db->consulta("SELECT id, nombre, activo FROM sedes ORDER BY id");
 
-        $empresas = [];
+        $sedes = [];
         while ($row = $db->coger_Fila()) {
-            $empresas[] = [
+            $sedes[] = [
                 'id'     => $row[0],
                 'nombre' => $row[1],
                 'activo' => $row[2],
@@ -45,22 +45,29 @@ class Listado
 
         $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
 
+        // Flash messages from POST processing (success / error)
+        $flashSuccess = $_SESSION['sede_flash_success'] ?? null;
+        $flashError   = $_SESSION['sede_form_error'] ?? null;
+        unset($_SESSION['sede_flash_success'], $_SESSION['sede_form_error']);
+
         $variables = [
-            'sidebarMenu'  => $sidebarMenu,
-            'empresas'     => $empresas,
-            'pageTitle'    => 'Empresas',
-            'UserTitle'    => gettext('sUsuario'),
-            'UserName'     => $_SESSION['nombreUsuario'] ?? 'Guest',
-            'CompanyName'  => $_SESSION['empresa'] ?? null,
-            'UserEmail'    => $_SESSION['usuario_email'] ?? null,
-            'UserFullName' => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+            'sidebarMenu'   => $sidebarMenu,
+            'sedes'         => $sedes,
+            'pageTitle'     => 'Sedes',
+            'flashSuccess'  => $flashSuccess,
+            'flashError'    => $flashError,
+            'UserTitle'     => gettext('sUsuario'),
+            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
+            'CompanyName'   => $_SESSION['empresa'] ?? null,
+            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
+            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
         ];
 
         try {
-            $template = $twig->load('empresas/listado.twig');
+            $template = $twig->load('sedes/listado.twig');
             return $template->render($variables);
         } catch (\Exception $e) {
-            return "Error al cargar Empresas: " . $e->getMessage();
+            return "Error al cargar Sedes: " . $e->getMessage();
         }
     }
 }

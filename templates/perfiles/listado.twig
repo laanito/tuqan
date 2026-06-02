@@ -15,6 +15,13 @@
 </div>
 
 <div style="padding: 20px;">
+    {% if flashSuccess %}
+        <div class="alert alert-success">{{ flashSuccess }}</div>
+    {% endif %}
+    {% if flashError %}
+        <div class="alert alert-danger">{{ flashError }}</div>
+    {% endif %}
+
     {% if perfiles is empty %}
         <div class="alert alert-info">
             No hay perfiles registrados todavía.

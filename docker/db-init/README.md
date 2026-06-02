@@ -62,7 +62,8 @@ data-patches/
   0004-full-legacy-menu.sql               -- Full real legacy menu (loaded automatically)
   0005–0009 — menu cleanup & hierarchy fixes
   0010-menu-restructure-aplicacion-personalizacion.sql  -- Stage 8.5: Personalizacion + Empresas + Permisos move
-  0011-empresas-table-and-seed.sql                      -- Supporting table for the renamed Empresas entry
+  0011-empresas-table-and-seed.sql                      -- Supporting table for the renamed Empresas entry (historical)
+  0012-rename-empresas-to-sedes.sql                     -- Stage 8.6 nitpick: table + menu actions/labels Empresas → Sedes (branches)
   ...
 ```
 

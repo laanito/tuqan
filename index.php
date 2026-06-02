@@ -188,23 +188,30 @@ $router->addRoute('GET', '/admin/perfiles', ['Tuqan\Pages\Perfiles\Listado', 'Sh
 $router->addRoute('GET', '/admin/perfiles/nuevo', ['Tuqan\Pages\Perfiles\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/perfiles/editar/{id}', ['Tuqan\Pages\Perfiles\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 
+// POST routes for Perfiles (Stage 8.6)
+$router->addRoute('POST', '/admin/perfiles/nuevo', ['Tuqan\Pages\Perfiles\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/perfiles/editar/{id}', ['Tuqan\Pages\Perfiles\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
 // Legacy menu accion paths for Perfiles (menu clicks from Aplicacion → Perfiles)
 $router->addRoute('GET', '/administracion/perfiles/listado/ver', ['Tuqan\Pages\Perfiles\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/perfiles/nuevo', ['Tuqan\Pages\Perfiles\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/perfiles/editar', ['Tuqan\Pages\Perfiles\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
-// Scaffolding routes for the other newly structured / modernized menu entries in this leg
-// (full implementations for Empresas, Permisos assignment, Idiomas, and Personalizacion sub-items follow the same pattern)
-$router->addRoute('GET', '/admin/empresas', ['Tuqan\Pages\Empresas\Listado', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/administracion/empresas/listado/ver', ['Tuqan\Pages\Empresas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+// === Aplicacion → Sedes (ex-Empresas / ex-Hospitales, renamed in 8.6 per user nitpick) ===
+$router->addRoute('GET', '/admin/sedes', ['Tuqan\Pages\Sedes\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/sedes/listado/ver', ['Tuqan\Pages\Sedes\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
-// Legacy child actions for the Empresas menu entry (added by 0010 patch)
-$router->addRoute('GET', '/administracion/empresas/nuevo', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/administracion/empresas/editar', ['Tuqan\Pages\Empresas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+// Legacy child actions for the Sedes menu entry (updated by 0012 patch)
+$router->addRoute('GET', '/administracion/sedes/nuevo', ['Tuqan\Pages\Sedes\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/sedes/editar', ['Tuqan\Pages\Sedes\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
-// Modern clean paths for Empresas (for direct links / future use)
-$router->addRoute('GET', '/admin/empresas/nuevo', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/admin/empresas/editar/{id}', ['Tuqan\Pages\Empresas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+// Modern clean paths for Sedes (for direct links / future use)
+$router->addRoute('GET', '/admin/sedes/nuevo', ['Tuqan\Pages\Sedes\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/sedes/editar/{id}', ['Tuqan\Pages\Sedes\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Sedes (Stage 8.6)
+$router->addRoute('POST', '/admin/sedes/nuevo', ['Tuqan\Pages\Sedes\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/sedes/editar/{id}', ['Tuqan\Pages\Sedes\Formulario', 'Procesar'], ['before' => 'auth_company']);
 // === Aplicacion → Menus, Idiomas, Permisos (Stage 8.5) ===
 $router->addRoute('GET', '/admin/menus', ['Tuqan\Pages\Menus\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/menus/listado/nuevo', ['Tuqan\Pages\Menus\Listado', 'ShowPage'], ['before' => 'auth_company']);
@@ -220,8 +227,19 @@ $router->addRoute('GET', '/administracion/modulos/listado/nuevo', ['Tuqan\Pages\
 $router->addRoute('GET', '/admin/permisos/nuevo', ['Tuqan\Pages\Permisos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/permisos/editar/{id}', ['Tuqan\Pages\Permisos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 
-// Personalizacion children (all currently stubbed; implemented incrementally in follow-ups)
-$router->addRoute('GET', '/admin/clientes', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+// Personalizacion children (Clientes implemented fully in 8.6 as first example; others remain stubbed for incremental follow-up)
+$router->addRoute('GET', '/admin/clientes', ['Tuqan\Pages\Clientes\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/clientes/nuevo', ['Tuqan\Pages\Clientes\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/clientes/editar/{id}', ['Tuqan\Pages\Clientes\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST for Clientes
+$router->addRoute('POST', '/admin/clientes/nuevo', ['Tuqan\Pages\Clientes\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/clientes/editar/{id}', ['Tuqan\Pages\Clientes\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy path for the Clientes menu entry (from full legacy menu)
+$router->addRoute('GET', '/administracion/clientes/listado/ver', ['Tuqan\Pages\Clientes\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
+// Other Personalizacion children still point to Placeholder for now (to be done in future legs)
 $router->addRoute('GET', '/admin/criterios', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/tipos-mejora', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 

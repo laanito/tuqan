@@ -7,24 +7,24 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
         <div>
-            <a href="/admin/perfiles" class="btn btn-default btn-sm">Volver al listado</a>
+            <a href="/admin/clientes" class="btn btn-default btn-sm">Volver al listado</a>
         </div>
     </div>
 </div>
 
 <div style="padding: 20px; max-width: 600px;">
-    <form method="POST" action="{{ isEdit ? '/admin/perfiles/editar/' ~ perfil.id : '/admin/perfiles/nuevo' }}">
+    <form method="POST" action="{{ isEdit ? '/admin/clientes/editar/' ~ cliente.id : '/admin/clientes/nuevo' }}">
         <div class="form-group">
-            <label for="nombre">Nombre del Perfil</label>
+            <label for="nombre">Nombre del Cliente</label>
             <input type="text" class="form-control" id="nombre" name="nombre"
-                   value="{{ perfil.nombre ?? '' }}" required>
+                   value="{{ cliente.nombre ?? '' }}" required>
         </div>
 
         <div class="form-group">
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="activo" value="1"
-                           {% if not isEdit or perfil.activo %}checked{% endif %}>
+                           {% if not isEdit or cliente.activo %}checked{% endif %}>
                     Activo
                 </label>
             </div>
@@ -32,13 +32,13 @@
 
         <div class="form-group" style="margin-top: 20px;">
             <button type="submit" class="btn btn-primary">
-                {{ isEdit ? 'Guardar cambios' : 'Crear Perfil' }}
+                {{ isEdit ? 'Guardar cambios' : 'Crear Cliente' }}
             </button>
-            <a href="/admin/perfiles" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+            <a href="/admin/clientes" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            <strong>Nota:</strong> POST + validación + guardado implementado en esta etapa. Usa el botón para crear/editar.
+            <strong>Nota:</strong> Módulo de ejemplo bajo Personalización. POST funcional.
         </div>
     </form>
 </div>

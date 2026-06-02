@@ -429,8 +429,9 @@ This phase is explicitly positioned as **pre-requisite infrastructure** before S
 - Stage 8.2 (Full composer dependency modernization): Completed
 - Stage 8.3 completed.
 - Stage 8.4 (Full menu structure reference + first real module "Administración → Usuarios"): Completed (PR #60)
-- Stage 8.5 (Perfiles + Empresas + Menus/Idiomas/Permisos under Aplicacion + menu UX + Docker locale handling): Completed on `feat/stage-8.5-profiles-empresas-personalizacion` (see STAGE-CHECKLISTS.md and reference/stage-8.5-*.md). All requested Aplicacion sections now have real pages.
-- Stage 9+: POST + validation work + deeper business logic modernization (after Stage 8.5 review/merge).
+- Stage 8.5 (Perfiles + Empresas + Menus/Idiomas/Permisos under Aplicacion + menu UX + Docker locale handling): Completed on `feat/stage-8.5-profiles-empresas-personalizacion`.
+- Stage 8.6 (started): POST + validation for Perfiles + Sedes (Empresas renamed to Sedes per user nitpick "sedes (branches)"), first additional Personalizacion module (Clientes fully implemented with GET+POST), new data patches 0012+0013. Branch `feat/stage-8.6-post-handling-sedes-modules`.
+- Stage 9+: Continue POST/validation + more Personalizacion modules + deeper logic (Menus editing, Permisos matrix, etc.).
 
 **Buffer:** 2-4 weeks for surprises (legacy surprises always appear).
 
@@ -468,5 +469,5 @@ After each stage gate, append a "Stage N — Completed Evidence" section to this
 ---
 
 **Plan Owner:** This session's agent + future agents following AGENTS.md  
-**Last Updated:** 2026-06 (Stage 8.5 completed — Perfiles, Empresas, Menus/Idiomas/Permisos, menu UX, Docker i18n)  
+**Last Updated:** 2026-06 (Stage 8.6 in progress — POST for Perfiles/Sedes, Sedes rename from Empresas, Clientes as first Personalizacion module) 
 **Approval Status:** Stage 8.3 plan reviewed and approved by user (menu "as-is" first; Former deferred until form pages are reached)

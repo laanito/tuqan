@@ -1,6 +1,6 @@
 <?php
 
-namespace Tuqan\Pages\Perfiles;
+namespace Tuqan\Pages\Clientes;
 
 use Tuqan\Classes\Config;
 use Twig\Loader\FilesystemLoader;
@@ -20,12 +20,11 @@ class Formulario
         $mainPage = new \Tuqan\Pages\MainPage();
         $sidebarMenu = $mainPage->buildSidebarMenuHtml();
 
-        // Prefer the route parameter. Fall back to ?id= for any old links.
         if ($id === null && isset($_GET['id'])) {
             $id = (int)$_GET['id'];
         }
         $id = (int)$id;
-        $perfil = null;
+        $cliente = null;
 
         if ($id > 0) {
             $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
@@ -40,12 +39,12 @@ class Formulario
             );
 
             $db->consultaPreparada(
-                "SELECT id, nombre, activo FROM perfiles WHERE id = ?",
+                "SELECT id, nombre, activo FROM clientes WHERE id = ?",
                 [$id]
             );
             $row = $db->coger_Fila();
             if ($row) {
-                $perfil = [
+                $cliente = [
                     'id'     => $row[0],
                     'nombre' => $row[1],
                     'activo' => $row[2],
@@ -58,9 +57,9 @@ class Formulario
 
         $variables = [
             'sidebarMenu' => $sidebarMenu,
-            'perfil'      => $perfil,
-            'isEdit'      => (bool)$perfil,
-            'pageTitle'   => $perfil ? 'Editar Perfil' : 'Nuevo Perfil',
+            'cliente'     => $cliente,
+            'isEdit'      => (bool)$cliente,
+            'pageTitle'   => $cliente ? 'Editar Cliente' : 'Nuevo Cliente',
             'UserTitle'     => gettext('sUsuario'),
             'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
             'CompanyName'   => $_SESSION['empresa'] ?? null,
@@ -69,27 +68,25 @@ class Formulario
         ];
 
         try {
-            $template = $twig->load('perfiles/formulario.twig');
+            $template = $twig->load('clientes/formulario.twig');
             return $template->render($variables);
         } catch (\Exception $e) {
-            return "Error al cargar el formulario de perfiles: " . $e->getMessage();
+            return "Error al cargar el formulario de clientes: " . $e->getMessage();
         }
     }
 
     /**
-     * Handle POST for create or update (Stage 8.6).
-     * Basic validation + prepared statements. Flash via session, redirect to list.
+     * POST handler for Clientes (create/edit).
      */
     public function Procesar($id = null)
     {
         if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-            header('Location: /admin/perfiles');
+            header('Location: /admin/clientes');
             exit;
         }
 
         Config::initialize();
 
-        // Prefer route param, fallback to POST or GET id
         if ($id === null) {
             $id = isset($_POST['id']) ? (int)$_POST['id'] : (isset($_GET['id']) ? (int)$_GET['id'] : null);
         }
@@ -100,12 +97,12 @@ class Formulario
 
         $errors = [];
         if ($nombre === '') {
-            $errors[] = 'El nombre del perfil es obligatorio.';
+            $errors[] = 'El nombre del cliente es obligatorio.';
         }
 
         if (!empty($errors)) {
-            $_SESSION['perfil_form_error'] = implode(' ', $errors);
-            $target = $id > 0 ? "/admin/perfiles/editar/$id" : '/admin/perfiles/nuevo';
+            $_SESSION['cliente_form_error'] = implode(' ', $errors);
+            $target = $id > 0 ? "/admin/clientes/editar/$id" : '/admin/clientes/nuevo';
             header("Location: $target");
             exit;
         }
@@ -123,22 +120,22 @@ class Formulario
 
         if ($id > 0) {
             $db->consultaPreparada(
-                "UPDATE perfiles SET nombre = ?, activo = ? WHERE id = ?",
+                "UPDATE clientes SET nombre = ?, activo = ? WHERE id = ?",
                 [$nombre, $activo, $id]
             );
-            $msg = 'Perfil actualizado correctamente.';
+            $msg = 'Cliente actualizado correctamente.';
         } else {
             $db->consultaPreparada(
-                "INSERT INTO perfiles (nombre, activo) VALUES (?, ?)",
+                "INSERT INTO clientes (nombre, activo) VALUES (?, ?)",
                 [$nombre, $activo]
             );
-            $msg = 'Perfil creado correctamente.';
+            $msg = 'Cliente creado correctamente.';
         }
 
         $db->desconexion();
 
-        $_SESSION['perfil_flash_success'] = $msg;
-        header('Location: /admin/perfiles');
+        $_SESSION['cliente_flash_success'] = $msg;
+        header('Location: /admin/clientes');
         exit;
     }
 }
