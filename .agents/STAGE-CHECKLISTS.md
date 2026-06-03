@@ -1,5 +1,48 @@
 # Stage Checklists & Validation Commands — Tuqan Migration
 
+## Testing Strategy for Modernized Functional Modules (Stage 8.x+)
+
+**Current reality (as of the big 8.6 POST + modules PR):**
+
+For complex, state-changing features (form POSTs, permission matrices, menu editing, renames that affect both code and live DB data via patches), we do **not** yet have comprehensive unit or integration tests covering the new `Pages/*/Formulario::Procesar` methods or the full happy-path flows.
+
+**Why:**
+- The modern page classes (`Tuqan\Pages\Foo\Listado` / `Formulario`) are still quite "script-like": they reach into `$_SESSION`, instantiate `Manejador_Base_Datos` directly, render Twig, and do header redirects. This makes them expensive to unit test without significant refactoring or heavy test doubles.
+- The legacy DB access layer (`Manejador_Base_Datos` + `generador_SQL`) is still being cleaned.
+- Many existing tests in `tests/Unit` are already broken or brittle due to the ongoing composer modernization and Illuminate/Jasny legacy surface.
+
+**What we actually do instead (the pragmatic strategy):**
+
+1. **Reproducible scripted verification** (primary for these slices):
+   - Exact `docker compose` + `psql` + `php -l` commands documented in the stage section below.
+   - After every data patch: assert tables/rows/labels/accions via `psql`.
+   - After code changes: `php -l` on every touched `Pages/` and `index.php`.
+   - For POST behavior: describe the manual flow + the DB assertions you can run afterwards (`SELECT` after submitting a form) so a reviewer or future agent can confirm side effects without guessing.
+   - Full clean-room runs: `down -v`, `up`, `init-db.sh`, exercise, assert.
+
+2. **Manual exploratory testing by the user** (the final gate):
+   - The human who requested the work does a full pass through the new UI (login as demo/admin, navigate the updated Aplicacion + Personalizacion sections, submit creates/edits, check flashes, check the matrix actually affects what? , check orden/label edits are persisted, etc.).
+   - This is explicitly called out because the PRs are "blind trust" once the pattern is established.
+
+3. **Automated where cheap and valuable**:
+   - `php -l` (syntax) on every change.
+   - PHPStan (currently low level, run in CI).
+   - Existing stable PHPUnit tests (run them, don't let regressions in the harness itself).
+   - Characterization tests for critical paths when we can isolate logic (e.g. the login tests from earlier stages).
+
+4. **Long-term direction** (from the original MIGRATION-PLAN):
+   - Continue cleaning the DB layer so more logic becomes unit testable.
+   - Add more integration tests that start the app, hit modern routes (possibly via a lightweight HTTP client inside the container against php-fpm), and assert on DB state or rendered output.
+   - Raise PHPStan level over time.
+   - When a module's core logic (validation, mapping, etc.) can be extracted into a service class, write real unit tests for it first (Test + Fix Loop).
+
+**Rule of thumb for a big functional PR like 8.6:**
+If a human cannot take the checklist commands + a browser and in <10 minutes be confident that "create a new Perfil", "create a new Sede", "edit a Criterio", "change a menu orden", and "flip a permission in the matrix" all have the expected DB + UI effect, then the verification section of the checklist is incomplete.
+
+This is the honest state. We are shipping working software with strong reproducibility guarantees via Docker + patches + documented verification, while the automated test coverage for the new modern slices is still catching up.
+
+---
+
 **How to use this file:**
 - Copy the relevant stage's todo items into a `todo_write` call at the start of the stage.
 - Execute **only** the commands shown (all via docker compose).
@@ -1228,5 +1271,136 @@ docker compose exec -T app php -l Pages/.../Formulario.php Pages/.../Listado.php
 - Possibly Usuarios POST now that Perfiles POST exists.
 - Flash display could be centralized in layouts/app.twig.
 
-**Branch status:** Work in progress on the feature branch. Small focused changes. Ready to commit + PR when user signals.
+**Branch status:** Merged (PR #64). The section below now serves as the post-merge verification playbook.
+
+---
+
+## Stage 8.6 Verification Playbook (How we know the big POST + modules chunk actually works)
+
+**Goal of this section:** Give a reproducible set of commands + DB assertions + browser flows so that after a merge of a large functional increment (like this one), anyone (including the requester doing "I will test the app") can quickly gain high confidence that the changes behave as intended, without relying solely on "I clicked and it seemed ok".
+
+### 1. Clean reproducible environment
+```bash
+docker compose --env-file .env.docker down -v
+docker volume rm tuqan_tuqan_pgdata 2>/dev/null || true
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+```
+
+**Expected:** No errors. All patches (including 0012, 0013, 0014) applied. You should see the NOTICEs from the DO blocks if you watch the output.
+
+### 2. Basic hygiene on the new code
+```bash
+docker compose exec app php -l Pages/Sedes/Listado.php Pages/Sedes/Formulario.php \
+  Pages/Perfiles/Formulario.php Pages/Usuarios/Formulario.php \
+  Pages/Clientes/Listado.php Pages/Clientes/Formulario.php \
+  Pages/Criterios/Listado.php Pages/Criterios/Formulario.php \
+  Pages/Permisos/Formulario.php Pages/Menus/Listado.php \
+  index.php templates/layouts/app.twig
+```
+
+**Gate:** Every file must say "No syntax errors detected".
+
+### 3. DB state after patches (the rename + new modules are real)
+```bash
+docker compose exec db psql -U qnova -d qnova -c "
+SELECT tablename FROM pg_tables WHERE schemaname='public' 
+  AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas')
+ORDER BY tablename;
+
+-- Sedes (ex-empresas) data + menu updates
+SELECT id, nombre, activo FROM sedes ORDER BY id;
+SELECT id, accion FROM menu_nuevo WHERE accion LIKE '%sedes%' ORDER BY id;
+SELECT menu, valor FROM menu_idiomas_nuevo WHERE menu IN (108,1401,1402) AND idioma_id=1;
+
+-- New Personalizacion modules
+SELECT * FROM clientes;
+SELECT * FROM criterios;
+SELECT * FROM tiposmejora;
+
+-- Patch tracking
+SELECT filename FROM data_patches WHERE filename LIKE '001%' ORDER BY filename;
+"
+```
+
+**Gates:**
+- `sedes` table exists, `empresas` does **not**.
+- Menu actions for 108/1401/1402 now contain `sedes`.
+- Spanish label for the main Sedes entry is "Sedes".
+- `clientes`, `criterios`, `tiposmejora` have the seeded rows.
+- 0012, 0013, 0014 are present in data_patches.
+
+### 4. Exercise the new POST functionality (the heart of the question)
+
+Because these are session + auth protected, the easiest high-confidence way is a combination of:
+
+**A. Browser flows (the final human test the user will do anyway)**
+- Go to http://localhost:8080
+- Company login: `demo` / `admin`
+- User login: `admin` / `admin`
+- Navigate Aplicacion → Perfiles → Nuevo Perfil → submit → should see success flash on the list + row in DB.
+- Same for Sedes (Aplicacion → Sedes).
+- Aplicacion → Clientes and Aplicacion → Criterios (under Personalizacion).
+- Usuarios → Nuevo / Editar (now actually saves).
+- Permisos → pick a profile → "Ver / Editar permisos" → toggle some checkboxes → Save → the change should be visible if you re-open or inspect the `permisos` column.
+- Menús (under Aplicacion) → change some Orden numbers and an Etiqueta (ES) → Save → the sidebar should reflect new order/labels on refresh (or after re-login).
+
+**B. DB assertions after you submit forms (this is what gives us confidence the POSTs did something)**
+After creating a new Perfil via the UI, run:
+```bash
+docker compose exec db psql -U qnova -d qnova -c "SELECT * FROM perfiles ORDER BY id DESC LIMIT 3;"
+```
+You should see your new row.
+
+After editing a Sede or a Cliente, assert the `nombre` changed.
+
+After using the Permisos matrix, inspect a specific menu's permisos array:
+```bash
+docker compose exec db psql -U qnova -d qnova -c "
+SELECT id, accion, permisos 
+FROM menu_nuevo 
+WHERE id IN (SELECT menu FROM menu_idiomas_nuevo WHERE valor LIKE '%Sedes%' OR valor LIKE '%Perfiles%')
+LIMIT 5;
+"
+```
+Flip a permission in the UI and re-run — the array for that menu should have changed in the position corresponding to the profile (0 or 1).
+
+After editing Menus orden/labels:
+```bash
+docker compose exec db psql -U qnova -d qnova -c "
+SELECT m.id, m.orden, mi.valor 
+FROM menu_nuevo m 
+LEFT JOIN menu_idiomas_nuevo mi ON mi.menu = m.id AND mi.idioma_id=1 
+WHERE m.padre = 82   -- under Aplicacion
+ORDER BY m.orden 
+LIMIT 10;
+"
+```
+
+### 5. Run whatever automated tests exist
+```bash
+docker compose exec app ./vendor/bin/phpunit --testsuite=Unit --stop-on-failure 2>&1 | tail -20
+```
+
+Expect some pre-existing failures (legacy surface). The important thing is that your changes didn't introduce new breakage in the stable parts.
+
+### 6. Full clean-room re-verification (the gold standard after a big merge)
+```bash
+docker compose down -v
+docker compose up -d
+docker compose exec app ./scripts/init-db.sh
+# Then repeat steps 2, 3, and the DB assertions in 4 after you do a few form submissions.
+```
+
+**When this playbook passes (commands + DB asserts + you successfully exercised the new forms in the browser without surprises), we have high confidence that the "big chunk" is working as intended.**
+
+This is the testing strategy we actually use for these stages right now.
+
+---
+
+**Next steps after this verification playbook is solid:**
+- As more logic gets extracted from the page classes into services, we can write real unit tests that drive `Procesar` logic in isolation.
+- Consider a small set of "feature" tests that use curl + cookie jar + psql assertions for the critical POST paths (can be added as a script in `scripts/verify-*.sh`).
+
+**Evidence for the verification playbook itself:** (to be filled by the person running it after merge)
 

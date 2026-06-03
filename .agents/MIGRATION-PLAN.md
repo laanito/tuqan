@@ -469,5 +469,7 @@ After each stage gate, append a "Stage N — Completed Evidence" section to this
 ---
 
 **Plan Owner:** This session's agent + future agents following AGENTS.md  
-**Last Updated:** 2026-06 (Stage 8.6 in progress — POST for Perfiles/Sedes, Sedes rename from Empresas, Clientes as first Personalizacion module) 
+**Last Updated:** 2026-06 (post #64 merge — Stage 8.6 delivered POST for Perfiles/Sedes/Usuarios/Clientes/Criterios, Sedes rename, basic Permisos matrix, Menus editing, centralized flashes, plus article notes file).
+
+**Testing note (added after the big 8.6 merge):** See the new top section in .agents/STAGE-CHECKLISTS.md titled "Testing Strategy for Modernized Functional Modules". In short: for these vertical slices we rely on (1) rigorous, copy-pasteable Docker + psql verification commands + DB state assertions, (2) the human requester doing a full browser pass, and (3) whatever stable automated tests exist. Pure unit/integration coverage for the new `Procesar` methods and UIs is still catching up because of the current shape of the page classes. The checklists are the contract for "how do we know this actually works".
 **Approval Status:** Stage 8.3 plan reviewed and approved by user (menu "as-is" first; Former deferred until form pages are reached)
