@@ -59,6 +59,20 @@ jobs:
             ./vendor/bin/phpstan analyse Classes/ Pages/ Controllers/ --level=0 --no-progress
         continue-on-error: true
 
+      - name: Initialize DB (apply all patches including 8.6 ones)
+        # This exercises the data patches (0012 Sedes rename, 0013/0014 new modules, etc.)
+        # so that subsequent verification can assert on the resulting DB state.
+        run: docker compose exec -T app ./scripts/init-db.sh
+
+      - name: Run 8.6 verification script (non-interactive DB + syntax checks)
+        # See scripts/verify-8.6.sh and the detailed playbook in .agents/STAGE-CHECKLISTS.md
+        # This provides automated guardrails for the big functional changes in 8.6
+        # (renames, new tables, basic state after patches).
+        # Full POST + browser flows still require human testing per current strategy.
+        # Non-blocking for now while we mature the verification.
+        run: docker compose exec -T app ./scripts/verify-8.6.sh
+        continue-on-error: true
+
       - name: Tear down stack (always)
         if: always()
         run: docker compose down -v --remove-orphans
