@@ -64,6 +64,9 @@ data-patches/
   0010-menu-restructure-aplicacion-personalizacion.sql  -- Stage 8.5: Personalizacion + Empresas + Permisos move
   0011-empresas-table-and-seed.sql                      -- Supporting table for the renamed Empresas entry (historical)
   0012-rename-empresas-to-sedes.sql                     -- Stage 8.6 nitpick: table + menu actions/labels Empresas → Sedes (branches)
+  0013-clientes-table-and-seed.sql                      -- Stage 8.6: first Personalizacion module
+  0014-more-personalizacion-modules.sql                 -- Stage 8.6: Criterios + tiposmejora
+  0015-... (Stage 8.7): tables for Tipos Acc. Mejora, Tipos Area, Tipo Documento + seeds + menu actions
   ...
 ```
 

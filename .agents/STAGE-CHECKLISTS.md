@@ -1404,3 +1404,62 @@ This is the testing strategy we actually use for these stages right now.
 
 **Evidence for the verification playbook itself:** (to be filled by the person running it after merge)
 
+---
+
+## Stage 8.7 — Complete Personalización + Enhanced Admin Tools (Permisos Matrix, Menus Editing)
+
+**Branch:** `feat/stage-8.7-personalizacion-complete-enhanced-tools`
+
+**Goal:** Finish the Personalizacion vertical slice (the remaining items from the original 7), deepen the tools introduced as "basic" in 8.6 (Permisos matrix and Menus editing), and extend the verification playbook/strategy to cover the new work. Keep PR size similar to 8.6 for consistent pace.
+
+**Selected scope for this leg (chosen from the plan and previous follow-up notes):**
+- 3 full modules with GET+POST (Tipos Acc. Mejora / tipomejora, Tipos Area / tiposareas, Tipo Documento / tipodocumento), modeled exactly on Clientes/Criterios.
+- For the other 2 (Tipos Amb. Aplicable, Tipos Imp. Amb.): modern routes to Placeholder + ensure under Personalizacion.
+- Enhance Permisos matrix: focus on Aplicacion subtree (padre=82), cleaner UI/processing, flash support.
+- Enhance Menus editing: support children, hierarchy in form, more robust batch updates.
+- New patches 0015+ for tables/seeds + any missing child menu actions (nuevo/editar).
+- Extend verify script + full "Stage 8.7 Verification Playbook" (clean room, DB asserts for new tables + matrix/menus changes after simulated user actions, php -l on new files).
+- Supporting: update routes (modern + legacy + POST), flashes via centralized layout.
+- Docs: new section here, update MIGRATION-PLAN, db-init/README.
+- Kept reasonable: no more than 3 full modules, no full RBAC redesign, use existing legacy permisos array.
+
+**Key changes (planned):**
+- New/updated data patches: 0015 (tables for the 3 + seeds), possibly 0016 for menu child actions.
+- 3 new module dirs: Pages/{TiposMejora,TiposAreas,TipoDocumento}/ + templates/ + full Listado/Formulario with Procesar.
+- index.php: routes for the 3 (GET/POST modern + legacy), update Personalizacion children comments, enhance for the 2 placeholders.
+- Permisos/Formulario.php + template: expanded menu load (Aplicacion only), improved Procesar, better form.
+- Menus/Listado.php + template: children support in query/display/form, enhanced Procesar.
+- scripts/verify-8.7.sh or extension of 8.6: specific psql checks for new tables, menu updates, permisos changes.
+- Full verification playbook section (modeled on 8.6).
+- Docs updates in .agents/ and db-init/.
+
+**Evidence (commands run inside containers — to be expanded during execution):**
+```bash
+docker compose exec app ./scripts/init-db.sh
+docker compose exec -T -e PGPASSWORD=secret app psql -h db -U qnova -d qnova -f .../0015-...
+docker compose exec -T app php -l Pages/TiposMejora/... Pages/TiposAreas/... ... index.php
+# DB verification for new tables + menu + permisos/orden changes
+docker compose exec db psql -U qnova -d qnova -c "SELECT ... FROM tiposmejora ..."
+# etc.
+```
+
+**DB verification after patches (example gates):**
+- New tables (tiposmejora if not, or specific for each) exist with seeded rows.
+- Menu accions/labels for the items updated if needed.
+- data_patches has the new ones.
+
+**Next in this or follow-up legs (from plan):**
+- Remaining 2 Personalizacion if not fully done.
+- Even deeper (full search? other sections?).
+- More extraction of logic for real unit tests.
+- Expand the agentic loop ideas from the article (using checklist as queue, reviewer subagent).
+
+**Branch status:** In progress. Will follow the detailed plan in reference/stage-8.7-....md. All via Docker, using the testing strategy.
+
+---
+
+**Next steps after this stage playbook is solid:**
+- Continue the pattern: more modules or deeper business logic (e.g. full under other branches).
+- Mature automated tests as more logic is isolated from the page classes.
+- Use the verification playbooks as the basis for future agentic loops (as discussed in the related praderasblog article).
+
