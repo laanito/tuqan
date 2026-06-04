@@ -43,7 +43,7 @@ class Formulario
             $perfilNombre = $r[0];
         }
 
-        // Load relevant menus (top level + under Aplicacion for a useful matrix; limit to keep UI small)
+        // Load menus under Aplicacion (padre=82 from 0010 restructure) for focused matrix (Stage 8.7 enhancement)
         $db->consulta("
             SELECT m.id, 
                    COALESCE((SELECT valor FROM menu_idiomas_nuevo mi WHERE mi.menu = m.id AND mi.idioma_id = 1), m.accion) as label,
@@ -51,9 +51,9 @@ class Formulario
                    m.accion
             FROM menu_nuevo m
             WHERE m.activo = true 
-              AND (m.padre IS NULL OR m.padre = 0 OR m.padre = 82)
+              AND m.padre = 82
             ORDER BY m.orden, m.id
-            LIMIT 25
+            LIMIT 30
         ");
 
         while ($row = $db->coger_Fila()) {
@@ -119,9 +119,9 @@ class Formulario
             $port
         );
 
-        // For each menu that has a permisos column, update the bit for this perfilId
+        // For each menu under Aplicacion (Stage 8.7 enhancement), update the bit for this perfilId
         // We fetch current, flip the bit at $perfilId position, write back.
-        $db->consulta("SELECT id, permisos FROM menu_nuevo WHERE activo = true LIMIT 100");
+        $db->consulta("SELECT id, permisos FROM menu_nuevo WHERE activo = true AND padre = 82");
         while ($row = $db->coger_Fila()) {
             $mid = (int)$row[0];
             $permStr = trim($row[1] ?? '', '{}');

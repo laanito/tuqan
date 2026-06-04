@@ -1,0 +1,45 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/tipos-mejora" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 600px;">
+    <form method="POST" action="{{ isEdit ? '/admin/tipos-mejora/editar/' ~ tipomejora.id : '/admin/tipos-mejora/nuevo' }}">
+        <div class="form-group">
+            <label for="nombre">Nombre del Tipo de Acción de Mejora</label>
+            <input type="text" class="form-control" id="nombre" name="nombre"
+                   value="{{ tipomejora.nombre ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1"
+                           {% if not isEdit or tipomejora.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Tipo' }}
+            </button>
+            <a href="/admin/tipos-mejora" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Módulo completo bajo Personalización (Stage 8.7).
+        </div>
+    </form>
+</div>
+{% endblock %}

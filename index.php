@@ -237,7 +237,7 @@ $router->addRoute('GET', '/admin/permisos/editar/{id}', ['Tuqan\Pages\Permisos\F
 // POST for the basic permissions matrix (Stage 8.6)
 $router->addRoute('POST', '/admin/permisos/editar/{id}', ['Tuqan\Pages\Permisos\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
-// Personalizacion children (Clientes implemented fully in 8.6 as first example; others remain stubbed for incremental follow-up)
+// Personalizacion children (Stage 8.7: 3 more full modules + enhancements; 2 remain basic)
 $router->addRoute('GET', '/admin/clientes', ['Tuqan\Pages\Clientes\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/clientes/nuevo', ['Tuqan\Pages\Clientes\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/clientes/editar/{id}', ['Tuqan\Pages\Clientes\Formulario', 'ShowPage'], ['before' => 'auth_company']);
@@ -249,7 +249,7 @@ $router->addRoute('POST', '/admin/clientes/editar/{id}', ['Tuqan\Pages\Clientes\
 // Legacy path for the Clientes menu entry (from full legacy menu)
 $router->addRoute('GET', '/administracion/clientes/listado/ver', ['Tuqan\Pages\Clientes\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
-// Other Personalizacion children still point to Placeholder for now (to be done in future legs)
+// Criterios (full from 8.6)
 $router->addRoute('GET', '/admin/criterios', ['Tuqan\Pages\Criterios\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/criterios/nuevo', ['Tuqan\Pages\Criterios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/criterios/editar/{id}', ['Tuqan\Pages\Criterios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
@@ -260,12 +260,35 @@ $router->addRoute('GET', '/administracion/criterios/listado/ver', ['Tuqan\Pages\
 $router->addRoute('POST', '/admin/criterios/nuevo', ['Tuqan\Pages\Criterios\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/criterios/editar/{id}', ['Tuqan\Pages\Criterios\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
-// Tiposmejora still placeholder for this PR (we did 2 additional modules)
-$router->addRoute('GET', '/admin/tipos-mejora', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+// Stage 8.7: 3 new full modules under Personalizacion
+$router->addRoute('GET', '/admin/tipos-mejora', ['Tuqan\Pages\TiposMejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipos-mejora/nuevo', ['Tuqan\Pages\TiposMejora\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipos-mejora/editar/{id}', ['Tuqan\Pages\TiposMejora\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 
-$router->addRoute('GET', '/calidad/matriz-ambiental', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/medio/aspectos', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/rrhh/personal', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/tipos-mejora/nuevo', ['Tuqan\Pages\TiposMejora\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/tipos-mejora/editar/{id}', ['Tuqan\Pages\TiposMejora\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+$router->addRoute('GET', '/admin/tipos-areas', ['Tuqan\Pages\TiposAreas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipos-areas/nuevo', ['Tuqan\Pages\TiposAreas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipos-areas/editar/{id}', ['Tuqan\Pages\TiposAreas\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+$router->addRoute('POST', '/admin/tipos-areas/nuevo', ['Tuqan\Pages\TiposAreas\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/tipos-areas/editar/{id}', ['Tuqan\Pages\TiposAreas\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+$router->addRoute('GET', '/admin/tipo-documento', ['Tuqan\Pages\TipoDocumento\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipo-documento/nuevo', ['Tuqan\Pages\TipoDocumento\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipo-documento/editar/{id}', ['Tuqan\Pages\TipoDocumento\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+$router->addRoute('POST', '/admin/tipo-documento/nuevo', ['Tuqan\Pages\TipoDocumento\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/tipo-documento/editar/{id}', ['Tuqan\Pages\TipoDocumento\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy for the new 8.7 modules (from full legacy menu)
+$router->addRoute('GET', '/administracion/tiposareas/listado/ver', ['Tuqan\Pages\TiposAreas\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/tipodocumento/listado/nuevo', ['Tuqan\Pages\TipoDocumento\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
+// Remaining 2 Personalizacion children still basic/Placeholder (incremental)
+$router->addRoute('GET', '/admin/tiposamb', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tiposimp', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
 
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
