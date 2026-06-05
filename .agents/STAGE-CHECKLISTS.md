@@ -1449,12 +1449,79 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT ... FROM tiposmejora ..
 - data_patches has the new ones.
 
 **Next in this or follow-up legs (from plan):**
-- Remaining 2 Personalizacion if not fully done.
+- (Completed in 8.7) Remaining 2 Personalizacion if not fully done — see Stage 8.8.
 - Even deeper (full search? other sections?).
 - More extraction of logic for real unit tests.
 - Expand the agentic loop ideas from the article (using checklist as queue, reviewer subagent).
 
-**Branch status:** In progress. Will follow the detailed plan in reference/stage-8.7-....md. All via Docker, using the testing strategy.
+**Branch status:** Completed (merged as part of #66). Evidence and verification playbook in prior section. Follow-up work (finishing the exact "remaining 2" + similar volume) moved to Stage 8.8 on `feat/stage-8.8-finish-personalizacion-remaining-modules`.
+
+---
+
+**Next steps after this stage playbook is solid:**
+- Continue the pattern: more modules or deeper business logic (e.g. full under other branches).
+- Mature automated tests as more logic is isolated from the page classes.
+- Use the verification playbooks as the basis for future agentic loops (as discussed in the related praderasblog article).
+
+## Stage 8.8 — Finish Remaining Personalización Modules + Tipo Cursos
+
+**Branch:** `feat/stage-8.8-finish-personalizacion-remaining-modules`
+
+**Goal:** Finish the last 2 items from the original 7 Personalizacion modules (T. Amb. Aplicable / tiposamb and Tipos Imp. Amb. / tiposimp — previously left on Placeholder per 8.7 scope decision), deliver one additional similar catalog module (Tipo Cursos) to keep change size similar to 8.6/8.7, provide full modern Listado + Formulario + Procesar (POST/validation/flash), extend the verify script and playbook, update all docs. No scope creep.
+
+**Selected scope for this leg (chosen from the plan and previous follow-up notes):**
+- 3 full modules with GET+POST (Tipos Amb. Aplicable, Tipos Imp. Amb., Tipo Cursos), modeled exactly on TiposMejora/TiposAreas/TipoDocumento (and earlier catalog modules).
+- New patch 0016 for the 3 lightweight tables + demo seeds + data_patches tracking (no menu inserts needed; accions pre-exist).
+- Full routes (modern /admin/* + legacy /administracion/* paths from menu accions) replacing the last 2 Placeholders.
+- Extend verify-8.6.sh (php -l + DB asserts) + full "Stage 8.8 Verification Playbook".
+- Docs: new section here, update MIGRATION-PLAN, db-init/README.
+- Kept reasonable: exactly 3 modules, no child menu entries added (consistent with 8.7 choice), follow current testing strategy.
+
+**Key changes (planned and executed):**
+- New data patch: 0016-personalizacion-last-two-plus-tipocursos.sql (tables tiposamb, tiposimp, tipocursos + seeds + patch record).
+- 3 new module dirs: Pages/{TiposAmb,TiposImp,TipoCursos}/ + templates/ + full Listado/Formulario with Procesar (copy of 8.7 pattern, module flash keys, Manejador + preparada).
+- index.php: full modern routes for the 3 (incl. /nuevo /editar/{id} + POST), legacy ver paths, removal of the 2 Placeholder lines, updated comments.
+- scripts/verify-8.6.sh extended (header, php -l list, table list, union counts, patch filter).
+- Full verification playbook section (modeled on 8.7).
+- Docs updates in .agents/ + docker/db-init/README.md.
+- First commit on branch: the detailed plan (reference/stage-8.8-...-plan.md).
+
+**Evidence (commands run inside containers — expanded during execution):**
+```bash
+# Branch / plan
+git checkout -b feat/stage-8.8-... && git add reference/stage-8.8-...-plan.md && git commit -m "docs: add detailed plan for Stage 8.8..."
+
+# Patch + apply (or via init)
+docker compose exec -e PGPASSWORD=secret app psql -h db -U qnova -d qnova -v ON_ERROR_STOP=1 -f /var/www/html/docker/db-init/data-patches/0016-....sql
+
+# Syntax
+docker compose exec app php -l Pages/TiposAmb/Listado.php ... Pages/TipoCursos/Formulario.php index.php
+
+# Full non-interactive
+docker compose exec app ./scripts/verify-8.6.sh
+
+# DB asserts (tables, counts, patch, menu accions for the 3)
+docker compose exec -e PGPASSWORD=secret app psql -h db -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE ... IN ('tiposamb',...);
+  SELECT 'tiposamb', COUNT(*) FROM tiposamb UNION ... ;
+  SELECT filename FROM data_patches WHERE filename LIKE '0016%';
+  SELECT id, accion FROM menu_nuevo WHERE accion LIKE '%tiposamb%' OR ... ;
+"
+```
+
+**DB verification after patches (example gates):**
+- New tables (tiposamb, tiposimp, tipocursos) exist with seeded rows (4/3/4 in 0016).
+- data_patches has the 0016 filename.
+- Menu accions/labels for the items remain correct (pre-existing).
+- After create/edit: new/updated row visible in psql and list.
+
+**Next in this or follow-up legs (from plan):**
+- Remaining 2 Personalizacion completed (plus Tipo Cursos for volume).
+- Even deeper (full search? other sections under Administracion / Calidad / etc.?).
+- More extraction of logic for real unit tests (page classes still script-like).
+- Expand the agentic loop (checklist -> implement -> verify/playbook -> subagent QA -> push/PR).
+
+**Branch status:** In progress on `feat/stage-8.8-finish-personalizacion-remaining-modules`. Will follow the detailed plan in reference/stage-8.8-finish-personalizacion-remaining-modules.md. All via Docker, using the testing strategy. (Plan committed as first commit on branch.)
 
 ---
 

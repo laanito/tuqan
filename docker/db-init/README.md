@@ -67,6 +67,7 @@ data-patches/
   0013-clientes-table-and-seed.sql                      -- Stage 8.6: first Personalizacion module
   0014-more-personalizacion-modules.sql                 -- Stage 8.6: Criterios + tiposmejora
   0015-... (Stage 8.7): tables for Tipos Acc. Mejora, Tipos Area, Tipo Documento + seeds + menu actions
+  0016-personalizacion-last-two-plus-tipocursos.sql     -- Stage 8.8: tables+seeds for last 2 Personalizacion (tiposamb, tiposimp) + Tipo Cursos
   ...
 ```
 
