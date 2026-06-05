@@ -286,9 +286,32 @@ $router->addRoute('POST', '/admin/tipo-documento/editar/{id}', ['Tuqan\Pages\Tip
 $router->addRoute('GET', '/administracion/tiposareas/listado/ver', ['Tuqan\Pages\TiposAreas\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/tipodocumento/listado/nuevo', ['Tuqan\Pages\TipoDocumento\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
-// Remaining 2 Personalizacion children still basic/Placeholder (incremental)
-$router->addRoute('GET', '/admin/tiposamb', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
-$router->addRoute('GET', '/admin/tiposimp', ['Tuqan\Pages\Placeholder', 'ShowPage'], ['before' => 'auth_company']);
+// Stage 8.8: finish last 2 Personalizacion (tiposamb, tiposimp) + Tipo Cursos (full modern)
+$router->addRoute('GET', '/admin/tiposamb', ['Tuqan\Pages\TiposAmb\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tiposamb/nuevo', ['Tuqan\Pages\TiposAmb\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tiposamb/editar/{id}', ['Tuqan\Pages\TiposAmb\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+$router->addRoute('POST', '/admin/tiposamb/nuevo', ['Tuqan\Pages\TiposAmb\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/tiposamb/editar/{id}', ['Tuqan\Pages\TiposAmb\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+$router->addRoute('GET', '/admin/tiposimp', ['Tuqan\Pages\TiposImp\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tiposimp/nuevo', ['Tuqan\Pages\TiposImp\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tiposimp/editar/{id}', ['Tuqan\Pages\TiposImp\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+$router->addRoute('POST', '/admin/tiposimp/nuevo', ['Tuqan\Pages\TiposImp\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/tiposimp/editar/{id}', ['Tuqan\Pages\TiposImp\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+$router->addRoute('GET', '/admin/tipo-cursos', ['Tuqan\Pages\TipoCursos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipo-cursos/nuevo', ['Tuqan\Pages\TipoCursos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/tipo-cursos/editar/{id}', ['Tuqan\Pages\TipoCursos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+$router->addRoute('POST', '/admin/tipo-cursos/nuevo', ['Tuqan\Pages\TipoCursos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/tipo-cursos/editar/{id}', ['Tuqan\Pages\TipoCursos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy for 8.8 modules (from full legacy menu accions)
+$router->addRoute('GET', '/administracion/tiposamb/listado/ver', ['Tuqan\Pages\TiposAmb\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/tiposimp/listado/ver', ['Tuqan\Pages\TiposImp\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/tipo_cursos/listado/ver', ['Tuqan\Pages\TipoCursos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.

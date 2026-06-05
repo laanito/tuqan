@@ -431,7 +431,8 @@ This phase is explicitly positioned as **pre-requisite infrastructure** before S
 - Stage 8.4 (Full menu structure reference + first real module "Administración → Usuarios"): Completed (PR #60)
 - Stage 8.5 (Perfiles + Empresas + Menus/Idiomas/Permisos under Aplicacion + menu UX + Docker locale handling): Completed on `feat/stage-8.5-profiles-empresas-personalizacion`.
 - Stage 8.6 (completed in PR #64 + #65): POST + validation for Perfiles + Sedes/Usuarios/Clientes/Criterios, Sedes rename, basic Permisos matrix, Menus editing, centralized flashes, testing strategy playbook + verify-8.6.sh + CI integration. Branch `feat/stage-8.6-post-handling-sedes-modules`.
-- Stage 8.7 (in progress): Complete remaining Personalizacion modules (3 full: Tipos Acc. Mejora, Tipos Area, Tipo Documento + placeholders for last 2), enhance Permisos matrix and Menus editing, new patches 0015+, extended verify + 8.7 playbook, all docs. Branch `feat/stage-8.7-personalizacion-complete-enhanced-tools`. Sized similarly to 8.6.
+- Stage 8.7 (completed in PR #66): Complete remaining Personalizacion modules (3 full: Tipos Acc. Mejora / tipoaccionesmejora, Tipos Area / tiposareas, Tipo Documento / tipodocumento), enhance Permisos matrix and Menus editing, new patches 0015+, extended verify + 8.7 playbook, all docs. Branch `feat/stage-8.7-personalizacion-complete-enhanced-tools`. Sized similarly to 8.6.
+- Stage 8.8 (in progress): Finish the last 2 Personalizacion modules from the original 7 (T. Amb. Aplicable / tiposamb + Tipos Imp. Amb. / tiposimp, replacing final Placeholders) + Tipo Cursos for volume parity (3 full modules total), patch 0016, full modern pages + routes + verify extension + 8.8 playbook + docs. Branch `feat/stage-8.8-finish-personalizacion-remaining-modules`. No enhancements; follow established pattern and testing strategy.
 - Stage 9+: Remaining deep logic, more sections, maturing automated tests + agentic loop (checklist-driven implement/verify/push/merge with reviewer subagent).
 
 **Buffer:** 2-4 weeks for surprises (legacy surprises always appear).
@@ -470,7 +471,7 @@ After each stage gate, append a "Stage N — Completed Evidence" section to this
 ---
 
 **Plan Owner:** This session's agent + future agents following AGENTS.md  
-**Last Updated:** 2026-06 (Stage 8.7 started on `feat/stage-8.7-personalizacion-complete-enhanced-tools` — completing remaining Personalizacion + enhancements to matrix/menus + verification playbook extension. Post #65).
+**Last Updated:** 2026-06 (Stage 8.8 started on `feat/stage-8.8-finish-personalizacion-remaining-modules` — finishing the last 2 Personalizacion (ex-Placeholders) + Tipo Cursos (3 modules total), 0016 patch, routes, verify/docs. 8.7 marked complete post #66. Post #67 blog).
 
 **Testing note (added after the big 8.6 merge):** See the new top section in .agents/STAGE-CHECKLISTS.md titled "Testing Strategy for Modernized Functional Modules". In short: for these vertical slices we rely on (1) rigorous, copy-pasteable Docker + psql verification commands + DB state assertions, (2) the human requester doing a full browser pass, and (3) whatever stable automated tests exist. Pure unit/integration coverage for the new `Procesar` methods and UIs is still catching up because of the current shape of the page classes. The checklists are the contract for "how do we know this actually works".
 **Approval Status:** Stage 8.3 plan reviewed and approved by user (menu "as-is" first; Former deferred until form pages are reached)
