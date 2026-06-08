@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # verify-8.6.sh
-# Non-interactive checks for the major 8.6/8.7/8.8 functional changes (POST modules, Sedes rename, new Personalizacion tables, last 2 + Tipo Cursos, etc.).
+# Non-interactive checks for the major 8.6/8.7/8.8/8.9 functional changes (POST modules, Sedes rename, new Personalizacion tables, catalog base extraction, etc.).
 # Run inside the app container after init-db.sh:
 #   docker compose exec app ./scripts/verify-8.6.sh
 #
@@ -14,7 +14,8 @@ echo "=== Stage 8.6 / 8.7 / 8.8 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
-php -l Pages/Sedes/Listado.php Pages/Sedes/Formulario.php \
+php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
+    Pages/Sedes/Listado.php Pages/Sedes/Formulario.php \
     Pages/Perfiles/Formulario.php Pages/Usuarios/Formulario.php \
     Pages/Clientes/Listado.php Pages/Clientes/Formulario.php \
     Pages/Criterios/Listado.php Pages/Criterios/Formulario.php \
@@ -26,7 +27,7 @@ php -l Pages/Sedes/Listado.php Pages/Sedes/Formulario.php \
     Pages/TiposImp/Listado.php Pages/TiposImp/Formulario.php \
     Pages/TipoCursos/Listado.php Pages/TipoCursos/Formulario.php \
     index.php > /dev/null
-echo "   PASS: No syntax errors in the main 8.6/8.7/8.8 files."
+echo "   PASS: No syntax errors in the main 8.6/8.7/8.8/8.9 files."
 
 echo ""
 echo "2. DB state checks (tables from 0012/0013/0014/0015 + menu updates)..."

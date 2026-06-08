@@ -1521,7 +1521,7 @@ docker compose exec -e PGPASSWORD=secret app psql -h db -U qnova -d qnova -c "
 - More extraction of logic for real unit tests (page classes still script-like).
 - Expand the agentic loop (checklist -> implement -> verify/playbook -> subagent QA -> push/PR).
 
-**Branch status:** In progress on `feat/stage-8.8-finish-personalizacion-remaining-modules`. Will follow the detailed plan in reference/stage-8.8-finish-personalizacion-remaining-modules.md. All via Docker, using the testing strategy. (Plan committed as first commit on branch.)
+**Branch status:** Completed (merged as PR #68). Plan committed first on the branch. All catalog modules (the pure id/nombre/activo ones) now have modern Listado + Formulario + Procesar. Evidence in prior section.
 
 ---
 
@@ -1529,4 +1529,57 @@ docker compose exec -e PGPASSWORD=secret app psql -h db -U qnova -d qnova -c "
 - Continue the pattern: more modules or deeper business logic (e.g. full under other branches).
 - Mature automated tests as more logic is isolated from the page classes.
 - Use the verification playbooks as the basis for future agentic loops (as discussed in the related praderasblog article).
+
+## Stage 8.9 — Extract Shared Catalog Base Class (Reduce Repetition)
+
+**Branch:** `feat/stage-8.9-extract-catalog-base`
+
+**Goal:** After the catalog modules were completed in 8.5-8.8, the implementation work had become highly repetitive. Extract shared base classes for the simple id/nombre/activo catalog modules so that future ones (and maintenance of existing ones) require far less boilerplate, while preserving 100% of current behavior, flash keys, templates, and routes. This directly addresses the "repetitive work" feedback and the "more extraction of logic" item from prior checklists.
+
+**Selected scope for this leg:**
+- Introduce `Pages/Catalog/CatalogListado.php` and `Pages/Catalog/CatalogFormulario.php` (abstract bases containing the common Twig, sidebar, Manejador_Base_Datos, flash, query, validation, and render logic).
+- Refactor the pure catalog modules (Perfiles, Sedes, Clientes, Criterios, TiposMejora, TiposAreas, TipoDocumento, TiposAmb, TiposImp, TipoCursos) to tiny extending classes (typically 5-8 lines of config).
+- Usuarios left as-is for this leg (richer query with joins).
+- No template changes, no behavior changes, no DB/route changes.
+- Extend verify script + full new "Stage 8.9 Verification Playbook".
+- Docs: new section here, update MIGRATION-PLAN.
+
+**Key changes:**
+- New base classes in Pages/Catalog/.
+- 22 files changed overall (bases + 10 modules refactored to ~15-20 lines each instead of 70-80).
+- scripts/verify-8.6.sh updated with php -l for the bases (still covers 8.6-8.9).
+- Full 8.9 playbook section added (modeled on 8.8).
+- MIGRATION-PLAN updated.
+
+**Evidence (commands run inside containers):**
+```bash
+# After plan commit (first on branch)
+git log --oneline -1   # should show the plan
+
+# Syntax (inside app container)
+docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
+    Pages/*/Listado.php Pages/*/Formulario.php index.php
+
+# Full non-interactive
+docker compose exec app ./scripts/verify-8.6.sh
+
+# DB still healthy (no schema change)
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE schemaname='public' AND tablename IN ('perfiles','sedes','clientes','criterios','tiposmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos') ORDER BY tablename;
+  SELECT filename FROM data_patches WHERE filename LIKE '001%' ORDER BY filename;
+"
+```
+
+**DB verification gates:**
+- All catalog tables still exist with their data.
+- No new patches for this refactor (pure code extraction).
+- php -l clean on bases + all refactored files.
+
+**Next in this or follow-up legs (from plan):**
+- Usuarios can be brought onto the base with custom query/map overrides.
+- Extract bases for the slightly different modules (Idiomas, Menus, Permisos) if repetition justifies it.
+- Now that boilerplate is reduced, higher-value work (deeper business logic, other top-level branches, real unit tests on the extracted logic) becomes cheaper.
+- Continue agentic loop improvements.
+
+**Branch status:** In progress on `feat/stage-8.9-extract-catalog-base`. Plan committed first. All via Docker, using the testing strategy. Refactors keep changes minimal and reviewable.
 
