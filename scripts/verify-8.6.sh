@@ -70,6 +70,17 @@ SELECT 'tipocursos', COUNT(*) FROM tipocursos;
 SELECT filename FROM data_patches 
 WHERE filename LIKE '001%' 
 ORDER BY filename;
+
+-- Menu structure invariants for Personalizacion (added in 8.9 after 0017/0018 exposed gaps)
+-- These would have caught wrong padres (4th-level nesting), redundant empty sections,
+-- duplicate labels, and missing actions before user report.
+SELECT 'personalizacion_direct_children' as check, COUNT(*) 
+FROM menu_nuevo WHERE padre = 1400;
+SELECT id, orden, accion, COALESCE((SELECT valor FROM menu_idiomas_nuevo WHERE menu=m.id AND idioma_id=1), accion) as nombre 
+FROM menu_nuevo m WHERE padre = 1400 ORDER BY orden;
+-- Flag any empty sections at this level (should be 0 after cleanup)
+SELECT 'orphan_sections_under_personalizacion' as check, COUNT(*) 
+FROM menu_nuevo WHERE padre = 1400 AND (accion IS NULL OR accion = '');
 " 2>&1 | cat
 
 echo ""

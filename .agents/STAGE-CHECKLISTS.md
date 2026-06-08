@@ -1598,5 +1598,18 @@ docker compose exec db psql -U qnova -d qnova -c "
 - 0018 removed the now-redundant 3rd-level section headers (old group parents 84,85,86,87,88,90,92).
 - IMPORTANT NOTE FOR LATER: The old row 84 ("Criterios" section, no accion) was deleted. User recall: the real entry should be "Criterios Ambientales" and it should carry a proper action. If it was missing from the imported legacy data, it will need to be restored later as a direct child of Personalizacion (not as a nested section). See patch 0018 for full details. The modern Criterios page and /administracion/criterios/listado/ver route already exist from prior stages.
 
+**Testing lessons from this leg (retrospective):**
+The non-interactive verify + playbook did not catch the menu hierarchy errors (wrong padres causing 4th-level nesting under Clientes sections, redundant empty 3rd-level parents creating duplicate labels, missing legacy route for tipomejora so the accion was not wired, Criterios container without action).
+Root causes:
+- Verification was heavily "new feature" focused (catalog tables/row counts, php -l on Pages, patch list, sedes-specific menu spot checks). Menu_nuevo was treated as mostly static legacy data rather than a first-class mutable structure requiring invariants after each restructuring patch (0010, 0017, 0018).
+- No automated structural asserts on the Personalizacion subtree (e.g. "all direct children under 1400 should have non-empty accion and unique labels at the same level"; "every accion referenced in active menu rows has a corresponding modern route or explicit legacy fallback in index.php").
+- Playbook relied on "human performs browser navigation + post-action DB asserts for module data", which catches symptoms but not the data model breakage itself. The sidebar renderer (MainPage::buildSidebarMenuHtml + resolveLegacyAction) and route table were not exercised against the mutated menu tree in CI-like checks.
+- Patches were validated for "new rows appeared / counts match", but not for global tree shape or route coverage.
+
+Prevention steps taken:
+- Extended verify-8.6.sh with a "Menu structure invariants for Personalizacion" block (direct child count, tree dump, orphan/empty section count). This would have flagged the bad intermediate state after 0017 and confirmed cleanup after 0018.
+- Added explicit note in this section: future legs that mutate menu_nuevo (especially under restructured areas like Personalizacion) must include before/after tree queries in the patch, in the verify script, and in the playbook evidence. When adding modern pages, cross-check that all known legacy accions for that module have route mappings.
+- As an agent: when the task involves "menu" or "Personalizacion" data, proactively query and assert the full relevant subtree + route wiring instead of assuming prior work + module tables are sufficient. "Tests passed" on the new code is not enough if the data contract the UI relies on is broken.
+
 **Branch status:** In progress on `feat/stage-8.9-extract-catalog-base`. Plan committed first. All via Docker, using the testing strategy. Refactors keep changes minimal and reviewable.
 
