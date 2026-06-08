@@ -1568,6 +1568,18 @@ docker compose exec db psql -U qnova -d qnova -c "
   SELECT tablename FROM pg_tables WHERE schemaname='public' AND tablename IN ('perfiles','sedes','clientes','criterios','tiposmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos') ORDER BY tablename;
   SELECT filename FROM data_patches WHERE filename LIKE '001%' ORDER BY filename;
 "
+
+**Menu cleanup notes from this leg:**
+- 0017 reparented the actionable catalog items (Clientes, Tipos*, etc.) directly under Personalizacion (1400) to collapse the 4th-level nesting.
+- 0018 removed the now-redundant 3rd-level section headers (old empty containers with no 'accion').
+- IMPORTANT NOTE FOR LATER (from user during cleanup):
+  Row 84 was the "Criterios" section (no 'accion') under Personalizacion.
+  The real module is "Criterios Ambientales". It should have a proper action entry.
+  If it was missing from the imported legacy data/dump, it will surface later.
+  When restoring, place it as a direct actionable child of Personalizacion (padre=1400),
+  not as another nested section.
+  See patch 0018 for full context. The modern Criterios page (/admin/criterios) and
+  legacy route (/administracion/criterios/listado/ver) already exist from prior stages.
 ```
 
 **DB verification gates:**
@@ -1580,6 +1592,11 @@ docker compose exec db psql -U qnova -d qnova -c "
 - Extract bases for the slightly different modules (Idiomas, Menus, Permisos) if repetition justifies it.
 - Now that boilerplate is reduced, higher-value work (deeper business logic, other top-level branches, real unit tests on the extracted logic) becomes cheaper.
 - Continue agentic loop improvements.
+
+**Menu cleanup notes (8.9):**
+- 0017 reparented actionable catalog items directly under Personalizacion (1400).
+- 0018 removed the now-redundant 3rd-level section headers (old group parents 84,85,86,87,88,90,92).
+- IMPORTANT NOTE FOR LATER: The old row 84 ("Criterios" section, no accion) was deleted. User recall: the real entry should be "Criterios Ambientales" and it should carry a proper action. If it was missing from the imported legacy data, it will need to be restored later as a direct child of Personalizacion (not as a nested section). See patch 0018 for full details. The modern Criterios page and /administracion/criterios/listado/ver route already exist from prior stages.
 
 **Branch status:** In progress on `feat/stage-8.9-extract-catalog-base`. Plan committed first. All via Docker, using the testing strategy. Refactors keep changes minimal and reviewable.
 

@@ -23,6 +23,18 @@ DELETE FROM menu_idiomas_nuevo WHERE menu IN (84,85,86,87,88,90,92);
 --  Tipos area(87), T.Amb(88), Tipos Imp(90), Tipo doc(92))
 DELETE FROM menu_nuevo WHERE id IN (84,85,86,87,88,90,92);
 
+-- NOTE FOR LATER (recorded during 8.9 menu cleanup):
+-- Row 84 was the "Criterios" container/section under Personalizacion (1400) with
+-- no 'accion'. According to user recall, the real module should be
+-- "Criterios Ambientales" and it should have had a proper action (likely
+-- something like administracion:criterios:listado:ver or similar).
+-- If it was not present in the legacy data we imported, it will surface when
+-- the full dump is processed. When restoring, it should be placed as a direct
+-- actionable child of Personalizacion (padre=1400), not as another nested section.
+-- Current state after this patch: no Criterios entry remains under Personalizacion.
+-- See also the modern Criterios page at /admin/criterios and the legacy route
+-- /administracion/criterios/listado/ver that was added in earlier stages.
+
 -- Record
 INSERT INTO data_patches (filename, applied_at)
 VALUES ('0018-menu-remove-redundant-personalizacion-sections.sql', NOW())
