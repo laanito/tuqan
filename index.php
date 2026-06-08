@@ -257,6 +257,9 @@ $router->addRoute('GET', '/admin/criterios/editar/{id}', ['Tuqan\Pages\Criterios
 // Legacy for Criterios (from full menu)
 $router->addRoute('GET', '/administracion/criterios/listado/ver', ['Tuqan\Pages\Criterios\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// Legacy for Tipos Mejora (tipomejora) - was missing the legacy path mapping, so /administracion/tipomejora/listado/ver fell through
+$router->addRoute('GET', '/administracion/tipomejora/listado/ver', ['Tuqan\Pages\TiposMejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 $router->addRoute('POST', '/admin/criterios/nuevo', ['Tuqan\Pages\Criterios\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/criterios/editar/{id}', ['Tuqan\Pages\Criterios\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
