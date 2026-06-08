@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # verify-8.6.sh
-# Non-interactive checks for the major 8.6/8.7/8.8 functional changes (POST modules, Sedes rename, new Personalizacion tables, last 2 + Tipo Cursos, etc.).
+# Non-interactive checks for the major 8.6/8.7/8.8/8.9 functional changes (POST modules, Sedes rename, new Personalizacion tables, catalog base extraction, etc.).
 # Run inside the app container after init-db.sh:
 #   docker compose exec app ./scripts/verify-8.6.sh
 #
@@ -14,7 +14,8 @@ echo "=== Stage 8.6 / 8.7 / 8.8 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
-php -l Pages/Sedes/Listado.php Pages/Sedes/Formulario.php \
+php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
+    Pages/Sedes/Listado.php Pages/Sedes/Formulario.php \
     Pages/Perfiles/Formulario.php Pages/Usuarios/Formulario.php \
     Pages/Clientes/Listado.php Pages/Clientes/Formulario.php \
     Pages/Criterios/Listado.php Pages/Criterios/Formulario.php \
@@ -26,7 +27,7 @@ php -l Pages/Sedes/Listado.php Pages/Sedes/Formulario.php \
     Pages/TiposImp/Listado.php Pages/TiposImp/Formulario.php \
     Pages/TipoCursos/Listado.php Pages/TipoCursos/Formulario.php \
     index.php > /dev/null
-echo "   PASS: No syntax errors in the main 8.6/8.7/8.8 files."
+echo "   PASS: No syntax errors in the main 8.6/8.7/8.8/8.9 files."
 
 echo ""
 echo "2. DB state checks (tables from 0012/0013/0014/0015 + menu updates)..."
@@ -69,6 +70,17 @@ SELECT 'tipocursos', COUNT(*) FROM tipocursos;
 SELECT filename FROM data_patches 
 WHERE filename LIKE '001%' 
 ORDER BY filename;
+
+-- Menu structure invariants for Personalizacion (added in 8.9 after 0017/0018 exposed gaps)
+-- These would have caught wrong padres (4th-level nesting), redundant empty sections,
+-- duplicate labels, and missing actions before user report.
+SELECT 'personalizacion_direct_children' as check, COUNT(*) 
+FROM menu_nuevo WHERE padre = 1400;
+SELECT id, orden, accion, COALESCE((SELECT valor FROM menu_idiomas_nuevo WHERE menu=m.id AND idioma_id=1), accion) as nombre 
+FROM menu_nuevo m WHERE padre = 1400 ORDER BY orden;
+-- Flag any empty sections at this level (should be 0 after cleanup)
+SELECT 'orphan_sections_under_personalizacion' as check, COUNT(*) 
+FROM menu_nuevo WHERE padre = 1400 AND (accion IS NULL OR accion = '');
 " 2>&1 | cat
 
 echo ""
