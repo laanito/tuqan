@@ -6,9 +6,9 @@ use Tuqan\Pages\Catalog\CatalogFormulario;
 
 class Formulario extends CatalogFormulario
 {
-    protected $table       = 'clientes';
-    protected $title       = 'Cliente';
-    protected $templateDir = 'clientes';
-    protected $flashPrefix = 'cliente';
-    protected $listRoute   = '/admin/clientes';
+    protected string $table       = 'clientes';
+    protected string $title       = 'Cliente';
+    protected string $templateDir = 'clientes';
+    protected string $flashPrefix = 'cliente';
+    protected string $listRoute   = '/admin/clientes';
 }

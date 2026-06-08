@@ -6,8 +6,8 @@ use Tuqan\Pages\Catalog\CatalogListado;
 
 class Listado extends CatalogListado
 {
-    protected $table       = 'clientes';
-    protected $title       = 'Clientes';
-    protected $templateDir = 'clientes';
-    protected $flashPrefix = 'cliente';
+    protected string $table       = 'clientes';
+    protected string $title       = 'Clientes';
+    protected string $templateDir = 'clientes';
+    protected string $flashPrefix = 'cliente';
 }

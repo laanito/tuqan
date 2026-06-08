@@ -6,8 +6,8 @@ use Tuqan\Pages\Catalog\CatalogListado;
 
 class Listado extends CatalogListado
 {
-    protected $table       = 'perfiles';
-    protected $title       = 'Perfiles';
-    protected $templateDir = 'perfiles';
-    protected $flashPrefix = 'perfil';
+    protected string $table       = 'perfiles';
+    protected string $title       = 'Perfiles';
+    protected string $templateDir = 'perfiles';
+    protected string $flashPrefix = 'perfil';
 }
