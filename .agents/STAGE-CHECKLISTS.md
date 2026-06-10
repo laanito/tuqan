@@ -1613,3 +1613,102 @@ Prevention steps taken:
 
 **Branch status:** In progress on `feat/stage-8.9-extract-catalog-base`. Plan committed first. All via Docker, using the testing strategy. Refactors keep changes minimal and reviewable.
 
+---
+## Stage 9.1 — Criterios Ambientales Menu Label + Hygiene (closes 8.9 NOTE FOR LATER)
+
+**Goal:** Deliver the first concrete item from the daily MIGRATION-TODOS list (XS hygiene leg). Close the explicit open thread left in 0018 and the 8.9 retrospective: the Criterios entry under Personalizacion must be labeled "Criterios Ambientales", live as a direct actionable child of 1400, and have a proper non-empty accion. Also make the modern Criterios UI consistent. Small, reviewable, demonstrates the new "consult the living list, pick next leg, plan first" flow even while the 9.0 PR is still open.
+
+**Selected scope for this leg:**
+- Data patch 0019 (idempotent label fix on the existing reparented Criterios row under 1400 + English + data_patches tracking).
+- Close the NOTE in the 0018 patch file.
+- Tiny title consistency in Pages/Criterios/{Listado,Formulario}.php (catalog base extends) and the hard-coded strings in templates/criterios/listado.twig.
+- Extend the existing Personalizacion menu invariants in verify-8.6.sh with a specific assert for the Ambientales label + accion.
+- Full new "Stage 9.1 Verification Playbook" section here.
+- Plan doc first on the branch; update MIGRATION-PLAN.md.
+- Note the open 9.0 PR (MIGRATION-TODOS) so the checkbox can be flipped post-merge.
+
+**Key changes:**
+- New: `docker/db-init/data-patches/0019-criterios-ambientales.sql`, `reference/stage-9.1-criterios-ambientales-plan.md`
+- Modified: 0018 patch (NOTE closed), 2x Criterios PHP (titles), listado.twig (visible labels), scripts/verify-8.6.sh (invariants + header), .agents/MIGRATION-PLAN.md, this file (9.1 section).
+- Branch: `feat/stage-9.1-criterios-ambientales` (fresh from master).
+
+**todo_write items (copy these for the leg):**
+```json
+[
+  {"id":"9.1.1","content":"Write plan (reference/stage-9.1-...) and commit first","status":"pending"},
+  {"id":"9.1.2","content":"Create 0019 patch + edit 0018 to close NOTE","status":"pending"},
+  {"id":"9.1.3","content":"Update Criterios Listado/Formulario titles + listado.twig strings","status":"pending"},
+  {"id":"9.1.4","content":"Extend verify-8.6.sh (php -l already covers; add specific psql check + header)","status":"pending"},
+  {"id":"9.1.5","content":"Add full 9.1 playbook here + update MIGRATION-PLAN","status":"pending"},
+  {"id":"9.1.6","content":"Docker verify (init-db, targeted psql for label+patch+tree, verify script, php -l)","status":"pending"}
+]
+```
+
+**Validation Commands (run in order, capture output):**
+```bash
+# Clean room (recommended)
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+# (wait for db healthy)
+
+# Initialize (applies all patches including the new 0019)
+docker compose exec app ./scripts/init-db.sh
+
+# 1. The specific 9.1 menu label + action check (and general Personalizacion health)
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT 'criterios_ambientales' as check, m.id, m.padre, m.accion,
+         mi.valor as es_label
+  FROM menu_nuevo m
+  LEFT JOIN menu_idiomas_nuevo mi ON mi.menu = m.id AND mi.idioma_id=1
+  WHERE m.padre = 1400
+    AND (mi.valor ILIKE '%ambiental%' OR m.accion ILIKE '%criterios%');
+
+  SELECT filename FROM data_patches WHERE filename LIKE '0019%' ORDER BY filename;
+
+  -- Full direct children for context (should show the Ambientales one with accion)
+  SELECT id, orden, accion, COALESCE((SELECT valor FROM menu_idiomas_nuevo WHERE menu=m.id AND idioma_id=1), accion) as nombre
+  FROM menu_nuevo m WHERE padre = 1400 ORDER BY orden;
+"
+
+# 2. Non-interactive script (now includes the 9.1 specific assert)
+docker compose exec app ./scripts/verify-8.6.sh
+
+# 3. Syntax on the touched PHP
+docker compose exec app php -l Pages/Criterios/Listado.php Pages/Criterios/Formulario.php
+```
+
+**Browser + post-action DB flow (the human gate):**
+1. `docker compose --env-file .env.docker up -d` + init-db.sh (or use existing dev DB if you prefer).
+2. Login (company demo/admin, user admin/admin).
+3. In the left sidebar, expand / navigate to Personalizacion (under Administración).
+4. Confirm "Criterios Ambientales" appears as a direct 3rd-level item (no extra nesting, no duplicate "Criterios" section).
+5. Click it → lands on the modern list at /admin/criterios (or legacy path). Header should say "Criterios Ambientales".
+6. Click "Nuevo Criterio Ambiental" → fill a name, submit → success flash appears in the list.
+7. Edit the new row → change name or activo → submit → flash + updated row.
+8. In container: run a quick psql assert that the row you created/edited exists with the expected values.
+9. (Optional) also click an existing row and confirm the form uses the singular "Criterio Ambiental" title.
+
+**Evidence skeleton (append real output + PASS/FAIL after the run):**
+```bash
+# Paste here:
+# - git log --oneline -2 on the branch (plan first)
+# - The psql output showing the exact 'Criterios Ambientales' row under 1400 + 0019 in data_patches
+# - verify-8.6.sh full output (the new check must be 1)
+# - php -l clean
+# - Short description of the browser flows you performed + the post-submit DB row you asserted
+```
+
+**DB verification gates (must all be true):**
+- Exactly one (or the expected) row under padre=1400 has es_label = 'Criterios Ambientales' and non-empty accion.
+- data_patches contains '0019-criterios-ambientales.sql'
+- No increase in orphan empty sections under 1400.
+- The modern list and form pages render with the Ambientales wording.
+- All prior Personalizacion items and other catalog modules remain unaffected.
+
+**Next after this leg:**
+- Once the 9.0 (MIGRATION-TODOS) PR merges, flip the corresponding item in .agents/MIGRATION-TODOS.md and add a "closed in 9.1" note.
+- Pick the next item from the Suggested Next or area groups (another small hygiene, or a real vertical such as basic Proveedores or Equipos).
+- Continue with the established size and .agents/ ritual.
+
+**Branch status:** This 9.1 leg on `feat/stage-9.1-criterios-ambientales`. Plan committed first (fc06276). XS hygiene to close the 8.9 open note and demonstrate the daily TODO list in action. All via Docker. PR will be opened after push. (Note: 9.0 PR still open / not merged at start of this leg.)
+
