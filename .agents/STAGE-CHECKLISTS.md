@@ -1613,3 +1613,57 @@ Prevention steps taken:
 
 **Branch status:** In progress on `feat/stage-8.9-extract-catalog-base`. Plan committed first. All via Docker, using the testing strategy. Refactors keep changes minimal and reviewable.
 
+---
+## Stage 9.0 — Migration TODOs & Living Daily Backlog (this leg)
+
+**Goal:** Before doing more functional change legs, turn the well-documented but "not handy as a todo list" MIGRATION-PLAN + STAGE-CHECKLISTS into a practical, scannable, checkbox-driven artifact (`.agents/MIGRATION-TODOS.md`) that lists *all remaining modules to migrate*, grouped by the real legacy top-level Aplicacion areas, with status, complexity, est. PR size, legacy accions, verification hints, and handoff instructions. This becomes the primary navigation for daily work and for handing complete context to other agents. The leg itself is docs-only and reviewable-sized.
+
+**Selected scope for this leg:**
+- New reference plan: `reference/stage-9.0-migration-todo-list-plan.md` (committed first on the branch, per established discipline).
+- Primary artifact: `.agents/MIGRATION-TODOS.md` — usage rules, current snapshot (14 modern modules post 8.9), grouped backlog for the 9 top-level Aplicacion branches (Documentación, Procesos, Proveedores, Equipos, Mejora, Formación, Auditorías, Indicadores, Aspectos Ambientales) + cross-cuts, suggested next legs of appropriate size, per-item notes (including the Criterios Ambientales row 84 note from 8.9/0018), recipe for future module legs, maintenance/handoff guidance.
+- Pointer updates: MIGRATION-PLAN.md (Last Updated + explicit "use MIGRATION-TODOS.md for daily leg planning and agent handoff"), STAGE-CHECKLISTS.md (this 9.0 skeleton section).
+- No code, no routes, no patches, no templates — pure enabling + inventory leg so the "next leg of work" can be chosen cleanly from the new list.
+- Verification focused on structure, completeness of inventory (cross-ref legacy-menu-structure.md + patches 0005/0010/0014+ + index.php routes + Pages/ + templates/ dirs), and following plan-first + push ritual.
+
+**Key changes:**
+- `reference/stage-9.0-migration-todo-list-plan.md` (new, first commit).
+- `.agents/MIGRATION-TODOS.md` (new, the living daily list).
+- `.agents/MIGRATION-PLAN.md` (status + pointer paragraph).
+- `.agents/STAGE-CHECKLISTS.md` (this 9.0 section).
+- Branch: `feat/stage-9.0-migration-todos` (fresh from master, clean start).
+
+**Evidence (commands + state on this branch):**
+```bash
+# Branch + first commit (plan)
+git branch --show-current
+git log --oneline -3
+# (plan commit visible as first on branch)
+
+# New files present + sensible
+ls -l reference/stage-9.0-migration-todo-list-plan.md .agents/MIGRATION-TODOS.md
+head -50 .agents/MIGRATION-TODOS.md
+wc -l .agents/MIGRATION-TODOS.md
+
+# Docs-only hygiene (no PHP changes in this leg)
+git status
+git diff --stat
+
+# (Optional / when stack convenient) Docker php -l on index (routes surface) and verify script still parses
+# docker compose exec app php -l index.php || echo "stack not required for pure-docs leg"
+# docker compose exec app ./scripts/verify-8.6.sh || echo "verify run (or skipped)"
+```
+
+**Gates for this meta leg:**
+- [x] Plan document written and committed first.
+- [x] MIGRATION-TODOS.md created with the designed handy format (checkboxes, groups by menu top-level, est. sizes, recipe, handoff notes, Criterios Ambientales item captured).
+- [x] MIGRATION-PLAN.md and STAGE-CHECKLISTS.md updated with pointers + 9.0 skeleton.
+- [x] Inventory covers the 14 done + all legacy top-level Aplicacion branches from 0005-menu-cleanup + legacy ref + current modern surface in index.php + Pages/.
+- [x] Branch pushed; PR will be opened for review before any further change legs.
+- [ ] (Post-merge) user confirms the list is navigable and useful for picking the next real leg.
+
+**Next (after this leg merges):**
+- Use the "Suggested Next Legs" shortlist and area groups in MIGRATION-TODOS.md to choose the next reviewable piece (XS hygiene for Criterios Ambientales, or a full vertical like Proveedores/Equipos/Mejora slice, etc.).
+- Continue the agentic loop: plan first, small+reviewable, update the living TODOS + checklists, Docker-only, push.
+
+**Branch status:** This 9.0 leg on `feat/stage-9.0-migration-todos`. Plan committed first (ed5f25e). Pure docs/inventory per user request ("before continuing more changes"). All following the "new PR of course" + "push the next leg" directive.
+
