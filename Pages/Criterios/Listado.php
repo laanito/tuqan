@@ -7,7 +7,7 @@ use Tuqan\Pages\Catalog\CatalogListado;
 class Listado extends CatalogListado
 {
     protected string $table       = 'criterios';
-    protected string $title       = 'Criterios';
+    protected string $title       = 'Criterios Ambientales';
     protected string $templateDir = 'criterios';
     protected string $flashPrefix = 'criterio';
 }

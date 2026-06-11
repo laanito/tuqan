@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-echo "=== Stage 8.6 / 8.7 / 8.8 Verification (non-interactive) ==="
+echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
@@ -81,6 +81,14 @@ FROM menu_nuevo m WHERE padre = 1400 ORDER BY orden;
 -- Flag any empty sections at this level (should be 0 after cleanup)
 SELECT 'orphan_sections_under_personalizacion' as check, COUNT(*) 
 FROM menu_nuevo WHERE padre = 1400 AND (accion IS NULL OR accion = '');
+
+-- 9.1 specific: the Criterios Ambientales entry exists as direct child with label + accion
+SELECT 'criterios_ambientales_under_personalizacion' as check, COUNT(*) 
+FROM menu_nuevo m
+LEFT JOIN menu_idiomas_nuevo mi ON mi.menu = m.id AND mi.idioma_id = 1
+WHERE m.padre = 1400
+  AND mi.valor = 'Criterios Ambientales'
+  AND m.accion IS NOT NULL AND m.accion <> '';
 " 2>&1 | cat
 
 echo ""
