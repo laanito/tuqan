@@ -473,7 +473,7 @@ After each stage gate, append a "Stage N — Completed Evidence" section to this
 
 **Plan Owner:** This session's agent + future agents following AGENTS.md  
 
-**Last Updated:** 2026-06. 8.9 (catalog base) complete on master. 9.0 PR open (daily MIGRATION-TODOS.md list + pointers). 9.1 (this leg): delivered the top suggested XS item — "Criterios Ambientales" label + proper action as direct child under Personalizacion (1400) via 0019 patch. See 9.1 plan, playbook, and patch for details. Once 9.0 merges, MIGRATION-TODOS.md becomes the primary daily navigation (with this item checked).
+**Last Updated:** 2026-06. 8.9 (catalog base) complete on master. 9.0 PR open (daily MIGRATION-TODOS.md list + pointers). 9.1: "Criterios Ambientales" label fix (0019). 9.2: First medium Aplicacion vertical (Proveedores basic + telefono via 0020 patch, base extends + overrides, routes modern+legacy, verify, full playbook). Initial delivery had convention/process gaps (naming Form vs Formulario, missing patch + legacy routes, incomplete .agents/ updates, bypassed base patterns); fixed on branch to hold standards. See 9.2 plan + STAGE-CHECKLISTS. Once 9.0 merges, MIGRATION-TODOS.md is the primary daily navigation.
 
 **For daily leg planning and agent handoff (post 9.0 merge)**: open `.agents/MIGRATION-TODOS.md` first. It contains the living checklist of remaining modules, grouped by legacy Aplicacion top levels, suggested next legs, est. sizes, and the recipe for new modules. This file (MIGRATION-PLAN) stays the high-level architecture + history.
 

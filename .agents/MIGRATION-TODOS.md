@@ -89,7 +89,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Link to Empleados / RRHH concepts if present in legacy (ficha personal).
 
 ### Proveedores (Suppliers)
-- [ ] Proveedores (legacy 67) — listado, incidencias, contactos, productos. Classic master + children. Old files: likely proveedores.php or items.php patterns + procesa. Tables probably exist in full schema. Complexity: M (1 main + 2-3 child entities). Good candidate for "one vertical" PR or split (basic + contacts).
+- [x] Proveedores (legacy 67) — basic listado + form (nombre + telefono + activo) in Stage 9.2. Followed catalog base + full routes + data patch + verify + playbook. Sub-entities (contactos, incidencias, productos/homologados) deferred to later legs. (See 9.2 plan and STAGE-CHECKLISTS.)
 - [ ] Homologacion / evaluation flows (common in ISO supplier management).
 
 ### Equipos (Equipment / Assets)
