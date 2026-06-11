@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 Verification (non-interactive) ==="
+echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
@@ -35,7 +35,7 @@ export PGPASSWORD="${DB_PASS:-secret}"
 psql -h "${DB_HOST:-db}" -U qnova -d qnova -v ON_ERROR_STOP=1 -c "
 -- Tables (8.6 + 8.7 + 8.8)
 SELECT tablename FROM pg_tables 
-WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos')
+WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores')
 ORDER BY tablename;
 
 -- Sedes rename evidence
@@ -66,10 +66,13 @@ SELECT 'tiposimp', COUNT(*) FROM tiposimp
 UNION ALL
 SELECT 'tipocursos', COUNT(*) FROM tipocursos;
 
--- Patch tracking (up to 0016)
+-- Patch tracking (up to 0020 for 9.2)
 SELECT filename FROM data_patches 
-WHERE filename LIKE '001%' 
+WHERE filename LIKE '00%' 
 ORDER BY filename;
+
+-- 9.2 Proveedores evidence
+SELECT COUNT(*) AS proveedores_rows FROM proveedores;
 
 -- Menu structure invariants for Personalizacion (added in 8.9 after 0017/0018 exposed gaps)
 -- These would have caught wrong padres (4th-level nesting), redundant empty sections,

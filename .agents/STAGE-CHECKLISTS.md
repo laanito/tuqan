@@ -1712,3 +1712,76 @@ docker compose exec app php -l Pages/Criterios/Listado.php Pages/Criterios/Formu
 
 **Branch status:** This 9.1 leg on `feat/stage-9.1-criterios-ambientales`. Plan committed first (fc06276). XS hygiene to close the 8.9 open note and demonstrate the daily TODO list in action. All via Docker. PR will be opened after push. (Note: 9.0 PR still open / not merged at start of this leg.)
 
+---
+## Stage 9.2 — Proveedores (first vertical slice of a medium module)
+
+**Goal:** Deliver the first real Aplicacion vertical after the catalog base and Personalizacion hygiene (following the priority in MIGRATION-TODOS.md). Basic Proveedores CRUD (list + create/edit with nombre + telefono + activo) using the Catalog* base, data patch, modern + legacy routes, verification, and full playbook. This tests whether the post-8.9/9.0 process (clear TODOs + plan first) holds when moving beyond simple 3-column catalogs.
+
+**Selected scope for this leg (intentionally limited):**
+- Main `proveedores` table + seed via patch 0020.
+- `Pages/Proveedores/{Listado,Formulario}.php` (tiny extends of Catalog* + minimal overrides for the 'telefono' column).
+- `templates/proveedores/{listado,formulario}.twig` (following exact visual + variable conventions from Clientes/Sedes/etc.).
+- Routes in index.php (modern /admin/proveedores + main legacy).
+- Extend verify-8.6.sh (table/patch presence + specific menu or row checks if relevant).
+- Full 9.2 playbook section here + update MIGRATION-TODOS (mark item) + minor MIGRATION-PLAN note.
+- No sub-entities (contactos_proveedores, incidencias, productos, homologacion) — explicit future legs.
+
+**Key changes:**
+- New: docker/db-init/data-patches/0020-proveedores-table-and-seed.sql, Pages/Proveedores/Formulario.php (corrected from Form.php), reference/stage-9.2-proveedores-plan.md (pre-existing from the leg start), templates/proveedores/*.
+- Modified: Pages/Proveedores/Listado.php (added overrides), index.php (routes + legacy), scripts/verify-8.6.sh, .agents/MIGRATION-TODOS.md, .agents/STAGE-CHECKLISTS.md (this section), .agents/MIGRATION-PLAN.md.
+- Branch: feat/stage-9.2-proveedores (plan first, then fixes to hold full standards).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.2.1","content":"Create 0020 data patch for table + seed (following 0013/0016 exact style)","status":"pending"},
+  {"id":"9.2.2","content":"Implement tiny Listado + Formulario (with overrides for telefono; correct naming to Formulario.php)","status":"pending"},
+  {"id":"9.2.3","content":"Add modern + legacy routes in index.php","status":"pending"},
+  {"id":"9.2.4","content":"Clean templates to exact project style (no custom flash rendering in content, consistent notes)","status":"pending"},
+  {"id":"9.2.5","content":"Update verify-8.6.sh (new table/patch, specific asserts)","status":"pending"},
+  {"id":"9.2.6","content":"Update MIGRATION-TODOS (mark done), add full 9.2 playbook here, update other .agents/","status":"pending"},
+  {"id":"9.2.7","content":"Full Docker verification (clean init, psql table+patch+rows, verify script, php -l, browser flows)","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Table + patch + sample data
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename = 'proveedores';
+  SELECT filename FROM data_patches WHERE filename LIKE '0020%';
+  SELECT id, nombre, telefono, activo FROM proveedores ORDER BY id;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Proveedores/Listado.php Pages/Proveedores/Formulario.php index.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init, login.
+2. Navigate via sidebar to Proveedores (should appear under the relevant Aplicacion branch from legacy menu).
+3. Confirm list renders with ID, Nombre, Teléfono, Estado columns, "Nuevo Proveedor" button, and "Proveedores (Stage 9.2)" note.
+4. Create a new one (with/without telefono) → success flash on list, row appears in DB.
+5. Edit an existing one (change name or telefono or activo) → flash + updated values in DB and list.
+6. Confirm legacy path (if menu uses it) also resolves.
+
+**Evidence skeleton + gates:**
+- git log shows plan first then implementation/fixes.
+- psql confirms table, 0020 patch, >=2 rows.
+- verify-8.6.sh green (including any new checks).
+- php -l clean.
+- Browser flows as described + post-submit DB asserts.
+- MIGRATION-TODOS item marked for Proveedores.
+- No naming regressions (Formulario.php), no bypass of Catalog* bases.
+
+**Next:**
+- Flip the checkbox in MIGRATION-TODOS once merged.
+- Next vertical from the list (Equipos, Mejora, Documentación, etc.) or sub-entities for Proveedores.
+
+**Branch status:** Stage 9.2 on `feat/stage-9.2-proveedores`. This leg was started from the daily TODO list; initial delivery had process and convention gaps (addressed in fixes). Full standards applied in the final state.
+

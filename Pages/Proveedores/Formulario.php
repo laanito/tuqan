@@ -4,7 +4,7 @@ namespace Tuqan\Pages\Proveedores;
 
 use Tuqan\Pages\Catalog\CatalogFormulario;
 
-class Form extends CatalogFormulario
+class Formulario extends CatalogFormulario
 {
     protected string $table          = 'proveedores';
     protected string $title          = 'Proveedores';
