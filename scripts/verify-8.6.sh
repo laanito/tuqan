@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 Verification (non-interactive) ==="
+echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 / 9.3 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
@@ -26,6 +26,8 @@ php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
     Pages/TiposAmb/Listado.php Pages/TiposAmb/Formulario.php \
     Pages/TiposImp/Listado.php Pages/TiposImp/Formulario.php \
     Pages/TipoCursos/Listado.php Pages/TipoCursos/Formulario.php \
+    Pages/Proveedores/Listado.php Pages/Proveedores/Formulario.php \
+    Pages/Equipos/Listado.php Pages/Equipos/Formulario.php \
     index.php > /dev/null
 echo "   PASS: No syntax errors in the main 8.6/8.7/8.8/8.9 files."
 
@@ -33,9 +35,9 @@ echo ""
 echo "2. DB state checks (tables from 0012/0013/0014/0015 + menu updates)..."
 export PGPASSWORD="${DB_PASS:-secret}"
 psql -h "${DB_HOST:-db}" -U qnova -d qnova -v ON_ERROR_STOP=1 -c "
--- Tables (8.6 + 8.7 + 8.8)
+-- Tables (8.6 + 8.7 + 8.8 + 9.2 + 9.3)
 SELECT tablename FROM pg_tables 
-WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores')
+WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos')
 ORDER BY tablename;
 
 -- Sedes rename evidence
@@ -66,13 +68,16 @@ SELECT 'tiposimp', COUNT(*) FROM tiposimp
 UNION ALL
 SELECT 'tipocursos', COUNT(*) FROM tipocursos;
 
--- Patch tracking (up to 0020 for 9.2)
+-- Patch tracking (up to 0021 for 9.3)
 SELECT filename FROM data_patches 
 WHERE filename LIKE '00%' 
 ORDER BY filename;
 
 -- 9.2 Proveedores evidence
 SELECT COUNT(*) AS proveedores_rows FROM proveedores;
+
+-- 9.3 Equipos evidence
+SELECT COUNT(*) AS equipos_rows FROM equipos;
 
 -- Menu structure invariants for Personalizacion (added in 8.9 after 0017/0018 exposed gaps)
 -- These would have caught wrong padres (4th-level nesting), redundant empty sections,
@@ -98,5 +103,5 @@ echo ""
 echo "3. (Class load smoke skipped in this script because it is fragile from different CWDs; the php -l above already gives us syntax confidence. Full route exercising requires a real session and is covered in the browser + DB-assert part of the playbook.)"
 
 echo ""
-echo "=== 8.6/8.7/8.8 non-interactive verification finished ==="
+echo "=== 8.6/8.7/8.8/9.1/9.2/9.3 non-interactive verification finished ==="
 echo "For the real confidence on the POST behavior, flashes, matrix, editing, etc., follow the full playbook in .agents/STAGE-CHECKLISTS.md (the browser + DB-assert-after-submit part)."
