@@ -1,0 +1,79 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/equipos" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 700px;">
+    <form method="POST" action="{{ isEdit ? '/admin/equipos/editar/' ~ equipo.id : '/admin/equipos/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ equipo.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="numero">Número de control</label>
+            <input type="text" class="form-control" id="numero" name="numero"
+                   value="{{ equipo.numero ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion"
+                   value="{{ equipo.descripcion ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="numero_serie">Número de serie</label>
+            <input type="text" class="form-control" id="numero_serie" name="numero_serie"
+                   value="{{ equipo.numero_serie ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="modelo">Modelo</label>
+            <input type="text" class="form-control" id="modelo" name="modelo"
+                   value="{{ equipo.modelo ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="fabricante">Fabricante</label>
+            <input type="text" class="form-control" id="fabricante" name="fabricante"
+                   value="{{ equipo.fabricante ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="ubicacion">Ubicación</label>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion"
+                   value="{{ equipo.ubicacion ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1"
+                           {% if not isEdit or equipo.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Equipo' }}
+            </button>
+            <a href="/admin/equipos" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Equipos (Stage 9.3). Los campos de mantenimiento (verificación interna, periodicidad, etc.) y los flujos de revisiones/calendario se añadirán en legs posteriores.
+        </div>
+    </form>
+</div>
+{% endblock %}

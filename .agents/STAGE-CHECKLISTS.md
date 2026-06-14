@@ -1785,3 +1785,85 @@ docker compose exec app php -l Pages/Proveedores/Listado.php Pages/Proveedores/F
 
 **Branch status:** Stage 9.2 on `feat/stage-9.2-proveedores`. This leg was started from the daily TODO list; initial delivery had process and convention gaps (addressed in fixes). Full standards applied in the final state.
 
+---
+
+## Stage 9.3 — Equipos (first vertical slice of a medium Aplicacion module) + 9.2 route hygiene
+
+**Goal:** Deliver the next "One real Aplicacion vertical" from the daily MIGRATION-TODOS (Equipos legacy 70, after Proveedores 9.2). Basic CRUD for the core equipos entity (list + create/edit using Catalog* with overrides for non-nombre columns and richer fields). Include the table+seed patch, correct modern+legacy routes (using the established clientes/criterios pattern), templates, verify extension, and full playbook. As route hygiene discovered while wiring the new module: correct the Proveedores list routes (/admin/proveedores and legacy) which pointed to Formulario instead of Listado (unreachable list at primary URL). Full .agents/ discipline + living TODOS update.
+
+**Selected scope for this leg (reviewable, one vertical + supporting):**
+- New data patch 0021-equipos-table-and-seed.sql (full columns per legacy dump + 3 demo rows + data_patches tracking).
+- Pages/Equipos/{Listado,Formulario}.php (Listado tiny with overrides; Formulario full custom ShowPage/Procesar with proper coverage of numero/descripcion/serie/modelo/fabricante/ubicacion/activo in every query, item, validation, INSERT and UPDATE — no parse-and-ignore gaps).
+- templates/equipos/{listado,formulario}.twig (exact project style from post-9.2 cleaned examples).
+- Routes in index.php (correct pattern for Equipos + the minimal fix for the prior Proveedores list wiring).
+- Extend verify-8.6.sh + full new "Stage 9.3 Verification Playbook" here.
+- Update MIGRATION-TODOS (flip Criterios 9.1 + Equip os 9.3, refresh Suggested + snapshot notes), MIGRATION-PLAN, this file.
+- No sub-entities or maintenance workflows (explicitly deferred).
+
+**Key changes:**
+- New: 0021 patch, Pages/Equipos/*, templates/equipos/*, reference/stage-9.3-equipos-plan.md (plan first).
+- Modified: index.php (routes + 9.2 list fix), scripts/verify-8.6.sh, .agents/MIGRATION-TODOS.md (checkboxes + refresh), .agents/STAGE-CHECKLISTS.md (this section), .agents/MIGRATION-PLAN.md.
+- Branch: feat/stage-9.3-equipos (plan committed first; all Docker-only; standards held throughout).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.3.1","content":"Ensure on master clean; git checkout -b feat/stage-9.3-equipos; write reference/stage-9.3-equipos-plan.md (plan first) and commit it as first change on branch","status":"completed"},
+  {"id":"9.3.2","content":"Create docker/db-init/data-patches/0021-equipos-table-and-seed.sql (full columns from legacy, 3 demo rows, data_patches record; ON CONFLICT style)","status":"completed"},
+  {"id":"9.3.3","content":"Create Pages/Equipos/Listado.php (tiny extend CatalogListado + getSelectSql/mapRow overrides for numero/descripcion/etc + activo)","status":"completed"},
+  {"id":"9.3.4","content":"Create Pages/Equipos/Formulario.php (extends CatalogFormulario, full ShowPage + Procesar overrides with chosen fields + proper activo handling in all queries/POST/UPDATE/INSERT, following but correcting the pattern)","status":"completed"},
+  {"id":"9.3.5","content":"Add correct modern + legacy routes in index.php for Equipos (exact pattern from clientes/criterios, plus fix the broken Proveedores list route to use Listado for /admin/proveedores)","status":"completed"},
+  {"id":"9.3.6","content":"Create templates/equipos/listado.twig and formulario.twig (exact match to cleaned proveedores/clientes style, variables, no content flashes, bottom stage notes, appropriate columns/fields for equipos)","status":"completed"},
+  {"id":"9.3.7","content":"Extend scripts/verify-8.6.sh (add 'equipos' to tables list, COUNT, patch comment to 0021, header update for 9.3)","status":"completed"},
+  {"id":"9.3.8","content":"Update .agents/: flip Criterios Ambientales + Proveedores in MIGRATION-TODOS, refresh snapshot/Suggested/Last updated; add full Stage 9.3 playbook section to STAGE-CHECKLISTS.md; update MIGRATION-PLAN last updated + note","status":"completed"},
+  {"id":"9.3.9","content":"Full Docker verification: clean room down-v/up/init, psql table/patch/rows/menu spot if useful, ./scripts/verify-8.6.sh, php -l on all new+edited, browser flows (list/create/edit + flashes + DB post assert) for both new Equipos and prove the fixed Proveedores list","status":"in_progress"},
+  {"id":"9.3.10","content":"Commit logical chunks, push -u, prepare PR description referencing the TODOS item and 9.3 plan. Update any handoff notes.","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Table + patch + sample data (both 9.2/9.3)
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename IN ('proveedores','equipos') ORDER BY tablename;
+  SELECT filename FROM data_patches WHERE filename LIKE '002%' ORDER BY filename;
+  SELECT id, numero, descripcion, activo FROM equipos ORDER BY id;
+  SELECT COUNT(*) AS equipos_rows FROM equipos;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Equipos/Listado.php Pages/Equipos/Formulario.php index.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init, login (company demo + user admin).
+2. Navigate via sidebar (Aplicacion branch) to Equipos.
+3. Confirm list renders with ID, Número, Descripción, Modelo, Ubicación, Estado columns, "Nuevo Equipo" button, and "Equipos (Stage 9.3)" note at bottom.
+4. Create a new equipo (fill required numero/descripcion/serie + optional others + toggle activo) → success flash on list, row appears with correct values in DB (including activo).
+5. Edit an existing one (change descripcion or ubicacion or flip activo) → flash + updated values visible in list and DB select.
+6. Confirm legacy path /administracion/equipos/listado/ver resolves to the modern list.
+7. As hygiene verification: visit /admin/proveedores (and its legacy) — now correctly lands on the list (not a form page). Create/edit a proveedor still works.
+8. All prior modules (including 9.1 Criterios Ambientales label and 9.2 Proveedores) unaffected.
+
+**Evidence skeleton + gates:**
+- git log shows the plan as first commit on feat/stage-9.3-equipos, followed by implementation.
+- psql confirms equipos table + 0021 patch recorded + >=3 rows with demo data; proveedores still healthy.
+- verify-8.6.sh green (tables include equipos, counts, no regression on 9.1/9.2 menu invariants or other checks).
+- php -l clean on new + edited files.
+- Browser flows + post-submit DB asserts pass for Equipos (new) and the fixed Proveedores list URL.
+- MIGRATION-TODOS checkboxes flipped for prior items + Equipos noted; Suggested Next refreshed.
+- No naming issues, full Catalog* usage, activo persisted in form for custom case, templates match exact style (no content flashes), routes follow the canonical pattern.
+- Plan + playbook + living list all updated before push.
+
+**Next:**
+- Flip the Equipos checkbox in MIGRATION-TODOS once merged + human browser sign-off.
+- Pick from refreshed Suggested: Documentación slice (high value), Mejora or Formación basic vertical, or sub-entities (e.g. contactos/incidencias for Proveedores, revisiones for Equipos).
+- Continue applying the "TODOs enable delivery but only ritual + standards adherence prevent the Qwen-like gaps" lesson.
+
+**Branch status:** Stage 9.3 on `feat/stage-9.3-equipos`. Plan committed first. Full standards (routes, bases, field handling, templates, verify, .agents updates, living TODOS) applied from the start. Route hygiene for 9.2 included to leave the tree clean.
+

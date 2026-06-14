@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.0 (this leg) on `feat/stage-9.0-migration-todos`. Created as the explicit "first step before continuing more changes".
+**Last updated**: Stage 9.3 on `feat/stage-9.3-equipos` (Equipos basic vertical + route hygiene + full .agents refresh). Previous: 9.2 Proveedores, 9.1 Criterios Ambientales hygiene, 9.0 TODOS list creation.
 
 ---
 
@@ -57,9 +57,10 @@ STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retr
 
 Pick 1-2 related items that together form a reviewable PR. Update this list when you complete legs.
 
-- [ ] **XS hygiene + note closure**: Restore/add "Criterios Ambientales" as direct actionable menu entry under Personalizacion (padre=1400, proper accion e.g. administracion:criterios-ambientales:... or reuse), any missing legacy route mappings for already-modern modules, cross-check all current menu accions have either modern route or explicit LegacyAction coverage. Data patch (0019?) + index.php tweak + update this file + small checklist note. (See 0018 NOTE FOR LATER.)
-- [ ] **Small vertical (catalog-style if table fits)**: Basic modern support for one more Tipo* or reference list under Formación / Mejora / etc. (e.g. if Tipo Cursos was the last easy one, find the next simple nombre/activo that already has menu entry).
-- [ ] **One real Aplicacion vertical (medium)**: Proveedores (listado + nuevo/editar + contacts/incidencias if table structure allows) or Equipos (list + maintenance bits). Follow 8.6-8.8 pattern (table in patch if new, Pages/ + templates/, full routes modern+legacy, POST Procesar, flashes, verify extension, playbook, update this TODOS + checklists).
+- [x] **XS hygiene + note closure** (Criterios Ambientales): Delivered in Stage 9.1 (see above checkbox + 0019/9.1 plan).
+- [x] **One real Aplicacion vertical (medium)**: Proveedores delivered Stage 9.2; Equipos (core listado + form for numero/descripcion + basic fields + activo) delivered in Stage 9.3 (0021 patch, correct routes + Listado/Formulario, templates, verify, full playbook + TODOS refresh). Route wiring bug from 9.2 Proveedores list also corrected here as hygiene.
+- [ ] **Small vertical or next Aplicacion**: Basic slice for Mejora (acciones beyond the TiposMejora catalog) or Formación (cursos/inscripciones beyond TipoCursos). Or start the high-value Documentación strangler (modern landing + list shell; keep legacy tree/editor for now).
+- [ ] **Documentación slice (larger but high value)**: Landing or basic tree view for Documentación (arbol_documentos.php strangler). May need new base or different pattern (tree not flat catalog). Good candidate after 1-2 more verticals.
 - [ ] **Documentación slice (larger but high value)**: Landing or basic tree view for Documentación (arbol_documentos.php strangler). May need new base or different pattern (tree not flat catalog).
 - [ ] **Mejora or Formación focused leg**: Acciones de mejora workflows (beyond the tipo catalog) or Formación plans/inscripciones/reqs (tipocursos is only the catalog part).
 - [ ] **Cross-cut extraction**: After 2-3 more modules, extract a second base (e.g. for "rich list with filters" or "form with relations") so later legs stay tiny.
@@ -73,7 +74,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ### Personalización / Aplicación Admin (largely complete; small gaps)
 - [x] All 7 original Personalizacion items + Tipo Cursos + supporting (Clientes, Criterios, Tipos* x6) — Stages 8.5-8.9, catalog base.
 - [x] Core admin under Aplicacion/Administracion: Usuarios, Perfiles, Sedes, Menus, Idiomas, Permisos (8.5+).
-- [ ] Criterios Ambientales (row 84) — restore as direct actionable child of Personalizacion (padre=1400) with proper label + accion. See 0018 patch + 8.9 retrospective. Est: XS (data patch + route + note). Deps: none.
+- [x] Criterios Ambientales (row 84) — restored as direct actionable child of Personalizacion (padre=1400) with label "Criterios Ambientales" + proper accion. Done in Stage 9.1 (0019 patch + 0018 NOTE closure + title updates in Criterios pages + verify assert). See 9.1 plan and playbook.
 - [ ] Any remaining child actions (nuevo/editar) under existing modern parents if menu expectations differ from in-page buttons (sedes has some; most don't — decide consistently).
 
 ### Aspectos Ambientales / mAspectos (linked to Criterios)
@@ -93,8 +94,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Homologacion / evaluation flows (common in ISO supplier management).
 
 ### Equipos (Equipment / Assets)
-- [ ] Equipos (legacy 70) — listado, calendario de revisiones, maintenance. Old: calendario.inc.php + related + equipos-specific. Complexity: M (calendar integration + list + history). May reuse or extend date/calendar bits.
-- [ ] Revisiones + compliance records (tie to Auditorias / Mejora).
+- [x] Equipos (legacy 70) — basic listado + form (core fields: numero, descripcion, modelo, ubicacion, activo + supporting) in Stage 9.3. Followed catalog base + full routes (corrected pattern) + data patch 0021 + verify + playbook. Sub-flows (revisiones, calendario, plan mantenimiento, etc.) deferred to later legs. (See 9.3 plan and STAGE-CHECKLISTS.)
+- [ ] Revisiones + compliance records + maintenance workflows (tie to Auditorias / Mejora).
 
 ### Documentación (Core ISO — high value, likely larger)
 - [ ] Documentación (legacy 66) — SG docs, formats, control, approval workflows, tree structure. This is one of the central modules (arbol_documentos.php, editor.php, fckeditor usage in docs context, generacion of PDFs, upload, versioning?). Complexity: L (tree + permissions + lifecycle + search). Suggested approach: strangler fig — modern landing + list first, keep legacy tree for edit until new editor + tree component ready. First leg: modern shell + basic list + route for the top accion.

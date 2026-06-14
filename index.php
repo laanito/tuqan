@@ -316,8 +316,8 @@ $router->addRoute('GET', '/administracion/tiposamb/listado/ver', ['Tuqan\Pages\T
 $router->addRoute('GET', '/administracion/tiposimp/listado/ver', ['Tuqan\Pages\TiposImp\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/tipo_cursos/listado/ver', ['Tuqan\Pages\TipoCursos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
-// === Proveedores (Stage 9.2) ===
-$router->addRoute('GET', '/admin/proveedores', ['Tuqan\Pages\Proveedores\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+// === Proveedores (Stage 9.2; list routes corrected in 9.3 to use Listado per standard pattern) ===
+$router->addRoute('GET', '/admin/proveedores', ['Tuqan\Pages\Proveedores\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/proveedores/nuevo', ['Tuqan\Pages\Proveedores\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/proveedores/editar/{id}', ['Tuqan\Pages\Proveedores\Formulario', 'ShowPage'], ['before' => 'auth_company']);
 
@@ -326,7 +326,19 @@ $router->addRoute('POST', '/admin/proveedores/nuevo', ['Tuqan\Pages\Proveedores\
 $router->addRoute('POST', '/admin/proveedores/editar/{id}', ['Tuqan\Pages\Proveedores\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
 // Legacy routes for Proveedores (from full legacy menu accions)
-$router->addRoute('GET', '/administracion/proveedores/listado/ver', ['Tuqan\Pages\Proveedores\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/proveedores/listado/ver', ['Tuqan\Pages\Proveedores\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
+// === Equipos (Stage 9.3) ===
+$router->addRoute('GET', '/admin/equipos', ['Tuqan\Pages\Equipos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/equipos/nuevo', ['Tuqan\Pages\Equipos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/equipos/editar/{id}', ['Tuqan\Pages\Equipos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Equipos
+$router->addRoute('POST', '/admin/equipos/nuevo', ['Tuqan\Pages\Equipos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/equipos/editar/{id}', ['Tuqan\Pages\Equipos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy routes for Equipos (from full legacy menu accions: equipos:listado:listado:ver + administracion variant)
+$router->addRoute('GET', '/administracion/equipos/listado/ver', ['Tuqan\Pages\Equipos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
