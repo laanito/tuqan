@@ -340,6 +340,18 @@ $router->addRoute('POST', '/admin/equipos/editar/{id}', ['Tuqan\Pages\Equipos\Fo
 // Legacy routes for Equipos (from full legacy menu accions: equipos:listado:listado:ver + administracion variant)
 $router->addRoute('GET', '/administracion/equipos/listado/ver', ['Tuqan\Pages\Equipos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Mejora / Acciones de Mejora (Stage 9.4) ===
+$router->addRoute('GET', '/admin/mejora', ['Tuqan\Pages\Mejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/mejora/nuevo', ['Tuqan\Pages\Mejora\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/mejora/editar/{id}', ['Tuqan\Pages\Mejora\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Mejora
+$router->addRoute('POST', '/admin/mejora/nuevo', ['Tuqan\Pages\Mejora\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/mejora/editar/{id}', ['Tuqan\Pages\Mejora\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy routes for Mejora (from full legacy menu accions: mejora:listado:listado:ver)
+$router->addRoute('GET', '/administracion/mejora/listado/ver', ['Tuqan\Pages\Mejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
 
