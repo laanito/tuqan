@@ -1867,3 +1867,85 @@ docker compose exec app php -l Pages/Equipos/Listado.php Pages/Equipos/Formulari
 
 **Branch status:** Stage 9.3 on `feat/stage-9.3-equipos`. Plan committed first. Full standards (routes, bases, field handling, templates, verify, .agents updates, living TODOS) applied from the start. Route hygiene for 9.2 included to leave the tree clean.
 
+---
+
+## Stage 9.4 — Acciones de Mejora (basic CRUD slice under Mejora / legacy 68)
+
+**Goal:** Deliver the next small vertical from the daily MIGRATION-TODOS Suggested ("Mejora focused leg" / "Acciones de Mejora (legacy 68) — first leg basic CRUD + list using catalog patterns"). Core `acciones_mejora` table (no 'nombre'/'activo'; main field 'descripcion', status via 'cerrada', many text/date/numeric/FK-int columns). Include the table+seed patch 0022, modern+legacy routes following the exact clientes/equipos pattern, Pages/Mejora + templates (full custom overrides in Formulario for the supported field set), verify extension, and full playbook. All .agents/ discipline + living TODOS update. Plan first on branch. Docker-only.
+
+**Selected scope for this leg (reviewable, one vertical + supporting):**
+- New data patch 0022-acciones-mejora-table-and-seed.sql (full columns per legacy dump + 3 demo rows + data_patches tracking).
+- Pages/Mejora/{Listado,Formulario}.php (Listado with getSelect/map overrides; Formulario full custom ShowPage/Procesar with multi-field coverage for descripcion/fecha/booleans/dates/numeric + the int FKs as v1 inputs, validation, INSERT/UPDATE subsets only for controlled columns).
+- templates/mejora/{listado,formulario}.twig (exact project style, "mejora" container var from templateDir, "mejora" form key from flashPrefix, stage notes, appropriate columns/fields).
+- Routes in index.php ( /admin/mejora + legacy /administracion/mejora/listado/ver to match 'mejora:listado:listado:ver' from 0004).
+- Extend verify-8.6.sh + full new "Stage 9.4 Verification Playbook" here.
+- Update MIGRATION-TODOS (mark the Mejora basic item done in 9.4, refresh snapshot/Suggested/Last updated), MIGRATION-PLAN, this file.
+- Explicitly out: full FK dropdowns + name joins, user workflow fields, auditoria links, sub-entities (plan_formacion, inscripciones, etc.).
+
+**Key changes:**
+- New: 0022 patch, Pages/Mejora/*, templates/mejora/*, reference/stage-9.4-acciones-mejora-plan.md (plan first).
+- Modified: index.php (routes block), scripts/verify-8.6.sh, .agents/MIGRATION-TODOS.md (checkbox + refresh), .agents/STAGE-CHECKLISTS.md (this section), .agents/MIGRATION-PLAN.md.
+- Branch: feat/stage-9.4-acciones-mejora (plan committed first; all Docker-only; standards held).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.4.0","content":"Read current state + identify precise next leg from MIGRATION-TODOS Suggested (pick reviewable slice: prefer simple catalog vertical like Mejora/Acciones or Formación basic over full tree Documentación for size control)","status":"completed"},
+  {"id":"9.4.1","content":"git checkout -b feat/stage-9.4-acciones-mejora from clean master; write reference/stage-9.4-acciones-mejora-plan.md as FIRST commit (plan-first ritual)","status":"completed"},
+  {"id":"9.4.2","content":"Data discovery: locate core table(s) + columns for the chosen module via dump/grep/DB (after init if needed); create next data-patch 0022-...sql with CREATE + seed + data_patches entry","status":"completed"},
+  {"id":"9.4.3","content":"Implement Pages/Module/{Listado.php, Formulario.php} (extend Catalog* + overrides for non-nombre or multi-field as needed)","status":"completed"},
+  {"id":"9.4.4","content":"Create matching templates/ module / {listado,formulario}.twig (exact style match, stage note, no inner flashes)","status":"completed"},
+  {"id":"9.4.5","content":"Wire routes in index.php (modern /admin/* + legacy /administracion/* colon-style for the top accion; match clientes pattern)","status":"completed"},
+  {"id":"9.4.6","content":"Extend scripts/verify-8.6.sh (tables, counts, patch, php -l targets, header comment)","status":"completed"},
+  {"id":"9.4.7","content":"Append full Stage 9.4 Verification Playbook section (with todo json copy, validation cmds, browser flows, DB asserts) to .agents/STAGE-CHECKLISTS.md","status":"completed"},
+  {"id":"9.4.8","content":"Update living .agents/MIGRATION-TODOS.md (flip the delivered item[s], refresh Current Snapshot, Suggested Next Legs, add stage note)","status":"in_progress"},
+  {"id":"9.4.9","content":"Minor update .agents/MIGRATION-PLAN.md Last Updated paragraph; run full clean-room verify (down -v, up, init-db, psql asserts, php -l, verify-8.6.sh); logical commits","status":"pending"},
+  {"id":"9.4.10","content":"git push -u origin <branch>; prepare/open PR referencing the TODOS item + prior pattern; confirm Docker-only + all standards held","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Table + patch + sample data (prior + new)
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename IN ('equipos','acciones_mejora') ORDER BY tablename;
+  SELECT filename FROM data_patches WHERE filename LIKE '002%' ORDER BY filename;
+  SELECT id, fecha, descripcion, area, cerrada FROM acciones_mejora ORDER BY id;
+  SELECT COUNT(*) AS acciones_mejora_rows FROM acciones_mejora;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Mejora/Listado.php Pages/Mejora/Formulario.php index.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init, login.
+2. Navigate via sidebar (Aplicacion / ACC. MEJORA branch from legacy menu) to the Mejora list.
+3. Confirm list renders with ID, Fecha, Descripción, Área, Estado (Cerrada/Abierta), "Nueva Acción" button, and "Acciones de Mejora (Stage 9.4)" note.
+4. Create a new acción (fill fecha + descripcion required, some analysis/tratamiento, toggle requiere_tratamiento and/or cerrada, fill area/coste) → success flash on list, row appears with correct values in DB.
+5. Edit an existing one (change descripcion or area, flip cerrada, adjust a date or coste) → flash + updated values visible in list and DB select.
+6. Confirm legacy path /administracion/mejora/listado/ver resolves to the modern list.
+7. All prior modules (Equipos 9.3, Proveedores, Personalizacion etc.) unaffected; no regression on menu invariants.
+
+**Evidence skeleton + gates:**
+- git log shows the plan as first commit on feat/stage-9.4-acciones-mejora, followed by implementation.
+- psql confirms acciones_mejora table + 0022 patch recorded + >=3 rows with demo data; prior tables (equipos etc.) healthy.
+- verify-8.6.sh green (tables include acciones_mejora, counts, no regression on prior checks).
+- php -l clean on new + edited files.
+- Browser flows + post-submit DB asserts pass (create/edit with the supported fields including booleans/dates).
+- MIGRATION-TODOS checkbox for the Mejora basic item + Suggested refreshed.
+- No naming issues, full Catalog* + overrides for the non-simple case, templates match exact style (no content flashes, stage notes), routes follow the canonical pattern.
+- Plan + playbook + living list all updated before push.
+
+**Next:**
+- Flip the Mejora checkbox in MIGRATION-TODOS once merged + human browser sign-off.
+- Pick from refreshed Suggested: Documentación slice (high value, start with modern landing + list shell), Formación basic (cursos/inscripciones/planes), or follow-up enrichment on Equipos/Proveedores/Mejora (joins, workflows, sub-entities).
+- Continue the incremental "one vertical (or small cluster) per PR" pace with strict ritual.
+
+**Branch status:** Stage 9.4 on `feat/stage-9.4-acciones-mejora`. Plan committed first. Full standards applied from the start (data patch with all cols, custom Form lifecycle for multi-field non-nombre table, correct routes, templates, verify + playbook, living TODOS update on the leg).
+
