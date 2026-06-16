@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.3 on `feat/stage-9.3-equipos` (Equipos basic vertical + route hygiene + full .agents refresh). Previous: 9.2 Proveedores, 9.1 Criterios Ambientales hygiene, 9.0 TODOS list creation.
+**Last updated**: Stage 9.4 on `feat/stage-9.4-acciones-mejora` (Acciones de Mejora basic vertical / Mejora legacy 68 first slice: 0022 patch, Pages/Mejora + templates, correct routes, verify + playbook, living docs). Previous: 9.3 Equipos (basic + 9.2 list fix), 9.2 Proveedores, 9.1 Criterios Ambientales hygiene, 9.0 TODOS list creation.
 
 ---
 
@@ -59,10 +59,9 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 
 - [x] **XS hygiene + note closure** (Criterios Ambientales): Delivered in Stage 9.1 (see above checkbox + 0019/9.1 plan).
 - [x] **One real Aplicacion vertical (medium)**: Proveedores delivered Stage 9.2; Equipos (core listado + form for numero/descripcion + basic fields + activo) delivered in Stage 9.3 (0021 patch, correct routes + Listado/Formulario, templates, verify, full playbook + TODOS refresh). Route wiring bug from 9.2 Proveedores list also corrected here as hygiene.
-- [ ] **Small vertical or next Aplicacion**: Basic slice for Mejora (acciones beyond the TiposMejora catalog) or Formación (cursos/inscripciones beyond TipoCursos). Or start the high-value Documentación strangler (modern landing + list shell; keep legacy tree/editor for now).
-- [ ] **Documentación slice (larger but high value)**: Landing or basic tree view for Documentación (arbol_documentos.php strangler). May need new base or different pattern (tree not flat catalog). Good candidate after 1-2 more verticals.
-- [ ] **Documentación slice (larger but high value)**: Landing or basic tree view for Documentación (arbol_documentos.php strangler). May need new base or different pattern (tree not flat catalog).
-- [ ] **Mejora or Formación focused leg**: Acciones de mejora workflows (beyond the tipo catalog) or Formación plans/inscripciones/reqs (tipocursos is only the catalog part).
+- [x] **Small vertical or next Aplicacion**: Basic slice for Mejora (acciones beyond the TiposMejora catalog) delivered in Stage 9.4 (0022 patch for acciones_mejora, Pages/Mejora + full custom overrides for descripcion/fecha/cerrada + other fields, routes, templates, verify + playbook, TODOS refresh). See 9.4 plan and STAGE-CHECKLISTS.
+- [ ] **Documentación slice (larger but high value)**: Landing or basic tree view for Documentación (arbol_documentos.php strangler). May need new base or different pattern (tree not flat catalog). Good candidate after 1-2 more verticals. First leg: modern shell + basic list + route for the top accion (keep legacy tree/editor for now).
+- [ ] **Formación focused leg**: Cursos/inscripciones/planes/reqs (tipocursos catalog done in 8.8; core Formación flows beyond that).
 - [ ] **Cross-cut extraction**: After 2-3 more modules, extract a second base (e.g. for "rich list with filters" or "form with relations") so later legs stay tiny.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
@@ -82,7 +81,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Full environmental aspects revision + reporting tie-in to Indicadores.
 
 ### Mejora (Improvement)
-- [ ] Acciones de Mejora (legacy 68) — full module beyond the TiposMejora catalog (which is done). Likely tables for acciones, states, responsible, deadlines, linked to other entities (audits, aspects, etc.). Old files: probably under root or Classes related to "mejora". Complexity: M-L (workflow + notifications? + lists with filters). First leg could be basic CRUD + list using/extending catalog patterns if the core table is simple.
+- [x] Acciones de Mejora (legacy 68) — basic CRUD slice delivered in Stage 9.4 (0022 for acciones_mejora + Pages/Mejora Listado/Formulario with overrides + templates + routes + verify). Core fields (descripcion primary, fecha, cerrada status, analysis/treatment/preventive, dates, coste, area). Full workflow (users, implant/verify/close), FK joins (tipo/cliente), auditoria links and sub-entities deferred. See 9.4 plan/playbook.
 - [ ] Integration of mejora actions with Auditorias / Aspectos / Indicadores (cross links).
 
 ### Formación (Training)

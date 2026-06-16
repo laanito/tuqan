@@ -1,0 +1,121 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/mejora" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 780px;">
+    <form method="POST" action="{{ isEdit ? '/admin/mejora/editar/' ~ mejora.id : '/admin/mejora/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ mejora.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input type="date" class="form-control" id="fecha" name="fecha"
+                   value="{{ mejora.fecha ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tipo">Tipo (ID de tipo de acción de mejora)</label>
+            <input type="number" class="form-control" id="tipo" name="tipo"
+                   value="{{ mejora.tipo ?? '' }}" placeholder="Opcional (ej. ID de tiposmejora)">
+        </div>
+
+        <div class="form-group">
+            <label for="cliente">Cliente (ID)</label>
+            <input type="number" class="form-control" id="cliente" name="cliente"
+                   value="{{ mejora.cliente ?? '' }}" placeholder="Opcional">
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion"
+                   value="{{ mejora.descripcion ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="analisis">Análisis</label>
+            <textarea class="form-control" id="analisis" name="analisis" rows="2">{{ mejora.analisis ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="requiere_tratamiento" value="1"
+                           {% if not isEdit or mejora.requiere_tratamiento %}checked{% endif %}>
+                    Requiere tratamiento
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="tratamiento">Tratamiento</label>
+            <textarea class="form-control" id="tratamiento" name="tratamiento" rows="2">{{ mejora.tratamiento ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="accion_preventiva">Acción preventiva</label>
+            <textarea class="form-control" id="accion_preventiva" name="accion_preventiva" rows="2">{{ mejora.accion_preventiva ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_implantacion">Fecha implantación</label>
+            <input type="date" class="form-control" id="fecha_implantacion" name="fecha_implantacion"
+                   value="{{ mejora.fecha_implantacion ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="plazo">Plazo</label>
+            <input type="date" class="form-control" id="plazo" name="plazo"
+                   value="{{ mejora.plazo ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="coste">Coste</label>
+            <input type="number" step="0.01" class="form-control" id="coste" name="coste"
+                   value="{{ mejora.coste ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="area">Área</label>
+            <input type="text" class="form-control" id="area" name="area"
+                   value="{{ mejora.area ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones</label>
+            <textarea class="form-control" id="observaciones" name="observaciones" rows="2">{{ mejora.observaciones ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="cerrada" value="1"
+                           {% if mejora.cerrada %}checked{% endif %}>
+                    Cerrada
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Acción' }}
+            </button>
+            <a href="/admin/mejora" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Acciones de Mejora (Stage 9.4). Los campos de responsables (usuario_detectado, verifica, cerrado, implantación), enlace a auditoría y enriquecimiento de nombres (cliente, tipo) quedan para legs posteriores. Fechas en formato ISO; el flujo de verificación/cierre se implementará después.
+        </div>
+    </form>
+</div>
+{% endblock %}
