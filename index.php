@@ -352,6 +352,32 @@ $router->addRoute('POST', '/admin/mejora/editar/{id}', ['Tuqan\Pages\Mejora\Form
 // Legacy routes for Mejora (from full legacy menu accions: mejora:listado:listado:ver)
 $router->addRoute('GET', '/administracion/mejora/listado/ver', ['Tuqan\Pages\Mejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Formación (Planes) + Documentación shell (Stage 9.5) ===
+// Formación basic slice (plan_formacion)
+$router->addRoute('GET', '/admin/formacion', ['Tuqan\Pages\Formacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/formacion/nuevo', ['Tuqan\Pages\Formacion\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/formacion/editar/{id}', ['Tuqan\Pages\Formacion\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Formación
+$router->addRoute('POST', '/admin/formacion/nuevo', ['Tuqan\Pages\Formacion\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/formacion/editar/{id}', ['Tuqan\Pages\Formacion\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy for Formación planes
+$router->addRoute('GET', '/administracion/formacion/planes/listado/ver', ['Tuqan\Pages\Formacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
+// Documentación shell (basic list + landing over documentos)
+$router->addRoute('GET', '/admin/documentacion', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/documentacion/nuevo', ['Tuqan\Pages\Documentacion\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/documentacion/editar/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Documentación shell
+$router->addRoute('POST', '/admin/documentacion/nuevo', ['Tuqan\Pages\Documentacion\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/documentacion/editar/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Key legacy for Documentación (vigor / borradores + general)
+$router->addRoute('GET', '/administracion/documentacion/docvigor/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/documentacion/docborrador/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
 

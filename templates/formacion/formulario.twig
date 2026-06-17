@@ -1,0 +1,84 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/formacion" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 700px;">
+    <form method="POST" action="{{ isEdit ? '/admin/formacion/editar/' ~ formacion.id : '/admin/formacion/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ formacion.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre"
+                   value="{{ formacion.nombre ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ formacion.descripcion ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="vigente" value="1"
+                           {% if not isEdit or formacion.vigente %}checked{% endif %}>
+                    Vigente
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="calidad" value="1"
+                           {% if not isEdit or formacion.calidad %}checked{% endif %}>
+                    Calidad
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="medioambiente" value="1"
+                           {% if not isEdit or formacion.medioambiente %}checked{% endif %}>
+                    Medio Ambiente
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1"
+                           {% if not isEdit or formacion.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Plan' }}
+            </button>
+            <a href="/admin/formacion" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Planes de Formación (Stage 9.5). Cursos, inscripciones, requisitos de puesto y flujos completos de Formación se añadirán en legs posteriores.
+        </div>
+    </form>
+</div>
+{% endblock %}
