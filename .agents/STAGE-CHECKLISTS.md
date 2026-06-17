@@ -1949,3 +1949,88 @@ docker compose exec app php -l Pages/Mejora/Listado.php Pages/Mejora/Formulario.
 
 **Branch status:** Stage 9.4 on `feat/stage-9.4-acciones-mejora`. Plan committed first. Full standards applied from the start (data patch with all cols, custom Form lifecycle for multi-field non-nombre table, correct routes, templates, verify + playbook, living TODOS update on the leg).
 
+---
+
+## Stage 9.5 — Formación basic (Planes) + Documentación initial shell (both next Suggested legs)
+
+**Goal:** Continue with both remaining items from the daily MIGRATION-TODOS Suggested after 9.4:
+- Formación focused leg: first basic slice using `plan_formacion` (Planes — catalog-like with nombre + activo + flags).
+- Documentación slice: first strangler shell (modern landing + basic list over `documentos`; keep legacy tree/editor + all sub-accions).
+One reviewable PR delivering two increments with full ritual (plan first, Docker-only, patches, Pages + templates, routes, verify + playbook, living TODOS update).
+
+**Selected scope for this leg (reviewable, two items):**
+- New patches: 0023-plan-formacion-table-and-seed.sql + 0024-documentos-table-and-seed.sql.
+- Pages/Formacion/{Listado,Formulario}.php (overrides for extra fields on plan_formacion).
+- Pages/Documentacion/{Listado,Formulario}.php (basic shell: selected cols + core form fields only).
+- templates/formacion/* and templates/documentacion/* (exact style + explicit stage notes on deferred work).
+- Routes in index.php (modern /admin/formacion + /admin/documentacion + key legacy accions from 0004).
+- Extend verify-8.6.sh + full new "Stage 9.5 Verification Playbook".
+- Update MIGRATION-TODOS (flip both), MIGRATION-PLAN, this file.
+- Explicitly out: Formación cursos/inscripciones/etc.; Documentación full tree, editor, approval workflow, perfil arrays, other subs.
+
+**Key changes:**
+- New: 0023 + 0024 patches, Pages/Formacion/* + Pages/Documentacion/*, templates for both, reference/stage-9.5-formacion-documentacion-plan.md (plan first).
+- Modified: index.php (routes), scripts/verify-8.6.sh, .agents/MIGRATION-TODOS.md, .agents/STAGE-CHECKLISTS.md (this section), .agents/MIGRATION-PLAN.md.
+- Branch: feat/stage-9.5-formacion-documentacion (plan committed first; all Docker-only; standards held).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.5.0","content":"Confirm master after 9.4 merge, read current MIGRATION-TODOS Suggested (Documentación shell + Formación focused), discover schemas for plan_formacion + documentos + menu accions","status":"completed"},
+  {"id":"9.5.1","content":"git checkout -b feat/stage-9.5-formacion-documentacion from clean master; write reference/stage-9.5-*-plan.md as FIRST commit (plan-first ritual, scope: both items in one reviewable PR)","status":"completed"},
+  {"id":"9.5.2","content":"Create data patch(es) 0023+ for plan_formacion (Formación planes) and documentos (basic) + seeds","status":"completed"},
+  {"id":"9.5.3","content":"Implement Pages for both: Formacion (or Planes) Listado+Formulario using plan_formacion (catalog-like with overrides), Documentacion basic Listado/landing shell for documentos","status":"completed"},
+  {"id":"9.5.4","content":"Create templates/ for both (exact style, stage notes)","status":"completed"},
+  {"id":"9.5.5","content":"Wire routes in index.php for /admin/formacion + /admin/documentacion + key legacy accions","status":"completed"},
+  {"id":"9.5.6","content":"Extend scripts/verify-8.6.sh for both new tables/patches","status":"completed"},
+  {"id":"9.5.7","content":"Append full Stage 9.5 Verification Playbook section (with todo json copy, validation cmds, browser flows, DB asserts) to .agents/STAGE-CHECKLISTS.md","status":"completed"},
+  {"id":"9.5.8","content":"Update living .agents/MIGRATION-TODOS.md (flip both items, refresh Suggested to next like cross-cut or Auditorias), MIGRATION-PLAN, etc.","status":"in_progress"},
+  {"id":"9.5.9","content":"Full clean-room Docker verify (psql, verify script, php-l, browser flows for both); logical commits","status":"pending"},
+  {"id":"9.5.10","content":"Push + open PR for 9.5 covering both next legs","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Tables + patches + sample data for both
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename IN ('plan_formacion','documentos') ORDER BY tablename;
+  SELECT filename FROM data_patches WHERE filename LIKE '0023%' OR filename LIKE '0024%' ORDER BY filename;
+  SELECT id, nombre, vigente, activo FROM plan_formacion ORDER BY id;
+  SELECT id, nombre, codigo, activo FROM documentos ORDER BY id;
+  SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
+  SELECT COUNT(*) AS documentos_rows FROM documentos;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Formacion/Listado.php Pages/Formacion/Formulario.php Pages/Documentacion/Listado.php Pages/Documentacion/Formulario.php index.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init, login.
+2. Navigate to Formación (Planes) via sidebar → confirm list with Nombre/Vigente/Activo/etc + "Nuevo Plan", create/edit works, flashes, legacy path resolves, DB matches.
+3. Navigate to Documentación via sidebar → confirm shell list + warning note about legacy tree/editor, basic create/edit of core fields, flashes, key legacy paths (docvigor/docborrador) resolve, DB matches.
+4. All prior modules (including 9.4 Mejora) unaffected.
+
+**Evidence skeleton + gates:**
+- git log shows plan first on the branch.
+- psql confirms both tables + patches + rows.
+- verify-8.6.sh green (includes both, counts, no regression).
+- php -l clean.
+- Browser flows + post DB asserts for both areas.
+- MIGRATION-TODOS has both flipped + Suggested refreshed.
+- Templates have clear stage notes; routes + bases follow pattern.
+- Plan + playbook + living lists updated.
+
+**Next:**
+- Flip both checkboxes in MIGRATION-TODOS once merged + human sign-off.
+- Suggested will promote cross-cut extraction, Auditorías, Aspectos, Indicadores, Procesos, or deeper slices for recently modernized modules.
+- Continue incremental pace.
+
+**Branch status:** Stage 9.5 on `feat/stage-9.5-formacion-documentacion`. Plan committed first. Full standards held while advancing both items in one PR.
+
