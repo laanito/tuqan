@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.4 on `feat/stage-9.4-acciones-mejora` (Acciones de Mejora basic vertical / Mejora legacy 68 first slice: 0022 patch, Pages/Mejora + templates, correct routes, verify + playbook, living docs). Previous: 9.3 Equipos (basic + 9.2 list fix), 9.2 Proveedores, 9.1 Criterios Ambientales hygiene, 9.0 TODOS list creation.
+**Last updated**: Stage 9.5 on `feat/stage-9.5-formacion-documentacion` (Formación basic Planes via plan_formacion + Documentación initial shell/landing+list for documentos; 0023+0024 patches, Pages + templates for both, routes, verify + playbook, living docs). Previous: 9.4 Mejora (Acciones), 9.3 Equipos, etc.
 
 ---
 
@@ -60,9 +60,9 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **XS hygiene + note closure** (Criterios Ambientales): Delivered in Stage 9.1 (see above checkbox + 0019/9.1 plan).
 - [x] **One real Aplicacion vertical (medium)**: Proveedores delivered Stage 9.2; Equipos (core listado + form for numero/descripcion + basic fields + activo) delivered in Stage 9.3 (0021 patch, correct routes + Listado/Formulario, templates, verify, full playbook + TODOS refresh). Route wiring bug from 9.2 Proveedores list also corrected here as hygiene.
 - [x] **Small vertical or next Aplicacion**: Basic slice for Mejora (acciones beyond the TiposMejora catalog) delivered in Stage 9.4 (0022 patch for acciones_mejora, Pages/Mejora + full custom overrides for descripcion/fecha/cerrada + other fields, routes, templates, verify + playbook, TODOS refresh). See 9.4 plan and STAGE-CHECKLISTS.
-- [ ] **Documentación slice (larger but high value)**: Landing or basic tree view for Documentación (arbol_documentos.php strangler). May need new base or different pattern (tree not flat catalog). Good candidate after 1-2 more verticals. First leg: modern shell + basic list + route for the top accion (keep legacy tree/editor for now).
-- [ ] **Formación focused leg**: Cursos/inscripciones/planes/reqs (tipocursos catalog done in 8.8; core Formación flows beyond that).
+- [x] **Formación focused leg + Documentación shell**: Delivered in Stage 9.5 (0023 plan_formacion + 0024 documentos; Pages/Formacion + Pages/Documentacion basic shell + list/landing + routes + templates + verify + playbook). Planes as first Formación slice (nombre + activo + flags); Documentación as modern landing + basic list (tree/editor/workflow/perfiles deferred). See 9.5 plan and STAGE-CHECKLISTS.
 - [ ] **Cross-cut extraction**: After 2-3 more modules, extract a second base (e.g. for "rich list with filters" or "form with relations") so later legs stay tiny.
+- [ ] **Next verticals**: Auditorías, Aspectos Ambientales, Indicadores, Procesos, or deeper sub-entities / integrations.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -85,8 +85,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Integration of mejora actions with Auditorias / Aspectos / Indicadores (cross links).
 
 ### Formación (Training)
-- [ ] Formación full (legacy 69) — plans, inscripciones, ficha personal, requisitos de puesto, etc. (Tipo Cursos catalog done in 8.8). Old: formacion-related, calendario?, ficha. Complexity: M (several sub-flows). Suggested first slice: cursos + inscripciones or planes.
-- [ ] Link to Empleados / RRHH concepts if present in legacy (ficha personal).
+- [x] Formación basic (Planes) delivered in Stage 9.5 (0023 patch for plan_formacion + Pages/Formacion Listado+Formulario + templates + routes). Nombre + activo + vigente/descripcion/quality flags. Cursos, inscripciones, reqs, fichapersonal and other flows deferred. See 9.5 plan/playbook.
+- [ ] Link to Empleados / RRHH concepts if present in legacy (ficha personal); remaining Formación subs.
 
 ### Proveedores (Suppliers)
 - [x] Proveedores (legacy 67) — basic listado + form (nombre + telefono + activo) in Stage 9.2. Followed catalog base + full routes + data patch + verify + playbook. Sub-entities (contactos, incidencias, productos/homologados) deferred to later legs. (See 9.2 plan and STAGE-CHECKLISTS.)
@@ -97,8 +97,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Revisiones + compliance records + maintenance workflows (tie to Auditorias / Mejora).
 
 ### Documentación (Core ISO — high value, likely larger)
-- [ ] Documentación (legacy 66) — SG docs, formats, control, approval workflows, tree structure. This is one of the central modules (arbol_documentos.php, editor.php, fckeditor usage in docs context, generacion of PDFs, upload, versioning?). Complexity: L (tree + permissions + lifecycle + search). Suggested approach: strangler fig — modern landing + list first, keep legacy tree for edit until new editor + tree component ready. First leg: modern shell + basic list + route for the top accion.
-- [ ] Formats / plantillas / control de documentos specifics.
+- [x] Documentación initial shell delivered in Stage 9.5 (0024 patch for documentos + Pages/Documentacion basic Listado + Form + templates/landing + routes). Modern list + core form over main table; tree, editor, approval workflow, perfil arrays and all sub-accions (docvigor, manual, politica, etc.) remain legacy. See 9.5 plan/playbook.
+- [ ] Formats / plantillas / control de documentos specifics; full tree + editor modernization.
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
