@@ -378,6 +378,18 @@ $router->addRoute('POST', '/admin/documentacion/editar/{id}', ['Tuqan\Pages\Docu
 $router->addRoute('GET', '/administracion/documentacion/docvigor/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/documentacion/docborrador/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Auditorías / Programa (Stage 9.6 basic slice) ===
+$router->addRoute('GET', '/admin/auditorias', ['Tuqan\Pages\Auditorias\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/nuevo', ['Tuqan\Pages\Auditorias\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/editar/{id}', ['Tuqan\Pages\Auditorias\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Auditorías (Programa)
+$router->addRoute('POST', '/admin/auditorias/nuevo', ['Tuqan\Pages\Auditorias\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/auditorias/editar/{id}', ['Tuqan\Pages\Auditorias\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy routes for Auditorías Programa (from full legacy menu accions: auditorias:programa:*)
+$router->addRoute('GET', '/administracion/auditorias/programa/listado/ver', ['Tuqan\Pages\Auditorias\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
 

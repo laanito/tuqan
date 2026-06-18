@@ -1,0 +1,47 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Programas de Auditoría - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Programas de Auditoría</h2>
+        <div>
+            <a href="/admin/auditorias/nuevo" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo Programa
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if auditorias is empty %}
+        <div class="alert alert-info">No hay programas de auditoría registrados.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr><th>ID</th><th>Nombre</th><th>Vigente</th><th>Revisión</th><th>Estado</th><th style="width:140px;text-align:right;">Acciones</th></tr>
+                </thead>
+                <tbody>
+                    {% for a in auditorias %}
+                    <tr>
+                        <td>{{ a.id }}</td>
+                        <td><strong>{{ a.nombre }}</strong></td>
+                        <td>{% if a.vigente %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
+                        <td>{{ a.revision ?? '-' }}</td>
+                        <td>{% if a.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/auditorias/editar/{{ a.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Auditorías - Programa (Stage 9.6). Ejecución de auditorías, planes, horarios, equipo auditor, hallazgos e informes se gestionarán en legs posteriores. El listado de auditorías individuales permanece en legacy por ahora.
+    </div>
+</div>
+{% endblock %}
