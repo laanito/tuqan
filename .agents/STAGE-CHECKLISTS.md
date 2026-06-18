@@ -2034,3 +2034,81 @@ docker compose exec app php -l Pages/Formacion/Listado.php Pages/Formacion/Formu
 
 **Branch status:** Stage 9.5 on `feat/stage-9.5-formacion-documentacion`. Plan committed first. Full standards held while advancing both items in one PR.
 
+---
+
+## Stage 9.6 — Auditorías basic (Programa de Auditoría)
+
+**Goal:** Next vertical from MIGRATION-TODOS Suggested after 9.5: Auditorías (legacy 71) basic slice using the primary `programa_auditoria` table (Programas / "Auditoria anual" entry point under Aplicacion). First step of the vertical; full execution, plans, horario, findings and cross module links deferred.
+
+**Selected scope for this leg (reviewable):**
+- New patch: 0025-programa-auditoria-table-and-seed.sql.
+- Pages/Auditorias/{Listado,Formulario}.php (overrides for nombre/vigente/activo/revision).
+- templates/auditorias/* (exact style + explicit stage note on deferred work).
+- Routes in index.php (modern /admin/auditorias + key legacy /administracion/auditorias/programa/...).
+- Extend verify-8.6.sh + full new "Stage 9.6 Verification Playbook".
+- Update MIGRATION-TODOS (flip Auditorías), MIGRATION-PLAN, this file.
+- Explicitly out: auditorias table + execution flows, plan/horario, tipo_estado, informes, links to Mejora, Personalizacion auditoria anual/vigor.
+
+**Key changes:**
+- New: 0025 patch, Pages/Auditorias/*, templates/auditorias/*, reference/stage-9.6-auditorias-programa-plan.md (plan first).
+- Modified: index.php (routes), scripts/verify-8.6.sh, .agents/MIGRATION-TODOS.md, .agents/STAGE-CHECKLISTS.md (this section), .agents/MIGRATION-PLAN.md.
+- Branch: feat/stage-9.6-auditorias-programa (plan committed first; all Docker-only; standards held).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.6.0","content":"Confirm master after 9.5 merge, read current MIGRATION-TODOS Suggested (Auditorías), discover programa_auditoria schema + accions","status":"completed"},
+  {"id":"9.6.1","content":"git checkout -b feat/stage-9.6-auditorias-programa from clean master; write reference/stage-9.6-*-plan.md as FIRST commit (plan-first ritual)","status":"completed"},
+  {"id":"9.6.2","content":"Create data patch 0025 for programa_auditoria + seeds","status":"completed"},
+  {"id":"9.6.3","content":"Implement Pages/Auditorias Listado+Formulario (full field overrides)","status":"completed"},
+  {"id":"9.6.4","content":"Create templates/auditorias/listado + formulario (style + notes)","status":"completed"},
+  {"id":"9.6.5","content":"Wire routes in index.php for /admin/auditorias + legacy programa","status":"completed"},
+  {"id":"9.6.6","content":"Extend scripts/verify-8.6.sh for new table/patch/Pages","status":"completed"},
+  {"id":"9.6.7","content":"Append full Stage 9.6 Verification Playbook section (with todo json copy, validation cmds, browser flows, DB asserts) to .agents/STAGE-CHECKLISTS.md","status":"completed"},
+  {"id":"9.6.8","content":"Update living .agents/MIGRATION-TODOS.md (flip Auditorías item + note, refresh Suggested), MIGRATION-PLAN","status":"in_progress"},
+  {"id":"9.6.9","content":"Full clean-room Docker verify (psql, verify script, php-l, browser flow); logical commits","status":"pending"},
+  {"id":"9.6.10","content":"Push + open PR for 9.6","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Table + patch + sample data
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename IN ('programa_auditoria') ORDER BY tablename;
+  SELECT filename FROM data_patches WHERE filename LIKE '0025%' ORDER BY filename;
+  SELECT id, nombre, vigente, revision, activo FROM programa_auditoria ORDER BY id;
+  SELECT COUNT(*) AS programa_auditoria_rows FROM programa_auditoria;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Auditorias/Listado.php Pages/Auditorias/Formulario.php index.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init, login.
+2. Navigate to Auditorías via sidebar → confirm list with Nombre/Vigente/Revisión/Activo + "Nuevo Programa", create/edit works (all fields), flashes, legacy path resolves, DB matches.
+3. All prior modules (9.5 Form/Doc, 9.4 Mejora, etc.) unaffected.
+
+**Evidence skeleton + gates:**
+- git log shows plan first on the branch.
+- psql confirms programa_auditoria + patch 0025 + rows.
+- verify-8.6.sh green (includes it, counts, no regression).
+- php -l clean.
+- Browser flow + post DB assert.
+- MIGRATION-TODOS has Auditorías flipped + Suggested refreshed.
+- Templates have clear stage notes; routes + bases follow pattern.
+- Plan + playbook + living lists updated.
+
+**Next:**
+- Flip the Auditorías checkbox in MIGRATION-TODOS once merged + human sign-off.
+- Suggested now ready to highlight cross-cut extraction (several verticals done) or next like Aspectos Ambientales (Criterios-linked), Indicadores, Procesos, or deeper on Mejora/Documentación/Formación.
+- Continue incremental pace.
+
+**Branch status:** Stage 9.6 on `feat/stage-9.6-auditorias-programa`. Plan committed first. Full standards held.
+

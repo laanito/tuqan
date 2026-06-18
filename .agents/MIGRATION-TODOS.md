@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.5 on `feat/stage-9.5-formacion-documentacion` (Formación basic Planes via plan_formacion + Documentación initial shell/landing+list for documentos; 0023+0024 patches, Pages + templates for both, routes, verify + playbook, living docs). Previous: 9.4 Mejora (Acciones), 9.3 Equipos, etc.
+**Last updated**: Stage 9.6 on `feat/stage-9.6-auditorias-programa` (Auditorías basic slice via programa_auditoria: 0025 patch, Pages/Auditorias + templates, routes, verify + playbook, living docs). Previous: 9.5 (Formación+Documentación), 9.4 Mejora (Acciones), etc.
 
 ---
 
@@ -35,11 +35,12 @@ STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retr
 
 ## Current Snapshot (Post 8.9 Catalog Base + Menu Hygiene)
 
-**Modern (Pages/ + templates/ + modern+legacy routes, most on Catalog base)**: 14 modules
+**Modern (Pages/ + templates/ + modern+legacy routes, most on Catalog base)**: 15 modules
 - Usuarios, Perfiles, Sedes (ex-Empresas)
 - Menus (batch orden + labels via Listado::Procesar), Idiomas, Permisos (matrix)
 - Clientes, Criterios (catalog base)
 - TiposMejora, TiposAreas, TipoDocumento, TiposAmb, TiposImp, TipoCursos (all catalog base post 8.7-8.9)
+- Proveedores, Equipos, Acciones Mejora, Formación (Planes), Documentación (shell), Auditorías (Programa) — Stages 9.2-9.6
 
 **Personalizacion (under Administracion/Aplicacion) catalogs**: Complete for the 7 original + Tipo Cursos (stages 8.5-8.9). Menu cleaned in 8.9 (0017 reparent actionable, 0018 delete redundant empty sections).
 
@@ -61,8 +62,9 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **One real Aplicacion vertical (medium)**: Proveedores delivered Stage 9.2; Equipos (core listado + form for numero/descripcion + basic fields + activo) delivered in Stage 9.3 (0021 patch, correct routes + Listado/Formulario, templates, verify, full playbook + TODOS refresh). Route wiring bug from 9.2 Proveedores list also corrected here as hygiene.
 - [x] **Small vertical or next Aplicacion**: Basic slice for Mejora (acciones beyond the TiposMejora catalog) delivered in Stage 9.4 (0022 patch for acciones_mejora, Pages/Mejora + full custom overrides for descripcion/fecha/cerrada + other fields, routes, templates, verify + playbook, TODOS refresh). See 9.4 plan and STAGE-CHECKLISTS.
 - [x] **Formación focused leg + Documentación shell**: Delivered in Stage 9.5 (0023 plan_formacion + 0024 documentos; Pages/Formacion + Pages/Documentacion basic shell + list/landing + routes + templates + verify + playbook). Planes as first Formación slice (nombre + activo + flags); Documentación as modern landing + basic list (tree/editor/workflow/perfiles deferred). See 9.5 plan and STAGE-CHECKLISTS.
+- [x] **Auditorías basic vertical**: Delivered in Stage 9.6 (0025 programa_auditoria; Pages/Auditorias + templates for core nombre/vigente/revision/activo programa list+form; routes + verify + playbook). First slice of Auditorías (legacy 71 "programa"/"Auditoria anual"); execution, plan, horario, findings, informes and links deferred. See 9.6 plan and STAGE-CHECKLISTS.
 - [ ] **Cross-cut extraction**: After 2-3 more modules, extract a second base (e.g. for "rich list with filters" or "form with relations") so later legs stay tiny.
-- [ ] **Next verticals**: Auditorías, Aspectos Ambientales, Indicadores, Procesos, or deeper sub-entities / integrations.
+- [ ] **Next verticals**: Aspectos Ambientales, Indicadores, Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, etc.).
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -102,8 +104,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
-- [ ] Auditorías (legacy 71) — programa, plan, execution, findings, follow-up (link to Mejora acciones). Old files: likely auditoria* or cuestionario variants + procesa. Complexity: M-L (planning + checklists + reporting). Good to do after or with Mejora.
-- [ ] Integration with Indicadores + Aspectos.
+- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` (Programas / Auditoria anual) delivered in Stage 9.6 (0025 patch + Pages/Auditorias + full catalog overrides + routes + verify). Core fields (nombre + vigente + revision + activo). Execution (auditorias table), plan, horario, equipo, estado transitions, hallazgos, informes and cross-links to Mejora deferred. See 9.6 plan/playbook.
+- [ ] Full execution + plan/horario + findings / follow-up (link to Mejora acciones). Integration with Indicadores + Aspectos.
 
 ### Indicadores + Objetivos (KPIs)
 - [ ] Indicadores (legacy 72) — + Objetivos. Old: graficaIndicadores.php, graficamensajes.php, generadorGraficas. Complexity: M (data entry + calculations + charts). Charts may stay legacy or move to modern lib later.
