@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.6 on `feat/stage-9.6-auditorias-programa` (Auditorías basic slice via programa_auditoria: 0025 patch, Pages/Auditorias + templates, routes, verify + playbook, living docs). Previous: 9.5 (Formación+Documentación), 9.4 Mejora (Acciones), etc.
+**Last updated**: Stage 9.7 on `feat/stage-9.7-aspectos-ambientales` (Aspectos Ambientales basic slice via `aspectos`: 0026 patch, Pages/Aspectos + templates, routes, verify + playbook, living docs). Previous: 9.6 Auditorías (Programa), 9.5 etc.
 
 ---
 
@@ -63,8 +63,9 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Small vertical or next Aplicacion**: Basic slice for Mejora (acciones beyond the TiposMejora catalog) delivered in Stage 9.4 (0022 patch for acciones_mejora, Pages/Mejora + full custom overrides for descripcion/fecha/cerrada + other fields, routes, templates, verify + playbook, TODOS refresh). See 9.4 plan and STAGE-CHECKLISTS.
 - [x] **Formación focused leg + Documentación shell**: Delivered in Stage 9.5 (0023 plan_formacion + 0024 documentos; Pages/Formacion + Pages/Documentacion basic shell + list/landing + routes + templates + verify + playbook). Planes as first Formación slice (nombre + activo + flags); Documentación as modern landing + basic list (tree/editor/workflow/perfiles deferred). See 9.5 plan and STAGE-CHECKLISTS.
 - [x] **Auditorías basic vertical**: Delivered in Stage 9.6 (0025 programa_auditoria; Pages/Auditorias + templates for core nombre/vigente/revision/activo programa list+form; routes + verify + playbook). First slice of Auditorías (legacy 71 "programa"/"Auditoria anual"); execution, plan, horario, findings, informes and links deferred. See 9.6 plan and STAGE-CHECKLISTS.
-- [ ] **Cross-cut extraction**: After 2-3 more modules, extract a second base (e.g. for "rich list with filters" or "form with relations") so later legs stay tiny.
-- [ ] **Next verticals**: Aspectos Ambientales, Indicadores, Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, etc.).
+- [x] **Aspectos Ambientales basic vertical**: Delivered in Stage 9.7 (0026 for `aspectos`; Pages/Aspectos + templates for nombre + score fields + tipo + area + activo basic list+form; routes + verify + playbook). First shell of Aspectos Ambientales (legacy 73); matrix, revisiones, cuestionario integration and supporting catalogs deferred. See 9.7 plan and STAGE-CHECKLISTS.
+- [ ] **Cross-cut extraction**: After several verticals, extract a second base (e.g. for "rich list with filters" or "form with relations") so later legs stay tiny. Strongly primed now.
+- [ ] **Next verticals**: Indicadores, Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, Auditorías execution, Aspectos matrix, etc.).
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -79,8 +80,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Any remaining child actions (nuevo/editar) under existing modern parents if menu expectations differ from in-page buttons (sedes has some; most don't — decide consistently).
 
 ### Aspectos Ambientales / mAspectos (linked to Criterios)
-- [ ] Aspectos / Aspectos Ambientales matrix + revisiones (legacy 73). Involves cuestionario flows, linked criterios, possibly special rendering. Old files: mAspectos? / cuestionario.php / procesa_cuestionario.php + related. Complexity: medium-large (matrix + workflow). Suggested: start with data model + basic modern list, then questionnaire integration. Est size for first leg: M.
-- [ ] Full environmental aspects revision + reporting tie-in to Indicadores.
+- [x] Aspectos / Aspectos Ambientales basic shell — core `aspectos` table (nombre + scores + tipo + activo) delivered in Stage 9.7 (0026 patch + Pages/Aspectos + routes + verify). Basic list + form. Full matrix, revisiones, cuestionario flows, FK resolution and "Emergencia" deferred. See 9.7 plan/playbook.
+- [ ] Full matrix + revisiones + cuestionario integration + reporting tie-in to Indicadores.
 
 ### Mejora (Improvement)
 - [x] Acciones de Mejora (legacy 68) — basic CRUD slice delivered in Stage 9.4 (0022 for acciones_mejora + Pages/Mejora Listado/Formulario with overrides + templates + routes + verify). Core fields (descripcion primary, fecha, cerrada status, analysis/treatment/preventive, dates, coste, area). Full workflow (users, implant/verify/close), FK joins (tipo/cliente), auditoria links and sub-entities deferred. See 9.4 plan/playbook.

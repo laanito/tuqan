@@ -390,6 +390,19 @@ $router->addRoute('POST', '/admin/auditorias/editar/{id}', ['Tuqan\Pages\Auditor
 // Legacy routes for Auditorías Programa (from full legacy menu accions: auditorias:programa:*)
 $router->addRoute('GET', '/administracion/auditorias/programa/listado/ver', ['Tuqan\Pages\Auditorias\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Aspectos Ambientales (Stage 9.7 basic slice) ===
+$router->addRoute('GET', '/admin/aspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/aspectos/nuevo', ['Tuqan\Pages\Aspectos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/aspectos/editar/{id}', ['Tuqan\Pages\Aspectos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Aspectos Ambientales
+$router->addRoute('POST', '/admin/aspectos/nuevo', ['Tuqan\Pages\Aspectos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/aspectos/editar/{id}', ['Tuqan\Pages\Aspectos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Key legacy for Aspectos Ambientales (maspectos + aambientales accions)
+$router->addRoute('GET', '/administracion/maspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/aambientales/revision/listado/ver', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
 
