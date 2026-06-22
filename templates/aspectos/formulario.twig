@@ -1,0 +1,112 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/aspectos" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 700px;">
+    <form method="POST" action="{{ isEdit ? '/admin/aspectos/editar/' ~ aspectos.id : '/admin/aspectos/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ aspectos.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre"
+                   value="{{ aspectos.nombre ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="area">Área</label>
+            <input type="text" class="form-control" id="area" name="area"
+                   value="{{ aspectos.area ?? '' }}">
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="tipo_aspecto">Tipo Aspecto</label>
+                    <input type="number" class="form-control" id="tipo_aspecto" name="tipo_aspecto" value="{{ aspectos.tipo_aspecto ?? 0 }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="magnitud">Magnitud</label>
+                    <input type="number" class="form-control" id="magnitud" name="magnitud" value="{{ aspectos.magnitud ?? 0 }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="gravedad">Gravedad</label>
+                    <input type="number" class="form-control" id="gravedad" name="gravedad" value="{{ aspectos.gravedad ?? 0 }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="frecuencia">Frecuencia</label>
+                    <input type="number" class="form-control" id="frecuencia" name="frecuencia" value="{{ aspectos.frecuencia ?? 0 }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="probabilidad">Probabilidad</label>
+                    <input type="number" class="form-control" id="probabilidad" name="probabilidad" value="{{ aspectos.probabilidad ?? 0 }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="severidad">Severidad</label>
+                    <input type="number" class="form-control" id="severidad" name="severidad" value="{{ aspectos.severidad ?? 0 }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="impacto">Impacto</label>
+                    <input type="number" class="form-control" id="impacto" name="impacto" value="{{ aspectos.impacto ?? 0 }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="checkbox" style="margin-top: 30px;">
+                        <label>
+                            <input type="checkbox" name="activo" value="1"
+                                   {% if not isEdit or aspectos.activo %}checked{% endif %}>
+                            Activo
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones</label>
+            <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ aspectos.observaciones ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Aspecto' }}
+            </button>
+            <a href="/admin/aspectos" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Aspectos Ambientales (Stage 9.7). Matriz completa, revisiones, cuestionario y flujos de emergencia se mantienen en legacy por ahora. Los valores numéricos (magnitud, gravedad...) se modernizarán con selects + joins en legs posteriores.
+        </div>
+    </form>
+</div>
+{% endblock %}
