@@ -2112,3 +2112,81 @@ docker compose exec app php -l Pages/Auditorias/Listado.php Pages/Auditorias/For
 
 **Branch status:** Stage 9.6 on `feat/stage-9.6-auditorias-programa`. Plan committed first. Full standards held.
 
+---
+
+## Stage 9.7 — Aspectos Ambientales basic (core `aspectos` list + form)
+
+**Goal:** Next vertical from MIGRATION-TODOS Suggested after 9.6: Aspectos Ambientales (legacy 73). Basic shell over the main `aspectos` table (data model + list + form). Matrix, revisiones, cuestionario integration, and supporting catalogs deferred per the explicit first-leg guidance in TODOS.
+
+**Selected scope for this leg (reviewable):**
+- New patch: 0026-aspectos-table-and-seed.sql (core fields only).
+- Pages/Aspectos/{Listado,Formulario}.php (full overrides for nombre + scores + tipo + area + observaciones + activo).
+- templates/aspectos/* (exact style + stage note).
+- Routes in index.php (modern /admin/aspectos + key legacy maspectos / aambientales paths).
+- Extend verify-8.6.sh + full new "Stage 9.7 Verification Playbook".
+- Update MIGRATION-TODOS (flip the item), MIGRATION-PLAN, this file.
+- Out: full matrix view, cuestionario, revision flows, FK selects, supporting lookup tables, emergency aspects.
+
+**Key changes:**
+- New: 0026 patch, Pages/Aspectos/*, templates/aspectos/*, reference/stage-9.7-aspectos-ambientales-plan.md (plan first).
+- Modified: index.php, scripts/verify-8.6.sh, .agents/* (TODOS, STAGE-CHECKLISTS, MIGRATION-PLAN).
+- Branch: feat/stage-9.7-aspectos-ambientales (plan first; Docker-only).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.7.0","content":"Read current MIGRATION-TODOS (post 9.6), pick Aspectos Ambientales basic list per suggestion","status":"completed"},
+  {"id":"9.7.1","content":"git checkout -b feat/stage-9.7-aspectos-ambientales; write+commit plan FIRST","status":"completed"},
+  {"id":"9.7.2","content":"Create 0026-aspectos-table-and-seed.sql","status":"completed"},
+  {"id":"9.7.3","content":"Implement Pages/Aspectos Listado+Formulario (full overrides)","status":"completed"},
+  {"id":"9.7.4","content":"Create templates/aspectos (list + form with notes)","status":"completed"},
+  {"id":"9.7.5","content":"Wire routes in index.php","status":"completed"},
+  {"id":"9.7.6","content":"Extend verify-8.6.sh","status":"completed"},
+  {"id":"9.7.7","content":"Append full 9.7 playbook to STAGE-CHECKLISTS.md","status":"completed"},
+  {"id":"9.7.8","content":"Update MIGRATION-TODOS (flip Aspectos), MIGRATION-PLAN","status":"in_progress"},
+  {"id":"9.7.9","content":"Full clean-room verify + psql + verify script + php-l","status":"pending"},
+  {"id":"9.7.10","content":"Logical commits, push, open PR","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Table + patch + rows
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename = 'aspectos';
+  SELECT filename FROM data_patches WHERE filename LIKE '0026%' ORDER BY filename;
+  SELECT id, nombre, tipo_aspecto, magnitud, activo, area FROM aspectos ORDER BY id;
+  SELECT COUNT(*) AS aspectos_rows FROM aspectos;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Aspectos/Listado.php Pages/Aspectos/Formulario.php index.php
+```
+
+**Browser + post-action flows (human gate):**
+1. Clean init + login.
+2. Navigate Aspectos Ambientales (sidebar) → list with Nombre/Tipo/Scores/Activo + "Nuevo Aspecto".
+3. Create and edit; verify persistence + flashes.
+4. Legacy paths resolve or fall back cleanly.
+5. Prior modules unaffected.
+
+**Evidence skeleton + gates:**
+- Plan first in git log.
+- psql: table + 0026 + 3 rows.
+- verify-8.6.sh green.
+- php -l clean.
+- Browser flows + DB post-assert.
+- TODOS flipped + Suggested updated (cross-cut now priority).
+- Notes on deferred work clear.
+
+**Next:**
+- Flip Aspectos Ambientales checkbox after merge + human pass.
+- Suggested: strongly consider **Cross-cut extraction** next (base classes for richer lists/forms) before more verticals.
+
+**Branch status:** Stage 9.7 on `feat/stage-9.7-aspectos-ambientales`. Plan committed first. Full standards held.
+
