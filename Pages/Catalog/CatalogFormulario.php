@@ -34,6 +34,113 @@ abstract class CatalogFormulario
             : "{$this->title} creado correctamente.";
     }
 
+    // --- Cross-cut helpers (Stage 9.8) to reduce duplication in rich modules ---
+    protected function getDb()
+    {
+        $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
+        $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
+
+        return new \Tuqan\Classes\Manejador_Base_Datos(
+            $_SESSION['login'] ?? '',
+            $_SESSION['pass'] ?? '',
+            $_SESSION['db'] ?? '',
+            $host,
+            $port
+        );
+    }
+
+    protected function getSidebarMenu()
+    {
+        $mainPage = new \Tuqan\Pages\MainPage();
+        return $mainPage->buildSidebarMenuHtml();
+    }
+
+    protected function getUserContext(): array
+    {
+        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
+        return [
+            'UserTitle'     => gettext('sUsuario'),
+            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
+            'CompanyName'   => $_SESSION['empresa'] ?? null,
+            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
+            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+        ];
+    }
+
+    protected function getFlashPrefix(): string
+    {
+        return $this->flashPrefix;
+    }
+
+    /**
+     * Override for rich forms (different columns).
+     */
+    protected function getSelectForForm(): string
+    {
+        return "SELECT id, nombre, activo FROM {$this->table} WHERE id = ?";
+    }
+
+    protected function loadItem($id): ?array
+    {
+        if ($id <= 0) return null;
+        $db = $this->getDb();
+        $db->consultaPreparada($this->getSelectForForm(), [$id]);
+        $row = $db->coger_Fila();
+        $db->desconexion();
+        if (!$row) return null;
+
+        return [
+            'id'     => $row[0],
+            'nombre' => $row[1],
+            'activo' => $row[2],
+        ];
+    }
+
+    protected function buildFormVariables(?array $item): array
+    {
+        $context = $this->getUserContext();
+        return array_merge([
+            'sidebarMenu' => $this->getSidebarMenu(),
+            strtolower($this->flashPrefix) => $item,
+            'isEdit'      => (bool)$item,
+            'pageTitle'   => $item ? "Editar {$this->title}" : "Nuevo {$this->title}",
+        ], $context);
+    }
+
+    protected function getPostData(): array
+    {
+        return [
+            'nombre' => trim($_POST['nombre'] ?? ''),
+            'activo' => !empty($_POST['activo']) ? 1 : 0,
+        ];
+    }
+
+    protected function validate(array $data): array
+    {
+        $errors = [];
+        if (($data['nombre'] ?? '') === '') {
+            $errors[] = $this->getNombreRequiredMessage();
+        }
+        return $errors;
+    }
+
+    protected function persist(array $data, $id)
+    {
+        $db = $this->getDb();
+        if ($id > 0) {
+            $db->consultaPreparada(
+                "UPDATE {$this->table} SET nombre = ?, activo = ? WHERE id = ?",
+                [$data['nombre'], $data['activo'], $id]
+            );
+        } else {
+            $db->consultaPreparada(
+                "INSERT INTO {$this->table} (nombre, activo) VALUES (?, ?)",
+                [$data['nombre'], $data['activo']]
+            );
+        }
+        $db->desconexion();
+    }
+
     public function ShowPage($id = null)
     {
         Config::initialize();
@@ -43,56 +150,13 @@ abstract class CatalogFormulario
             'cache' => Config::$cache_path,
         ]);
 
-        $mainPage = new \Tuqan\Pages\MainPage();
-        $sidebarMenu = $mainPage->buildSidebarMenuHtml();
-
         if ($id === null && isset($_GET['id'])) {
             $id = (int)$_GET['id'];
         }
         $id = (int)$id;
-        $item = null;
 
-        if ($id > 0) {
-            $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
-            $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
-
-            $db = new \Tuqan\Classes\Manejador_Base_Datos(
-                $_SESSION['login'] ?? '',
-                $_SESSION['pass'] ?? '',
-                $_SESSION['db'] ?? '',
-                $host,
-                $port
-            );
-
-            $db->consultaPreparada(
-                "SELECT id, nombre, activo FROM {$this->table} WHERE id = ?",
-                [$id]
-            );
-            $row = $db->coger_Fila();
-            if ($row) {
-                $item = [
-                    'id'     => $row[0],
-                    'nombre' => $row[1],
-                    'activo' => $row[2],
-                ];
-            }
-            $db->desconexion();
-        }
-
-        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
-
-        $variables = [
-            'sidebarMenu' => $sidebarMenu,
-            // singular key for the form template (e.g. 'tipomejora', 'cliente')
-            strtolower($this->flashPrefix) => $item,
-            'isEdit'      => (bool)$item,
-            'pageTitle'   => $item ? "Editar {$this->title}" : "Nuevo {$this->title}",
-            'UserTitle'     => gettext('sUsuario'),
-            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
-            'CompanyName'   => $_SESSION['empresa'] ?? null,
-            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
-            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
-        ];
+        $item = $this->loadItem($id);
+        $variables = $this->buildFormVariables($item);
 
         try {
             $template = $twig->load($this->templateDir . '/formulario.twig');
@@ -116,14 +180,9 @@ abstract class CatalogFormulario
         }
         $id = (int)$id;
 
-        $nombre = trim($_POST['nombre'] ?? '');
-        $activo = !empty($_POST['activo']) ? 1 : 0;
+        $data = $this->getPostData();
 
-        $errors = [];
-        if ($nombre === '') {
-            $errors[] = $this->getNombreRequiredMessage();
-        }
-
+        $errors = $this->validate($data);
         if (!empty($errors)) {
             $_SESSION[$this->flashPrefix . '_form_error'] = implode(' ', $errors);
             $target = $id > 0 ? "{$this->listRoute}/editar/$id" : "{$this->listRoute}/nuevo";
@@ -131,33 +190,9 @@ abstract class CatalogFormulario
             exit;
         }
 
-        $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
-        $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
+        $this->persist($data, $id);
 
-        $db = new \Tuqan\Classes\Manejador_Base_Datos(
-            $_SESSION['login'] ?? '',
-            $_SESSION['pass'] ?? '',
-            $_SESSION['db'] ?? '',
-            $host,
-            $port
-        );
-
-        if ($id > 0) {
-            $db->consultaPreparada(
-                "UPDATE {$this->table} SET nombre = ?, activo = ? WHERE id = ?",
-                [$nombre, $activo, $id]
-            );
-            $msg = $this->getSuccessMessage(true);
-        } else {
-            $db->consultaPreparada(
-                "INSERT INTO {$this->table} (nombre, activo) VALUES (?, ?)",
-                [$nombre, $activo]
-            );
-            $msg = $this->getSuccessMessage(false);
-        }
-
-        $db->desconexion();
-
+        $msg = $this->getSuccessMessage($id > 0);
         $_SESSION[$this->flashPrefix . '_flash_success'] = $msg;
         header("Location: {$this->listRoute}");
         exit;
