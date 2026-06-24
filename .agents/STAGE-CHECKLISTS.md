@@ -2190,3 +2190,70 @@ docker compose exec app php -l Pages/Aspectos/Listado.php Pages/Aspectos/Formula
 
 **Branch status:** Stage 9.7 on `feat/stage-9.7-aspectos-ambientales`. Plan committed first. Full standards held.
 
+---
+
+## Stage 9.8 — Cross-cut base extraction (richer Catalog* helpers)
+
+**Goal:** Top cross-cutting item from MIGRATION-TODOS: after many verticals (9.2–9.7), extract base improvements so future (and existing) modules have far less duplication.
+
+**Selected scope (reviewable cross-cut):**
+- Enhance `Pages/Catalog/CatalogListado.php` and `CatalogFormulario.php` with protected helpers (`getDb()`, `getSidebarMenu()`, `getUserContext()`, `fetchItems()`, `loadItem()`, `getPostData()`, `validate()`, `persist()`, `build*Variables()`).
+- Refactor the default ShowPage/Procesar in the bases to use the helpers (behavior identical for simple catalogs).
+- Rich modules (Mejora, Formacion, Aspectos...) can now gradually use the hooks instead of copying 70+ lines.
+- Update phpdoc.
+- Extend verify + full 9.8 playbook.
+- Update TODOS (progress on cross-cut), MIGRATION-PLAN.
+- No data patch.
+
+**Key changes:**
+- Core: the two Catalog base files + comments.
+- Supporting: verify-8.6.sh, STAGE-CHECKLISTS (9.8 section), TODOS, plan, MIGRATION-PLAN.
+- Branch: feat/stage-9.8-cross-cut-base-extraction (plan first).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.8.0","content":"Read TODOS + confirm master after 9.7 merge. Cross-cut is top priority.","status":"completed"},
+  {"id":"9.8.1","content":"Branch + plan committed FIRST","status":"completed"},
+  {"id":"9.8.2","content":"Analyze duplication in rich modules vs current bases","status":"completed"},
+  {"id":"9.8.3","content":"Add protected helpers to CatalogListado + CatalogFormulario","status":"completed"},
+  {"id":"9.8.4","content":"Refactor base ShowPage/Procesar to use helpers + update docs","status":"completed"},
+  {"id":"9.8.5","content":"Extend verify + append 9.8 playbook to STAGE-CHECKLISTS","status":"completed"},
+  {"id":"9.8.6","content":"Update MIGRATION-TODOS (cross-cut progress) + MIGRATION-PLAN","status":"in_progress"},
+  {"id":"9.8.7","content":"Clean-room verify + php -l + spot checks on simple + rich paths","status":"pending"},
+  {"id":"9.8.8","content":"Logical commits, push, PR","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
+  Pages/Aspectos/Listado.php Pages/Aspectos/Formulario.php \
+  Pages/Mejora/Listado.php Pages/Mejora/Formulario.php index.php
+```
+
+**Browser + spot checks (human gate):**
+- Simple catalogs (e.g. /admin/clientes, /admin/tiposmejora) still work perfectly.
+- At least one rich path (e.g. /admin/aspectos or /admin/mejora) still works end-to-end (list + new + edit + flash + save).
+- No change in UI or behavior.
+
+**Evidence skeleton:**
+- git log shows plan first.
+- verify-8.6.sh green.
+- php -l clean on Catalog files.
+- Simple + rich paths functional.
+- Bases much shorter for future use; helpers clearly documented.
+- TODOS shows cross-cut advanced (ready for more extraction or migration of existing rich modules).
+
+**Next:**
+- Mark cross-cut progress.
+- Suggested now favors either more cross-cut (filters, relations) or next verticals (Indicadores, Procesos, deeper on existing modules).
+
+**Branch status:** Stage 9.8 on `feat/stage-9.8-cross-cut-base-extraction`. Plan committed first. Full standards held.
+
