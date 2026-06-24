@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.7 on `feat/stage-9.7-aspectos-ambientales` (Aspectos Ambientales basic slice via `aspectos`: 0026 patch, Pages/Aspectos + templates, routes, verify + playbook, living docs). Previous: 9.6 Auditorías (Programa), 9.5 etc.
+**Last updated**: Stage 9.8 on `feat/stage-9.8-cross-cut-base-extraction` (cross-cut: richer CatalogListado + CatalogFormulario with protected helpers to slash boilerplate in rich modules; plan first, verify, docs). Previous: 9.7 Aspectos basic. Cross-cut now in progress.
 
 ---
 
@@ -64,8 +64,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Formación focused leg + Documentación shell**: Delivered in Stage 9.5 (0023 plan_formacion + 0024 documentos; Pages/Formacion + Pages/Documentacion basic shell + list/landing + routes + templates + verify + playbook). Planes as first Formación slice (nombre + activo + flags); Documentación as modern landing + basic list (tree/editor/workflow/perfiles deferred). See 9.5 plan and STAGE-CHECKLISTS.
 - [x] **Auditorías basic vertical**: Delivered in Stage 9.6 (0025 programa_auditoria; Pages/Auditorias + templates for core nombre/vigente/revision/activo programa list+form; routes + verify + playbook). First slice of Auditorías (legacy 71 "programa"/"Auditoria anual"); execution, plan, horario, findings, informes and links deferred. See 9.6 plan and STAGE-CHECKLISTS.
 - [x] **Aspectos Ambientales basic vertical**: Delivered in Stage 9.7 (0026 for `aspectos`; Pages/Aspectos + templates for nombre + score fields + tipo + area + activo basic list+form; routes + verify + playbook). First shell of Aspectos Ambientales (legacy 73); matrix, revisiones, cuestionario integration and supporting catalogs deferred. See 9.7 plan and STAGE-CHECKLISTS.
-- [ ] **Cross-cut extraction**: After several verticals, extract a second base (e.g. for "rich list with filters" or "form with relations") so later legs stay tiny. Strongly primed now.
-- [ ] **Next verticals**: Indicadores, Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, Auditorías execution, Aspectos matrix, etc.).
+- [x] **Cross-cut extraction (first delivery)**: Stage 9.8 — richer helpers added to CatalogListado + CatalogFormulario (getDb, getSidebar, loadItem, getPostData, validate, persist, build*Variables, fetchItems). Base ShowPage/Procesar now use them. Duplication for future rich modules (and refactors of existing) dramatically reduced. See 9.8 plan. More extraction (filters, relations, tree) can continue in follow-ups.
+- [ ] **Next verticals**: Indicadores, Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, Auditorías execution, Aspectos matrix, etc.). Cross-cut work can continue alongside.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -131,7 +131,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ## Cross-Cutting / Non-Module Backlog (Important but Not "a Module")
 
 - [ ] Twig 1.x → 2/3 (or 3) proper upgrade (deferred repeatedly; vendor patches in place; will touch all templates + possibly custom extensions when we have many modules).
-- [ ] More base class extraction (Catalog* was 8.9; next candidates after a few complex modules: list-with-filters base, form-with-relations base, tree-view base, matrix/batch base for Permisos-style).
+- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. Strongly reduces boilerplate for rich modules. See 9.8. Additional work (list-with-filters, form-with-relations, tree, matrix) remains open for future legs.
 - [ ] PDF / Excel / report generation modernization (GenPDF, crearExcel, related generators — used by almost every vertical for "ficha", exports, compliance outputs).
 - [ ] Tree / arbol UI + generators (arbol_documentos.php, estructura_arbol.php, generador_arboles.php, dhtmlgoodies tree, saveNodes etc. — core for Documentación + Procesos; big but high leverage).
 - [ ] Questionnaire / checklist engine (cuestionario.php + procesa_cuestionario.php + procesa_Editor — used by Aspectos, Auditorias, possibly others; aspects/audits/reqs depend on it).

@@ -11,6 +11,11 @@ use Twig\Environment;
  * Subclasses only need to declare the protected config properties.
  * This eliminates ~50-60 lines of boilerplate per module while preserving
  * exact original behavior, flash keys, template variables, and error handling.
+ *
+ * For richer modules (extra columns, flags, dates, etc. as seen in 9.x):
+ *   - Override getSelectSql() + mapRow()
+ *   - The base ShowPage still handles DB, sidebar, Twig, flashes, user context.
+ * Future cross-cut candidates: list-with-filters, etc.
  */
 abstract class CatalogListado
 {
@@ -36,6 +41,76 @@ abstract class CatalogListado
         ];
     }
 
+    // --- Cross-cut helpers (Stage 9.8) to reduce duplication in rich modules ---
+    protected function getDb()
+    {
+        $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
+        $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
+
+        return new \Tuqan\Classes\Manejador_Base_Datos(
+            $_SESSION['login'] ?? '',
+            $_SESSION['pass'] ?? '',
+            $_SESSION['db'] ?? '',
+            $host,
+            $port
+        );
+    }
+
+    protected function getSidebarMenu()
+    {
+        $mainPage = new \Tuqan\Pages\MainPage();
+        return $mainPage->buildSidebarMenuHtml();
+    }
+
+    protected function getUserContext(): array
+    {
+        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
+        return [
+            'UserTitle'     => gettext('sUsuario'),
+            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
+            'CompanyName'   => $_SESSION['empresa'] ?? null,
+            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
+            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+        ];
+    }
+
+    protected function getFlashData(): array
+    {
+        $success = $_SESSION[$this->flashPrefix . '_flash_success'] ?? null;
+        $error   = $_SESSION[$this->flashPrefix . '_form_error'] ?? null;
+        unset($_SESSION[$this->flashPrefix . '_flash_success'], $_SESSION[$this->flashPrefix . '_form_error']);
+        return ['flashSuccess' => $success, 'flashError' => $error];
+    }
+
+    protected function fetchItems(): array
+    {
+        $db = $this->getDb();
+        $db->consulta($this->getSelectSql());
+
+        $items = [];
+        while ($row = $db->coger_Fila()) {
+            $items[] = $this->mapRow($row);
+        }
+        $db->desconexion();
+        return $items;
+    }
+
+    protected function buildListVariables(array $items): array
+    {
+        $flash = $this->getFlashData();
+        $context = $this->getUserContext();
+
+        $itemVar = $this->templateDir;
+
+        return array_merge([
+            'sidebarMenu'   => $this->getSidebarMenu(),
+            $itemVar        => $items,
+            'pageTitle'     => $this->title,
+            'flashSuccess'  => $flash['flashSuccess'],
+            'flashError'    => $flash['flashError'],
+        ], $context);
+    }
+
     public function ShowPage()
     {
         Config::initialize();
@@ -45,49 +120,8 @@ abstract class CatalogListado
             'cache' => Config::$cache_path,
         ]);
 
-        $mainPage = new \Tuqan\Pages\MainPage();
-        $sidebarMenu = $mainPage->buildSidebarMenuHtml();
-
-        $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
-        $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
-
-        $db = new \Tuqan\Classes\Manejador_Base_Datos(
-            $_SESSION['login'] ?? '',
-            $_SESSION['pass'] ?? '',
-            $_SESSION['db'] ?? '',
-            $host,
-            $port
-        );
-
-        $db->consulta($this->getSelectSql());
-
-        $items = [];
-        while ($row = $db->coger_Fila()) {
-            $items[] = $this->mapRow($row);
-        }
-        $db->desconexion();
-
-        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
-
-        $flashSuccess = $_SESSION[$this->flashPrefix . '_flash_success'] ?? null;
-        $flashError   = $_SESSION[$this->flashPrefix . '_form_error'] ?? null;
-        unset($_SESSION[$this->flashPrefix . '_flash_success'], $_SESSION[$this->flashPrefix . '_form_error']);
-
-        // The template variable name is usually the same as templateDir (e.g. 'tiposmejora', 'clientes')
-        $itemVar = $this->templateDir;
-
-        $variables = [
-            'sidebarMenu'   => $sidebarMenu,
-            $itemVar        => $items,
-            'pageTitle'     => $this->title,
-            'flashSuccess'  => $flashSuccess,
-            'flashError'    => $flashError,
-            'UserTitle'     => gettext('sUsuario'),
-            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
-            'CompanyName'   => $_SESSION['empresa'] ?? null,
-            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
-            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
-        ];
+        $items = $this->fetchItems();
+        $variables = $this->buildListVariables($items);
 
         try {
             $template = $twig->load($this->templateDir . '/listado.twig');
