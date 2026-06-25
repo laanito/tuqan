@@ -403,6 +403,18 @@ $router->addRoute('POST', '/admin/aspectos/editar/{id}', ['Tuqan\Pages\Aspectos\
 $router->addRoute('GET', '/administracion/maspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/aambientales/revision/listado/ver', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Indicadores (Stage 9.9 basic slice) ===
+$router->addRoute('GET', '/admin/indicadores', ['Tuqan\Pages\Indicadores\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/indicadores/nuevo', ['Tuqan\Pages\Indicadores\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/indicadores/editar/{id}', ['Tuqan\Pages\Indicadores\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Indicadores
+$router->addRoute('POST', '/admin/indicadores/nuevo', ['Tuqan\Pages\Indicadores\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/indicadores/editar/{id}', ['Tuqan\Pages\Indicadores\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Key legacy for Indicadores (from full legacy menu accions: indicadores:indicadores:*)
+$router->addRoute('GET', '/administracion/indicadores/indicadores/listado/ver', ['Tuqan\Pages\Indicadores\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
 
