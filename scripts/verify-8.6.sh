@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 / 9.3 / 9.4 / 9.5 / 9.6 / 9.7 / 9.8 Verification (non-interactive) ==="
+echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 / 9.3 / 9.4 / 9.5 / 9.6 / 9.7 / 9.8 / 9.9 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
@@ -33,6 +33,7 @@ php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
     Pages/Documentacion/Listado.php Pages/Documentacion/Formulario.php \
     Pages/Auditorias/Listado.php Pages/Auditorias/Formulario.php \
     Pages/Aspectos/Listado.php Pages/Aspectos/Formulario.php \
+    Pages/Indicadores/Listado.php Pages/Indicadores/Formulario.php \
     index.php > /dev/null
 echo "   PASS: No syntax errors in the main 8.6/8.7/8.8/8.9 files."
 
@@ -40,9 +41,9 @@ echo ""
 echo "2. DB state checks (tables from 0012/0013/0014/0015 + menu updates)..."
 export PGPASSWORD="${DB_PASS:-secret}"
 psql -h "${DB_HOST:-db}" -U qnova -d qnova -v ON_ERROR_STOP=1 -c "
--- Tables (8.6 + 8.7 + 8.8 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 + 9.7)
+-- Tables (8.6 + 8.7 + 8.8 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 + 9.7 + 9.9)
 SELECT tablename FROM pg_tables 
-WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos')
+WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores')
 ORDER BY tablename;
 
 -- Sedes rename evidence
@@ -73,7 +74,7 @@ SELECT 'tiposimp', COUNT(*) FROM tiposimp
 UNION ALL
 SELECT 'tipocursos', COUNT(*) FROM tipocursos;
 
--- Patch tracking (up to 0026 for 9.7)
+-- Patch tracking (up to 0027 for 9.9)
 SELECT filename FROM data_patches 
 WHERE filename LIKE '00%' 
 ORDER BY filename;
@@ -96,6 +97,9 @@ SELECT COUNT(*) AS programa_auditoria_rows FROM programa_auditoria;
 
 -- 9.7 Aspectos Ambientales evidence
 SELECT COUNT(*) AS aspectos_rows FROM aspectos;
+
+-- 9.9 Indicadores evidence
+SELECT COUNT(*) AS indicadores_rows FROM indicadores;
 
 -- Menu structure invariants for Personalizacion (added in 8.9 after 0017/0018 exposed gaps)
 -- These would have caught wrong padres (4th-level nesting), redundant empty sections,
@@ -121,5 +125,5 @@ echo ""
 echo "3. (Class load smoke skipped in this script because it is fragile from different CWDs; the php -l above already gives us syntax confidence. Full route exercising requires a real session and is covered in the browser + DB-assert part of the playbook.)"
 
 echo ""
-echo "=== 8.6/8.7/8.8/9.1/9.2/9.3/9.4/9.5/9.6/9.7/9.8 non-interactive verification finished ==="
+echo "=== 8.6/8.7/8.8/9.1/9.2/9.3/9.4/9.5/9.6/9.7/9.8/9.9 non-interactive verification finished ==="
 echo "For the real confidence on the POST behavior, flashes, matrix, editing, etc., follow the full playbook in .agents/STAGE-CHECKLISTS.md (the browser + DB-assert-after-submit part)."

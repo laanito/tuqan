@@ -1,0 +1,128 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/indicadores" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 800px;">
+    <form method="POST" action="{{ isEdit ? '/admin/indicadores/editar/' ~ indicador.id : '/admin/indicadores/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ indicador.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ indicador.nombre ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="definicion">Definición</label>
+            <textarea class="form-control" id="definicion" name="definicion" rows="2">{{ indicador.definicion ?? '' }}</textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="valor_objetivo">Valor Objetivo</label>
+                    <input type="number" step="any" class="form-control" id="valor_objetivo" name="valor_objetivo" value="{{ indicador.valor_objetivo ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="valor_tolerable">Valor Tolerable</label>
+                    <input type="number" step="any" class="form-control" id="valor_tolerable" name="valor_tolerable" value="{{ indicador.valor_tolerable ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="valor_inicial">Valor Inicial</label>
+                    <input type="number" class="form-control" id="valor_inicial" name="valor_inicial" value="{{ indicador.valor_inicial ?? '' }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="tecnica">Técnica / Unidad</label>
+                    <input type="text" class="form-control" id="tecnica" name="tecnica" value="{{ indicador.tecnica ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="variables_control">Variables de Control</label>
+                    <input type="text" class="form-control" id="variables_control" name="variables_control" value="{{ indicador.variables_control ?? '' }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="frecuencia_ana">Frecuencia Análisis</label>
+                    <input type="number" class="form-control" id="frecuencia_ana" name="frecuencia_ana" value="{{ indicador.frecuencia_ana ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="frecuencia_seg">Frecuencia Seguimiento</label>
+                    <input type="number" class="form-control" id="frecuencia_seg" name="frecuencia_seg" value="{{ indicador.frecuencia_seg ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group" style="margin-top: 25px;">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="genera_objetivo" value="1" {% if not isEdit or indicador.genera_objetivo %}checked{% endif %}>
+                            Genera Objetivo
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="responsable_analisis">Responsable Análisis</label>
+                    <input type="text" class="form-control" id="responsable_analisis" name="responsable_analisis" value="{{ indicador.responsable_analisis ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="responsable_seguimiento">Responsable Seguimiento</label>
+                    <input type="text" class="form-control" id="responsable_seguimiento" name="responsable_seguimiento" value="{{ indicador.responsable_seguimiento ?? '' }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1" {% if not isEdit or indicador.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Indicador' }}
+            </button>
+            <a href="/admin/indicadores" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Indicadores (Stage 9.9 basic). Gráficos, cálculos, metas, objetivos y visualización en dashboard permanecen en legacy. Se modernizarán en legs posteriores.
+        </div>
+    </form>
+</div>
+{% endblock %}
