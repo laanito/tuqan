@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.8 on `feat/stage-9.8-cross-cut-base-extraction` (cross-cut: richer CatalogListado + CatalogFormulario with protected helpers to slash boilerplate in rich modules; plan first, verify, docs). Previous: 9.7 Aspectos basic. Cross-cut now in progress.
+**Last updated**: Stage 9.9 on `feat/stage-9.9-indicadores` (Indicadores basic via core `indicadores` table; 0027 patch, Pages/Indicadores using 9.8 enhanced bases + overrides, templates, routes, verify + playbook, living docs). Previous: 9.8 cross-cut first delivery.
 
 ---
 
@@ -65,7 +65,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Auditorías basic vertical**: Delivered in Stage 9.6 (0025 programa_auditoria; Pages/Auditorias + templates for core nombre/vigente/revision/activo programa list+form; routes + verify + playbook). First slice of Auditorías (legacy 71 "programa"/"Auditoria anual"); execution, plan, horario, findings, informes and links deferred. See 9.6 plan and STAGE-CHECKLISTS.
 - [x] **Aspectos Ambientales basic vertical**: Delivered in Stage 9.7 (0026 for `aspectos`; Pages/Aspectos + templates for nombre + score fields + tipo + area + activo basic list+form; routes + verify + playbook). First shell of Aspectos Ambientales (legacy 73); matrix, revisiones, cuestionario integration and supporting catalogs deferred. See 9.7 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut extraction (first delivery)**: Stage 9.8 — richer helpers added to CatalogListado + CatalogFormulario (getDb, getSidebar, loadItem, getPostData, validate, persist, build*Variables, fetchItems). Base ShowPage/Procesar now use them. Duplication for future rich modules (and refactors of existing) dramatically reduced. See 9.8 plan. More extraction (filters, relations, tree) can continue in follow-ups.
-- [ ] **Next verticals**: Indicadores, Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, Auditorías execution, Aspectos matrix, etc.). Cross-cut work can continue alongside.
+- [x] **Indicadores basic vertical**: Delivered in Stage 9.9 (0027 for core `indicadores`; Pages/Indicadores using 9.8 base + overrides for definicion/valores/responsables/frecuencias/etc + templates + routes + verify + playbook). Charts, objetivos/metas, calculations and dashboard deferred. See 9.9 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals**: Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, Auditorías execution, Aspectos matrix, etc.). Cross-cut work (filters/relations etc.) can continue alongside.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -109,8 +110,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Full execution + plan/horario + findings / follow-up (link to Mejora acciones). Integration with Indicadores + Aspectos.
 
 ### Indicadores + Objetivos (KPIs)
-- [ ] Indicadores (legacy 72) — + Objetivos. Old: graficaIndicadores.php, graficamensajes.php, generadorGraficas. Complexity: M (data entry + calculations + charts). Charts may stay legacy or move to modern lib later.
-- [ ] Dashboard / home page enhancements that surface key indicators.
+- [x] Indicadores basic (legacy 72) — core `indicadores` table delivered in Stage 9.9 (0027 patch + Pages/Indicadores using enhanced 9.8 bases + templates + routes + verify). Fields: nombre, definicion, valores (inicial/objetivo/tolerable), tecnica, responsables, frecuencias, activo, genera_objetivo. Charts/graphs, full calculations, metas_indicadores, objetivos and dashboard deferred. See 9.9 plan/playbook.
+- [ ] Full Objetivos + Metas + reporting/dashboard integration. Charts may stay legacy or modernized later.
 
 ### Procesos (Processes)
 - [ ] Procesos (legacy 76) — catalogos, arbol de procesos (related to Documentación tree?). Complexity: M (tree + description + links to other modules).

@@ -2257,3 +2257,79 @@ docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Catalog/Ca
 
 **Branch status:** Stage 9.8 on `feat/stage-9.8-cross-cut-base-extraction`. Plan committed first. Full standards held.
 
+---
+
+## Stage 9.9 — Indicadores basic (core `indicadores` list + form)
+
+**Goal:** First of the remaining "Next verticals" from MIGRATION-TODOS Suggested after 9.8 cross-cut: Indicadores (legacy 72) basic slice over the main `indicadores` table (definition, targets, tolerances, responsibilities, frequencies). Charts, objetivos/metas, calculations and dashboard deferred.
+
+**Selected scope for this leg (reviewable):**
+- New patch: 0027-indicadores-table-and-seed.sql.
+- Pages/Indicadores/{Listado,Formulario}.php (using 9.8 enhanced base helpers for smaller code + targeted overrides).
+- templates/indicadores/* (exact style + stage note).
+- Routes in index.php (modern /admin/indicadores + key legacy).
+- Extend verify-8.6.sh + full new "Stage 9.9 Verification Playbook".
+- Update MIGRATION-TODOS (flip Indicadores), MIGRATION-PLAN, this file.
+- Out: full objetivos + metas, gráficos, cálculos automáticos, dashboard.
+
+**Key changes:**
+- New: 0027 patch, Pages/Indicadores/*, templates/indicadores/*, reference/stage-9.9-indicadores-plan.md (plan first).
+- Modified: index.php, scripts/verify-8.6.sh, .agents/MIGRATION-TODOS.md, .agents/STAGE-CHECKLISTS.md (this section), .agents/MIGRATION-PLAN.md.
+- Branch: feat/stage-9.9-indicadores (plan committed first; all Docker-only; leverages 9.8 bases; standards held).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.9.0","content":"Read current MIGRATION-TODOS (post 9.8), pick Indicadores as next vertical","status":"completed"},
+  {"id":"9.9.1","content":"git checkout -b feat/stage-9.9-indicadores from clean master; write plan FIRST","status":"completed"},
+  {"id":"9.9.2","content":"Create data patch 0027 for indicadores + seeds","status":"completed"},
+  {"id":"9.9.3","content":"Implement Pages/Indicadores using enhanced Catalog* + small overrides","status":"completed"},
+  {"id":"9.9.4","content":"Create templates/indicadores (list + form + notes)","status":"completed"},
+  {"id":"9.9.5","content":"Wire routes in index.php","status":"completed"},
+  {"id":"9.9.6","content":"Extend verify + append full 9.9 playbook","status":"completed"},
+  {"id":"9.9.7","content":"Update living TODOS (flip Indicadores), MIGRATION-PLAN","status":"in_progress"},
+  {"id":"9.9.8","content":"Full clean-room verify","status":"pending"},
+  {"id":"9.9.9","content":"Logical commits, push, PR","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Table + patch + rows
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename = 'indicadores';
+  SELECT filename FROM data_patches WHERE filename LIKE '0027%' ORDER BY filename;
+  SELECT id, nombre, definicion, valor_objetivo, activo FROM indicadores ORDER BY id;
+  SELECT COUNT(*) AS indicadores_rows FROM indicadores;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Indicadores/Listado.php Pages/Indicadores/Formulario.php index.php Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init, login.
+2. Navigate to Indicadores via sidebar → confirm list + "Nuevo Indicador", create/edit works (all core fields), flashes, legacy path resolves, DB matches.
+3. All prior modules (incl. 9.8 bases, 9.7 Aspectos) unaffected.
+
+**Evidence skeleton + gates:**
+- git log shows plan first.
+- psql confirms indicadores + 0027 + rows.
+- verify-8.6.sh green (includes it, counts, no regression on bases or priors).
+- php -l clean.
+- Browser flow + post DB assert.
+- MIGRATION-TODOS has Indicadores flipped + Suggested refreshed.
+- Templates have clear stage notes; uses improved 9.8 base.
+- Plan + playbook + living lists updated.
+
+**Next:**
+- Flip the Indicadores checkbox in MIGRATION-TODOS once merged + human sign-off.
+- Suggested: Procesos or deeper sub-entities (Mejora full, Aspectos matrix, Documentación tree, Auditorías execution, etc.). Cross-cut (more helpers) can continue alongside.
+
+**Branch status:** Stage 9.9 on `feat/stage-9.9-indicadores`. Plan committed first. Full standards held. Uses 9.8 cross-cut improvements.
+
