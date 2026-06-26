@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.9 on `feat/stage-9.9-indicadores` (Indicadores basic via core `indicadores` table; 0027 patch, Pages/Indicadores using 9.8 enhanced bases + overrides, templates, routes, verify + playbook, living docs). Previous: 9.8 cross-cut first delivery.
+**Last updated**: Stage 9.10 on `feat/stage-9.10-procesos` (Procesos basic via core `procesos` table; 0028 patch, Pages/Procesos using 9.8 enhanced bases + overrides, templates, routes, verify + playbook, living docs). Previous: 9.9 Indicadores.
 
 ---
 
@@ -35,18 +35,18 @@ STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retr
 
 ## Current Snapshot (Post 8.9 Catalog Base + Menu Hygiene)
 
-**Modern (Pages/ + templates/ + modern+legacy routes, most on Catalog base)**: 15 modules
+**Modern (Pages/ + templates/ + modern+legacy routes, most on Catalog base)**: 16 modules
 - Usuarios, Perfiles, Sedes (ex-Empresas)
 - Menus (batch orden + labels via Listado::Procesar), Idiomas, Permisos (matrix)
 - Clientes, Criterios (catalog base)
 - TiposMejora, TiposAreas, TipoDocumento, TiposAmb, TiposImp, TipoCursos (all catalog base post 8.7-8.9)
-- Proveedores, Equipos, Acciones Mejora, Formación (Planes), Documentación (shell), Auditorías (Programa) — Stages 9.2-9.6
+- Proveedores, Equipos, Acciones Mejora, Formación (Planes), Documentación (shell), Auditorías (Programa), Indicadores, Procesos (shell) — Stages 9.2-9.10
 
 **Personalizacion (under Administracion/Aplicacion) catalogs**: Complete for the 7 original + Tipo Cursos (stages 8.5-8.9). Menu cleaned in 8.9 (0017 reparent actionable, 0018 delete redundant empty sections).
 
 **Pending small note from 8.9/0018**: Row 84 ("Criterios" section, no accion) was removed as redundant. User recall: it should be "Criterios Ambientales" with a proper action and placed as direct child of Personalizacion (padre = 1400). Capture below as XS item.
 
-**Everything else**: Still served via legacy entry points (arbol_*.php, cuestionario.php, editor.php, GenPDF, crearExcel, graficaIndicadores.php, items.php, procesa_*, etc.) + LegacyAction fallback for unmapped colon accions. Top-level Aplicacion branches (Documentación 66, Procesos 76, Proveedores 67, Equipos 70, Mejora 68, Formación 69, Auditorías 71, Indicadores 72, Aspectos Ambientales 73) have no modern Pages/* equivalents yet.
+**Everything else**: Still served via legacy entry points (arbol_*.php, cuestionario.php, editor.php, GenPDF, crearExcel, graficaIndicadores.php, items.php, procesa_*, etc.) + LegacyAction fallback for unmapped colon accions. Top-level Aplicacion branches (Documentación 66, Procesos 76 [basic shell], Proveedores 67, Equipos 70, Mejora 68, Formación 69, Auditorías 71, Indicadores 72, Aspectos Ambientales 73) have no modern Pages/* equivalents yet (or only basic for Procesos).
 
 **Infra ready for more modules**: Docker-only, init-db.sh + data_patches (idempotent), Phroute (clean /admin/* + legacy /administracion/*), Twig layouts/app + per-module, prepared statements path via Manejador_Base_Datos::consultaPreparada, MainPage sidebar from real menu_nuevo, flash pattern, verify-8.6.sh + playbook discipline.
 
@@ -66,7 +66,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Aspectos Ambientales basic vertical**: Delivered in Stage 9.7 (0026 for `aspectos`; Pages/Aspectos + templates for nombre + score fields + tipo + area + activo basic list+form; routes + verify + playbook). First shell of Aspectos Ambientales (legacy 73); matrix, revisiones, cuestionario integration and supporting catalogs deferred. See 9.7 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut extraction (first delivery)**: Stage 9.8 — richer helpers added to CatalogListado + CatalogFormulario (getDb, getSidebar, loadItem, getPostData, validate, persist, build*Variables, fetchItems). Base ShowPage/Procesar now use them. Duplication for future rich modules (and refactors of existing) dramatically reduced. See 9.8 plan. More extraction (filters, relations, tree) can continue in follow-ups.
 - [x] **Indicadores basic vertical**: Delivered in Stage 9.9 (0027 for core `indicadores`; Pages/Indicadores using 9.8 base + overrides for definicion/valores/responsables/frecuencias/etc + templates + routes + verify + playbook). Charts, objetivos/metas, calculations and dashboard deferred. See 9.9 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals**: Procesos, or deeper sub-entities / integrations (Mejora full, Documentación tree, Formación cursos, Auditorías execution, Aspectos matrix, etc.). Cross-cut work (filters/relations etc.) can continue alongside.
+- [x] **Procesos basic vertical**: Delivered in Stage 9.10 (0028 for core `procesos`; Pages/Procesos using 9.8 base + overrides for nombre/codigo/revision/padre/activo + templates + routes + verify + playbook). Árbol/tree, contenido_procesos, flujogramas, per-process indicators, ficha and workflows deferred. See 9.10 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals**: Deeper on Procesos (tree/arbol + contenido), Documentación tree, or other (Mejora full, Formación remaining, Auditorías execution, Aspectos matrix, etc.). Cross-cut work (filters/relations etc.) can continue alongside.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -114,8 +115,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Full Objetivos + Metas + reporting/dashboard integration. Charts may stay legacy or modernized later.
 
 ### Procesos (Processes)
-- [ ] Procesos (legacy 76) — catalogos, arbol de procesos (related to Documentación tree?). Complexity: M (tree + description + links to other modules).
-- [ ] Process mapping / revision / approval.
+- [x] Procesos (legacy 76) — basic catalog shell (core `procesos` table) delivered in Stage 9.10 (0028 patch + Pages/Procesos + templates + routes + verify). Core fields + list/form. Tree/arbol, contenido_procesos, flujogramas, indicators linkage and workflows deferred. See 9.10 plan and STAGE-CHECKLISTS.
+- [ ] Full Árbol de Procesos + hierarchy management + rich sub-entities (contenido, flujos, indicators de proceso).
 
 ### Other / Smaller or Cross
 - [ ] Mensajes / Tareas (were reparented to Administracion in 0010; check if still using legacy or need modern pages).

@@ -1,0 +1,68 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/procesos" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 700px;">
+    <form method="POST" action="{{ isEdit ? '/admin/procesos/editar/' ~ proceso.id : '/admin/procesos/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ proceso.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ proceso.nombre ?? '' }}" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="codigo">Código</label>
+                    <input type="text" class="form-control" id="codigo" name="codigo" value="{{ proceso.codigo ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="revision">Revisión</label>
+                    <input type="text" class="form-control" id="revision" name="revision" value="{{ proceso.revision ?? '' }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="padre">Padre (ID de proceso padre para jerarquía)</label>
+            <input type="number" class="form-control" id="padre" name="padre" value="{{ proceso.padre ?? 0 }}">
+            <small class="help-block">0 = raíz / proceso principal. (El árbol completo y UI de jerarquía se modernizarán más adelante.)</small>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1" {% if not isEdit or proceso.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Proceso' }}
+            </button>
+            <a href="/admin/procesos" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Procesos (Stage 9.10 basic shell). Árbol de Procesos, contenido_procesos, flujogramas, indicadores asociados, fichas y workflows de revisión/aprobación se gestionan actualmente en legacy. La jerarquía visual y sub-entidades se modernizarán en legs posteriores.
+        </div>
+    </form>
+</div>
+{% endblock %}

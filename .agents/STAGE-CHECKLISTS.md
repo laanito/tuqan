@@ -2333,3 +2333,80 @@ docker compose exec app php -l Pages/Indicadores/Listado.php Pages/Indicadores/F
 
 **Branch status:** Stage 9.9 on `feat/stage-9.9-indicadores`. Plan committed first. Full standards held. Uses 9.8 cross-cut improvements.
 
+---
+
+## Stage 9.10 — Procesos basic (core `procesos` list + form shell)
+
+**Goal:** Next vertical from MIGRATION-TODOS Suggested after 9.9: Procesos (legacy 76) basic slice over the main `procesos` table (nombre, codigo, revision, padre, activo). Provides modern catalog entry for processes. Full Árbol/tree rendering (padre hierarchy + generador_arboles), contenido_procesos (rich details + arrays), flujogramas, indicators-per-proceso, ficha, matriz and approval workflows deferred.
+
+**Selected scope for this leg (reviewable):**
+- New patch: 0028-procesos-table-and-seed.sql.
+- Pages/Procesos/{Listado,Formulario}.php (using 9.8 enhanced base helpers + targeted overrides).
+- templates/procesos/* (exact style + stage note on deferred tree/content).
+- Routes in index.php (modern /admin/procesos + legacy arbol/catalogos path).
+- Extend verify-8.6.sh + full new "Stage 9.10 Verification Playbook".
+- Update MIGRATION-TODOS (flip Procesos), MIGRATION-PLAN, this file.
+- Out: árbol UI, contenido/flujogramas, per-process indicators, ficha/matrix, sub workflows.
+
+**Key changes:**
+- New: 0028 patch, Pages/Procesos/*, templates/procesos/*, reference/stage-9.10-procesos-plan.md (plan first).
+- Modified: index.php, scripts/verify-8.6.sh, .agents/MIGRATION-TODOS.md, .agents/STAGE-CHECKLISTS.md (this section), .agents/MIGRATION-PLAN.md.
+- Branch: feat/stage-9.10-procesos (plan committed first; all Docker-only; leverages 9.8 bases; standards held).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.10.0","content":"Read current MIGRATION-TODOS (post 9.9), pick Procesos as next vertical","status":"completed"},
+  {"id":"9.10.1","content":"git checkout -b feat/stage-9.10-procesos from clean master; write plan FIRST","status":"completed"},
+  {"id":"9.10.2","content":"Create data patch 0028 for procesos + seeds","status":"completed"},
+  {"id":"9.10.3","content":"Implement Pages/Procesos using enhanced Catalog* + small overrides","status":"completed"},
+  {"id":"9.10.4","content":"Create templates/procesos (list + form + notes)","status":"completed"},
+  {"id":"9.10.5","content":"Wire routes in index.php","status":"completed"},
+  {"id":"9.10.6","content":"Extend verify + append full 9.10 playbook","status":"completed"},
+  {"id":"9.10.7","content":"Update living TODOS (flip Procesos), MIGRATION-PLAN","status":"in_progress"},
+  {"id":"9.10.8","content":"Full clean-room verify","status":"pending"},
+  {"id":"9.10.9","content":"Logical commits, push, PR","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Table + patch + rows
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename = 'procesos';
+  SELECT filename FROM data_patches WHERE filename LIKE '0028%' ORDER BY filename;
+  SELECT id, nombre, codigo, revision, padre, activo FROM procesos ORDER BY id;
+  SELECT COUNT(*) AS procesos_rows FROM procesos;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Procesos/Listado.php Pages/Procesos/Formulario.php index.php Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init, login.
+2. Navigate to Procesos via sidebar (or legacy path) → confirm list + "Nuevo Proceso", create/edit works (nombre, codigo, revision, padre, activo), flashes, legacy /.../catalogos/arbol/ver resolves to modern list, DB matches.
+3. All prior modules (incl. 9.9 Indicadores, 9.8 bases) unaffected.
+4. Note: Padre values are editable for future tree work; full hierarchy UI deferred.
+
+**Evidence skeleton + gates:**
+- git log shows plan first.
+- psql confirms procesos + 0028 + rows.
+- verify-8.6.sh green (includes it, counts, no regression on bases or priors).
+- php -l clean.
+- Browser flow + post DB assert.
+- MIGRATION-TODOS has Procesos flipped + Suggested refreshed.
+- Templates have clear stage notes; uses improved 9.8 base.
+- Plan + playbook + living lists updated.
+
+**Next:**
+- Flip the Procesos checkbox in MIGRATION-TODOS once merged + human sign-off.
+- Suggested: deeper work on Procesos (tree/arbol + contenido), Documentación tree, or other pending (Mejora full, Aspectos matrix, Auditorías execution, Formación remaining). Cross-cut helpers can continue.
+
+**Branch status:** Stage 9.10 on `feat/stage-9.10-procesos`. Plan committed first. Full standards held. Uses 9.8 cross-cut improvements.
+
