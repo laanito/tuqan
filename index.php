@@ -415,6 +415,18 @@ $router->addRoute('POST', '/admin/indicadores/editar/{id}', ['Tuqan\Pages\Indica
 // Key legacy for Indicadores (from full legacy menu accions: indicadores:indicadores:*)
 $router->addRoute('GET', '/administracion/indicadores/indicadores/listado/ver', ['Tuqan\Pages\Indicadores\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Procesos (Stage 9.10 basic slice; core procesos catalog / legacy 76) ===
+$router->addRoute('GET', '/admin/procesos', ['Tuqan\Pages\Procesos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/procesos/nuevo', ['Tuqan\Pages\Procesos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/procesos/editar/{id}', ['Tuqan\Pages\Procesos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Procesos
+$router->addRoute('POST', '/admin/procesos/nuevo', ['Tuqan\Pages\Procesos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/procesos/editar/{id}', ['Tuqan\Pages\Procesos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+// Legacy routes for Procesos (from menu: procesos:catalogos:arbol:ver and catalog variants)
+$router->addRoute('GET', '/administracion/procesos/catalogos/arbol/ver', ['Tuqan\Pages\Procesos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.
 
