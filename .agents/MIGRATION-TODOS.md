@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.10 on `feat/stage-9.10-procesos` (Procesos basic via core `procesos` table; 0028 patch, Pages/Procesos using 9.8 enhanced bases + overrides, templates, routes, verify + playbook, living docs). Previous: 9.9 Indicadores.
+**Last updated**: Stage 9.11 on `feat/stage-9.11-procesos-arbol` (Procesos deeper: Árbol + contenido basic; 0029 patch, Pages/Procesos/Arbol modern tree view, templates, routes update for legacy arbol, verify + playbook, living docs). Previous: 9.10 Procesos basic.
 
 ---
 
@@ -67,7 +67,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Cross-cut extraction (first delivery)**: Stage 9.8 — richer helpers added to CatalogListado + CatalogFormulario (getDb, getSidebar, loadItem, getPostData, validate, persist, build*Variables, fetchItems). Base ShowPage/Procesar now use them. Duplication for future rich modules (and refactors of existing) dramatically reduced. See 9.8 plan. More extraction (filters, relations, tree) can continue in follow-ups.
 - [x] **Indicadores basic vertical**: Delivered in Stage 9.9 (0027 for core `indicadores`; Pages/Indicadores using 9.8 base + overrides for definicion/valores/responsables/frecuencias/etc + templates + routes + verify + playbook). Charts, objetivos/metas, calculations and dashboard deferred. See 9.9 plan and STAGE-CHECKLISTS.
 - [x] **Procesos basic vertical**: Delivered in Stage 9.10 (0028 for core `procesos`; Pages/Procesos using 9.8 base + overrides for nombre/codigo/revision/padre/activo + templates + routes + verify + playbook). Árbol/tree, contenido_procesos, flujogramas, per-process indicators, ficha and workflows deferred. See 9.10 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals**: Deeper on Procesos (tree/arbol + contenido), Documentación tree, or other (Mejora full, Formación remaining, Auditorías execution, Aspectos matrix, etc.). Cross-cut work (filters/relations etc.) can continue alongside.
+- [x] **Procesos deeper (Árbol + contenido basic)**: Delivered in Stage 9.11 (0029 for contenido_procesos seeds + Pages/Procesos/Arbol modern tree view using padre hierarchy + contenido summaries; legacy arbol route now modern; flat list preserved). Full editing, drag-drop, flujogramas and arrays deferred. See 9.11 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals**: Documentación tree (high value), cross-cut tree helpers, or other (Mejora full integration, Formación subs, Auditorías execution, Aspectos matrix, etc.). Cross-cut work can continue alongside.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -116,7 +117,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 
 ### Procesos (Processes)
 - [x] Procesos (legacy 76) — basic catalog shell (core `procesos` table) delivered in Stage 9.10 (0028 patch + Pages/Procesos + templates + routes + verify). Core fields + list/form. Tree/arbol, contenido_procesos, flujogramas, indicators linkage and workflows deferred. See 9.10 plan and STAGE-CHECKLISTS.
-- [ ] Full Árbol de Procesos + hierarchy management + rich sub-entities (contenido, flujos, indicators de proceso).
+- [x] Procesos deeper — Árbol + contenido basic delivered in Stage 9.11 (0029 + Pages/Procesos/Arbol modern tree view with hierarchy + contenido summaries; legacy arbol path updated). Full interactive tree editing, flujogramas and rich workflows deferred. See 9.11 plan and STAGE-CHECKLISTS.
+- [ ] Full Árbol editing + complete sub-entities (flujos, indicators de proceso, approval flows).
 
 ### Other / Smaller or Cross
 - [ ] Mensajes / Tareas (were reparented to Administracion in 0010; check if still using legacy or need modern pages).

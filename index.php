@@ -425,7 +425,10 @@ $router->addRoute('POST', '/admin/procesos/nuevo', ['Tuqan\Pages\Procesos\Formul
 $router->addRoute('POST', '/admin/procesos/editar/{id}', ['Tuqan\Pages\Procesos\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
 // Legacy routes for Procesos (from menu: procesos:catalogos:arbol:ver and catalog variants)
-$router->addRoute('GET', '/administracion/procesos/catalogos/arbol/ver', ['Tuqan\Pages\Procesos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/procesos/catalogos/arbol/ver', ['Tuqan\Pages\Procesos\Arbol', 'ShowPage'], ['before' => 'auth_company']);
+
+// Modern Árbol / tree view (Stage 9.11)
+$router->addRoute('GET', '/admin/procesos/arbol', ['Tuqan\Pages\Procesos\Arbol', 'ShowPage'], ['before' => 'auth_company']);
 
 // No generic catch-all route to avoid conflicts with auth filter and route ordering.
 // Unknown paths are handled gracefully in the exception block below.

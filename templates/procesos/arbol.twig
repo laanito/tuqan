@@ -1,0 +1,77 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/procesos" class="btn btn-default btn-sm">Vista de listado plano</a>
+            <a href="/admin/procesos/nuevo" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo Proceso
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if procesos is empty %}
+        <div class="alert alert-info">No hay procesos registrados.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="width:60px;">ID</th>
+                        <th>Nombre</th>
+                        <th>Código</th>
+                        <th>Revisión</th>
+                        <th>Padre</th>
+                        <th>Contenido (resumen)</th>
+                        <th>Estado</th>
+                        <th style="width:120px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in procesos %}
+                    <tr style="{% if p.padre > 0 %}background:#f9f9f9;{% endif %}">
+                        <td>{{ p.id }}</td>
+                        <td style="padding-left: {{ (p.padre > 0 ? 20 : 0) }}px;">
+                            <strong>{{ p.nombre }}</strong>
+                            {% if p.parent_nombre %}<small class="text-muted"> (hijo de {{ p.parent_nombre }})</small>{% endif %}
+                        </td>
+                        <td>{{ p.codigo ?? '-' }}</td>
+                        <td>{{ p.revision ?? '-' }}</td>
+                        <td>{{ p.padre ?? 0 }}</td>
+                        <td>
+                            {% if p.contenido|length > 0 %}
+                                {% for c in p.contenido %}
+                                    <div style="font-size:11px; line-height:1.2; margin-bottom:3px;">
+                                        <strong>Entradas:</strong> {{ c.entradas|slice(0,60) }}{% if c.entradas|length > 60 %}...{% endif %}<br>
+                                        <strong>Salidas:</strong> {{ c.salidas|slice(0,60) }}{% if c.salidas|length > 60 %}...{% endif %}<br>
+                                        <small>Proveedor: {{ c.proveedor|default('-') }} | Doc: {{ c.doc_asociada|default('-') }}</small>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>{% if p.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/procesos/editar/{{ p.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Procesos — Árbol / jerarquía (Stage 9.11). Vista basada en <code>padre</code> + resumen de <code>contenido_procesos</code>.
+        El árbol completo interactivo (drag &amp; drop, edición de jerarquía, flujogramas, arrays completos y workflows) permanece en legacy por ahora.
+        Usa la vista de listado plano para el CRUD básico.
+    </div>
+</div>
+{% endblock %}

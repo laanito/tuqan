@@ -2410,3 +2410,81 @@ docker compose exec app php -l Pages/Procesos/Listado.php Pages/Procesos/Formula
 
 **Branch status:** Stage 9.10 on `feat/stage-9.10-procesos`. Plan committed first. Full standards held. Uses 9.8 cross-cut improvements.
 
+---
+
+## Stage 9.11 — Procesos Árbol + contenido basic (tree view shell)
+
+**Goal:** Advance the top "Next verticals" item after 9.10: deeper slice on Procesos — modern Árbol / tree view (hierarchy via `padre`) + basic `contenido_procesos` integration (entradas/salidas/proveedor/cliente/doc etc. summaries). The original legacy arbol entry point now resolves to this modern shell.
+
+**Selected scope for this leg (reviewable):**
+- New patch 0029 (contenido_procesos CREATE IF NOT EXISTS + linked demo rows).
+- `Pages/Procesos/Arbol.php` (reuses 9.8 helpers for db/sidebar/context/flash; custom tree + contenido fetch).
+- `templates/procesos/arbol.twig` (hierarchical display with indent + contenido snippets + stage notes).
+- Routes: modern `/admin/procesos/arbol` + update legacy `.../arbol/ver` to point at Arbol.
+- Extend verify-8.6.sh + full 9.11 playbook.
+- Update living docs.
+- Out: full tree editing, drag & drop, flujogramas, complete array editing, legacy generator retirement.
+
+**Key changes:**
+- New: 0029 patch, Pages/Procesos/Arbol.php, templates/procesos/arbol.twig, reference/stage-9.11-procesos-arbol-plan.md (plan first).
+- Modified: index.php (routes), scripts/verify-8.6.sh, .agents/* (TODOS, STAGE-CHECKLISTS, MIGRATION-PLAN).
+- Branch: feat/stage-9.11-procesos-arbol (plan first; Docker-only; builds on 9.10 flat + 9.8 helpers).
+
+**todo_write items (copy for execution):**
+```json
+[
+  {"id":"9.11.0","content":"Read MIGRATION-TODOS, pick deeper Procesos (arbol + contenido)","status":"completed"},
+  {"id":"9.11.1","content":"git checkout -b ... ; write plan FIRST","status":"completed"},
+  {"id":"9.11.2","content":"Patch 0029 + contenido seeds","status":"completed"},
+  {"id":"9.11.3","content":"Pages/Procesos/Arbol.php (tree + contenido using 9.8 helpers)","status":"completed"},
+  {"id":"9.11.4","content":"templates/procesos/arbol.twig (hierarchy + notes)","status":"completed"},
+  {"id":"9.11.5","content":"Update routes (modern arbol + legacy)","status":"completed"},
+  {"id":"9.11.6","content":"Extend verify + append playbook","status":"completed"},
+  {"id":"9.11.7","content":"Update TODOS/MIGRATION-PLAN","status":"in_progress"},
+  {"id":"9.11.8","content":"Full clean-room verify + browser (tree view + contenido)","status":"pending"},
+  {"id":"9.11.9","content":"Logical commits, push, PR","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT tablename FROM pg_tables WHERE tablename IN ('procesos','contenido_procesos');
+  SELECT filename FROM data_patches WHERE filename LIKE '002%' ORDER BY filename;
+  SELECT COUNT(*) AS procesos FROM procesos;
+  SELECT COUNT(*) AS contenido FROM contenido_procesos;
+  SELECT p.nombre, c.entradas FROM procesos p LEFT JOIN contenido_procesos c ON c.proceso = p.id ORDER BY p.id;
+"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Procesos/Arbol.php Pages/Procesos/Listado.php Pages/Procesos/Formulario.php index.php
+```
+
+**Browser + post-action flows (human gate):**
+1. After clean init + login.
+2. Go to Procesos (flat list) — unchanged.
+3. Go to legacy arbol path or /admin/procesos/arbol — hierarchical view appears (indent/parent names, contenido summaries for linked items).
+4. Links to edit still work; no breakage in flat catalog or other modules.
+5. DB state matches what is shown.
+
+**Evidence skeleton + gates:**
+- git log shows plan first.
+- psql confirms contenido_procesos + 0029 + linked rows.
+- verify-8.6.sh green.
+- php -l clean.
+- Tree view renders hierarchy + contenido snippets.
+- Legacy arbol path now modern; flat list untouched.
+- MIGRATION-TODOS advanced + Suggested refreshed.
+- Plan + playbook updated.
+
+**Next:**
+- Mark deeper Procesos item progress in TODOS after merge/sign-off.
+- Suggested now favors: Documentación tree, cross-cut tree helpers, or next full vertical (Mejora integration, Aspectos matrix, etc.).
+
+**Branch status:** Stage 9.11 on `feat/stage-9.11-procesos-arbol`. Plan committed first. Full standards held. Uses 9.8 helpers.
+
