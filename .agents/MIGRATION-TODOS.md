@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.11 on `feat/stage-9.11-procesos-arbol` (Procesos deeper: Árbol + contenido basic; 0029 patch, Pages/Procesos/Arbol modern tree view, templates, routes update for legacy arbol, verify + playbook, living docs). Previous: 9.10 Procesos basic.
+**Last updated**: Stage 9.12 on `feat/stage-9.12-documentacion-tree` (Documentación tree first slice; modern Arbol view shell using grouping, routes, verify + playbook). Previous: 9.11 Procesos deeper.
 
 ---
 
@@ -40,7 +40,7 @@ STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retr
 - Menus (batch orden + labels via Listado::Procesar), Idiomas, Permisos (matrix)
 - Clientes, Criterios (catalog base)
 - TiposMejora, TiposAreas, TipoDocumento, TiposAmb, TiposImp, TipoCursos (all catalog base post 8.7-8.9)
-- Proveedores, Equipos, Acciones Mejora, Formación (Planes), Documentación (shell), Auditorías (Programa), Indicadores, Procesos (shell) — Stages 9.2-9.10
+- Proveedores, Equipos, Acciones Mejora, Formación (Planes), Documentación (shell + tree start), Auditorías (Programa), Indicadores, Procesos (shell + arbol) — Stages 9.2-9.12
 
 **Personalizacion (under Administracion/Aplicacion) catalogs**: Complete for the 7 original + Tipo Cursos (stages 8.5-8.9). Menu cleaned in 8.9 (0017 reparent actionable, 0018 delete redundant empty sections).
 
@@ -68,7 +68,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Indicadores basic vertical**: Delivered in Stage 9.9 (0027 for core `indicadores`; Pages/Indicadores using 9.8 base + overrides for definicion/valores/responsables/frecuencias/etc + templates + routes + verify + playbook). Charts, objetivos/metas, calculations and dashboard deferred. See 9.9 plan and STAGE-CHECKLISTS.
 - [x] **Procesos basic vertical**: Delivered in Stage 9.10 (0028 for core `procesos`; Pages/Procesos using 9.8 base + overrides for nombre/codigo/revision/padre/activo + templates + routes + verify + playbook). Árbol/tree, contenido_procesos, flujogramas, per-process indicators, ficha and workflows deferred. See 9.10 plan and STAGE-CHECKLISTS.
 - [x] **Procesos deeper (Árbol + contenido basic)**: Delivered in Stage 9.11 (0029 for contenido_procesos seeds + Pages/Procesos/Arbol modern tree view using padre hierarchy + contenido summaries; legacy arbol route now modern; flat list preserved). Full editing, drag-drop, flujogramas and arrays deferred. See 9.11 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals**: Documentación tree (high value), cross-cut tree helpers, or other (Mejora full integration, Formación subs, Auditorías execution, Aspectos matrix, etc.). Cross-cut work can continue alongside.
+- [x] **Documentación tree first slice**: Delivered in Stage 9.12 (modern Arbol/tree view shell for documentos, grouped display, new page + template + route). Full tree structure, editor, perfiles and workflows deferred. See 9.12 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals**: Cross-cut tree helpers, or other (Mejora full integration, Formación subs, Auditorías execution, Aspectos matrix, etc.). Cross-cut work can continue alongside.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -104,7 +105,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 
 ### Documentación (Core ISO — high value, likely larger)
 - [x] Documentación initial shell delivered in Stage 9.5 (0024 patch for documentos + Pages/Documentacion basic Listado + Form + templates/landing + routes). Modern list + core form over main table; tree, editor, approval workflow, perfil arrays and all sub-accions (docvigor, manual, politica, etc.) remain legacy. See 9.5 plan/playbook.
-- [ ] Formats / plantillas / control de documentos specifics; full tree + editor modernization.
+- [x] Documentación tree first slice delivered in Stage 9.12 (modern Arbol view shell, grouped by tipo, dedicated page + route). Full legacy arbol replacement, editor and complex fields deferred. See 9.12 plan and STAGE-CHECKLISTS.
+- [ ] Full tree + editor modernization, perfiles, workflows, formats/plantillas.
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
