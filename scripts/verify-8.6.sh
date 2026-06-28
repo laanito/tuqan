@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 / 9.3 / 9.4 / 9.5 / 9.6 / 9.7 / 9.8 / 9.9 / 9.10 / 9.11 Verification (non-interactive) ==="
+echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 / 9.3 / 9.4 / 9.5 / 9.6 / 9.7 / 9.8 / 9.9 / 9.10 / 9.11 / 9.12 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
@@ -31,6 +31,7 @@ php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
     Pages/Mejora/Listado.php Pages/Mejora/Formulario.php \
     Pages/Formacion/Listado.php Pages/Formacion/Formulario.php \
     Pages/Documentacion/Listado.php Pages/Documentacion/Formulario.php \
+    Pages/Documentacion/Arbol.php \
     Pages/Auditorias/Listado.php Pages/Auditorias/Formulario.php \
     Pages/Aspectos/Listado.php Pages/Aspectos/Formulario.php \
     Pages/Indicadores/Listado.php Pages/Indicadores/Formulario.php \
@@ -133,5 +134,5 @@ echo ""
 echo "3. (Class load smoke skipped in this script because it is fragile from different CWDs; the php -l above already gives us syntax confidence. Full route exercising requires a real session and is covered in the browser + DB-assert part of the playbook.)"
 
 echo ""
-echo "=== 8.6/8.7/8.8/9.1/9.2/9.3/9.4/9.5/9.6/9.7/9.8/9.9/9.10/9.11 non-interactive verification finished ==="
+echo "=== 8.6/8.7/8.8/9.1/9.2/9.3/9.4/9.5/9.6/9.7/9.8/9.9/9.10/9.11/9.12 non-interactive verification finished ==="
 echo "For the real confidence on the POST behavior, flashes, matrix, editing, etc., follow the full playbook in .agents/STAGE-CHECKLISTS.md (the browser + DB-assert-after-submit part)."

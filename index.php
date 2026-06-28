@@ -378,6 +378,9 @@ $router->addRoute('POST', '/admin/documentacion/editar/{id}', ['Tuqan\Pages\Docu
 $router->addRoute('GET', '/administracion/documentacion/docvigor/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/documentacion/docborrador/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// Modern tree/arbol view for Documentación (Stage 9.12 first slice)
+$router->addRoute('GET', '/admin/documentacion/arbol', ['Tuqan\Pages\Documentacion\Arbol', 'ShowPage'], ['before' => 'auth_company']);
+
 // === Auditorías / Programa (Stage 9.6 basic slice) ===
 $router->addRoute('GET', '/admin/auditorias', ['Tuqan\Pages\Auditorias\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/auditorias/nuevo', ['Tuqan\Pages\Auditorias\Formulario', 'ShowPage'], ['before' => 'auth_company']);
