@@ -2488,3 +2488,52 @@ docker compose exec app php -l Pages/Procesos/Arbol.php Pages/Procesos/Listado.p
 
 **Branch status:** Stage 9.11 on `feat/stage-9.11-procesos-arbol`. Plan committed first. Full standards held. Uses 9.8 helpers.
 
+---
+
+## Stage 9.12 — Documentación tree first slice (modern arbol view shell)
+
+**Goal:** High-value next vertical: first modern tree/arbol view shell for Documentación (after the 9.5 basic list shell). Provides usable modern grouped/tree-like view over the documentos table.
+
+**Selected scope for this leg (reviewable):**
+- `Pages/Documentacion/Arbol.php` (uses 9.8 helpers + custom grouping for tree feel).
+- `templates/documentacion/arbol.twig` (grouped by tipo, links, stage notes).
+- Routes: modern `/admin/documentacion/arbol`.
+- Extend verify + full playbook.
+- Update living docs.
+- Out: full arbol_documentos replacement, editor, perfiles, approval, PDF.
+
+**Key changes:**
+- New: Pages/Documentacion/Arbol.php, templates/documentacion/arbol.twig, reference/stage-9.12-documentacion-tree-plan.md (plan first).
+- Modified: index.php, scripts/verify-8.6.sh, .agents/* files.
+- Branch: feat/stage-9.12-documentacion-tree.
+
+**todo_write items:**
+```json
+[{"id":"9.12.1","content":"plan first + branch","status":"completed"},{"id":"9.12.2","content":"Arbol class + template (grouped tree shell)","status":"completed"},{"id":"9.12.3","content":"routes + verify updates","status":"in_progress"},{"id":"9.12.4","content":"living docs + full verify + PR","status":"pending"}]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM documentos; SELECT id,nombre,tipo_documento FROM documentos;"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Documentacion/Arbol.php index.php
+```
+
+**Browser flows:**
+- Flat /admin/documentacion works.
+- /admin/documentacion/arbol shows grouped tree view.
+- Edit links functional.
+
+**Evidence:**
+- Plan first, verify green, tree view renders.
+
+**Next:** Cross-cut tree helpers or next vertical.
+
+**Branch status:** Stage 9.12 on `feat/stage-9.12-documentacion-tree`. Plan first. 
+
