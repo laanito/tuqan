@@ -130,4 +130,67 @@ abstract class CatalogListado
             return "Error al cargar {$this->title}: " . $e->getMessage();
         }
     }
+
+    // --- Cross-cut tree helpers (Stage 9.13 first delivery) ---
+    // Common patterns extracted from Procesos/Arbol (9.11) and Documentacion/Arbol (9.12)
+    // to reduce duplication for future tree views.
+
+    protected function initTwig(): Environment
+    {
+        Config::initialize();
+        $loader = new FilesystemLoader(Config::$template_path);
+        return new Environment($loader, [
+            'cache' => Config::$cache_path,
+        ]);
+    }
+
+    protected function buildCommonVariables(): array
+    {
+        $flash = $this->getFlashData();
+        $context = $this->getUserContext();
+
+        return array_merge([
+            'sidebarMenu'   => $this->getSidebarMenu(),
+            'pageTitle'     => $this->title,
+            'flashSuccess'  => $flash['flashSuccess'],
+            'flashError'    => $flash['flashError'],
+            'isTreeView'    => true,
+        ], $context);
+    }
+
+    /**
+     * Resolve parent names for hierarchy (used by padre-based trees like Procesos).
+     */
+    protected function resolveParentNames(array $items, string $parentField = 'padre', string $nameField = 'nombre'): array
+    {
+        $byId = [];
+        foreach ($items as &$item) {
+            $item['parent_nombre'] = '';
+            $byId[$item['id']] = &$item;
+        }
+        foreach ($items as &$item) {
+            $pid = $item[$parentField] ?? 0;
+            if ($pid > 0 && isset($byId[$pid])) {
+                $item['parent_nombre'] = $byId[$pid][$nameField] ?? '';
+            }
+        }
+        unset($item);
+        return $items;
+    }
+
+    /**
+     * Group items by a key (used for tree-like grouping by tipo/area like Documentación).
+     */
+    protected function groupItems(array $items, string $groupKey): array
+    {
+        $grouped = [];
+        foreach ($items as $item) {
+            $key = $item[$groupKey] ?? 0;
+            if (!isset($grouped[$key])) {
+                $grouped[$key] = [];
+            }
+            $grouped[$key][] = $item;
+        }
+        return $grouped;
+    }
 }

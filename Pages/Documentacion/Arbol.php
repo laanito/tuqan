@@ -1,10 +1,7 @@
 <?php
 namespace Tuqan\Pages\Documentacion;
 
-use Tuqan\Classes\Config;
 use Tuqan\Pages\Catalog\CatalogListado;
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment;
 
 /**
  * Modern tree/arbol view shell for Documentación (Stage 9.12).
@@ -52,36 +49,20 @@ class Arbol extends CatalogListado
 
     protected function buildTreeVariables(array $items): array
     {
-        $flash = $this->getFlashData();
-        $context = $this->getUserContext();
+        $base = $this->buildCommonVariables();  // cross-cut helper (Stage 9.13)
 
         // Simple grouping for tree feel (by tipo_documento as top level)
-        $grouped = [];
-        foreach ($items as $item) {
-            $key = $item['tipo_documento'] ?? 0;
-            if (!isset($grouped[$key])) $grouped[$key] = [];
-            $grouped[$key][] = $item;
-        }
+        $grouped = $this->groupItems($items, 'tipo_documento');  // cross-cut helper (Stage 9.13)
 
-        return array_merge([
-            'sidebarMenu'  => $this->getSidebarMenu(),
-            'documentos'   => $items,
-            'grouped'      => $grouped,
-            'pageTitle'    => $this->title,
-            'flashSuccess' => $flash['flashSuccess'],
-            'flashError'   => $flash['flashError'],
-            'isTreeView'   => true,
-        ], $context);
+        return array_merge($base, [
+            'documentos' => $items,
+            'grouped'    => $grouped,
+        ]);
     }
 
     public function ShowPage()
     {
-        Config::initialize();
-
-        $loader = new FilesystemLoader(Config::$template_path);
-        $twig = new Environment($loader, [
-            'cache' => Config::$cache_path,
-        ]);
+        $twig = $this->initTwig();  // cross-cut helper (Stage 9.13)
 
         $items = $this->fetchTreeItems();
         $variables = $this->buildTreeVariables($items);
