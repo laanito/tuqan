@@ -2537,3 +2537,53 @@ docker compose exec app php -l Pages/Documentacion/Arbol.php index.php
 
 **Branch status:** Stage 9.12 on `feat/stage-9.12-documentacion-tree`. Plan first. 
 
+---
+
+## Stage 9.13 — Cross-cut tree helpers (first delivery)
+
+**Goal:** First cross-cut after tree views in 9.11/9.12: extract duplicated patterns (Twig init, common variables, hierarchy resolution, grouping) into CatalogListado to reduce boilerplate.
+
+**Selected scope (reviewable):**
+- Helpers in CatalogListado: initTwig, buildCommonVariables, resolveParentNames, groupItems.
+- Refactor Procesos/Arbol and Documentacion/Arbol to use them (behavior identical).
+- Extend verify + full 9.13 playbook.
+- Update living docs.
+
+**Key changes:**
+- New: reference/stage-9.13-cross-cut-tree-helpers-plan.md (plan first).
+- Modified: Pages/Catalog/CatalogListado.php, the two Arbol.php, scripts/verify-8.6.sh, .agents/* .
+- Branch: feat/stage-9.13-cross-cut-tree-helpers.
+
+**todo_write items:**
+```json
+[{"id":"9.13.1","content":"plan first","status":"completed"},{"id":"9.13.2","content":"add helpers + refactor two Arbols","status":"completed"},{"id":"9.13.3","content":"docs + verify + PR","status":"in_progress"}]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Procesos/Arbol.php Pages/Documentacion/Arbol.php
+```
+
+**Browser + post-action flows:**
+- Both /admin/.../arbol views render exactly as before (hierarchy/grouping intact).
+- No change to flat lists or other modules.
+
+**Evidence skeleton:**
+- Plan first.
+- verify-8.6.sh green.
+- php -l clean.
+- Trees unchanged in output.
+- Code in Arbols much smaller (delegates to base).
+
+**Next:**
+- Mark cross-cut in TODOS.
+- Suggested: more cross-cuts or next vertical (Mejora etc.).
+
+**Branch status:** Stage 9.13 on `feat/stage-9.13-cross-cut-tree-helpers`. Plan first. Full standards held. Uses 9.8+ helpers.
+
