@@ -1,10 +1,7 @@
 <?php
 namespace Tuqan\Pages\Procesos;
 
-use Tuqan\Classes\Config;
 use Tuqan\Pages\Catalog\CatalogListado;
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment;
 
 /**
  * Árbol / tree view for Procesos (Stage 9.11 deeper slice).
@@ -49,21 +46,12 @@ class Arbol extends CatalogListado
         // Procesos
         $db->consulta($this->getSelectSql());
         $procesos = [];
-        $byId = [];
         while ($row = $db->coger_Fila()) {
-            $p = $this->mapRow($row);
-            $p['parent_nombre'] = '';
-            $procesos[] = $p;
-            $byId[$p['id']] = &$procesos[count($procesos)-1];
+            $procesos[] = $this->mapRow($row);
         }
 
-        // Resolve parent names (simple loop)
-        foreach ($procesos as &$p) {
-            if (!empty($p['padre']) && isset($byId[$p['padre']])) {
-                $p['parent_nombre'] = $byId[$p['padre']]['nombre'];
-            }
-        }
-        unset($p);
+        // Use cross-cut helper (Stage 9.13)
+        $procesos = $this->resolveParentNames($procesos);
 
         // Attach basic contenido_procesos summary for each proceso (0 or 1 for demo)
         $db->consulta("SELECT id, proceso, entradas, salidas, proveedor, cliente, doc_asociada FROM contenido_procesos ORDER BY id");
@@ -94,27 +82,16 @@ class Arbol extends CatalogListado
 
     protected function buildArbolVariables(array $items): array
     {
-        $flash   = $this->getFlashData();
-        $context = $this->getUserContext();
+        $base = $this->buildCommonVariables();  // cross-cut helper (Stage 9.13)
 
-        return array_merge([
-            'sidebarMenu'  => $this->getSidebarMenu(),
-            'procesos'     => $items,           // re-used name for template simplicity
-            'pageTitle'    => $this->title,
-            'flashSuccess' => $flash['flashSuccess'],
-            'flashError'   => $flash['flashError'],
-            'isTreeView'   => true,
-        ], $context);
+        return array_merge($base, [
+            'procesos' => $items,  // re-used name for template simplicity
+        ]);
     }
 
     public function ShowPage()
     {
-        Config::initialize();
-
-        $loader = new FilesystemLoader(Config::$template_path);
-        $twig = new Environment($loader, [
-            'cache' => Config::$cache_path,
-        ]);
+        $twig = $this->initTwig();  // cross-cut helper (Stage 9.13)
 
         $items = $this->fetchArbolItems();
         $variables = $this->buildArbolVariables($items);
