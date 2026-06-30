@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.13 on `feat/stage-9.13-cross-cut-tree-helpers` (cross-cut tree helpers first delivery; extracted to CatalogListado, refactored both Arbol views). Previous: 9.12 Documentación tree.
+**Last updated**: Stage 9.14 on `feat/stage-9.14-aspectos-matrix` (Aspectos matrix first slice; modern grouped matrix view using 9.8/9.13 helpers). Previous: 9.13 cross-cut tree.
 
 ---
 
@@ -70,7 +70,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Procesos deeper (Árbol + contenido basic)**: Delivered in Stage 9.11 (0029 for contenido_procesos seeds + Pages/Procesos/Arbol modern tree view using padre hierarchy + contenido summaries; legacy arbol route now modern; flat list preserved). Full editing, drag-drop, flujogramas and arrays deferred. See 9.11 plan and STAGE-CHECKLISTS.
 - [x] **Documentación tree first slice**: Delivered in Stage 9.12 (modern Arbol/tree view shell for documentos, grouped display, new page + template + route). Full tree structure, editor, perfiles and workflows deferred. See 9.12 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut tree helpers (first delivery)**: Delivered in Stage 9.13 (added resolveParentNames, groupItems, initTwig, buildCommonVariables to CatalogListado; refactored Procesos/Arbol and Documentacion/Arbol to use them). See 9.13 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals**: More cross-cuts (filters, relations, full tree base), or other (Mejora full integration, Formación subs, Auditorías execution, Aspectos matrix, etc.).
+- [x] **Aspectos matrix first slice**: Delivered in Stage 9.14 (modern grouped matrix view for aspectos with evaluation scores, using helpers; route added). Full editable matrix, revisiones and cuestionario integration deferred. See 9.14 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals**: More cross-cuts (filters, relations, full tree base), or other (Mejora full integration, Formación subs, Auditorías execution, etc.).
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -86,6 +87,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 
 ### Aspectos Ambientales / mAspectos (linked to Criterios)
 - [x] Aspectos / Aspectos Ambientales basic shell — core `aspectos` table (nombre + scores + tipo + activo) delivered in Stage 9.7 (0026 patch + Pages/Aspectos + routes + verify). Basic list + form. Full matrix, revisiones, cuestionario flows, FK resolution and "Emergencia" deferred. See 9.7 plan/playbook.
+- [x] Aspectos matrix first slice — modern grouped matrix view delivered in Stage 9.14 (Pages/Aspectos/Matriz + template showing scores by area). Full editable matrix, revisiones and cuestionario integration deferred. See 9.14 plan and STAGE-CHECKLISTS.
 - [ ] Full matrix + revisiones + cuestionario integration + reporting tie-in to Indicadores.
 
 ### Mejora (Improvement)

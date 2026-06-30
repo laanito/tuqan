@@ -406,6 +406,9 @@ $router->addRoute('POST', '/admin/aspectos/editar/{id}', ['Tuqan\Pages\Aspectos\
 $router->addRoute('GET', '/administracion/maspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/aambientales/revision/listado/ver', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// Matrix view (Stage 9.14 first slice)
+$router->addRoute('GET', '/admin/aspectos/matriz', ['Tuqan\Pages\Aspectos\Matriz', 'ShowPage'], ['before' => 'auth_company']);
+
 // === Indicadores (Stage 9.9 basic slice) ===
 $router->addRoute('GET', '/admin/indicadores', ['Tuqan\Pages\Indicadores\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/indicadores/nuevo', ['Tuqan\Pages\Indicadores\Formulario', 'ShowPage'], ['before' => 'auth_company']);
