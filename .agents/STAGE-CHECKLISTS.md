@@ -2587,3 +2587,56 @@ docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Procesos/A
 
 **Branch status:** Stage 9.13 on `feat/stage-9.13-cross-cut-tree-helpers`. Plan first. Full standards held. Uses 9.8+ helpers.
 
+---
+
+## Stage 9.14 — Aspectos matrix first slice
+
+**Goal:** First modern matrix view for Aspectos Ambientales after the 9.7 basic shell. Grouped table/matrix display of aspects with evaluation scores (magnitud, gravedad, frecuencia, impacto etc.).
+
+**Selected scope (reviewable):**
+- New page: Pages/Aspectos/Matriz.php + templates/aspectos/matriz.twig (grouped by area).
+- Uses 9.8/9.13 helpers.
+- Modern route only for this slice.
+- Full playbook + verify extension.
+- Update living docs.
+
+**Key changes:**
+- New: reference/stage-9.14-aspectos-matrix-plan.md (plan first), Pages/Aspectos/Matriz.php, templates/aspectos/matriz.twig.
+- Modified: index.php, scripts/verify-8.6.sh, .agents/*.
+- Branch: feat/stage-9.14-aspectos-matrix.
+
+**todo_write items:**
+```json
+[{"id":"9.14.1","content":"plan first","status":"completed"},{"id":"9.14.2","content":"Matriz page + template + route","status":"completed"},{"id":"9.14.3","content":"docs + full verify + PR","status":"in_progress"}]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM aspectos; SELECT id,nombre,area,magnitud,gravedad FROM aspectos;"
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Aspectos/Matriz.php Pages/Aspectos/Listado.php
+```
+
+**Browser flows:**
+- /admin/aspectos (list) unchanged.
+- /admin/aspectos/matriz shows grouped matrix with scores.
+- Links to edit work.
+
+**Evidence:**
+- Plan first.
+- verify green.
+- php-l clean.
+- Matrix renders useful view.
+
+**Next:**
+- Mark Aspectos matrix in TODOS.
+- Suggested: more cross-cuts or verticals (Mejora, Auditorías execution, Documentación editor).
+
+**Branch status:** Stage 9.14 on `feat/stage-9.14-aspectos-matrix`. Plan first. 
+
