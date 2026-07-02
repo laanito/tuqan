@@ -193,4 +193,55 @@ abstract class CatalogListado
         }
         return $grouped;
     }
+
+    // --- Cross-cut filters & relations (Stage 9.15 first delivery) ---
+    // list-with-filters and form-with-relations helpers.
+    // See reference/stage-9.15-...-plan.md for scope.
+
+    /**
+     * Extract common list filter params from query string.
+     * Subclasses can use in getSelectSql() or fetch methods.
+     */
+    protected function getFilterParams(): array
+    {
+        return [
+            'activo' => array_key_exists('activo', $_GET) ? (int)$_GET['activo'] : null,
+            'area'   => $_GET['area'] ?? null,
+            'tipo'   => $_GET['tipo'] ?? null,
+        ];
+    }
+
+    /**
+     * Simple filtered fetch helper that respects 'activo' filter if provided.
+     * Subclasses can call this instead of fetchItems() when they want filter support.
+     */
+    protected function fetchFilteredItems(): array
+    {
+        $filters = $this->getFilterParams();
+        $sql = $this->getSelectSql();
+        $params = [];
+
+        if (isset($filters['activo']) && $filters['activo'] !== null) {
+            if (stripos($sql, ' WHERE ') === false) {
+                $sql .= ' WHERE activo = ?';
+            } else {
+                $sql .= ' AND activo = ?';
+            }
+            $params[] = $filters['activo'];
+        }
+
+        $db = $this->getDb();
+        if ($params) {
+            $db->consultaPreparada($sql, $params);
+        } else {
+            $db->consulta($sql);
+        }
+
+        $items = [];
+        while ($row = $db->coger_Fila()) {
+            $items[] = $this->mapRow($row);
+        }
+        $db->desconexion();
+        return $items;
+    }
 }
