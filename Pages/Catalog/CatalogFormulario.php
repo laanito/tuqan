@@ -197,4 +197,30 @@ abstract class CatalogFormulario
         header("Location: {$this->listRoute}");
         exit;
     }
+
+    // --- Cross-cut relations helpers (Stage 9.15) ---
+    // form-with-relations support. Subclasses can call these for FK labels / related data.
+
+    protected function loadRelated(string $table, $id, array $columns = ['id', 'nombre']): ?array
+    {
+        if (!$id) return null;
+        $cols = implode(', ', $columns);
+        $db = $this->getDb();
+        $db->consultaPreparada("SELECT {$cols} FROM {$table} WHERE id = ?", [$id]);
+        $row = $db->coger_Fila();
+        $db->desconexion();
+        if (!$row) return null;
+
+        $result = [];
+        foreach ($columns as $i => $col) {
+            $result[$col] = $row[$i] ?? null;
+        }
+        return $result;
+    }
+
+    protected function getRelatedLabel(string $table, $id, string $labelCol = 'nombre'): ?string
+    {
+        $row = $this->loadRelated($table, $id, ['id', $labelCol]);
+        return $row[$labelCol] ?? null;
+    }
 }

@@ -2640,3 +2640,54 @@ docker compose exec app php -l Pages/Aspectos/Matriz.php Pages/Aspectos/Listado.
 
 **Branch status:** Stage 9.14 on `feat/stage-9.14-aspectos-matrix`. Plan first. 
 
+---
+
+## Stage 9.15 — Cross-cut: list-with-filters and form-with-relations helpers
+
+**Goal:** First delivery of list-with-filters and form-with-relations helpers in the Catalog base (following the "More cross-cuts (filters, relations...)" item in Suggested Next).
+
+**Selected scope (reviewable):**
+- Helpers in CatalogListado: getFilterParams(), fetchFilteredItems() with basic activo support.
+- Helpers in CatalogFormulario: loadRelated(), getRelatedLabel().
+- Light demo in one list (Aspectos now supports ?activo filter via helper).
+- Full playbook + verify updates.
+- No data changes, backward compatible.
+
+**Key changes:**
+- New: reference/stage-9.15-catalog-filters-relations-plan.md (plan first).
+- Modified: CatalogListado, CatalogFormulario, one example Listado, verify, .agents/* .
+- Branch: feat/stage-9.15-catalog-filters-relations.
+
+**todo_write items:**
+```json
+[{"id":"9.15.1","content":"plan first","status":"completed"},{"id":"9.15.2","content":"add helpers + light demo","status":"completed"},{"id":"9.15.3","content":"docs + verify + PR","status":"in_progress"}]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php
+```
+
+**Browser flows:**
+- Existing lists render unchanged.
+- /admin/aspectos?activo=1 filters to active only (demo of new helper).
+- Forms continue to work.
+
+**Evidence:**
+- Plan first.
+- verify green.
+- Helpers available, one list demonstrates filter.
+- No regressions.
+
+**Next:**
+- Mark cross-cut in TODOS.
+- Suggested: full tree base, PDF reports, or verticals (Mejora full, Auditorías execution).
+
+**Branch status:** Stage 9.15 on `feat/stage-9.15-catalog-filters-relations`. Plan first. 
+

@@ -26,4 +26,10 @@ class Listado extends CatalogListado
             'area'         => $row[7] ?? null,
         ];
     }
+
+    // Demo of 9.15 list-with-filters helper (supports ?activo=1|0)
+    protected function fetchItems(): array
+    {
+        return $this->fetchFilteredItems();
+    }
 }
