@@ -2691,3 +2691,52 @@ docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Catalog/Ca
 
 **Branch status:** Stage 9.15 on `feat/stage-9.15-catalog-filters-relations`. Plan first. 
 
+---
+
+## Stage 9.16 — Cross-cut: full tree base
+
+**Goal:** Deliver "full tree base" cross-cut (next after filters/relations in the Suggested Next list). Provide a CatalogTree base class so tree views (Procesos, Documentación, future) inherit common ShowPage, variable building, etc.
+
+**Selected scope (reviewable):**
+- New Pages/Catalog/CatalogTree.php abstract base.
+- Refactor the two existing Arbol classes to extend it (implement fetchTreeItems + buildTreeSpecificVariables).
+- Full playbook + verify update.
+- Update docs.
+
+**Key changes:**
+- New: reference/stage-9.16-cross-cut-full-tree-base-plan.md (plan first), Pages/Catalog/CatalogTree.php.
+- Modified: the two Arbol.php, verify-8.6.sh, .agents/*.
+- Branch: feat/stage-9.16-cross-cut-full-tree-base.
+
+**todo_write items:**
+```json
+[{"id":"9.16.1","content":"plan first","status":"completed"},{"id":"9.16.2","content":"CatalogTree base + refactor Arbols","status":"completed"},{"id":"9.16.3","content":"docs + verify + PR","status":"in_progress"}]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Catalog/CatalogTree.php Pages/Procesos/Arbol.php Pages/Documentacion/Arbol.php
+```
+
+**Browser flows:**
+- /admin/procesos/arbol and /admin/documentacion/arbol unchanged in output.
+- No regressions.
+
+**Evidence:**
+- Plan first.
+- verify green.
+- Trees identical.
+- Code now delegates to full tree base.
+
+**Next:**
+- Mark in TODOS.
+- Suggested: relations polish or verticals (Mejora full, etc.).
+
+**Branch status:** Stage 9.16 on `feat/stage-9.16-cross-cut-full-tree-base`. Plan first. 
+

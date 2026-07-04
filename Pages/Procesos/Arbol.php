@@ -1,16 +1,15 @@
 <?php
 namespace Tuqan\Pages\Procesos;
 
-use Tuqan\Pages\Catalog\CatalogListado;
+use Tuqan\Pages\Catalog\CatalogTree;
 
 /**
  * Árbol / tree view for Procesos (Stage 9.11 deeper slice).
  * Shows hierarchy via padre + basic linked contenido_procesos details.
- * Reuses 9.8 helpers (getDb, sidebar, user context, flashes).
- * The legacy "arbol" entry point now lands here (modern shell).
+ * Now uses full tree base (Stage 9.16).
  * Full editing, drag-drop, flujogramas and array management deferred.
  */
-class Arbol extends CatalogListado
+class Arbol extends CatalogTree
 {
     protected string $table       = 'procesos';
     protected string $title       = 'Árbol de Procesos';
@@ -36,10 +35,9 @@ class Arbol extends CatalogListado
     }
 
     /**
-     * Build a simple flat list with parent name + attached contenido summary.
-     * For a richer nested tree we could recurse; start flat + indent in template.
+     * Implement for CatalogTree base (Stage 9.16).
      */
-    protected function fetchArbolItems(): array
+    protected function fetchTreeItems(): array
     {
         $db = $this->getDb();
 
@@ -80,27 +78,13 @@ class Arbol extends CatalogListado
         return $procesos;
     }
 
-    protected function buildArbolVariables(array $items): array
+    /**
+     * Implement for CatalogTree base (Stage 9.16).
+     */
+    protected function buildTreeSpecificVariables(array $items): array
     {
-        $base = $this->buildCommonVariables();  // cross-cut helper (Stage 9.13)
-
-        return array_merge($base, [
+        return [
             'procesos' => $items,  // re-used name for template simplicity
-        ]);
-    }
-
-    public function ShowPage()
-    {
-        $twig = $this->initTwig();  // cross-cut helper (Stage 9.13)
-
-        $items = $this->fetchArbolItems();
-        $variables = $this->buildArbolVariables($items);
-
-        try {
-            $template = $twig->load($this->templateDir . '/arbol.twig');
-            return $template->render($variables);
-        } catch (\Exception $e) {
-            return "Error al cargar {$this->title}: " . $e->getMessage();
-        }
+        ];
     }
 }

@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.15 on `feat/stage-9.15-catalog-filters-relations` (cross-cut list-with-filters + form-with-relations helpers in Catalog base + demo). Previous: 9.14 Aspectos matrix.
+**Last updated**: Stage 9.16 on `feat/stage-9.16-cross-cut-full-tree-base` (cross-cut full tree base: CatalogTree + refactored Arbols). Previous: 9.15 filters/relations.
 
 ---
 
@@ -72,7 +72,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Cross-cut tree helpers (first delivery)**: Delivered in Stage 9.13 (added resolveParentNames, groupItems, initTwig, buildCommonVariables to CatalogListado; refactored Procesos/Arbol and Documentacion/Arbol to use them). See 9.13 plan and STAGE-CHECKLISTS.
 - [x] **Aspectos matrix first slice**: Delivered in Stage 9.14 (modern grouped matrix view for aspectos with evaluation scores, using helpers; route added). Full editable matrix, revisiones and cuestionario integration deferred. See 9.14 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut: list-with-filters + form relations (first delivery)**: Delivered in Stage 9.15 (getFilterParams + fetchFilteredItems in Listado; loadRelated + getRelatedLabel in Formulario; demo in Aspectos list). See 9.15 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals**: More cross-cuts (full tree base, relations polish), or other (Mejora full integration, Formación subs, Auditorías execution, etc.).
+- [x] **Cross-cut: full tree base (first delivery)**: Delivered in Stage 9.16 (new CatalogTree base class; Procesos/Arbol and Documentacion/Arbol now extend it). See 9.16 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals**: More cross-cuts (relations polish), or other (Mejora full integration, Formación subs, Auditorías execution, etc.).
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -141,7 +142,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ## Cross-Cutting / Non-Module Backlog (Important but Not "a Module")
 
 - [ ] Twig 1.x → 2/3 (or 3) proper upgrade (deferred repeatedly; vendor patches in place; will touch all templates + possibly custom extensions when we have many modules).
-- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters + relations. See 9.8/9.13/9.15. Additional work (full tree base, deeper relations) remains open.
+- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree). See 9.8/9.13/9.15/9.16. Additional work (deeper relations polish) remains open.
 - [ ] PDF / Excel / report generation modernization (GenPDF, crearExcel, related generators — used by almost every vertical for "ficha", exports, compliance outputs).
 - [ ] Tree / arbol UI + generators (arbol_documentos.php, estructura_arbol.php, generador_arboles.php, dhtmlgoodies tree, saveNodes etc. — core for Documentación + Procesos; big but high leverage).
 - [ ] Questionnaire / checklist engine (cuestionario.php + procesa_cuestionario.php + procesa_Editor — used by Aspectos, Auditorias, possibly others; aspects/audits/reqs depend on it).
