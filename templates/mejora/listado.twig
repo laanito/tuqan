@@ -21,7 +21,16 @@
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
-                    <tr><th>ID</th><th>Fecha</th><th>Descripción</th><th>Área</th><th>Estado</th><th style="width:140px;text-align:right;">Acciones</th></tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Tipo</th>
+                        <th>Cliente</th>
+                        <th>Área</th>
+                        <th>Estado</th>
+                        <th style="width:140px;text-align:right;">Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for m in mejora %}
@@ -29,6 +38,8 @@
                         <td>{{ m.id }}</td>
                         <td>{{ m.fecha ?? '-' }}</td>
                         <td><strong>{{ m.descripcion }}</strong></td>
+                        <td>{{ m.tipo_label ?? (m.tipo ?? '-') }}</td>
+                        <td>{{ m.cliente_label ?? (m.cliente ?? '-') }}</td>
                         <td>{{ m.area ?? '-' }}</td>
                         <td>{% if m.cerrada %}<span class="label label-success">Cerrada</span>{% else %}<span class="label label-default">Abierta</span>{% endif %}</td>
                         <td style="text-align:right;">
@@ -41,7 +52,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Acciones de Mejora (Stage 9.4). El flujo completo de verificación, implantación, cierre, asignación de responsables (usuarios) y enlaces a Auditorías/Clientes se gestionarán en seguimientos posteriores. Tipo y Cliente se muestran como IDs por ahora.
+        Acciones de Mejora (Stage 9.4 + 9.17 relations polish). Tipo y Cliente ahora resuelven a nombres legibles vía helpers. Flujo completo (verificación, implantación, cierre, usuarios responsables, enlaces a Auditorías) diferido a legs posteriores.
     </div>
 </div>
 {% endblock %}
