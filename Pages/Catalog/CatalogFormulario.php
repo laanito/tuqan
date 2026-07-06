@@ -198,8 +198,10 @@ abstract class CatalogFormulario
         exit;
     }
 
-    // --- Cross-cut relations helpers (Stage 9.15) ---
+    // --- Cross-cut relations helpers (Stage 9.15 + 9.17 polish) ---
     // form-with-relations support. Subclasses can call these for FK labels / related data.
+    // loadRelated/getRelatedLabel also available in CatalogListado (promoted 9.17).
+    // getRelatedOptions added for easy <select> population.
 
     protected function loadRelated(string $table, $id, array $columns = ['id', 'nombre']): ?array
     {
@@ -222,5 +224,21 @@ abstract class CatalogFormulario
     {
         $row = $this->loadRelated($table, $id, ['id', $labelCol]);
         return $row[$labelCol] ?? null;
+    }
+
+    /**
+     * Fetch simple id + label pairs for populating <select> dropdowns for FKs.
+     * Subclasses can pass the result as e.g. 'tipo_options' to templates.
+     */
+    protected function getRelatedOptions(string $table, string $labelCol = 'nombre', string $orderBy = 'nombre ASC'): array
+    {
+        $db = $this->getDb();
+        $db->consulta("SELECT id, {$labelCol} FROM {$table} ORDER BY {$orderBy}");
+        $opts = [];
+        while ($row = $db->coger_Fila()) {
+            $opts[] = ['id' => $row[0], $labelCol => $row[1]];
+        }
+        $db->desconexion();
+        return $opts;
     }
 }
