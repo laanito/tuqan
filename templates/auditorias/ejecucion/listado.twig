@@ -1,0 +1,56 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Auditorías (Ejecución) - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Auditorías (Ejecución)</h2>
+        <div>
+            <a href="/admin/auditorias/ejecucion/nuevo" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nueva Auditoría
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if auditoria is empty %}
+        <div class="alert alert-info">No hay auditorías de ejecución registradas.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Programa</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Activo</th>
+                        <th style="width:140px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in auditoria %}
+                    <tr>
+                        <td>{{ a.id }}</td>
+                        <td><strong>{{ a.nombre }}</strong></td>
+                        <td>{{ a.programa_label ?? (a.programa ?? '-') }}</td>
+                        <td>{{ a.fecha ?? '-' }}</td>
+                        <td>{{ a.estado ?? 0 }}</td>
+                        <td>{% if a.activo %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/auditorias/ejecucion/editar/{{ a.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Auditorías ejecución (Stage 9.19 first slice). Plan/horario, hallazgos, informes y enlaces completos a Mejora diferidos.
+    </div>
+</div>
+{% endblock %}
