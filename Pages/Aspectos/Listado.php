@@ -28,8 +28,14 @@ class Listado extends CatalogListado
     }
 
     // Demo of 9.15 list-with-filters helper (supports ?activo=1|0)
+    // 9.18: also enrich with relations labels for display
     protected function fetchItems(): array
     {
-        return $this->fetchFilteredItems();
+        $items = $this->fetchFilteredItems();
+        foreach ($items as &$item) {
+            $item['tipo_aspecto_label'] = $this->getRelatedLabel('tipo_aspectos', $item['tipo_aspecto'] ?? null);
+        }
+        unset($item);
+        return $items;
     }
 }

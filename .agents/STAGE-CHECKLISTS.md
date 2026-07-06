@@ -2819,3 +2819,67 @@ docker compose exec db psql -U qnova -d qnova -c "
 
 **Branch status:** Stage 9.17 on `feat/stage-9.17-cross-cut-relations-polish-mejora`. Plan first. Docker-only.
 
+## Stage 9.18 — Cross-cut: relations polish + Aspectos base adoption
+
+**Goal:** Apply the 9.17 relations polish + base helper pattern to the next early module: Aspectos (which had basic shell in 9.7 + matrix in 9.14 but still used full-dupe Form code and raw ID display).
+
+**Selected scope (reviewable):**
+- Refactor Aspectos/Formulario to use getSelectForForm/loadItem/getPostData/validate/persist + build override.
+- Enhance Listado fetch to attach tipo_aspecto_label (area left as text for now).
+- Update templates for label display + select for tipo_aspecto.
+- Plan first + full playbook + docs.
+- No routes/patches.
+
+**Key changes:**
+- New: reference/stage-9.18-aspectos-relations-polish-plan.md.
+- Modified: Pages/Aspectos/*, templates/aspectos/*, scripts/verify-8.6.sh, .agents/*.
+- Branch: feat/stage-9.18-aspectos-relations-polish.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.18.1","content":"Read living TODOS + ensure master clean + pulled (done)","status":"completed"},
+  {"id":"9.18.2","content":"git checkout -b feat/stage-9.18-aspectos-relations-polish (done)","status":"completed"},
+  {"id":"9.18.3","content":"Write reference/stage-9.18-aspectos-relations-polish-plan.md and commit it FIRST (done)","status":"completed"},
+  {"id":"9.18.4","content":"Discover exact related tables (tipo_aspectos, areas) and inspect current Aspectos code/templates","status":"completed"},
+  {"id":"9.18.5","content":"Refactor Pages/Aspectos/Formulario.php to use base helpers + add options/labels in buildFormVariables","status":"completed"},
+  {"id":"9.18.6","content":"Enhance Pages/Aspectos/Listado.php to enrich with tipo_aspecto_label + area_label","status":"completed"},
+  {"id":"9.18.7","content":"Update templates/aspectos/listado.twig and formulario.twig for labels and selects","status":"completed"},
+  {"id":"9.18.8","content":"Update scripts/verify-8.6.sh (php -l), append full Stage 9.18 playbook to .agents/STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.18.9","content":"Update .agents/MIGRATION-TODOS.md (advance Aspectos polish, refresh suggested)","status":"pending"},
+  {"id":"9.18.10","content":"Full clean-room verify (down -v, up, init-db.sh, verify-8.6.sh, php -l, psql, browser flows)","status":"pending"},
+  {"id":"9.18.11","content":"Logical commits, push branch","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Aspectos/Listado.php Pages/Aspectos/Formulario.php \
+    templates/aspectos/listado.twig templates/aspectos/formulario.twig
+```
+
+**Browser flows:**
+- /admin/aspectos list shows resolved Tipo label.
+- Form uses select for Tipo Aspecto (preselects on edit).
+- Matrix and other flows unaffected.
+- No regression on Mejora or other modules.
+
+**Evidence:**
+- Plan first.
+- php -l + verify green.
+- DB: tipo_aspectos table present with rows.
+- Browser: labels + select work; human sign-off pending.
+
+**Next:**
+- Update TODOS.
+- Suggested: more early-module polish or vertical (Auditorías execution, etc.).
+
+**Branch status:** Stage 9.18 on `feat/stage-9.18-aspectos-relations-polish`. Plan first. Docker-only.
+
+

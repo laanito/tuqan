@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.17 on `feat/stage-9.17-cross-cut-relations-polish-mejora` (relations polish + Mejora base adoption + labels/selects). Previous: 9.16 full tree base.
+**Last updated**: Stage 9.18 on `feat/stage-9.18-aspectos-relations-polish` (relations polish + Aspectos base adoption). Previous: 9.17 Mejora.
 
 ---
 
@@ -74,7 +74,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Cross-cut: list-with-filters + form relations (first delivery)**: Delivered in Stage 9.15 (getFilterParams + fetchFilteredItems in Listado; loadRelated + getRelatedLabel in Formulario; demo in Aspectos list). See 9.15 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut: full tree base (first delivery)**: Delivered in Stage 9.16 (new CatalogTree base class; Procesos/Arbol and Documentacion/Arbol now extend it). See 9.16 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut: relations polish (first delivery + adoption)**: Delivered in Stage 9.17 (promoted helpers to Listado, added getRelatedOptions for selects; refactored Mejora Form to use base overrides + enriched list+form with resolved labels + dropdowns). See 9.17 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals / polish**: Apply relations polish to other early modules (Aspectos etc.), Mejora deeper workflow, Formación subs, Auditorías execution start, Documentación editor/perfiles, etc.
+- [x] **Cross-cut: relations polish for Aspectos**: Delivered in Stage 9.18 (refactored Aspectos Form to base overrides, Listado enrichment, select + label for tipo_aspecto). See 9.18 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals / polish**: Mejora deeper workflow, Formación subs, Auditorías execution start, Documentación editor/perfiles, or broader polish on remaining early modules.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -91,6 +92,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ### Aspectos Ambientales / mAspectos (linked to Criterios)
 - [x] Aspectos / Aspectos Ambientales basic shell — core `aspectos` table (nombre + scores + tipo + activo) delivered in Stage 9.7 (0026 patch + Pages/Aspectos + routes + verify). Basic list + form. Full matrix, revisiones, cuestionario flows, FK resolution and "Emergencia" deferred. See 9.7 plan/playbook.
 - [x] Aspectos matrix first slice — modern grouped matrix view delivered in Stage 9.14 (Pages/Aspectos/Matriz + template showing scores by area). Full editable matrix, revisiones and cuestionario integration deferred. See 9.14 plan and STAGE-CHECKLISTS.
+- [x] Relations polish + base adoption for Aspectos (labels/select for tipo_aspecto) delivered in Stage 9.18. See 9.18 plan.
 - [ ] Full matrix + revisiones + cuestionario integration + reporting tie-in to Indicadores.
 
 ### Mejora (Improvement)
@@ -143,7 +145,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ## Cross-Cutting / Non-Module Backlog (Important but Not "a Module")
 
 - [ ] Twig 1.x → 2/3 (or 3) proper upgrade (deferred repeatedly; vendor patches in place; will touch all templates + possibly custom extensions when we have many modules).
-- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules. See 9.8/9.13/9.15/9.16/9.17. Deeper relations and broader adoption remain open.
+- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules, 9.18 Aspectos. See 9.8/9.13/9.15/9.16/9.17/9.18. Broader adoption remains open.
 - [ ] PDF / Excel / report generation modernization (GenPDF, crearExcel, related generators — used by almost every vertical for "ficha", exports, compliance outputs).
 - [ ] Tree / arbol UI + generators (arbol_documentos.php, estructura_arbol.php, generador_arboles.php, dhtmlgoodies tree, saveNodes etc. — core for Documentación + Procesos; big but high leverage).
 - [ ] Questionnaire / checklist engine (cuestionario.php + procesa_cuestionario.php + procesa_Editor — used by Aspectos, Auditorias, possibly others; aspects/audits/reqs depend on it).

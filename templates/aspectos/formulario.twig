@@ -34,7 +34,12 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="tipo_aspecto">Tipo Aspecto</label>
-                    <input type="number" class="form-control" id="tipo_aspecto" name="tipo_aspecto" value="{{ aspectos.tipo_aspecto ?? 0 }}">
+                    <select class="form-control" id="tipo_aspecto" name="tipo_aspecto">
+                        <option value="0">-- Seleccionar --</option>
+                        {% for t in tipo_aspecto_options %}
+                            <option value="{{ t.id }}" {% if t.id == aspectos.tipo_aspecto %}selected{% endif %}>{{ t.nombre }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="col-md-4">
@@ -105,7 +110,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Aspectos Ambientales (Stage 9.7). Matriz completa, revisiones, cuestionario y flujos de emergencia se mantienen en legacy por ahora. Los valores numéricos (magnitud, gravedad...) se modernizarán con selects + joins en legs posteriores.
+            Aspectos Ambientales (Stage 9.7 + 9.18). Tipo Aspecto now uses select + label. Full matrix, revisiones, cuestionario and numeric scoring UI deferred.
         </div>
     </form>
 </div>
