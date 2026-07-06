@@ -393,6 +393,15 @@ $router->addRoute('POST', '/admin/auditorias/editar/{id}', ['Tuqan\Pages\Auditor
 // Legacy routes for Auditorías Programa (from full legacy menu accions: auditorias:programa:*)
 $router->addRoute('GET', '/administracion/auditorias/programa/listado/ver', ['Tuqan\Pages\Auditorias\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Auditorías Ejecución (Stage 9.19 first slice) ===
+$router->addRoute('GET', '/admin/auditorias/ejecucion', ['Tuqan\Pages\Auditorias\Ejecucion\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/ejecucion/nuevo', ['Tuqan\Pages\Auditorias\Ejecucion\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/ejecucion/editar/{id}', ['Tuqan\Pages\Auditorias\Ejecucion\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Auditorías Ejecución
+$router->addRoute('POST', '/admin/auditorias/ejecucion/nuevo', ['Tuqan\Pages\Auditorias\Ejecucion\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/auditorias/ejecucion/editar/{id}', ['Tuqan\Pages\Auditorias\Ejecucion\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
 // === Aspectos Ambientales (Stage 9.7 basic slice) ===
 $router->addRoute('GET', '/admin/aspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/aspectos/nuevo', ['Tuqan\Pages\Aspectos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
