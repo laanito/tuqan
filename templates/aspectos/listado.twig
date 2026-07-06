@@ -38,7 +38,7 @@
                     <tr>
                         <td>{{ a.id }}</td>
                         <td><strong>{{ a.nombre }}</strong></td>
-                        <td>{{ a.tipo_aspecto ?? '-' }}</td>
+                        <td>{{ a.tipo_aspecto_label ?? (a.tipo_aspecto ?? '-') }}</td>
                         <td>{{ a.magnitud ?? '-' }}</td>
                         <td>{{ a.gravedad ?? '-' }}</td>
                         <td>{{ a.frecuencia ?? '-' }}</td>
@@ -54,7 +54,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Aspectos Ambientales (Stage 9.7 basic shell). La matriz completa, revisiones, cuestionario y flujos de "Aspectos Ambientales Emergencia" se mantienen en legacy. La integración con Criterios y cálculos de significancia se modernizarán en legs posteriores.
+        Aspectos Ambientales (Stage 9.7 + 9.18 relations polish). Tipo now resolves to label. Full matrix/revisiones/cuestionario integration deferred.
     </div>
 </div>
 {% endblock %}
