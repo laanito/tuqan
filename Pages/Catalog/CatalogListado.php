@@ -244,4 +244,47 @@ abstract class CatalogListado
         $db->desconexion();
         return $items;
     }
+
+    // --- Cross-cut relations helpers (Stage 9.15 + 9.17 polish) ---
+    // Promoted from CatalogFormulario so lists can also resolve FK labels easily.
+    // getRelatedOptions() supports <select> population in forms (and potentially list filters).
+
+    protected function loadRelated(string $table, $id, array $columns = ['id', 'nombre']): ?array
+    {
+        if (!$id) return null;
+        $cols = implode(', ', $columns);
+        $db = $this->getDb();
+        $db->consultaPreparada("SELECT {$cols} FROM {$table} WHERE id = ?", [$id]);
+        $row = $db->coger_Fila();
+        $db->desconexion();
+        if (!$row) return null;
+
+        $result = [];
+        foreach ($columns as $i => $col) {
+            $result[$col] = $row[$i] ?? null;
+        }
+        return $result;
+    }
+
+    protected function getRelatedLabel(string $table, $id, string $labelCol = 'nombre'): ?string
+    {
+        $row = $this->loadRelated($table, $id, ['id', $labelCol]);
+        return $row[$labelCol] ?? null;
+    }
+
+    /**
+     * Fetch simple id + label pairs for populating <select> dropdowns for FKs.
+     * Example: $this->getRelatedOptions('tipo_acciones', 'nombre')
+     */
+    protected function getRelatedOptions(string $table, string $labelCol = 'nombre', string $orderBy = 'nombre ASC'): array
+    {
+        $db = $this->getDb();
+        $db->consulta("SELECT id, {$labelCol} FROM {$table} ORDER BY {$orderBy}");
+        $opts = [];
+        while ($row = $db->coger_Fila()) {
+            $opts[] = ['id' => $row[0], $labelCol => $row[1]];
+        }
+        $db->desconexion();
+        return $opts;
+    }
 }

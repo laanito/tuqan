@@ -2740,3 +2740,82 @@ docker compose exec app php -l Pages/Catalog/CatalogTree.php Pages/Procesos/Arbo
 
 **Branch status:** Stage 9.16 on `feat/stage-9.16-cross-cut-full-tree-base`. Plan first. 
 
+## Stage 9.17 — Cross-cut: relations polish + Mejora base adoption
+
+**Goal:** Polish relations helpers (promote to lists + add options support for selects) from the 9.15 delivery and apply them + the Catalog helper-override pattern to the early Mejora module (still had full-dupe ShowPage/Procesar from 9.4). Makes labels human-readable and forms use dropdowns; brings Mejora in line with later modules.
+
+**Selected scope (reviewable):**
+- Add getRelatedOptions + promote load/getRelated* to CatalogListado; add options helper to Form too.
+- Refactor Mejora/Formulario to override getSelectForForm/loadItem/getPostData/validate/persist + buildFormVariables (drop dupe code).
+- Enhance Mejora Listado (cliente in select, labels via fetchItems override).
+- Update Mejora templates (labels in list, selects in form).
+- Plan first, full playbook, living docs updates, verify.
+
+**Key changes:**
+- New: reference/stage-9.17-cross-cut-relations-polish-mejora-plan.md (committed first).
+- Modified: Pages/Catalog/CatalogListado.php, Pages/Catalog/CatalogFormulario.php (helpers), Pages/Mejora/* (refactors + enrich), templates/mejora/* (labels+selects), scripts/verify-8.6.sh, .agents/STAGE-CHECKLISTS.md + MIGRATION-TODOS.md.
+- Branch: feat/stage-9.17-cross-cut-relations-polish-mejora.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.17.1","content":"Read living TODOS + handoff, ensure master clean + pulled (done)","status":"completed"},
+  {"id":"9.17.2","content":"git checkout -b feat/stage-9.17-cross-cut-relations-polish-mejora","status":"completed"},
+  {"id":"9.17.3","content":"Write detailed reference/stage-9.17-cross-cut-relations-polish-mejora-plan.md and commit it FIRST (before any code changes)","status":"completed"},
+  {"id":"9.17.4","content":"Add getRelated* helpers (promote + getRelatedOptions) to CatalogListado.php and CatalogFormulario.php","status":"completed"},
+  {"id":"9.17.5","content":"Refactor Pages/Mejora/Formulario.php to use base helper methods (remove dupe ShowPage/Procesar, implement getSelectForForm/loadItem/getPostData/validate/persist + buildFormVariables for options/labels)","status":"completed"},
+  {"id":"9.17.6","content":"Enhance Pages/Mejora/Listado.php : update select+map for cliente, override fetchItems to enrich with tipo_label/cliente_label using new helpers","status":"completed"},
+  {"id":"9.17.7","content":"Update templates/mejora/listado.twig and formulario.twig to show labels and use <select> dropdowns for tipo/cliente (populated from options)","status":"completed"},
+  {"id":"9.17.8","content":"Update scripts/verify-8.6.sh if needed (php -l for new), append full Stage 9.17 Verification Playbook section to .agents/STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.17.9","content":"Update .agents/MIGRATION-TODOS.md (progress on Mejora, cross-cuts, suggested next)","status":"pending"},
+  {"id":"9.17.10","content":"Full clean-room verify: docker down -v, up, init-db.sh, psql checks, verify-8.6.sh, php -l, manual flows via exec? + asserts","status":"pending"},
+  {"id":"9.17.11","content":"Logical commits, push branch, (PR later after human gate)","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+# Clean room
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+# Non-interactive
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Catalog/CatalogListado.php Pages/Catalog/CatalogFormulario.php \
+    Pages/Mejora/Listado.php Pages/Mejora/Formulario.php \
+    templates/mejora/listado.twig templates/mejora/formulario.twig
+
+# DB sanity (sample rows + labels via relations implicitly)
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT id, tipo, cliente, fecha, LEFT(descripcion,40) FROM acciones_mejora ORDER BY id LIMIT 3;
+  SELECT COUNT(*) AS tipo_acciones FROM tipo_acciones;
+  SELECT COUNT(*) AS clientes FROM clientes;
+"
+```
+
+**Browser flows (human gate after non-int green):**
+- Login as admin/company.
+- Navigate Aplicacion > Mejora (list): now shows Tipo and Cliente columns with resolved names (e.g. "Auditorias", client names or '-') instead of IDs. No breakage on other lists.
+- Click Nueva Acción: form has proper <select> for Tipo (populated) and Cliente (with --Ninguno--). Create succeeds, flash, list shows new row with labels.
+- Edit an existing: selects are correctly preselected to current values; save works; labels appear.
+- Flash success/error paths, validation (missing desc/fecha), cancel still work.
+- Quick spot-check one prior module (e.g. /admin/procesos or /admin/aspectos) still renders normally.
+
+**Evidence:**
+- Plan committed first on branch.
+- All php -l PASS (Catalog* + Mejora files; xdebug warning harmless as before).
+- verify-8.6.sh PASS (header updated for 9.17; all tables/patches/rows green incl. acciones_mejora=3).
+- DB asserts (post init): acciones_mejora has 3 rows with tipo=1/2/cliente=1/2/NULL; tipoaccionesmejora (3 demo rows) and clientes (2) present and id-aligned with seeds. (Note: used 'tipoaccionesmejora' not 'tipo_acciones' per actual init schema/tables.)
+- Data discovery during verify corrected FK target table name for labels.
+- Browser flows: pending human gate (plan: labels in list, working selects in form for create/edit, no regressed modules).
+- (Post human: add sign-off + any screenshots or oddities.)
+
+**Next:**
+- Update MIGRATION-TODOS (mark relations polish + Mejora adoption notes).
+- Suggested next: apply polish to other early modules (Aspectos etc.), or verticals: Auditorías execution slice, Formación subs (cursos), Documentación deeper (editor), or more cross-cuts.
+- PR after human verify.
+
+**Branch status:** Stage 9.17 on `feat/stage-9.17-cross-cut-relations-polish-mejora`. Plan first. Docker-only.
+
