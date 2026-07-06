@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.18 on `feat/stage-9.18-aspectos-relations-polish` (relations polish + Aspectos base adoption). Previous: 9.17 Mejora.
+**Last updated**: Stage 9.19 on `feat/stage-9.19-auditorias-execution` (Auditorías execution first slice). Previous: 9.18 Aspectos polish.
 
 ---
 
@@ -75,7 +75,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Cross-cut: full tree base (first delivery)**: Delivered in Stage 9.16 (new CatalogTree base class; Procesos/Arbol and Documentacion/Arbol now extend it). See 9.16 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut: relations polish (first delivery + adoption)**: Delivered in Stage 9.17 (promoted helpers to Listado, added getRelatedOptions for selects; refactored Mejora Form to use base overrides + enriched list+form with resolved labels + dropdowns). See 9.17 plan and STAGE-CHECKLISTS.
 - [x] **Cross-cut: relations polish for Aspectos**: Delivered in Stage 9.18 (refactored Aspectos Form to base overrides, Listado enrichment, select + label for tipo_aspecto). See 9.18 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals / polish**: Mejora deeper workflow, Formación subs, Auditorías execution start, Documentación editor/perfiles, or broader polish on remaining early modules.
+- [x] **Auditorías execution first slice**: Delivered in Stage 9.19 (basic list+form over auditorias table + patch + programa relation + routes/templates). See 9.19 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals / polish**: Mejora deeper workflow, Formación subs, Documentación editor/perfiles, or broader polish.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -118,7 +119,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
-- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` (Programas / Auditoria anual) delivered in Stage 9.6 (0025 patch + Pages/Auditorias + full catalog overrides + routes + verify). Core fields (nombre + vigente + revision + activo). Execution (auditorias table), plan, horario, equipo, estado transitions, hallazgos, informes and cross-links to Mejora deferred. See 9.6 plan/playbook.
+- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` delivered in Stage 9.6. Execution first slice (auditorias table basic CRUD + programa link) delivered in Stage 9.19. Full execution (plan/horario, hallazgos, informes, Mejora links) deferred. See 9.6 + 9.19 plans.
 - [ ] Full execution + plan/horario + findings / follow-up (link to Mejora acciones). Integration with Indicadores + Aspectos.
 
 ### Indicadores + Objetivos (KPIs)
@@ -145,7 +146,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ## Cross-Cutting / Non-Module Backlog (Important but Not "a Module")
 
 - [ ] Twig 1.x → 2/3 (or 3) proper upgrade (deferred repeatedly; vendor patches in place; will touch all templates + possibly custom extensions when we have many modules).
-- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules, 9.18 Aspectos. See 9.8/9.13/9.15/9.16/9.17/9.18. Broader adoption remains open.
+- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules, 9.18 Aspectos, 9.19 vertical. See 9.8/9.13/9.15/9.16/9.17/9.18/9.19. Broader adoption remains open.
 - [ ] PDF / Excel / report generation modernization (GenPDF, crearExcel, related generators — used by almost every vertical for "ficha", exports, compliance outputs).
 - [ ] Tree / arbol UI + generators (arbol_documentos.php, estructura_arbol.php, generador_arboles.php, dhtmlgoodies tree, saveNodes etc. — core for Documentación + Procesos; big but high leverage).
 - [ ] Questionnaire / checklist engine (cuestionario.php + procesa_cuestionario.php + procesa_Editor — used by Aspectos, Auditorias, possibly others; aspects/audits/reqs depend on it).

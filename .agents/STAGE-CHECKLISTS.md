@@ -2882,4 +2882,63 @@ docker compose exec app php -l Pages/Aspectos/Listado.php Pages/Aspectos/Formula
 
 **Branch status:** Stage 9.18 on `feat/stage-9.18-aspectos-relations-polish`. Plan first. Docker-only.
 
+## Stage 9.19 — Auditorías execution first slice
+
+**Goal:** First slice of Auditorías execution (the `auditorias` table linked to programa). Builds on the 9.6 programa shell. Full features (plan/horario, hallazgos, informes, Mejora links) deferred.
+
+**Selected scope (reviewable):**
+- Data patch 0031 for auditorias table + seeds.
+- Pages/Auditorias/Ejecucion Listado + Formulario (Catalog base, relations for programa).
+- Basic templates under auditorias/ejecucion.
+- Routes in index.php.
+- Verify + playbook + docs.
+
+**Key changes:**
+- New: reference/stage-9.19-auditorias-execution-plan.md, patch 0031, Pages/Auditorias/Ejecucion/*, templates/auditorias/ejecucion/* .
+- Modified: index.php, scripts/verify-8.6.sh, .agents/* .
+- Branch: feat/stage-9.19-auditorias-execution.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.19.1","content":"Read TODOS, git master clean (done)","status":"completed"},
+  {"id":"9.19.2","content":"New branch feat/stage-9.19-auditorias-execution (done)","status":"completed"},
+  {"id":"9.19.3","content":"Write and commit plan.md FIRST (done)","status":"completed"},
+  {"id":"9.19.4","content":"Create data patch 0031-auditorias-execution.sql with table + seeds","status":"completed"},
+  {"id":"9.19.5","content":"Create Pages/Auditorias/Ejecucion/{Listado,Formulario}.php using Catalog base + relations","status":"completed"},
+  {"id":"9.19.6","content":"Create templates/auditorias/ejecucion/{listado,formulario}.twig basic","status":"completed"},
+  {"id":"9.19.7","content":"Add routes in index.php for modern + legacy if needed","status":"completed"},
+  {"id":"9.19.8","content":"Extend verify-8.6.sh and add full 9.19 playbook to STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.19.9","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.19.10","content":"Full clean room verify + push","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Auditorias/Ejecucion/Listado.php Pages/Auditorias/Ejecucion/Formulario.php
+```
+
+**Browser flows:**
+- /admin/auditorias/ejecucion list + form.
+- Programa select/label works.
+- Create/edit succeeds with flash.
+- No regression on /admin/auditorias (programa).
+
+**Evidence:**
+- (To be filled post-verify)
+
+**Next:**
+- Update TODOS.
+- Suggested: Formación subs, Documentación editor, Mejora deeper, etc.
+
+**Branch status:** Stage 9.19 on `feat/stage-9.19-auditorias-execution`. Plan first. Docker-only.
+
+
 
