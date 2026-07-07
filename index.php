@@ -365,6 +365,15 @@ $router->addRoute('POST', '/admin/formacion/editar/{id}', ['Tuqan\Pages\Formacio
 // Legacy for Formación planes
 $router->addRoute('GET', '/administracion/formacion/planes/listado/ver', ['Tuqan\Pages\Formacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// Formación Cursos (Stage 9.20 subs first slice)
+$router->addRoute('GET', '/admin/formacion/cursos', ['Tuqan\Pages\Formacion\Cursos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/formacion/cursos/nuevo', ['Tuqan\Pages\Formacion\Cursos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/formacion/cursos/editar/{id}', ['Tuqan\Pages\Formacion\Cursos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Formación Cursos
+$router->addRoute('POST', '/admin/formacion/cursos/nuevo', ['Tuqan\Pages\Formacion\Cursos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/formacion/cursos/editar/{id}', ['Tuqan\Pages\Formacion\Cursos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
 // Documentación shell (basic list + landing over documentos)
 $router->addRoute('GET', '/admin/documentacion', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/documentacion/nuevo', ['Tuqan\Pages\Documentacion\Formulario', 'ShowPage'], ['before' => 'auth_company']);

@@ -1,0 +1,103 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/formacion/cursos" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 780px;">
+    <form method="POST" action="{{ isEdit ? '/admin/formacion/cursos/editar/' ~ curso.id : '/admin/formacion/cursos/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ curso.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre"
+                   value="{{ curso.nombre ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="plan">Plan de Formación</label>
+            <select class="form-control" id="plan" name="plan">
+                <option value="">-- Seleccionar --</option>
+                {% for p in plan_options %}
+                    <option value="{{ p.id }}" {% if p.id == curso.plan %}selected{% endif %}>{{ p.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="num_horas">Número de Horas</label>
+                    <input type="number" class="form-control" id="num_horas" name="num_horas"
+                           value="{{ curso.num_horas ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="fecha_prevista">Fecha Prevista</label>
+                    <input type="date" class="form-control" id="fecha_prevista" name="fecha_prevista"
+                           value="{{ curso.fecha_prevista ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <input type="number" class="form-control" id="estado" name="estado"
+                           value="{{ curso.estado ?? 0 }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1"
+                           {% if not isEdit or curso.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="calidad" value="1"
+                           {% if curso.calidad %}checked{% endif %}>
+                    Calidad
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="medioambiente" value="1"
+                           {% if curso.medioambiente %}checked{% endif %}>
+                    Medio Ambiente
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Curso' }}
+            </button>
+            <a href="/admin/formacion/cursos" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Cursos de Formación (Stage 9.20 first sub). Material necesario, responsables, fecha real, hoja de firmas y enlaces a ficha personal diferidos.
+        </div>
+    </form>
+</div>
+{% endblock %}
