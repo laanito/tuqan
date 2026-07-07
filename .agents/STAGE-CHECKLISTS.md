@@ -2940,5 +2940,64 @@ docker compose exec app php -l Pages/Auditorias/Ejecucion/Listado.php Pages/Audi
 
 **Branch status:** Stage 9.19 on `feat/stage-9.19-auditorias-execution`. Plan first. Docker-only.
 
+## Stage 9.20 — Formación subs: Cursos basic slice
+
+**Goal:** First Formación sub-entity slice: basic modern CRUD for the `cursos` table (under plan_formacion). Current Formación only has planes; this adds the first concrete course offering.
+
+**Selected scope (reviewable):**
+- Data patch 0032 for cursos + seeds linked to plans.
+- Pages/Formacion/Cursos Listado + Formulario (Catalog base + plan relation).
+- Basic templates under formacion/cursos.
+- Routes + verify + playbook + docs.
+
+**Key changes:**
+- New: reference/stage-9.20-formacion-cursos-plan.md, patch 0032, Pages/Formacion/Cursos/*, templates/formacion/cursos/*.
+- Modified: index.php, scripts/verify-8.6.sh, .agents/*.
+- Branch: feat/stage-9.20-formacion-cursos.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.20.1","content":"Read living TODOS + git master clean + pull (done)","status":"completed"},
+  {"id":"9.20.2","content":"git checkout -b feat/stage-9.20-formacion-cursos (done)","status":"completed"},
+  {"id":"9.20.3","content":"Write reference/stage-9.20-formacion-cursos-plan.md and commit FIRST (done)","status":"completed"},
+  {"id":"9.20.4","content":"Create data patch 0032-cursos.sql with table + seeds linked to plans","status":"completed"},
+  {"id":"9.20.5","content":"Create Pages/Formacion/Cursos/{Listado,Formulario}.php using Catalog + relations","status":"completed"},
+  {"id":"9.20.6","content":"Create templates/formacion/cursos/{listado,formulario}.twig","status":"completed"},
+  {"id":"9.20.7","content":"Add routes in index.php for /admin/formacion/cursos","status":"completed"},
+  {"id":"9.20.8","content":"Extend verify-8.6.sh and add full 9.20 playbook to STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.20.9","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.20.10","content":"Full clean-room verify (down-v, up, init, verify script, php-l, psql, browser flows)","status":"pending"},
+  {"id":"9.20.11","content":"Logical commits + push branch","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Formacion/Cursos/Listado.php Pages/Formacion/Cursos/Formulario.php
+```
+
+**Browser flows:**
+- /admin/formacion/cursos list shows plan labels.
+- Form has plan select, basic fields.
+- Create/edit works.
+- No regression on /admin/formacion planes.
+
+**Evidence:**
+- (To be filled post-verify)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Formación subs, Mejora deeper, Documentación editor.
+
+**Branch status:** Stage 9.20 on `feat/stage-9.20-formacion-cursos`. Plan first. Docker-only.
+
+
 
 
