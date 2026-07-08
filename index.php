@@ -374,6 +374,15 @@ $router->addRoute('GET', '/admin/formacion/cursos/editar/{id}', ['Tuqan\Pages\Fo
 $router->addRoute('POST', '/admin/formacion/cursos/nuevo', ['Tuqan\Pages\Formacion\Cursos\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/formacion/cursos/editar/{id}', ['Tuqan\Pages\Formacion\Cursos\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
+// Formación Inscripciones (Stage 9.22 more subs)
+$router->addRoute('GET', '/admin/formacion/inscripciones', ['Tuqan\Pages\Formacion\Inscripciones\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/formacion/inscripciones/nuevo', ['Tuqan\Pages\Formacion\Inscripciones\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/formacion/inscripciones/editar/{id}', ['Tuqan\Pages\Formacion\Inscripciones\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
+// POST routes for Formación Inscripciones
+$router->addRoute('POST', '/admin/formacion/inscripciones/nuevo', ['Tuqan\Pages\Formacion\Inscripciones\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/formacion/inscripciones/editar/{id}', ['Tuqan\Pages\Formacion\Inscripciones\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
 // Documentación shell (basic list + landing over documentos)
 $router->addRoute('GET', '/admin/documentacion', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/documentacion/nuevo', ['Tuqan\Pages\Documentacion\Formulario', 'ShowPage'], ['before' => 'auth_company']);

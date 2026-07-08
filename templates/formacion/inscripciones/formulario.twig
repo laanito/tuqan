@@ -1,0 +1,73 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/formacion/inscripciones" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 600px;">
+    <form method="POST" action="{{ isEdit ? '/admin/formacion/inscripciones/editar/' ~ inscripcion.id : '/admin/formacion/inscripciones/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ inscripcion.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <select class="form-control" id="usuario" name="usuario">
+                <option value="">-- Seleccionar --</option>
+                {% for u in usuario_options %}
+                    <option value="{{ u.id }}" {% if u.id == inscripcion.usuario %}selected{% endif %}>{{ u.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="curso">Curso</label>
+            <select class="form-control" id="curso" name="curso">
+                <option value="">-- Seleccionar --</option>
+                {% for c in curso_options %}
+                    <option value="{{ c.id }}" {% if c.id == inscripcion.curso %}selected{% endif %}>{{ c.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="inscrito" value="1"
+                           {% if not isEdit or inscripcion.inscrito %}checked{% endif %}>
+                    Inscrito
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="verificado" value="1"
+                           {% if inscripcion.verificado %}checked{% endif %}>
+                    Verificado
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Inscripción' }}
+            </button>
+            <a href="/admin/formacion/inscripciones" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Inscripciones (Stage 9.22 first slice). Asistentes, solicitar plaza/baja y detalles diferidos.
+        </div>
+    </form>
+</div>
+{% endblock %}
