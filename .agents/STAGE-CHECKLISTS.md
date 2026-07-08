@@ -3056,6 +3056,48 @@ docker compose exec app php -l Pages/Mejora/Listado.php Pages/Mejora/Formulario.
 
 **Branch status:** Stage 9.21 on `feat/stage-9.21-mejora-deeper-workflow`. Plan first. Docker-only.
 
+## Stage 9.22 — Formación more subs: Inscripciones (alumnos) basic slice
+
+**Goal:** Next Formación sub after Cursos: basic CRUD for inscripciones (alumnos table linking to cursos + usuarios).
+
+**Selected scope (reviewable):**
+- Patch 0034 + seeds.
+- Pages/Formacion/Inscripciones Listado + Formulario (Catalog + relations).
+- Templates + routes.
+- Verify + playbook.
+
+**Key changes:**
+- New: reference/stage-9.22-..., patch 0034, Pages/.../Inscripciones, templates/formacion/inscripciones.
+- Modified: index.php, verify, .agents/.
+- Branch: feat/stage-9.22-formacion-inscripciones.
+
+**todo_write items:** (similar to 9.20/9.22)
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Formacion/Inscripciones/Listado.php Pages/Formacion/Inscripciones/Formulario.php
+```
+
+**Browser flows:**
+- /admin/formacion/inscripciones list + form with curso/usuario selects.
+- Create/edit works.
+- No reg on other formacion.
+
+**Evidence:** (post)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Formación/Mejora/Documentación.
+
+**Branch status:** Stage 9.22 on `feat/stage-9.22-formacion-inscripciones`. Plan first. Docker-only.
+
+
 
 
 
