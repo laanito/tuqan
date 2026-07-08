@@ -27,6 +27,9 @@
                         <th>Descripción</th>
                         <th>Tipo</th>
                         <th>Cliente</th>
+                        <th>Detectado por</th>
+                        <th>Cerrada por</th>
+                        <th>Auditoría</th>
                         <th>Área</th>
                         <th>Estado</th>
                         <th style="width:140px;text-align:right;">Acciones</th>
@@ -40,6 +43,9 @@
                         <td><strong>{{ m.descripcion }}</strong></td>
                         <td>{{ m.tipo_label ?? (m.tipo ?? '-') }}</td>
                         <td>{{ m.cliente_label ?? (m.cliente ?? '-') }}</td>
+                        <td>{{ m.usuario_detectado_label ?? (m.usuario_detectado ?? '-') }}</td>
+                        <td>{{ m.usuario_cerrado_label ?? (m.usuario_cerrado ?? '-') }}</td>
+                        <td>{{ m.auditoria_label ?? (m.auditoria ?? '-') }}</td>
                         <td>{{ m.area ?? '-' }}</td>
                         <td>{% if m.cerrada %}<span class="label label-success">Cerrada</span>{% else %}<span class="label label-default">Abierta</span>{% endif %}</td>
                         <td style="text-align:right;">
@@ -52,7 +58,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Acciones de Mejora (Stage 9.4 + 9.17 relations polish). Tipo y Cliente ahora resuelven a nombres legibles vía helpers. Flujo completo (verificación, implantación, cierre, usuarios responsables, enlaces a Auditorías) diferido a legs posteriores.
+        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 deeper). Workflow fields (Detectado/Cerrada por, Auditoría link) added via relations. Full state machine and more links deferred.
     </div>
 </div>
 {% endblock %}

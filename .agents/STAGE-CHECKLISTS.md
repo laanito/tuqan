@@ -2998,6 +2998,65 @@ docker compose exec app php -l Pages/Formacion/Cursos/Listado.php Pages/Formacio
 
 **Branch status:** Stage 9.20 on `feat/stage-9.20-formacion-cursos`. Plan first. Docker-only.
 
+## Stage 9.21 — Mejora deeper workflow (first slice)
+
+**Goal:** First slice of Mejora deeper workflow. Adds user assignment fields (detectado, cerrado) + auditoria link using relations polish. Builds on 9.4/9.17 basic + polish.
+
+**Selected scope (reviewable):**
+- Enhance Mejora Listado/Form to include workflow fields + labels/selects.
+- Update templates.
+- Small data patch 0033 for demo links.
+- Verify + playbook + docs.
+
+**Key changes:**
+- New: reference/stage-9.21-mejora-deeper-workflow-plan.md, patch 0033.
+- Modified: Pages/Mejora/*, templates/mejora/*, scripts/verify, .agents/*.
+- Branch: feat/stage-9.21-mejora-deeper-workflow.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.21.1","content":"Read living TODOS + git master clean (done)","status":"completed"},
+  {"id":"9.21.2","content":"git checkout -b feat/stage-9.21-mejora-deeper-workflow (done)","status":"completed"},
+  {"id":"9.21.3","content":"Write and commit plan.md FIRST (done)","status":"completed"},
+  {"id":"9.21.4","content":"Explore current Mejora code, templates, schema for workflow fields (usuarios, auditoria)","status":"completed"},
+  {"id":"9.21.5","content":"Update Pages/Mejora/Listado.php to fetch/enrich workflow fields + labels","status":"completed"},
+  {"id":"9.21.6","content":"Update Pages/Mejora/Formulario.php (add fields to select/post/validate/persist, relations in build vars)","status":"completed"},
+  {"id":"9.21.7","content":"Update templates/mejora/listado.twig and formulario.twig for workflow display/selects","status":"completed"},
+  {"id":"9.21.8","content":"Small patch if needed for demo data (users/auditorias links)","status":"completed"},
+  {"id":"9.21.9","content":"Extend scripts/verify-8.6.sh + full 9.21 playbook in STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.21.10","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.21.11","content":"Full clean-room verify + logical commits + push","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Mejora/Listado.php Pages/Mejora/Formulario.php
+```
+
+**Browser flows:**
+- /admin/mejora list shows Detectado por, Cerrada por, Auditoría labels.
+- Form has selects for them.
+- Save/edit works; data persists.
+- No regression.
+
+**Evidence:**
+- (To be filled post-verify)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Mejora, Formación, Documentación editor.
+
+**Branch status:** Stage 9.21 on `feat/stage-9.21-mejora-deeper-workflow`. Plan first. Docker-only.
+
+
 
 
 

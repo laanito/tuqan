@@ -45,6 +45,36 @@
         </div>
 
         <div class="form-group">
+            <label for="usuario_detectado">Detectado por</label>
+            <select class="form-control" id="usuario_detectado" name="usuario_detectado">
+                <option value="">-- Ninguno --</option>
+                {% for u in usuario_options %}
+                    <option value="{{ u.id }}" {% if u.id == mejora.usuario_detectado %}selected{% endif %}>{{ u.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="usuario_cerrado">Cerrada por</label>
+            <select class="form-control" id="usuario_cerrado" name="usuario_cerrado">
+                <option value="">-- Ninguno --</option>
+                {% for u in usuario_options %}
+                    <option value="{{ u.id }}" {% if u.id == mejora.usuario_cerrado %}selected{% endif %}>{{ u.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="auditoria">Auditoría</label>
+            <select class="form-control" id="auditoria" name="auditoria">
+                <option value="">-- Ninguna --</option>
+                {% for a in auditoria_options %}
+                    <option value="{{ a.id }}" {% if a.id == mejora.auditoria %}selected{% endif %}>{{ a.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="descripcion">Descripción</label>
             <input type="text" class="form-control" id="descripcion" name="descripcion"
                    value="{{ mejora.descripcion ?? '' }}" required>
@@ -122,7 +152,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Acciones de Mejora (Stage 9.4 + 9.17). Tipo y Cliente usan selects con nombres resueltos vía cross-cut relations helpers. Responsables (usuarios), auditoría links y full workflow diferidos.
+            Acciones de Mejora (Stage 9.4 + 9.17 + 9.21). Workflow assignments (Detectado/Cerrada por, Auditoría) added. Full transitions and more fields deferred.
         </div>
     </form>
 </div>
