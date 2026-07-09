@@ -11,12 +11,12 @@ class Formulario extends CatalogFormulario
 
     protected function getSelectSql(): string
     {
-        return "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas FROM {$this->table} ORDER BY id";
+        return "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas, revisado_por, aprobado_por, fecha_revision, fecha_aprobacion FROM {$this->table} ORDER BY id";
     }
 
     protected function getSelectForForm(): string
     {
-        return "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas FROM {$this->table} WHERE id = ?";
+        return "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas, revisado_por, aprobado_por, fecha_revision, fecha_aprobacion FROM {$this->table} WHERE id = ?";
     }
 
     protected function loadItem($id): ?array
@@ -45,6 +45,10 @@ class Formulario extends CatalogFormulario
             'perfil_aprobar'    => $row[14],
             'perfil_historico'  => $row[15],
             'perfil_tareas'     => $row[16],
+            'revisado_por'      => $row[17] ?? null,
+            'aprobado_por'      => $row[18] ?? null,
+            'fecha_revision'    => $row[19] ?? null,
+            'fecha_aprobacion'  => $row[20] ?? null,
         ];
     }
 
@@ -52,16 +56,18 @@ class Formulario extends CatalogFormulario
     {
         $vars = parent::buildFormVariables($item);
 
-        // 9.23: perfiles for editor/approval
-        // tipo and area relations if tables exist
+        // 9.23 + 9.24: perfiles + workflows (users for revisar/aprobar)
         $vars['tipo_documento_options'] = $this->getRelatedOptions('tipodocumento', 'nombre');
         $vars['area_options'] = $this->getRelatedOptions('areas', 'nombre');
+        $vars['usuario_options'] = $this->getRelatedOptions('usuarios', 'nombre');
 
         $key = strtolower($this->flashPrefix);
         if (!empty($vars[$key])) {
             $d = $vars[$key];
             $d['tipo_documento_label'] = $this->getRelatedLabel('tipodocumento', $d['tipo_documento'] ?? null);
             $d['area_label'] = $this->getRelatedLabel('areas', $d['area'] ?? null);
+            $d['revisado_por_label'] = $this->getRelatedLabel('usuarios', $d['revisado_por'] ?? null);
+            $d['aprobado_por_label'] = $this->getRelatedLabel('usuarios', $d['aprobado_por'] ?? null);
             $vars[$key] = $d;
         }
         return $vars;
@@ -86,6 +92,10 @@ class Formulario extends CatalogFormulario
             'perfil_aprobar'   => !empty($_POST['perfil_aprobar']) ? 1 : 0,
             'perfil_historico' => !empty($_POST['perfil_historico']) ? 1 : 0,
             'perfil_tareas'    => !empty($_POST['perfil_tareas']) ? 1 : 0,
+            'revisado_por'     => isset($_POST['revisado_por']) && $_POST['revisado_por'] !== '' ? (int)$_POST['revisado_por'] : null,
+            'aprobado_por'     => isset($_POST['aprobado_por']) && $_POST['aprobado_por'] !== '' ? (int)$_POST['aprobado_por'] : null,
+            'fecha_revision'   => trim($_POST['fecha_revision'] ?? ''),
+            'fecha_aprobacion' => trim($_POST['fecha_aprobacion'] ?? ''),
         ];
     }
 
@@ -118,16 +128,20 @@ class Formulario extends CatalogFormulario
             $data['perfil_aprobar'],
             $data['perfil_historico'],
             $data['perfil_tareas'],
+            $data['revisado_por'],
+            $data['aprobado_por'],
+            $data['fecha_revision'] ?: null,
+            $data['fecha_aprobacion'] ?: null,
         ];
         if ($id > 0) {
             $params[] = $id;
             $db->consultaPreparada(
-                "UPDATE {$this->table} SET nombre = ?, codigo = ?, estado = ?, revision = ?, activo = ?, calidad = ?, medioambiente = ?, tipo_documento = ?, area = ?, perfil_ver = ?, perfil_nueva = ?, perfil_modificar = ?, perfil_revisar = ?, perfil_aprobar = ?, perfil_historico = ?, perfil_tareas = ? WHERE id = ?",
+                "UPDATE {$this->table} SET nombre = ?, codigo = ?, estado = ?, revision = ?, activo = ?, calidad = ?, medioambiente = ?, tipo_documento = ?, area = ?, perfil_ver = ?, perfil_nueva = ?, perfil_modificar = ?, perfil_revisar = ?, perfil_aprobar = ?, perfil_historico = ?, perfil_tareas = ?, revisado_por = ?, aprobado_por = ?, fecha_revision = ?, fecha_aprobacion = ? WHERE id = ?",
                 $params
             );
         } else {
             $db->consultaPreparada(
-                "INSERT INTO {$this->table} (nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO {$this->table} (nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas, revisado_por, aprobado_por, fecha_revision, fecha_aprobacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 $params
             );
         }
