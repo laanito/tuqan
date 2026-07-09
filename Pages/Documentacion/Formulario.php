@@ -11,142 +11,126 @@ class Formulario extends CatalogFormulario
 
     protected function getSelectSql(): string
     {
-        return "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente FROM {$this->table} ORDER BY id";
+        return "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas FROM {$this->table} ORDER BY id";
     }
 
-    public function ShowPage($id = null)
+    protected function getSelectForForm(): string
     {
-        \Tuqan\Classes\Config::initialize();
+        return "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas FROM {$this->table} WHERE id = ?";
+    }
 
-        $loader = new \Twig\Loader\FilesystemLoader(\Tuqan\Classes\Config::$template_path);
-        $twig = new \Twig\Environment($loader, [
-            'cache' => \Tuqan\Classes\Config::$cache_path,
-        ]);
-
-        $mainPage = new \Tuqan\Pages\MainPage();
-        $sidebarMenu = $mainPage->buildSidebarMenuHtml();
-
-        if ($id === null && isset($_GET['id'])) {
-            $id = (int)$_GET['id'];
-        }
-        $id = (int)$id;
-        $item = null;
-
-        if ($id > 0) {
-            $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
-            $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
-
-            $db = new \Tuqan\Classes\Manejador_Base_Datos(
-                $_SESSION['login'] ?? '',
-                $_SESSION['pass'] ?? '',
-                $_SESSION['db'] ?? '',
-                $host,
-                $port
-            );
-
-            $sql = "SELECT id, nombre, codigo, estado, revision, activo, calidad, medioambiente FROM {$this->table} WHERE id = ?";
-            $db->consultaPreparada($sql, [$id]);
-            $row = $db->coger_Fila();
-            if ($row) {
-                $item = [
-                    'id'            => $row[0],
-                    'nombre'        => $row[1],
-                    'codigo'        => $row[2] ?? null,
-                    'estado'        => $row[3] ?? null,
-                    'revision'      => $row[4] ?? null,
-                    'activo'        => $row[5],
-                    'calidad'       => $row[6],
-                    'medioambiente' => $row[7],
-                ];
-            }
-            $db->desconexion();
-        }
-
-        $fullName = trim(($_SESSION['usuario_nombre'] ?? '') . ' ' . ($_SESSION['usuario_apellido'] ?? ''));
-
-        $variables = [
-            'sidebarMenu' => $sidebarMenu,
-            strtolower($this->flashPrefix) => $item,
-            'isEdit'      => (bool)$item,
-            'pageTitle'   => $item ? "Editar {$this->title}" : "Nuevo Documento",
-            'UserTitle'     => gettext('sUsuario'),
-            'UserName'      => $_SESSION['nombreUsuario'] ?? 'Guest',
-            'CompanyName'   => $_SESSION['empresa'] ?? null,
-            'UserEmail'     => $_SESSION['usuario_email'] ?? null,
-            'UserFullName'  => $fullName ?: ($_SESSION['nombreUsuario'] ?? 'Guest'),
+    protected function loadItem($id): ?array
+    {
+        if ($id <= 0) return null;
+        $db = $this->getDb();
+        $db->consultaPreparada($this->getSelectForForm(), [$id]);
+        $row = $db->coger_Fila();
+        $db->desconexion();
+        if (!$row) return null;
+        return [
+            'id'                => $row[0],
+            'nombre'            => $row[1],
+            'codigo'            => $row[2] ?? null,
+            'estado'            => $row[3] ?? null,
+            'revision'          => $row[4] ?? null,
+            'activo'            => $row[5],
+            'calidad'           => $row[6],
+            'medioambiente'     => $row[7],
+            'tipo_documento'    => $row[8] ?? null,
+            'area'              => $row[9] ?? null,
+            'perfil_ver'        => $row[10],
+            'perfil_nueva'      => $row[11],
+            'perfil_modificar'  => $row[12],
+            'perfil_revisar'    => $row[13],
+            'perfil_aprobar'    => $row[14],
+            'perfil_historico'  => $row[15],
+            'perfil_tareas'     => $row[16],
         ];
-
-        try {
-            $template = $twig->load($this->templateDir . '/formulario.twig');
-            return $template->render($variables);
-        } catch (\Exception $e) {
-            return "Error al cargar el formulario de {$this->title}: " . $e->getMessage();
-        }
     }
 
-    public function Procesar($id = null)
+    protected function buildFormVariables(?array $item): array
     {
-        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-            header("Location: {$this->listRoute}");
-            exit;
+        $vars = parent::buildFormVariables($item);
+
+        // 9.23: perfiles for editor/approval
+        // tipo and area relations if tables exist
+        $vars['tipo_documento_options'] = $this->getRelatedOptions('tipodocumento', 'nombre');
+        $vars['area_options'] = $this->getRelatedOptions('areas', 'nombre');
+
+        $key = strtolower($this->flashPrefix);
+        if (!empty($vars[$key])) {
+            $d = $vars[$key];
+            $d['tipo_documento_label'] = $this->getRelatedLabel('tipodocumento', $d['tipo_documento'] ?? null);
+            $d['area_label'] = $this->getRelatedLabel('areas', $d['area'] ?? null);
+            $vars[$key] = $d;
         }
+        return $vars;
+    }
 
-        \Tuqan\Classes\Config::initialize();
+    protected function getPostData(): array
+    {
+        return [
+            'nombre'           => trim($_POST['nombre'] ?? ''),
+            'codigo'           => trim($_POST['codigo'] ?? ''),
+            'estado'           => isset($_POST['estado']) && $_POST['estado'] !== '' ? (int)$_POST['estado'] : null,
+            'revision'         => trim($_POST['revision'] ?? ''),
+            'activo'           => !empty($_POST['activo']) ? 1 : 0,
+            'calidad'          => !empty($_POST['calidad']) ? 1 : 0,
+            'medioambiente'    => !empty($_POST['medioambiente']) ? 1 : 0,
+            'tipo_documento'   => isset($_POST['tipo_documento']) && $_POST['tipo_documento'] !== '' ? (int)$_POST['tipo_documento'] : null,
+            'area'             => isset($_POST['area']) && $_POST['area'] !== '' ? (int)$_POST['area'] : null,
+            'perfil_ver'       => !empty($_POST['perfil_ver']) ? 1 : 0,
+            'perfil_nueva'     => !empty($_POST['perfil_nueva']) ? 1 : 0,
+            'perfil_modificar' => !empty($_POST['perfil_modificar']) ? 1 : 0,
+            'perfil_revisar'   => !empty($_POST['perfil_revisar']) ? 1 : 0,
+            'perfil_aprobar'   => !empty($_POST['perfil_aprobar']) ? 1 : 0,
+            'perfil_historico' => !empty($_POST['perfil_historico']) ? 1 : 0,
+            'perfil_tareas'    => !empty($_POST['perfil_tareas']) ? 1 : 0,
+        ];
+    }
 
-        if ($id === null) {
-            $id = isset($_POST['id']) ? (int)$_POST['id'] : (isset($_GET['id']) ? (int)$_GET['id'] : null);
-        }
-        $id = (int)$id;
-
-        $nombre = trim($_POST['nombre'] ?? '');
-        $codigo = trim($_POST['codigo'] ?? '');
-        $estado = isset($_POST['estado']) && $_POST['estado'] !== '' ? (int)$_POST['estado'] : null;
-        $revision = trim($_POST['revision'] ?? '');
-        $activo = !empty($_POST['activo']) ? 1 : 0;
-        $calidad = !empty($_POST['calidad']) ? 1 : 0;
-        $medioambiente = !empty($_POST['medioambiente']) ? 1 : 0;
-
+    protected function validate(array $data): array
+    {
         $errors = [];
-        if ($nombre === '') {
+        if (($data['nombre'] ?? '') === '') {
             $errors[] = 'El nombre del documento es obligatorio.';
         }
+        return $errors;
+    }
 
-        if (!empty($errors)) {
-            $_SESSION[$this->flashPrefix . '_form_error'] = implode(' ', $errors);
-            $target = $id > 0 ? "{$this->listRoute}/editar/$id" : "{$this->listRoute}/nuevo";
-            header("Location: $target");
-            exit;
-        }
-
-        $host = $_SESSION['db_host'] ?? (getenv('DB_HOST') ?: 'localhost');
-        $port = $_SESSION['db_port'] ?? (int)(getenv('DB_PORT') ?: 5432);
-
-        $db = new \Tuqan\Classes\Manejador_Base_Datos(
-            $_SESSION['login'] ?? '',
-            $_SESSION['pass'] ?? '',
-            $_SESSION['db'] ?? '',
-            $host,
-            $port
-        );
-
+    protected function persist(array $data, $id)
+    {
+        $db = $this->getDb();
+        $params = [
+            $data['nombre'],
+            $data['codigo'],
+            $data['estado'],
+            $data['revision'],
+            $data['activo'],
+            $data['calidad'],
+            $data['medioambiente'],
+            $data['tipo_documento'],
+            $data['area'],
+            $data['perfil_ver'],
+            $data['perfil_nueva'],
+            $data['perfil_modificar'],
+            $data['perfil_revisar'],
+            $data['perfil_aprobar'],
+            $data['perfil_historico'],
+            $data['perfil_tareas'],
+        ];
         if ($id > 0) {
+            $params[] = $id;
             $db->consultaPreparada(
-                "UPDATE {$this->table} SET nombre = ?, codigo = ?, estado = ?, revision = ?, activo = ?, calidad = ?, medioambiente = ? WHERE id = ?",
-                [$nombre, $codigo, $estado, $revision, $activo, $calidad, $medioambiente, $id]
+                "UPDATE {$this->table} SET nombre = ?, codigo = ?, estado = ?, revision = ?, activo = ?, calidad = ?, medioambiente = ?, tipo_documento = ?, area = ?, perfil_ver = ?, perfil_nueva = ?, perfil_modificar = ?, perfil_revisar = ?, perfil_aprobar = ?, perfil_historico = ?, perfil_tareas = ? WHERE id = ?",
+                $params
             );
-            $msg = $this->getSuccessMessage(true);
         } else {
             $db->consultaPreparada(
-                "INSERT INTO {$this->table} (nombre, codigo, estado, revision, activo, calidad, medioambiente) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                [$nombre, $codigo, $estado, $revision, $activo, $calidad, $medioambiente]
+                "INSERT INTO {$this->table} (nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                $params
             );
-            $msg = $this->getSuccessMessage(false);
         }
-
         $db->desconexion();
-
-        $_SESSION[$this->flashPrefix . '_flash_success'] = $msg;
-        header("Location: {$this->listRoute}");
-        exit;
     }
 }
