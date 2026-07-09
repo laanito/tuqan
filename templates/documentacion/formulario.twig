@@ -88,6 +88,38 @@
         </div>
 
         <div class="form-group">
+            <label for="revisado_por">Revisado por</label>
+            <select class="form-control" id="revisado_por" name="revisado_por">
+                <option value="">-- Ninguno --</option>
+                {% for u in usuario_options %}
+                    <option value="{{ u.id }}" {% if u.id == documento.revisado_por %}selected{% endif %}>{{ u.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="aprobado_por">Aprobado por</label>
+            <select class="form-control" id="aprobado_por" name="aprobado_por">
+                <option value="">-- Ninguno --</option>
+                {% for u in usuario_options %}
+                    <option value="{{ u.id }}" {% if u.id == documento.aprobado_por %}selected{% endif %}>{{ u.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_revision">Fecha Revisión</label>
+            <input type="date" class="form-control" id="fecha_revision" name="fecha_revision"
+                   value="{{ documento.fecha_revision ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_aprobacion">Fecha Aprobación</label>
+            <input type="date" class="form-control" id="fecha_aprobacion" name="fecha_aprobacion"
+                   value="{{ documento.fecha_aprobacion ?? '' }}">
+        </div>
+
+        <div class="form-group">
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="activo" value="1"

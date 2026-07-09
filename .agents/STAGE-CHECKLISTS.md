@@ -3152,6 +3152,61 @@ docker compose exec app php -l Pages/Documentacion/Formulario.php
 
 **Branch status:** Stage 9.23 on `feat/stage-9.23-documentacion-editor-perfiles`. Plan first. Docker-only.
 
+## Stage 9.24 — Documentación deeper (workflows) first slice
+
+**Goal:** Continue Documentación deeper with workflow fields (revisado_por, aprobado_por, fechas) + relations.
+
+**Selected scope (reviewable):**
+- Add workflow to Form and Listado.
+- Templates.
+- Verify + playbook.
+
+**Key changes:**
+- New: reference/stage-9.24-...-plan.md
+- Modified: Pages/Documentacion/*, templates, verify, .agents/.
+- Branch: feat/stage-9.24-documentacion-deeper-workflows.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.24.1","content":"Read TODOS + git master clean (done)","status":"completed"},
+  {"id":"9.24.2","content":"Branch feat/stage-9.24-documentacion-deeper-workflows (done)","status":"completed"},
+  {"id":"9.24.3","content":"Write and commit plan FIRST (done)","status":"completed"},
+  {"id":"9.24.4","content":"Explore current Documentacion Form/List after 9.23","status":"completed"},
+  {"id":"9.24.5","content":"Add workflow fields to Documentacion/Formulario and Listado (revisado_por etc + relations)","status":"completed"},
+  {"id":"9.24.6","content":"Update templates/documentacion/formulario and listado for workflows","status":"completed"},
+  {"id":"9.24.7","content":"Extend verify + full 9.24 playbook","status":"in_progress"},
+  {"id":"9.24.8","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.24.9","content":"Full clean verify + push","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Documentacion/Formulario.php Pages/Documentacion/Listado.php
+```
+
+**Browser flows:**
+- /admin/documentacion list shows revisado/aprobado labels.
+- Form has selects and dates for workflows.
+- Save works.
+- No reg.
+
+**Evidence:** (post)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Documentación (content editor), etc.
+
+**Branch status:** Stage 9.24 on `feat/stage-9.24-documentacion-deeper-workflows`. Plan first. Docker-only.
+
+
 
 
 
