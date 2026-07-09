@@ -43,6 +43,51 @@
         </div>
 
         <div class="form-group">
+            <label for="tipo_documento">Tipo Documento</label>
+            <select class="form-control" id="tipo_documento" name="tipo_documento">
+                <option value="">-- Seleccionar --</option>
+                {% for t in tipo_documento_options %}
+                    <option value="{{ t.id }}" {% if t.id == documento.tipo_documento %}selected{% endif %}>{{ t.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="area">Área</label>
+            <select class="form-control" id="area" name="area">
+                <option value="">-- Seleccionar --</option>
+                {% for a in area_options %}
+                    <option value="{{ a.id }}" {% if a.id == documento.area %}selected{% endif %}>{{ a.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Perfiles</label>
+            <div class="checkbox">
+                <label><input type="checkbox" name="perfil_ver" value="1" {% if not isEdit or documento.perfil_ver %}checked{% endif %}> Ver</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="perfil_nueva" value="1" {% if not isEdit or documento.perfil_nueva %}checked{% endif %}> Nueva</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="perfil_modificar" value="1" {% if not isEdit or documento.perfil_modificar %}checked{% endif %}> Modificar</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="perfil_revisar" value="1" {% if not isEdit or documento.perfil_revisar %}checked{% endif %}> Revisar</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="perfil_aprobar" value="1" {% if not isEdit or documento.perfil_aprobar %}checked{% endif %}> Aprobar</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="perfil_historico" value="1" {% if not isEdit or documento.perfil_historico %}checked{% endif %}> Histórico</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="perfil_tareas" value="1" {% if not isEdit or documento.perfil_tareas %}checked{% endif %}> Tareas</label>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="activo" value="1"
@@ -80,7 +125,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Documentación (Stage 9.5 shell). Campos básicos solamente. El árbol, editor completo, flujos de revisión/aprobación, arrays de permisos por perfil y sub-módulos específicos siguen en legacy.
+            Documentación (Stage 9.5 + 9.23). Perfiles (ver/nueva/etc.) y relaciones (tipo, área) añadidos. Editor completo, workflows y más diferidos.
         </div>
     </form>
 </div>

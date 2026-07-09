@@ -3097,6 +3097,62 @@ docker compose exec app php -l Pages/Formacion/Inscripciones/Listado.php Pages/F
 
 **Branch status:** Stage 9.22 on `feat/stage-9.22-formacion-inscripciones`. Plan first. Docker-only.
 
+## Stage 9.23 — Documentación editor/perfiles first slice
+
+**Goal:** Refactor Documentacion Form to modern base + add perfiles support (arrays for ver/nueva/etc.). Starts the editor/perfiles modernization.
+
+**Selected scope (reviewable):**
+- Refactor Formulario to helpers.
+- Add perfiles + tipo/area to form.
+- Update template with checkboxes/selects.
+- Verify + playbook.
+
+**Key changes:**
+- New: reference/stage-9.23-...-plan.md
+- Modified: Pages/Documentacion/Formulario.php, templates/documentacion/formulario.twig, verify, .agents/.
+- Branch: feat/stage-9.23-documentacion-editor-perfiles.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.23.1","content":"Read TODOS + git master clean (done)","status":"completed"},
+  {"id":"9.23.2","content":"Branch feat/stage-9.23-documentacion-editor-perfiles (done)","status":"completed"},
+  {"id":"9.23.3","content":"Write and commit plan FIRST (done)","status":"completed"},
+  {"id":"9.23.4","content":"Refactor Pages/Documentacion/Formulario.php to use Catalog base helpers","status":"completed"},
+  {"id":"9.23.5","content":"Add perfiles fields (perfil_*) to select, map, post, persist","status":"completed"},
+  {"id":"9.23.6","content":"Update templates/documentacion/formulario.twig for perfiles checkboxes","status":"completed"},
+  {"id":"9.23.7","content":"Possibly enhance Listado for perfiles","status":"pending"},
+  {"id":"9.23.8","content":"Extend verify-8.6.sh + full 9.23 playbook in STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.23.9","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.23.10","content":"Full clean-room verify + push","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Documentacion/Formulario.php
+```
+
+**Browser flows:**
+- /admin/documentacion form has perfiles checkboxes, tipo/area selects.
+- Save works.
+- No reg on list/arbol.
+
+**Evidence:** (post)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Documentación, etc.
+
+**Branch status:** Stage 9.23 on `feat/stage-9.23-documentacion-editor-perfiles`. Plan first. Docker-only.
+
+
 
 
 
