@@ -28,6 +28,8 @@
                         <th>Tipo</th>
                         <th>Cliente</th>
                         <th>Detectado por</th>
+                        <th>Verifica</th>
+                        <th>Implantado por</th>
                         <th>Cerrada por</th>
                         <th>Auditoría</th>
                         <th>Área</th>
@@ -44,7 +46,9 @@
                         <td>{{ m.tipo_label ?? (m.tipo ?? '-') }}</td>
                         <td>{{ m.cliente_label ?? (m.cliente ?? '-') }}</td>
                         <td>{{ m.usuario_detectado_label ?? (m.usuario_detectado ?? '-') }}</td>
-                        <td>{{ m.usuario_cerrado_label ?? (m.usuario_cerrado ?? '-') }}</td>
+                        <td>{{ m.usuario_verifica_label ?? (m.usuario_verifica ?? '-') }}<br/>{{ m.fecha_verifica ?? '' }}</td>
+                        <td>{{ m.usuario_implantacion_label ?? (m.usuario_implantacion ?? '-') }}</td>
+                        <td>{{ m.usuario_cerrado_label ?? (m.usuario_cerrado ?? '-') }}<br/>{{ m.fecha_cierre ?? '' }}</td>
                         <td>{{ m.auditoria_label ?? (m.auditoria ?? '-') }}</td>
                         <td>{{ m.area ?? '-' }}</td>
                         <td>{% if m.cerrada %}<span class="label label-success">Cerrada</span>{% else %}<span class="label label-default">Abierta</span>{% endif %}</td>
@@ -58,7 +62,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 deeper). Workflow fields (Detectado/Cerrada por, Auditoría link) added via relations. Full state machine and more links deferred.
+        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25). Remaining workflow fields (Verifica, Implantación, Cierre) + labels added. Full state machine and UI transitions deferred.
     </div>
 </div>
 {% endblock %}

@@ -10,7 +10,7 @@ class Listado extends CatalogListado
 
     protected function getSelectSql(): string
     {
-        return "SELECT id, fecha, descripcion, area, cerrada, tipo, cliente, usuario_detectado, usuario_cerrado, auditoria FROM {$this->table} ORDER BY id";
+        return "SELECT id, fecha, descripcion, area, cerrada, tipo, cliente, usuario_detectado, usuario_cerrado, auditoria, usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre FROM {$this->table} ORDER BY id";
     }
 
     protected function mapRow($row): array
@@ -26,10 +26,14 @@ class Listado extends CatalogListado
             'usuario_detectado' => $row[7] ?? null,
             'usuario_cerrado'   => $row[8] ?? null,
             'auditoria'         => $row[9] ?? null,
+            'usuario_verifica'  => $row[10] ?? null,
+            'fecha_verifica'    => $row[11] ?? null,
+            'usuario_implantacion' => $row[12] ?? null,
+            'fecha_cierre'      => $row[13] ?? null,
         ];
     }
 
-    // 9.17 + 9.21: relations polish (tipo, cliente, users for workflow, auditoria)
+    // 9.17 + 9.21 + 9.25: relations polish (tipo, cliente, users for workflow, auditoria)
     protected function fetchItems(): array
     {
         $items = parent::fetchItems();
@@ -39,6 +43,8 @@ class Listado extends CatalogListado
             $item['usuario_detectado_label'] = $this->getRelatedLabel('usuarios', $item['usuario_detectado'] ?? null);
             $item['usuario_cerrado_label'] = $this->getRelatedLabel('usuarios', $item['usuario_cerrado'] ?? null);
             $item['auditoria_label'] = $this->getRelatedLabel('auditorias', $item['auditoria'] ?? null);
+            $item['usuario_verifica_label'] = $this->getRelatedLabel('usuarios', $item['usuario_verifica'] ?? null);
+            $item['usuario_implantacion_label'] = $this->getRelatedLabel('usuarios', $item['usuario_implantacion'] ?? null);
         }
         unset($item);
         return $items;

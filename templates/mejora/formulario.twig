@@ -75,6 +75,38 @@
         </div>
 
         <div class="form-group">
+            <label for="usuario_verifica">Verifica</label>
+            <select class="form-control" id="usuario_verifica" name="usuario_verifica">
+                <option value="">-- Ninguno --</option>
+                {% for u in usuario_options %}
+                    <option value="{{ u.id }}" {% if u.id == mejora.usuario_verifica %}selected{% endif %}>{{ u.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_verifica">Fecha Verifica</label>
+            <input type="date" class="form-control" id="fecha_verifica" name="fecha_verifica"
+                   value="{{ mejora.fecha_verifica ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="usuario_implantacion">Implantado por</label>
+            <select class="form-control" id="usuario_implantacion" name="usuario_implantacion">
+                <option value="">-- Ninguno --</option>
+                {% for u in usuario_options %}
+                    <option value="{{ u.id }}" {% if u.id == mejora.usuario_implantacion %}selected{% endif %}>{{ u.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_cierre">Fecha Cierre</label>
+            <input type="date" class="form-control" id="fecha_cierre" name="fecha_cierre"
+                   value="{{ mejora.fecha_cierre ?? '' }}">
+        </div>
+
+        <div class="form-group">
             <label for="descripcion">Descripción</label>
             <input type="text" class="form-control" id="descripcion" name="descripcion"
                    value="{{ mejora.descripcion ?? '' }}" required>
@@ -152,7 +184,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Acciones de Mejora (Stage 9.4 + 9.17 + 9.21). Workflow assignments (Detectado/Cerrada por, Auditoría) added. Full transitions and more fields deferred.
+            Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25). Remaining workflow fields (Verifica, Implantación, Cierre) + dates added. Full state machine and UI transitions deferred.
         </div>
     </form>
 </div>
