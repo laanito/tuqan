@@ -3206,6 +3206,62 @@ docker compose exec app php -l Pages/Documentacion/Formulario.php Pages/Document
 
 **Branch status:** Stage 9.24 on `feat/stage-9.24-documentacion-deeper-workflows`. Plan first. Docker-only.
 
+## Stage 9.25 — Mejora deeper workflow: remaining fields and basic state
+
+**Goal:** Continue Mejora deeper with remaining workflow fields (usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre, etc.) + labels + basic state display in form/list.
+
+**Selected scope (reviewable):**
+- Add fields to Form and List.
+- Templates.
+- Verify + playbook.
+
+**Key changes:**
+- New: reference/stage-9.25-...-plan.md
+- Modified: Pages/Mejora/*, templates/mejora/*, verify, .agents/.
+- Branch: feat/stage-9.25-mejora-more-workflow.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.25.1","content":"Read TODOS + git master clean (done)","status":"completed"},
+  {"id":"9.25.2","content":"Branch feat/stage-9.25-mejora-more-workflow (done)","status":"completed"},
+  {"id":"9.25.3","content":"Write and commit plan FIRST (done)","status":"completed"},
+  {"id":"9.25.4","content":"Explore current Mejora Form/List to identify missing workflow fields","status":"completed"},
+  {"id":"9.25.5","content":"Add remaining fields (usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre, etc.) to Formulario and Listado + relations","status":"completed"},
+  {"id":"9.25.6","content":"Update templates/mejora to show additional workflow info and basic state","status":"completed"},
+  {"id":"9.25.7","content":"Small patch for demo workflow data if needed","status":"pending"},
+  {"id":"9.25.8","content":"Extend verify-8.6.sh + full 9.25 playbook in STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.25.9","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.25.10","content":"Full clean-room verify + push","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Mejora/Formulario.php Pages/Mejora/Listado.php
+```
+
+**Browser flows:**
+- /admin/mejora list shows additional Verifica, Implantación, Cierre labels/dates.
+- Form has selects and dates for them.
+- Save works.
+- No reg.
+
+**Evidence:** (post)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Mejora (state machine), etc.
+
+**Branch status:** Stage 9.25 on `feat/stage-9.25-mejora-more-workflow`. Plan first. Docker-only.
+
+
 
 
 

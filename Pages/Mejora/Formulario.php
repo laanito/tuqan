@@ -11,12 +11,12 @@ class Formulario extends CatalogFormulario
 
     protected function getSelectSql(): string
     {
-        return "SELECT id, tipo, cliente, fecha, descripcion, analisis, requiere_tratamiento, tratamiento, accion_preventiva, fecha_implantacion, plazo, coste, cerrada, area, observaciones, usuario_detectado, usuario_cerrado, auditoria FROM {$this->table} ORDER BY id";
+        return "SELECT id, tipo, cliente, fecha, descripcion, analisis, requiere_tratamiento, tratamiento, accion_preventiva, fecha_implantacion, plazo, coste, cerrada, area, observaciones, usuario_detectado, usuario_cerrado, auditoria, usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre FROM {$this->table} ORDER BY id";
     }
 
     protected function getSelectForForm(): string
     {
-        return "SELECT id, tipo, cliente, fecha, descripcion, analisis, requiere_tratamiento, tratamiento, accion_preventiva, fecha_implantacion, plazo, coste, cerrada, area, observaciones, usuario_detectado, usuario_cerrado, auditoria FROM {$this->table} WHERE id = ?";
+        return "SELECT id, tipo, cliente, fecha, descripcion, analisis, requiere_tratamiento, tratamiento, accion_preventiva, fecha_implantacion, plazo, coste, cerrada, area, observaciones, usuario_detectado, usuario_cerrado, auditoria, usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre FROM {$this->table} WHERE id = ?";
     }
 
     protected function loadItem($id): ?array
@@ -50,6 +50,10 @@ class Formulario extends CatalogFormulario
             'usuario_detectado'   => $row[15] ?? null,
             'usuario_cerrado'     => $row[16] ?? null,
             'auditoria'           => $row[17] ?? null,
+            'usuario_verifica'    => $row[18] ?? null,
+            'fecha_verifica'      => $row[19] ?? null,
+            'usuario_implantacion'=> $row[20] ?? null,
+            'fecha_cierre'        => $row[21] ?? null,
         ];
     }
 
@@ -57,7 +61,7 @@ class Formulario extends CatalogFormulario
     {
         $vars = parent::buildFormVariables($item);
 
-        // 9.17 + 9.21 relations polish: options + labels for tipo/cliente + workflow users/auditoria
+        // 9.17 + 9.21 + 9.25 relations polish: options + labels for tipo/cliente + full workflow users/auditoria
         $vars['tipo_options'] = $this->getRelatedOptions('tipoaccionesmejora', 'nombre');
         $vars['cliente_options'] = $this->getRelatedOptions('clientes', 'nombre');
         $vars['usuario_options'] = $this->getRelatedOptions('usuarios', 'nombre');
@@ -71,6 +75,8 @@ class Formulario extends CatalogFormulario
             $m['usuario_detectado_label'] = $this->getRelatedLabel('usuarios', $m['usuario_detectado'] ?? null);
             $m['usuario_cerrado_label'] = $this->getRelatedLabel('usuarios', $m['usuario_cerrado'] ?? null);
             $m['auditoria_label'] = $this->getRelatedLabel('auditorias', $m['auditoria'] ?? null);
+            $m['usuario_verifica_label'] = $this->getRelatedLabel('usuarios', $m['usuario_verifica'] ?? null);
+            $m['usuario_implantacion_label'] = $this->getRelatedLabel('usuarios', $m['usuario_implantacion'] ?? null);
             $vars[$key] = $m;
         }
 
@@ -97,6 +103,10 @@ class Formulario extends CatalogFormulario
             'usuario_detectado'   => isset($_POST['usuario_detectado']) && $_POST['usuario_detectado'] !== '' ? (int)$_POST['usuario_detectado'] : null,
             'usuario_cerrado'     => isset($_POST['usuario_cerrado']) && $_POST['usuario_cerrado'] !== '' ? (int)$_POST['usuario_cerrado'] : null,
             'auditoria'           => isset($_POST['auditoria']) && $_POST['auditoria'] !== '' ? (int)$_POST['auditoria'] : null,
+            'usuario_verifica'    => isset($_POST['usuario_verifica']) && $_POST['usuario_verifica'] !== '' ? (int)$_POST['usuario_verifica'] : null,
+            'usuario_implantacion'=> isset($_POST['usuario_implantacion']) && $_POST['usuario_implantacion'] !== '' ? (int)$_POST['usuario_implantacion'] : null,
+            'fecha_verifica'      => trim($_POST['fecha_verifica'] ?? ''),
+            'fecha_cierre'        => trim($_POST['fecha_cierre'] ?? ''),
         ];
     }
 
@@ -138,17 +148,21 @@ class Formulario extends CatalogFormulario
             $data['usuario_detectado'],
             $data['usuario_cerrado'],
             $data['auditoria'],
+            $data['usuario_verifica'],
+            $data['fecha_verifica'] ?: null,
+            $data['usuario_implantacion'],
+            $data['fecha_cierre'] ?: null,
         ];
 
         if ($id > 0) {
             $params[] = $id;
             $db->consultaPreparada(
-                "UPDATE {$this->table} SET tipo = ?, cliente = ?, fecha = ?, descripcion = ?, analisis = ?, requiere_tratamiento = ?, tratamiento = ?, accion_preventiva = ?, fecha_implantacion = ?, plazo = ?, coste = ?, cerrada = ?, area = ?, observaciones = ?, usuario_detectado = ?, usuario_cerrado = ?, auditoria = ? WHERE id = ?",
+                "UPDATE {$this->table} SET tipo = ?, cliente = ?, fecha = ?, descripcion = ?, analisis = ?, requiere_tratamiento = ?, tratamiento = ?, accion_preventiva = ?, fecha_implantacion = ?, plazo = ?, coste = ?, cerrada = ?, area = ?, observaciones = ?, usuario_detectado = ?, usuario_cerrado = ?, auditoria = ?, usuario_verifica = ?, fecha_verifica = ?, usuario_implantacion = ?, fecha_cierre = ? WHERE id = ?",
                 $params
             );
         } else {
             $db->consultaPreparada(
-                "INSERT INTO {$this->table} (tipo, cliente, fecha, descripcion, analisis, requiere_tratamiento, tratamiento, accion_preventiva, fecha_implantacion, plazo, coste, cerrada, area, observaciones, usuario_detectado, usuario_cerrado, auditoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO {$this->table} (tipo, cliente, fecha, descripcion, analisis, requiere_tratamiento, tratamiento, accion_preventiva, fecha_implantacion, plazo, coste, cerrada, area, observaciones, usuario_detectado, usuario_cerrado, auditoria, usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 $params
             );
         }
