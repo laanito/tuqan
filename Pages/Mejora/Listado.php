@@ -45,6 +45,14 @@ class Listado extends CatalogListado
             $item['auditoria_label'] = $this->getRelatedLabel('auditorias', $item['auditoria'] ?? null);
             $item['usuario_verifica_label'] = $this->getRelatedLabel('usuarios', $item['usuario_verifica'] ?? null);
             $item['usuario_implantacion_label'] = $this->getRelatedLabel('usuarios', $item['usuario_implantacion'] ?? null);
+            // Compute state for basic state machine
+            if ($item['cerrada']) {
+                $item['estado'] = 'Cerrada';
+            } elseif ($item['usuario_verifica']) {
+                $item['estado'] = 'Verificada';
+            } else {
+                $item['estado'] = 'Pendiente';
+            }
         }
         unset($item);
         return $items;

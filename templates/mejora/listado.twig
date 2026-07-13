@@ -51,7 +51,7 @@
                         <td>{{ m.usuario_cerrado_label ?? (m.usuario_cerrado ?? '-') }}<br/>{{ m.fecha_cierre ?? '' }}</td>
                         <td>{{ m.auditoria_label ?? (m.auditoria ?? '-') }}</td>
                         <td>{{ m.area ?? '-' }}</td>
-                        <td>{% if m.cerrada %}<span class="label label-success">Cerrada</span>{% else %}<span class="label label-default">Abierta</span>{% endif %}</td>
+                        <td>{% if m.estado == 'Cerrada' %}<span class="label label-success">Cerrada</span>{% elseif m.estado == 'Verificada' %}<span class="label label-info">Verificada</span>{% else %}<span class="label label-default">Pendiente</span>{% endif %}</td>
                         <td style="text-align:right;">
                             <a href="/admin/mejora/editar/{{ m.id }}" class="btn btn-xs btn-default">Editar</a>
                         </td>
@@ -62,7 +62,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25). Remaining workflow fields (Verifica, Implantación, Cierre) + labels added. Full state machine and UI transitions deferred.
+        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25 + 9.27). Basic state machine added (Pendiente/Verificada/Cerrada computed from fields). Full transitions and UI actions deferred.
     </div>
 </div>
 {% endblock %}
