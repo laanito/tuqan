@@ -25,6 +25,12 @@ class Formulario extends CatalogFormulario
         $db = $this->getDb();
         $db->consultaPreparada($this->getSelectForForm(), [$id]);
         $row = $db->coger_Fila();
+        $contenido = '';
+        if ($row) {
+            $db->consultaPreparada("SELECT contenido FROM contenido_texto WHERE id = ?", [$id]);
+            $crow = $db->coger_Fila();
+            if ($crow) $contenido = $crow[0] ?? '';
+        }
         $db->desconexion();
         if (!$row) return null;
         return [
@@ -49,6 +55,7 @@ class Formulario extends CatalogFormulario
             'aprobado_por'      => $row[18] ?? null,
             'fecha_revision'    => $row[19] ?? null,
             'fecha_aprobacion'  => $row[20] ?? null,
+            'contenido'         => $contenido,
         ];
     }
 
@@ -96,6 +103,7 @@ class Formulario extends CatalogFormulario
             'aprobado_por'     => isset($_POST['aprobado_por']) && $_POST['aprobado_por'] !== '' ? (int)$_POST['aprobado_por'] : null,
             'fecha_revision'   => trim($_POST['fecha_revision'] ?? ''),
             'fecha_aprobacion' => trim($_POST['fecha_aprobacion'] ?? ''),
+            'contenido'        => trim($_POST['contenido'] ?? ''),
         ];
     }
 
@@ -139,12 +147,21 @@ class Formulario extends CatalogFormulario
                 "UPDATE {$this->table} SET nombre = ?, codigo = ?, estado = ?, revision = ?, activo = ?, calidad = ?, medioambiente = ?, tipo_documento = ?, area = ?, perfil_ver = ?, perfil_nueva = ?, perfil_modificar = ?, perfil_revisar = ?, perfil_aprobar = ?, perfil_historico = ?, perfil_tareas = ?, revisado_por = ?, aprobado_por = ?, fecha_revision = ?, fecha_aprobacion = ? WHERE id = ?",
                 $params
             );
+            $doc_id = $id;
         } else {
             $db->consultaPreparada(
                 "INSERT INTO {$this->table} (nombre, codigo, estado, revision, activo, calidad, medioambiente, tipo_documento, area, perfil_ver, perfil_nueva, perfil_modificar, perfil_revisar, perfil_aprobar, perfil_historico, perfil_tareas, revisado_por, aprobado_por, fecha_revision, fecha_aprobacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 $params
             );
+            $db->consulta("SELECT currval('documentos_id_seq')");
+            $row = $db->coger_Fila();
+            $doc_id = $row[0];
         }
+        // Handle linked content (content editor support)
+        $db->consultaPreparada(
+            "INSERT INTO contenido_texto (id, contenido) VALUES (?, ?) ON CONFLICT (id) DO UPDATE SET contenido = ?",
+            [$doc_id, $data['contenido'], $data['contenido']]
+        );
         $db->desconexion();
     }
 }

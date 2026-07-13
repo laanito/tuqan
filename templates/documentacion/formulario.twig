@@ -31,6 +31,11 @@
         </div>
 
         <div class="form-group">
+            <label for="contenido">Contenido (texto)</label>
+            <textarea class="form-control" id="contenido" name="contenido" rows="8">{{ documento.contenido ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
             <label for="estado">Estado</label>
             <input type="number" class="form-control" id="estado" name="estado"
                    value="{{ documento.estado ?? '' }}">
@@ -157,7 +162,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Documentación (Stage 9.5 + 9.23). Perfiles (ver/nueva/etc.) y relaciones (tipo, área) añadidos. Editor completo, workflows y más diferidos.
+            Documentación (Stage 9.5 + 9.23 + 9.24 + 9.26). Basic content editor (texto) added via contenido_texto. Full rich editor, workflows integration, etc. deferred.
         </div>
     </form>
 </div>
