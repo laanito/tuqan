@@ -3261,6 +3261,63 @@ docker compose exec app php -l Pages/Mejora/Formulario.php Pages/Mejora/Listado.
 
 **Branch status:** Stage 9.25 on `feat/stage-9.25-mejora-more-workflow`. Plan first. Docker-only.
 
+## Stage 9.26 — Documentación content editor first slice
+
+**Goal:** First slice of "content editor" modernization for Documentación. Add basic text content editing support using the linked contenido_texto table.
+
+**Selected scope (reviewable):**
+- Enhance Formulario to load/persist 'contenido' from contenido_texto.
+- Add textarea in template.
+- Small patch for sample content.
+- Verify + playbook.
+
+**Key changes:**
+- New: reference/stage-9.26-...-plan.md, patch 0036.
+- Modified: Pages/Documentacion/Formulario.php, templates/documentacion/formulario.twig, verify, .agents/.
+- Branch: feat/stage-9.26-documentacion-content-editor.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.26.1","content":"Read TODOS + git master clean (done)","status":"completed"},
+  {"id":"9.26.2","content":"Branch feat/stage-9.26-documentacion-content-editor (done)","status":"completed"},
+  {"id":"9.26.3","content":"Write and commit plan FIRST (done)","status":"completed"},
+  {"id":"9.26.4","content":"Explore current Documentacion Form and linked contenido tables","status":"completed"},
+  {"id":"9.26.5","content":"Enhance Pages/Documentacion/Formulario.php to support contenido_texto load/persist (textarea)","status":"completed"},
+  {"id":"9.26.6","content":"Update templates/documentacion/formulario.twig with content textarea","status":"completed"},
+  {"id":"9.26.7","content":"Optional: enhance Listado for content excerpt","status":"pending"},
+  {"id":"9.26.8","content":"Create small patch 0036 for sample contenido_texto if needed","status":"completed"},
+  {"id":"9.26.9","content":"Extend verify-8.6.sh + full 9.26 playbook in STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.26.10","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.26.11","content":"Full clean-room verify + push","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Documentacion/Formulario.php
+```
+
+**Browser flows:**
+- /admin/documentacion edit has Contenido textarea, persists to linked table.
+- List may show basic.
+- No reg on metadata/perfiles/workflows.
+
+**Evidence:** (post)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Documentación (full rich editor), etc.
+
+**Branch status:** Stage 9.26 on `feat/stage-9.26-documentacion-content-editor`. Plan first. Docker-only.
+
+
 
 
 

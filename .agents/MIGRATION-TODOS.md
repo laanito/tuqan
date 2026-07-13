@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.25 on `feat/stage-9.25-mejora-more-workflow` (Mejora deeper workflow: remaining fields and basic state). Previous: 9.24 Documentación workflows.
+**Last updated**: Stage 9.26 on `feat/stage-9.26-documentacion-content-editor` (Documentación content editor first slice). Previous: 9.25 Mejora more.
 
 ---
 
@@ -82,7 +82,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Documentación editor/perfiles first slice**: Delivered in Stage 9.23 (refactored Form to base + added perfiles checkboxes + tipo/area). See 9.23 plan and STAGE-CHECKLISTS.
 - [x] **Documentación deeper (workflows) first slice**: Delivered in Stage 9.24 (added revisado_por/aprobado_por + dates + labels). See 9.24 plan and STAGE-CHECKLISTS.
 - [x] **Mejora deeper workflow: remaining fields and basic state**: Delivered in Stage 9.25 (added usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre + labels). See 9.25 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals / polish**: More Mejora (full state machine), more Formación, Documentación (content editor), or broader polish.
+- [x] **Documentación content editor first slice**: Delivered in Stage 9.26 (basic text content editing via contenido_texto in form). See 9.26 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals / polish**: More Mejora (full state machine), more Formación, Documentación (rich editor), or broader polish.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -119,7 +120,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Revisiones + compliance records + maintenance workflows (tie to Auditorias / Mejora).
 
 ### Documentación (Core ISO — high value, likely larger)
-- [x] Documentación initial shell delivered in Stage 9.5. Tree in 9.12. Editor/perfiles in 9.23, workflows in 9.24. Full editor, more workflows, perfiles in tree, PDF deferred. See 9.5 + 9.12 + 9.23 + 9.24 plans.
+- [x] Documentación initial shell delivered in Stage 9.5. Tree in 9.12. Editor/perfiles in 9.23, workflows in 9.24, content editor (texto) in 9.26. Full rich editor, binario, more, PDF deferred. See 9.5 + 9.12 + 9.23 + 9.24 + 9.26 plans.
 - [ ] Full tree + editor modernization, perfiles, workflows, formats/plantillas.
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
@@ -151,7 +152,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ## Cross-Cutting / Non-Module Backlog (Important but Not "a Module")
 
 - [ ] Twig 1.x → 2/3 (or 3) proper upgrade (deferred repeatedly; vendor patches in place; will touch all templates + possibly custom extensions when we have many modules).
-- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules, 9.18 Aspectos, 9.19 vertical, 9.20 Formación sub, 9.21 Mejora deeper, 9.22 Formación sub, 9.23 Documentación, 9.24 workflows, 9.25 Mejora more. See 9.8/9.13/9.15/9.16/9.17/9.18/9.19/9.20/9.21/9.22/9.23/9.24/9.25. Broader adoption remains open.
+- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules, 9.18 Aspectos, 9.19 vertical, 9.20 Formación sub, 9.21 Mejora deeper, 9.22 Formación sub, 9.23 Documentación, 9.24 workflows, 9.25 Mejora more, 9.26 content editor. See 9.8/9.13/9.15/9.16/9.17/9.18/9.19/9.20/9.21/9.22/9.23/9.24/9.25/9.26. Broader adoption remains open.
 - [ ] PDF / Excel / report generation modernization (GenPDF, crearExcel, related generators — used by almost every vertical for "ficha", exports, compliance outputs).
 - [ ] Tree / arbol UI + generators (arbol_documentos.php, estructura_arbol.php, generador_arboles.php, dhtmlgoodies tree, saveNodes etc. — core for Documentación + Procesos; big but high leverage).
 - [ ] Questionnaire / checklist engine (cuestionario.php + procesa_cuestionario.php + procesa_Editor — used by Aspectos, Auditorias, possibly others; aspects/audits/reqs depend on it).

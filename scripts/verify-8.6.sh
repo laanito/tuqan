@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 / 9.3 / 9.4 / 9.5 / 9.6 / 9.7 / 9.8 / 9.9 / 9.10 / 9.11 / 9.12 / 9.13 / 9.14 / 9.15 / 9.16 / 9.17 / 9.18 / 9.19 / 9.20 / 9.21 / 9.22 / 9.23 / 9.24 / 9.25 Verification (non-interactive) ==="
+echo "=== Stage 8.6 / 8.7 / 8.8 / 9.1 / 9.2 / 9.3 / 9.4 / 9.5 / 9.6 / 9.7 / 9.8 / 9.9 / 9.10 / 9.11 / 9.12 / 9.13 / 9.14 / 9.15 / 9.16 / 9.17 / 9.18 / 9.19 / 9.20 / 9.21 / 9.22 / 9.23 / 9.24 / 9.25 / 9.26 Verification (non-interactive) ==="
 echo ""
 
 echo "1. Syntax check on key files..."
@@ -47,7 +47,7 @@ export PGPASSWORD="${DB_PASS:-secret}"
 psql -h "${DB_HOST:-db}" -U qnova -d qnova -v ON_ERROR_STOP=1 -c "
 -- Tables (8.6 + 8.7 + 8.8 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 + 9.7 + 9.9)
 SELECT tablename FROM pg_tables 
-WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos')
+WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos','contenido_texto')
 ORDER BY tablename;
 
 -- Sedes rename evidence
@@ -101,6 +101,9 @@ SELECT COUNT(*) AS mejora_with_verifica FROM acciones_mejora WHERE usuario_verif
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;
+
+-- 9.26 Documentación content evidence
+SELECT COUNT(*) AS contenido_texto_rows FROM contenido_texto;
 
 -- 9.23 Documentación perfiles evidence
 SELECT COUNT(*) AS documentos_with_perfiles FROM documentos WHERE perfil_ver IS NOT NULL;
@@ -156,5 +159,5 @@ echo ""
 echo "3. (Class load smoke skipped in this script because it is fragile from different CWDs; the php -l above already gives us syntax confidence. Full route exercising requires a real session and is covered in the browser + DB-assert part of the playbook.)"
 
 echo ""
-echo "=== 8.6/8.7/8.8/9.1/9.2/9.3/9.4/9.5/9.6/9.7/9.8/9.9/9.10/9.11/9.12/9.13/9.14/9.15/9.16/9.17/9.18/9.19/9.20/9.21/9.22/9.23/9.24/9.25 non-interactive verification finished ==="
+echo "=== 8.6/8.7/8.8/9.1/9.2/9.3/9.4/9.5/9.6/9.7/9.8/9.9/9.10/9.11/9.12/9.13/9.14/9.15/9.16/9.17/9.18/9.19/9.20/9.21/9.22/9.23/9.24/9.25/9.26 non-interactive verification finished ==="
 echo "For the real confidence on the POST behavior, flashes, matrix, editing, etc., follow the full playbook in .agents/STAGE-CHECKLISTS.md (the browser + DB-assert-after-submit part)."
