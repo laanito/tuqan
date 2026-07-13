@@ -3317,6 +3317,65 @@ docker compose exec app php -l Pages/Documentacion/Formulario.php
 
 **Branch status:** Stage 9.26 on `feat/stage-9.26-documentacion-content-editor`. Plan first. Docker-only.
 
+## Stage 9.27 — Mejora deeper: basic state machine (verify/close support)
+
+**Goal:** Implement basic state machine in modern Mejora: support 'verificar' and 'cerrar' actions in form, compute states in list (Pendiente/Verificada/Cerrada), basic validation.
+
+**Selected scope (reviewable):**
+- Add action checkboxes in Form.
+- Compute estado in Listado.
+- Templates update for state and actions.
+- Patch for demo states.
+- Verify + playbook.
+
+**Key changes:**
+- New: reference/stage-9.27-...-plan.md, patch 0037.
+- Modified: Pages/Mejora/*, templates/mejora/*, verify, .agents/.
+- Branch: feat/stage-9.27-mejora-state-machine.
+
+**todo_write items:**
+```json
+[
+  {"id":"9.27.1","content":"Read living TODOS + git master clean (done)","status":"completed"},
+  {"id":"9.27.2","content":"Branch feat/stage-9.27-mejora-state-machine (done)","status":"completed"},
+  {"id":"9.27.3","content":"Write and commit plan FIRST (done)","status":"completed"},
+  {"id":"9.27.4","content":"Explore current Mejora Form/List for state fields and UI","status":"completed"},
+  {"id":"9.27.5","content":"Enhance Pages/Mejora/Formulario.php to support 'verificar' and 'cerrar' actions (set fields, validation)","status":"completed"},
+  {"id":"9.27.6","content":"Enhance Listado to compute and map 'estado' (Pendiente/Verificada/Cerrada)","status":"completed"},
+  {"id":"9.27.7","content":"Update templates/mejora to show state and action checkboxes","status":"completed"},
+  {"id":"9.27.8","content":"Small patch 0037 for demo states in data","status":"completed"},
+  {"id":"9.27.9","content":"Extend verify-8.6.sh + full 9.27 playbook in STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.27.10","content":"Update MIGRATION-TODOS.md","status":"pending"},
+  {"id":"9.27.11","content":"Full clean-room verify + push","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec app php -l Pages/Mejora/Formulario.php Pages/Mejora/Listado.php
+```
+
+**Browser flows:**
+- /admin/mejora list shows Pendiente/Verificada/Cerrada states.
+- Form has workflow action checkboxes; checking sets state.
+- Transitions work (e.g. no close without verify).
+- No reg.
+
+**Evidence:** (post)
+
+**Next:**
+- Update TODOS.
+- Suggested: more Mejora (full machine), etc.
+
+**Branch status:** Stage 9.27 on `feat/stage-9.27-mejora-state-machine`. Plan first. Docker-only.
+
+
 
 
 

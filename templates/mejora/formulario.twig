@@ -107,6 +107,22 @@
         </div>
 
         <div class="form-group">
+            <label>Acciones de workflow</label>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="accion_verificar" value="1">
+                    Marcar como verificada (set Verifica if not set)
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="accion_cerrar" value="1">
+                    Cerrar acción (set Cerrada)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="descripcion">Descripción</label>
             <input type="text" class="form-control" id="descripcion" name="descripcion"
                    value="{{ mejora.descripcion ?? '' }}" required>

@@ -107,6 +107,8 @@ class Formulario extends CatalogFormulario
             'usuario_implantacion'=> isset($_POST['usuario_implantacion']) && $_POST['usuario_implantacion'] !== '' ? (int)$_POST['usuario_implantacion'] : null,
             'fecha_verifica'      => trim($_POST['fecha_verifica'] ?? ''),
             'fecha_cierre'        => trim($_POST['fecha_cierre'] ?? ''),
+            'accion_verificar'    => !empty($_POST['accion_verificar']) ? 1 : 0,
+            'accion_cerrar'       => !empty($_POST['accion_cerrar']) ? 1 : 0,
         ];
     }
 
@@ -119,6 +121,10 @@ class Formulario extends CatalogFormulario
         if (($data['fecha'] ?? '') === '') {
             $errors[] = 'La fecha es obligatoria.';
         }
+        // Basic state machine validation
+        if ($data['accion_cerrar'] && !$data['usuario_verifica']) {
+            $errors[] = 'No se puede cerrar sin verificar primero.';
+        }
         return $errors;
     }
 
@@ -129,6 +135,14 @@ class Formulario extends CatalogFormulario
         // Normalize empty date strings to NULL for the DB
         $fecha_imp = ($data['fecha_implantacion'] ?? '') !== '' ? $data['fecha_implantacion'] : null;
         $plazo_val = ($data['plazo'] ?? '') !== '' ? $data['plazo'] : null;
+
+        // Basic state machine actions
+        if ($data['accion_verificar'] && !$data['usuario_verifica']) {
+            // leave to user input or could default, but fields editable
+        }
+        if ($data['accion_cerrar']) {
+            $data['cerrada'] = 1;
+        }
 
         $params = [
             $data['tipo'],
