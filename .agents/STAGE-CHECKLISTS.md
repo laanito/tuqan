@@ -3376,6 +3376,88 @@ docker compose exec app php -l Pages/Mejora/Formulario.php Pages/Mejora/Listado.
 **Branch status:** Stage 9.27 on `feat/stage-9.27-mejora-state-machine`. Plan first. Docker-only.
 
 
+## Stage 9.28 — Mejora: full state machine polish (auto transitions + quick actions)
+
+**Goal:** Polish Mejora state machine to "fuller": auto-assign current user + today date on verify/close actions (checkboxes or quick), direct quick-action POST endpoints + conditional buttons in list (Verificar / Cerrar), show current estado badge in form. Small login hygiene for real user id. Patch + full verify.
+
+**Selected scope (reviewable):**
+- Auto logic + quick Verificar/Cerrar methods in Formulario.
+- Routes for quick actions.
+- List quick buttons + form estado display.
+- Patch 0038.
+- Login id capture + base helper.
+- Verify + playbook + TODOS.
+
+**Key changes:**
+- New: reference/stage-9.28-*-plan.md, data-patches/0038-*.sql
+- Modified: Pages/Mejora/Formulario.php, Pages/Catalog/* (helper), Pages/LoginUsuario.php, index.php, templates/mejora/*, scripts/verify-8.6.sh, .agents/STAGE-CHECKLISTS.md + MIGRATION-TODOS.md
+- Branch: feat/stage-9.28-mejora-full-state-machine
+
+**todo_write items:**
+```json
+[
+  {"id":"9.28.1","content":"Add $_SESSION['id_usuario'] capture in Pages/LoginUsuario.php on successful login (from userRow[0])","status":"pending"},
+  {"id":"9.28.2","content":"Add getCurrentUserId() helper to CatalogFormulario (and CatalogListado) returning (int)($_SESSION['id_usuario'] ?? 1)","status":"pending"},
+  {"id":"9.28.3","content":"Enhance Mejora/Formulario.php: auto-apply logic in getPostData/persist for accion_* (set user+fecha if blank), update validate if needed; implement public Verificar($id) and Cerrar($id) that mutate and flash+redirect","status":"pending"},
+  {"id":"9.28.4","content":"Add POST routes in index.php for /admin/mejora/verificar/{id} and /admin/mejora/cerrar/{id} pointing to the new methods on Formulario","status":"pending"},
+  {"id":"9.28.5","content":"Update templates/mejora/formulario.twig: add prominent current estado display/badge at top; refine workflow action checkboxes labels to mention auto-fill","status":"pending"},
+  {"id":"9.28.6","content":"Update templates/mejora/listado.twig: add conditional quick-action buttons (POST forms) for Verificar (if Pendiente) and Cerrar (if Verificada) next to Editar","status":"pending"},
+  {"id":"9.28.7","content":"Create docker/db-init/data-patches/0038-mejora-state-transitions.sql with idempotent demo data for varied states + data_patches entry","status":"pending"},
+  {"id":"9.28.8","content":"Extend scripts/verify-8.6.sh with 9.28 specific asserts (more state counts, patch presence)","status":"pending"},
+  {"id":"9.28.9","content":"Append full Stage 9.28 section (todo items, validation commands, evidence) to .agents/STAGE-CHECKLISTS.md","status":"in_progress"},
+  {"id":"9.28.10","content":"Update .agents/MIGRATION-TODOS.md: flip Mejora items, refresh snapshot/suggested next, last updated note","status":"pending"},
+  {"id":"9.28.11","content":"Full ritual verify: docker down -v + up + init-db.sh; php -l on all touched; psql asserts; ./scripts/verify-8.6.sh; manual browser flows for transitions","status":"pending"},
+  {"id":"9.28.12","content":"Logical commits; push; prepare for PR (update plan with evidence links if needed)","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+# Full clean room
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./docker/db-init/init-db.sh
+
+# Syntax + verify script
+docker compose exec app php -l Pages/Mejora/Formulario.php
+docker compose exec app php -l Pages/Mejora/Listado.php
+docker compose exec app php -l Pages/Catalog/CatalogFormulario.php
+docker compose exec app php -l Pages/Catalog/CatalogListado.php
+docker compose exec app php -l Pages/LoginUsuario.php
+docker compose exec app php -l index.php
+docker compose exec app ./scripts/verify-8.6.sh
+
+# Patch and state evidence
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT filename FROM data_patches WHERE filename LIKE '0038%';
+  SELECT id, descripcion, cerrada, usuario_verifica IS NOT NULL AS has_verifica, estado_label FROM (
+    SELECT id, descripcion, cerrada, usuario_verifica,
+           CASE WHEN cerrada THEN 'Cerrada' WHEN usuario_verifica IS NOT NULL THEN 'Verificada' ELSE 'Pendiente' END AS estado_label
+    FROM acciones_mejora ORDER BY id
+  ) s;
+"
+```
+
+**Browser flows (after clean init + login as admin/demo):**
+- Navigate to /admin/mejora (or legacy path).
+- List: shows Estado badges + for Pendiente items a "Verificar" button; for Verificada a "Cerrar" button (no button if Cerrada).
+- Click Verificar on a Pendiente → flash success "Acción de mejora verificada.", row now Verificada (and auto user/date if was blank).
+- Click Cerrar on a Verificada → flash "Acción de mejora cerrada.", now Cerrada.
+- Attempt Cerrar on Pendiente → error flash about needing verify first.
+- Go to edit form for one: prominent Estado badge shown; checkboxes for workflow actions note auto-fill behavior; submit with checkbox sets user+fecha auto.
+- Create new or edit and use checkboxes → states update correctly.
+- No regressions on other modern modules (e.g. /admin/documentacion etc still work).
+- Quick actions and form actions produce correct DB rows (psql verify).
+
+**Evidence:** (fill post-execution)
+
+**Next:**
+- Mark in TODOS.
+- Suggested next: Mejora cross links (Auditorias/Aspectos), Formación remaining, Documentación rich editor, etc.
+
+**Branch status:** Stage 9.28 on `feat/stage-9.28-mejora-full-state-machine`. Plan first. Docker-only. All via container.
+
+
 
 
 
