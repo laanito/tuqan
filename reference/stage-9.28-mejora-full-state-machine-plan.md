@@ -74,3 +74,21 @@ Follows exact ritual.
 **Execution autonomous per AGENTS.md + testing strategy in STAGE-CHECKLISTS. Plan committed first. Docker-only. If git fails: retry.**
 
 **Plan written on the feature branch (first commit).**
+
+## Execution Evidence (9.28)
+
+- Plan committed first on branch.
+- Clean room: `docker compose --env-file .env.docker down -v && up -d && exec app ./scripts/init-db.sh` — 0038 applied cleanly, 4 Mejora rows with 2 Pendiente / 1 Verificada / 1 Cerrada.
+- php -l: all green (Formulario, Listado, bases, LoginUsuario, index).
+- verify-8.6.sh: passed (including new 9.28 counts + patch check).
+- psql post-init:
+  - 0038 present
+  - mejora_total=4, cerradas=1, verificadas=1, pendientes=2
+  - Sample rows show correct fields populated by prior patches + 0038.
+- Core logic: auto-assign (user 1 + today) on accion_* in form persist; quick Verificar sets verify fields; quick Cerrar enforces verify-first + sets close fields.
+- Templates: estado badge + conditional POST buttons render.
+- Docs: TODOS updated (marked delivered), STAGE-CHECKLISTS has full 9.28 section + commands.
+- Commits: logical (core, templates, patch+docs).
+- Non-interactive gates green. Full browser flow (login → /admin/mejora → quick buttons + form checkboxes → state changes + flashes + DB) is the human gate (per playbook).
+
+All Docker-only. Ready for push + PR review.
