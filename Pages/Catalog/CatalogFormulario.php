@@ -67,6 +67,15 @@ abstract class CatalogFormulario
         ];
     }
 
+    /**
+     * Current logged-in user id for auto-assign in state transitions (Mejora etc.).
+     * Falls back to 1 (demo seed user) if not present in session.
+     */
+    protected function getCurrentUserId(): int
+    {
+        return (int)($_SESSION['id_usuario'] ?? 1);
+    }
+
     protected function getFlashPrefix(): string
     {
         return $this->flashPrefix;
