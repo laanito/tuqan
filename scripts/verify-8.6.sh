@@ -112,6 +112,13 @@ SELECT '0039-mejora-auditorias-cross-links.sql' AS patch, COUNT(*) FROM data_pat
 SELECT COUNT(*) AS mejora_with_auditoria FROM acciones_mejora WHERE auditoria IS NOT NULL;
 SELECT auditoria, COUNT(*) AS n FROM acciones_mejora WHERE auditoria IS NOT NULL GROUP BY auditoria ORDER BY auditoria;
 
+-- 9.30 Formación cross-links evidence
+SELECT '0040-formacion-cross-links.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0040-formacion-cross-links.sql';
+SELECT COUNT(*) AS cursos_with_plan FROM cursos WHERE plan IS NOT NULL;
+SELECT plan, COUNT(*) AS n FROM cursos WHERE plan IS NOT NULL GROUP BY plan ORDER BY plan;
+SELECT COUNT(*) AS alumnos_with_curso FROM alumnos WHERE curso IS NOT NULL;
+SELECT curso, COUNT(*) AS n FROM alumnos WHERE curso IS NOT NULL GROUP BY curso ORDER BY curso;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

@@ -3523,6 +3523,29 @@ docker compose exec db psql -U qnova -d qnova -c "
 **Branch status:** Stage 9.29 on `feat/stage-9.29-mejora-auditorias-cross-links`. Plan first. Docker-only.
 
 
+## Stage 9.30 — Formación cross-links hub (Planes ↔ Cursos ↔ Inscripciones)
+
+**Goal:** Bidirectional nav between Planes, Cursos, and Inscripciones (filter, counts, prefilled create) + fix nested list item keys so Cursos/Inscripciones templates receive rows. Light PR-sizing note in TODOS.
+
+**Key changes:** Pages/Formacion/* Listado/Formulario, CatalogListado getFilterParams plan/curso, templates/formacion/**, patch 0040, verify, TODOS sizing, STAGE-CHECKLISTS.
+
+**Validation:**
+```bash
+docker compose --env-file .env.docker exec app ./scripts/init-db.sh   # or clean room
+docker compose exec app php -l Pages/Formacion/Listado.php Pages/Formacion/Cursos/Listado.php Pages/Formacion/Inscripciones/Listado.php Pages/Formacion/Cursos/Formulario.php Pages/Formacion/Inscripciones/Formulario.php Pages/Catalog/CatalogListado.php
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT filename FROM data_patches WHERE filename LIKE '0040%';
+  SELECT plan, COUNT(*) FROM cursos GROUP BY plan ORDER BY 1;
+  SELECT curso, COUNT(*) FROM alumnos GROUP BY curso ORDER BY 1;
+"
+```
+
+**Browser:** /admin/formacion → curso counts + +Curso; /admin/formacion/cursos?plan=1 filter + inscripción counts; /admin/formacion/inscripciones?curso=1; prefills on nuevo.
+
+**Branch status:** Stage 9.30 on `feat/stage-9.30-formacion-cross-links`. Plan first. Docker-only.
+
+
 
 
 

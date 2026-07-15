@@ -34,7 +34,24 @@ class Formulario extends CatalogFormulario
 
     protected function buildFormVariables(?array $item): array
     {
+        // 9.30: prefill curso from ?curso= when creating
+        if ($item === null) {
+            $prefillCurso = (isset($_GET['curso']) && $_GET['curso'] !== '') ? (int)$_GET['curso'] : null;
+            if ($prefillCurso) {
+                $item = [
+                    'id' => null,
+                    'curso' => $prefillCurso,
+                    'inscrito' => 1,
+                    'verificado' => 0,
+                ];
+            }
+        }
+
         $vars = parent::buildFormVariables($item);
+        if ($item && empty($item['id'])) {
+            $vars['isEdit'] = false;
+            $vars['pageTitle'] = "Nuevo {$this->title}";
+        }
 
         $vars['usuario_options'] = $this->getRelatedOptions('usuarios', 'nombre');
         $vars['curso_options'] = $this->getRelatedOptions('cursos', 'nombre');

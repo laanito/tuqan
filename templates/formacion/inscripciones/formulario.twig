@@ -36,6 +36,13 @@
                     <option value="{{ c.id }}" {% if c.id == inscripcion.curso %}selected{% endif %}>{{ c.nombre }}</option>
                 {% endfor %}
             </select>
+            {% if inscripcion.curso %}
+                <p class="help-block" style="margin-top:6px;">
+                    <a href="/admin/formacion/cursos/editar/{{ inscripcion.curso }}">Ver curso{% if inscripcion.curso_label %}: {{ inscripcion.curso_label }}{% endif %}</a>
+                    ·
+                    <a href="/admin/formacion/inscripciones?curso={{ inscripcion.curso }}">Otras inscripciones del curso</a>
+                </p>
+            {% endif %}
         </div>
 
         <div class="form-group">

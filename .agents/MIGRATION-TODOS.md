@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.29 on `feat/stage-9.29-mejora-auditorias-cross-links` (Mejora ↔ Auditorías cross-links). Previous: 9.28 full state machine polish.
+**Last updated**: Stage 9.30 on `feat/stage-9.30-formacion-cross-links` (Formación Planes↔Cursos↔Inscripciones + light PR sizing note). Previous: 9.29 Mejora↔Auditorías.
 
 ---
 
@@ -27,7 +27,13 @@ STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retr
 3. **Marking done**: Only `[x]` items **after merge + verified** (the human who asked does final browser pass on the flows; non-interactive gates must be green).
 4. **Discovery**: During any leg, if you surface a new module, missing accion, extra table, or gap — add it to the right group here *immediately* with a short note + suggested size.
 5. **Handoff to other agents**: The checkboxes + "Suggested Next Legs" shortlist + latest snapshot + links to the just-completed stage plan/checklist section are 90% of what the next agent needs. They still read the top of MIGRATION-PLAN + AGENTS.md once.
-6. **PR sizing**: "the size of PRs we want from now on". One vertical or 2-3 catalogs + patch + routes + verify + docs is the model. Avoid giant refactors.
+6. **PR sizing** (still the 0.1-era sweet spot; suitable for current agents):
+   - **Target**: one clickable outcome the human can exercise in &lt;10 minutes.
+   - **Ceiling**: ~8–20 files, 0–1 data patch, one vertical or one focused cross-cut — not two product stories.
+   - **Hard stop**: if the plan lists &gt;3 independent outcomes, split into two stages.
+   - **Suggested Next line format** (when adding open items):  
+     `9.x — Title · In: … · Out: … · ~N files · patch? yes/no`
+   - Plan.md first remains non-negotiable; docs/verify stay in the same PR.
 
 **Quick navigation**: Use your editor's outline / search for `### ` (area headers) or `[ ]` (open items).
 
@@ -86,7 +92,11 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Mejora deeper: basic state machine**: Delivered in Stage 9.27 (added verify/close action checkboxes, computed states in list, basic validation). See 9.27 plan and STAGE-CHECKLISTS.
 - [x] **Mejora full state machine polish**: Delivered in Stage 9.28 (auto user+fecha on transitions, quick Verificar/Cerrar routes+buttons from list, estado badge in form, login id hygiene + base helper). See 9.28 plan and STAGE-CHECKLISTS.
 - [x] **Mejora ↔ Auditorías cross-links first slice**: Delivered in Stage 9.29 (filter Mejora by auditoría, reverse counts/list on ejecución, prefilled create, clickable links both ways). See 9.29 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals / polish**: Mejora links to Aspectos/Indicadores (when schema allows), more Formación subs, Documentación (rich editor), Auditorías hallazgos, or broader polish.
+- [x] **Formación cross-links hub**: Delivered in Stage 9.30 (Planes curso counts, Cursos filter by plan + inscripción counts, Inscripciones filter by curso, prefills, nested list key fix, nav between subs). See 9.30 plan and STAGE-CHECKLISTS.
+- [ ] **Next** (sized picks — use format above when claiming):  
+  - Documentación estado/filter polish · In: list badges+filter, form estado display · Out: rich HTML editor, binario · ~12 files · patch? small  
+  - Auditorías hallazgos first slice · In: hallazgos table shell linked to ejecución · Out: full plan/horario · ~15 files · patch? yes  
+  - Equipos revisiones shell · In: list+form revisiones · Out: calendario · ~12 files · patch? yes
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -111,8 +121,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [x] Integration with Auditorías (first slice) — Stage 9.29. Aspectos / Indicadores cross links still deferred (no FK columns on acciones_mejora yet).
 
 ### Formación (Training)
-- [x] Formación basic (Planes) delivered in Stage 9.5. Cursos (9.20), Inscripciones (9.22) subs delivered. More (reqs, ficha etc.) deferred. See 9.5 + 9.20 + 9.22 plans.
-- [ ] Link to Empleados / RRHH concepts if present in legacy (ficha personal); remaining Formación subs.
+- [x] Formación basic (Planes) delivered in Stage 9.5. Cursos (9.20), Inscripciones (9.22) subs delivered. Cross-links hub (filter/prefill/counts/nav) in Stage 9.30. See 9.5 + 9.20 + 9.22 + 9.30 plans.
+- [ ] Link to Empleados / RRHH concepts if present in legacy (ficha personal); remaining Formación subs beyond the three modern tables.
 
 ### Proveedores (Suppliers)
 - [x] Proveedores (legacy 67) — basic listado + form (nombre + telefono + activo) in Stage 9.2. Followed catalog base + full routes + data patch + verify + playbook. Sub-entities (contactos, incidencias, productos/homologados) deferred to later legs. (See 9.2 plan and STAGE-CHECKLISTS.)

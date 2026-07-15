@@ -25,4 +25,27 @@ class Listado extends CatalogListado
             'medioambiente'  => $row[6],
         ];
     }
+
+    // 9.30: reverse count of cursos per plan
+    protected function fetchItems(): array
+    {
+        $items = parent::fetchItems();
+        foreach ($items as &$item) {
+            $item['curso_count'] = $this->countCursosForPlan((int)$item['id']);
+        }
+        unset($item);
+        return $items;
+    }
+
+    protected function countCursosForPlan(int $planId): int
+    {
+        if ($planId <= 0) {
+            return 0;
+        }
+        $db = $this->getDb();
+        $db->consultaPreparada('SELECT COUNT(*) FROM cursos WHERE plan = ?', [$planId]);
+        $row = $db->coger_Fila();
+        $db->desconexion();
+        return (int)($row[0] ?? 0);
+    }
 }

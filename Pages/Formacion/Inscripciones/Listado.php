@@ -25,14 +25,48 @@ class Listado extends CatalogListado
         ];
     }
 
+    // 9.30: filter by curso; fix list key for nested template
     protected function fetchItems(): array
     {
-        $items = parent::fetchItems();
+        $filters = $this->getFilterParams();
+        $sql = "SELECT id, usuario, curso, inscrito, verificado FROM {$this->table}";
+        $params = [];
+        if ($filters['curso'] !== null) {
+            $sql .= ' WHERE curso = ?';
+            $params[] = $filters['curso'];
+        }
+        $sql .= ' ORDER BY id';
+
+        $db = $this->getDb();
+        if ($params) {
+            $db->consultaPreparada($sql, $params);
+        } else {
+            $db->consulta($sql);
+        }
+        $items = [];
+        while ($row = $db->coger_Fila()) {
+            $items[] = $this->mapRow($row);
+        }
+        $db->desconexion();
+
         foreach ($items as &$item) {
             $item['usuario_label'] = $this->getRelatedLabel('usuarios', $item['usuario'] ?? null);
             $item['curso_label'] = $this->getRelatedLabel('cursos', $item['curso'] ?? null);
         }
         unset($item);
         return $items;
+    }
+
+    protected function buildListVariables(array $items): array
+    {
+        $vars = parent::buildListVariables($items);
+        $vars['inscripcion'] = $items;
+        $filters = $this->getFilterParams();
+        $vars['curso_options'] = $this->getRelatedOptions('cursos', 'nombre');
+        $vars['filter_curso'] = $filters['curso'];
+        if ($filters['curso'] !== null) {
+            $vars['filter_curso_label'] = $this->getRelatedLabel('cursos', $filters['curso']);
+        }
+        return $vars;
     }
 }

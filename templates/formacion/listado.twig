@@ -7,6 +7,8 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0; font-size: 20px;">Planes de Formación</h2>
         <div>
+            <a href="/admin/formacion/cursos" class="btn btn-default btn-sm">Cursos</a>
+            <a href="/admin/formacion/inscripciones" class="btn btn-default btn-sm">Inscripciones</a>
             <a href="/admin/formacion/nuevo" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nuevo Plan
             </a>
@@ -21,7 +23,17 @@
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
-                    <tr><th>ID</th><th>Nombre</th><th>Vigente</th><th>Descripción</th><th>Calidad</th><th>Medio Ambiente</th><th>Estado</th><th style="width:140px;text-align:right;">Acciones</th></tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Vigente</th>
+                        <th>Descripción</th>
+                        <th>Calidad</th>
+                        <th>Medio Ambiente</th>
+                        <th>Cursos</th>
+                        <th>Estado</th>
+                        <th style="width:200px;text-align:right;">Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for f in formacion %}
@@ -32,9 +44,17 @@
                         <td>{{ f.descripcion ?? '-' }}</td>
                         <td>{% if f.calidad %}<span class="label label-info">Sí</span>{% else %}-{% endif %}</td>
                         <td>{% if f.medioambiente %}<span class="label label-info">Sí</span>{% else %}-{% endif %}</td>
+                        <td>
+                            {% if f.curso_count > 0 %}
+                                <a href="/admin/formacion/cursos?plan={{ f.id }}">{{ f.curso_count }} curso{{ f.curso_count != 1 ? 's' : '' }}</a>
+                            {% else %}
+                                <span class="text-muted">0</span>
+                            {% endif %}
+                        </td>
                         <td>{% if f.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
-                        <td style="text-align:right;">
+                        <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/formacion/editar/{{ f.id }}" class="btn btn-xs btn-default">Editar</a>
+                            <a href="/admin/formacion/cursos/nuevo?plan={{ f.id }}" class="btn btn-xs btn-primary" title="Nuevo curso en este plan">+ Curso</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -43,7 +63,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Planes de Formación (Stage 9.5). Cursos, inscripciones, requisitos de puesto y otros flujos de Formación se gestionarán en legs posteriores.
+        Planes de Formación (9.5 + 9.30 cross-links a Cursos e Inscripciones).
     </div>
 </div>
 {% endblock %}

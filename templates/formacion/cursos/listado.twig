@@ -7,7 +7,9 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0; font-size: 20px;">Cursos de Formación</h2>
         <div>
-            <a href="/admin/formacion/cursos/nuevo" class="btn btn-primary btn-sm">
+            <a href="/admin/formacion" class="btn btn-default btn-sm">Planes</a>
+            <a href="/admin/formacion/inscripciones" class="btn btn-default btn-sm">Inscripciones</a>
+            <a href="/admin/formacion/cursos/nuevo{% if filter_plan %}?plan={{ filter_plan }}{% endif %}" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nuevo Curso
             </a>
         </div>
@@ -15,8 +17,27 @@
 </div>
 
 <div style="padding: 20px;">
+    <form method="GET" action="/admin/formacion/cursos" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="plan" style="margin-right: 6px;">Plan</label>
+            <select class="form-control input-sm" id="plan" name="plan">
+                <option value="">-- Todos --</option>
+                {% for p in plan_options %}
+                    <option value="{{ p.id }}" {% if filter_plan == p.id %}selected{% endif %}>{{ p.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_plan %}
+            <a href="/admin/formacion/cursos" class="btn btn-link btn-sm">Quitar filtro</a>
+            <span class="text-muted" style="margin-left:8px;font-size:13px;">
+                Plan: <strong>{{ filter_plan_label ?? filter_plan }}</strong>
+            </span>
+        {% endif %}
+    </form>
+
     {% if curso is empty %}
-        <div class="alert alert-info">No hay cursos registrados.</div>
+        <div class="alert alert-info">No hay cursos registrados{% if filter_plan %} para este plan{% endif %}.</div>
     {% else %}
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -27,9 +48,10 @@
                         <th>Plan</th>
                         <th>Horas</th>
                         <th>Fecha Prevista</th>
+                        <th>Inscripciones</th>
                         <th>Estado</th>
                         <th>Activo</th>
-                        <th style="width:140px;text-align:right;">Acciones</th>
+                        <th style="width:220px;text-align:right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,13 +59,27 @@
                     <tr>
                         <td>{{ c.id }}</td>
                         <td><strong>{{ c.nombre }}</strong></td>
-                        <td>{{ c.plan_label ?? (c.plan ?? '-') }}</td>
+                        <td>
+                            {% if c.plan %}
+                                <a href="/admin/formacion/editar/{{ c.plan }}">{{ c.plan_label ?? c.plan }}</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                         <td>{{ c.num_horas ?? '-' }}</td>
                         <td>{{ c.fecha_prevista ?? '-' }}</td>
+                        <td>
+                            {% if c.inscripcion_count > 0 %}
+                                <a href="/admin/formacion/inscripciones?curso={{ c.id }}">{{ c.inscripcion_count }}</a>
+                            {% else %}
+                                <span class="text-muted">0</span>
+                            {% endif %}
+                        </td>
                         <td>{{ c.estado ?? 0 }}</td>
                         <td>{% if c.activo %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
-                        <td style="text-align:right;">
+                        <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/formacion/cursos/editar/{{ c.id }}" class="btn btn-xs btn-default">Editar</a>
+                            <a href="/admin/formacion/inscripciones/nuevo?curso={{ c.id }}" class="btn btn-xs btn-primary">+ Inscripción</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -52,7 +88,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Cursos (Stage 9.20 first Formación sub). Material, responsables, ficha personal y workflows diferidos.
+        Cursos (9.20 + 9.30 cross-links Planes/Inscripciones). Ficha personal y Excel diferidos.
     </div>
 </div>
 {% endblock %}
