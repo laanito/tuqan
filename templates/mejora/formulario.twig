@@ -18,6 +18,27 @@
             <input type="hidden" name="id" value="{{ mejora.id }}">
         {% endif %}
 
+        {% if isEdit %}
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Estado actual</label>
+            <div>
+                {% set estado = 'Pendiente' %}
+                {% if mejora.cerrada %}
+                    {% set estado = 'Cerrada' %}
+                {% elseif mejora.usuario_verifica %}
+                    {% set estado = 'Verificada' %}
+                {% endif %}
+                {% if estado == 'Cerrada' %}
+                    <span class="label label-success" style="font-size:14px; padding:4px 10px;">Cerrada</span>
+                {% elseif estado == 'Verificada' %}
+                    <span class="label label-info" style="font-size:14px; padding:4px 10px;">Verificada</span>
+                {% else %}
+                    <span class="label label-default" style="font-size:14px; padding:4px 10px;">Pendiente</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
         <div class="form-group">
             <label for="fecha">Fecha</label>
             <input type="date" class="form-control" id="fecha" name="fecha"
@@ -107,17 +128,17 @@
         </div>
 
         <div class="form-group">
-            <label>Acciones de workflow</label>
+            <label>Acciones de workflow (auto-asigna usuario actual + fecha de hoy si no se especifica)</label>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="accion_verificar" value="1">
-                    Marcar como verificada (set Verifica if not set)
+                    Marcar como verificada ahora
                 </label>
             </div>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="accion_cerrar" value="1">
-                    Cerrar acción (set Cerrada)
+                    Cerrar acción ahora (requiere verificada)
                 </label>
             </div>
         </div>
@@ -200,7 +221,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25). Remaining workflow fields (Verifica, Implantación, Cierre) + dates added. Full state machine and UI transitions deferred.
+            Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25 + 9.27 + 9.28). Full state machine: auto user/date on transitions, quick verify/cerrar buttons, estado display.
         </div>
     </form>
 </div>

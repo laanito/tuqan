@@ -121,7 +121,7 @@ class Formulario extends CatalogFormulario
         if (($data['fecha'] ?? '') === '') {
             $errors[] = 'La fecha es obligatoria.';
         }
-        // Basic state machine validation
+        // Basic state machine validation (checkbox path)
         if ($data['accion_cerrar'] && !$data['usuario_verifica']) {
             $errors[] = 'No se puede cerrar sin verificar primero.';
         }
@@ -136,12 +136,31 @@ class Formulario extends CatalogFormulario
         $fecha_imp = ($data['fecha_implantacion'] ?? '') !== '' ? $data['fecha_implantacion'] : null;
         $plazo_val = ($data['plazo'] ?? '') !== '' ? $data['plazo'] : null;
 
-        // Basic state machine actions
-        if ($data['accion_verificar'] && !$data['usuario_verifica']) {
-            // leave to user input or could default, but fields editable
+        $today = date('Y-m-d');
+        $currentUser = $this->getCurrentUserId();
+
+        // Full state machine auto-apply on action checkboxes (form path)
+        if ($data['accion_verificar']) {
+            if (empty($data['usuario_verifica'])) {
+                $data['usuario_verifica'] = $currentUser;
+            }
+            if (empty($data['fecha_verifica'])) {
+                $data['fecha_verifica'] = $today;
+            }
         }
         if ($data['accion_cerrar']) {
             $data['cerrada'] = 1;
+            if (empty($data['usuario_cerrado'])) {
+                $data['usuario_cerrado'] = $currentUser;
+            }
+            if (empty($data['fecha_cierre'])) {
+                $data['fecha_cierre'] = $today;
+            }
+            // If closing and no verifica yet, auto-verify as well (generous but safe)
+            if (empty($data['usuario_verifica'])) {
+                $data['usuario_verifica'] = $currentUser;
+                $data['fecha_verifica'] = $today;
+            }
         }
 
         $params = [
@@ -181,5 +200,104 @@ class Formulario extends CatalogFormulario
             );
         }
         $db->desconexion();
+    }
+
+    // --- Quick state machine actions (fuller transitions, 9.28) ---
+    // Called directly via dedicated POST routes. Auto-assigns current user + today.
+    // These bypass the full form and provide one-click verify/close from list.
+
+    public function Verificar($id = null)
+    {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        Config::initialize();
+
+        $id = $id !== null ? (int)$id : (isset($_POST['id']) ? (int)$_POST['id'] : (int)($_GET['id'] ?? 0));
+        if ($id <= 0) {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+
+        $db = $this->getDb();
+        // Load minimal current state
+        $db->consultaPreparada("SELECT usuario_verifica, fecha_verifica, cerrada FROM {$this->table} WHERE id = ?", [$id]);
+        $row = $db->coger_Fila();
+        $db->desconexion();
+
+        if (!$row) {
+            $_SESSION[$this->flashPrefix . '_flash_success'] = 'Acción no encontrada.';
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+
+        $today = date('Y-m-d');
+        $currentUser = $this->getCurrentUserId();
+
+        $usuarioVer = $row[0] ?: $currentUser;
+        $fechaVer   = $row[1] ?: $today;
+
+        $db = $this->getDb();
+        $db->consultaPreparada(
+            "UPDATE {$this->table} SET usuario_verifica = ?, fecha_verifica = ? WHERE id = ?",
+            [$usuarioVer, $fechaVer, $id]
+        );
+        $db->desconexion();
+
+        $_SESSION[$this->flashPrefix . '_flash_success'] = 'Acción de mejora verificada.';
+        header("Location: {$this->listRoute}");
+        exit;
+    }
+
+    public function Cerrar($id = null)
+    {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        Config::initialize();
+
+        $id = $id !== null ? (int)$id : (isset($_POST['id']) ? (int)$_POST['id'] : (int)($_GET['id'] ?? 0));
+        if ($id <= 0) {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+
+        $db = $this->getDb();
+        $db->consultaPreparada("SELECT usuario_verifica, fecha_verifica, cerrada, usuario_cerrado, fecha_cierre FROM {$this->table} WHERE id = ?", [$id]);
+        $row = $db->coger_Fila();
+        $db->desconexion();
+
+        if (!$row) {
+            $_SESSION[$this->flashPrefix . '_flash_success'] = 'Acción no encontrada.';
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+
+        $alreadyVerified = !empty($row[0]);
+        if (!$alreadyVerified) {
+            // Enforce: cannot close without prior verification (match form validate)
+            $_SESSION[$this->flashPrefix . '_form_error'] = 'No se puede cerrar sin verificar primero. Use Verificar antes de Cerrar.';
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+
+        $today = date('Y-m-d');
+        $currentUser = $this->getCurrentUserId();
+
+        $usuarioCie = $row[3] ?: $currentUser;
+        $fechaCie   = $row[4] ?: $today;
+
+        $db = $this->getDb();
+        $db->consultaPreparada(
+            "UPDATE {$this->table} SET cerrada = true, usuario_cerrado = ?, fecha_cierre = ? WHERE id = ?",
+            [$usuarioCie, $fechaCie, $id]
+        );
+        $db->desconexion();
+
+        $_SESSION[$this->flashPrefix . '_flash_success'] = 'Acción de mejora cerrada.';
+        header("Location: {$this->listRoute}");
+        exit;
     }
 }

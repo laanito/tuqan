@@ -52,8 +52,17 @@
                         <td>{{ m.auditoria_label ?? (m.auditoria ?? '-') }}</td>
                         <td>{{ m.area ?? '-' }}</td>
                         <td>{% if m.estado == 'Cerrada' %}<span class="label label-success">Cerrada</span>{% elseif m.estado == 'Verificada' %}<span class="label label-info">Verificada</span>{% else %}<span class="label label-default">Pendiente</span>{% endif %}</td>
-                        <td style="text-align:right;">
+                        <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/mejora/editar/{{ m.id }}" class="btn btn-xs btn-default">Editar</a>
+                            {% if m.estado == 'Pendiente' %}
+                                <form method="POST" action="/admin/mejora/verificar/{{ m.id }}" style="display:inline; margin-left:4px;">
+                                    <button type="submit" class="btn btn-xs btn-info" title="Marcar como verificada">Verificar</button>
+                                </form>
+                            {% elseif m.estado == 'Verificada' %}
+                                <form method="POST" action="/admin/mejora/cerrar/{{ m.id }}" style="display:inline; margin-left:4px;">
+                                    <button type="submit" class="btn btn-xs btn-success" title="Cerrar acción">Cerrar</button>
+                                </form>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -62,7 +71,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25 + 9.27). Basic state machine added (Pendiente/Verificada/Cerrada computed from fields). Full transitions and UI actions deferred.
+        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25 + 9.27 + 9.28). Full state machine: quick Verificar/Cerrar buttons + auto user+fecha on transitions. Computed states shown.
     </div>
 </div>
 {% endblock %}

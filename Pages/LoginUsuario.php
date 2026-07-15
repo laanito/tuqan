@@ -131,6 +131,9 @@ class LoginUsuario
                 $_SESSION['admin'] = ((int)($userRow[2] ?? 0) === 0);
                 $_SESSION['perfil'] = (string)($userRow[2] ?? '0');
 
+                // Capture numeric user id for auto-assign in workflow actions (e.g. Mejora state machine)
+                $_SESSION['id_usuario'] = (int)($userRow[0] ?? 1);
+
                 $nombre   = trim($userRow[3] ?? '');
                 $apellido = trim($userRow[4] ?? '');
                 $email    = trim($userRow[5] ?? '');

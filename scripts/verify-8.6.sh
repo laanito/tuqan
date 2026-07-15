@@ -102,6 +102,11 @@ SELECT COUNT(*) AS mejora_with_verifica FROM acciones_mejora WHERE usuario_verif
 SELECT COUNT(*) AS mejora_cerradas FROM acciones_mejora WHERE cerrada = true;
 SELECT COUNT(*) AS mejora_verificadas FROM acciones_mejora WHERE usuario_verifica IS NOT NULL AND NOT cerrada;
 
+-- 9.28 Mejora full state machine evidence
+SELECT '0038-mejora-state-transitions.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0038-mejora-state-transitions.sql';
+SELECT COUNT(*) AS mejora_with_verifica_or_closed FROM acciones_mejora WHERE usuario_verifica IS NOT NULL OR cerrada = true;
+SELECT COUNT(*) AS mejora_pendientes FROM acciones_mejora WHERE COALESCE(cerrada, false) = false AND usuario_verifica IS NULL;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

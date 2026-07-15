@@ -349,6 +349,10 @@ $router->addRoute('GET', '/admin/mejora/editar/{id}', ['Tuqan\Pages\Mejora\Formu
 $router->addRoute('POST', '/admin/mejora/nuevo', ['Tuqan\Pages\Mejora\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/mejora/editar/{id}', ['Tuqan\Pages\Mejora\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
+// Quick state machine actions (Stage 9.28) — direct verify/close from list
+$router->addRoute('POST', '/admin/mejora/verificar/{id}', ['Tuqan\Pages\Mejora\Formulario', 'Verificar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/mejora/cerrar/{id}', ['Tuqan\Pages\Mejora\Formulario', 'Cerrar'], ['before' => 'auth_company']);
+
 // Legacy routes for Mejora (from full legacy menu accions: mejora:listado:listado:ver)
 $router->addRoute('GET', '/administracion/mejora/listado/ver', ['Tuqan\Pages\Mejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
