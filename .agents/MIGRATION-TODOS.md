@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.28 on `feat/stage-9.28-mejora-full-state-machine` (Mejora full state machine polish: auto transitions + quick actions). Previous: 9.27 basic state machine.
+**Last updated**: Stage 9.29 on `feat/stage-9.29-mejora-auditorias-cross-links` (Mejora ↔ Auditorías cross-links). Previous: 9.28 full state machine polish.
 
 ---
 
@@ -85,7 +85,8 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Documentación content editor first slice**: Delivered in Stage 9.26 (basic text content editing via contenido_texto in form). See 9.26 plan and STAGE-CHECKLISTS.
 - [x] **Mejora deeper: basic state machine**: Delivered in Stage 9.27 (added verify/close action checkboxes, computed states in list, basic validation). See 9.27 plan and STAGE-CHECKLISTS.
 - [x] **Mejora full state machine polish**: Delivered in Stage 9.28 (auto user+fecha on transitions, quick Verificar/Cerrar routes+buttons from list, estado badge in form, login id hygiene + base helper). See 9.28 plan and STAGE-CHECKLISTS.
-- [ ] **Next verticals / polish**: Mejora cross links (Auditorias/Aspectos/Indicadores integration), more Formación subs, Documentación (rich editor), or broader polish.
+- [x] **Mejora ↔ Auditorías cross-links first slice**: Delivered in Stage 9.29 (filter Mejora by auditoría, reverse counts/list on ejecución, prefilled create, clickable links both ways). See 9.29 plan and STAGE-CHECKLISTS.
+- [ ] **Next verticals / polish**: Mejora links to Aspectos/Indicadores (when schema allows), more Formación subs, Documentación (rich editor), Auditorías hallazgos, or broader polish.
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -106,8 +107,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Full matrix + revisiones + cuestionario integration + reporting tie-in to Indicadores.
 
 ### Mejora (Improvement)
-- [x] Acciones de Mejora (legacy 68) — basic CRUD + relations in 9.4/9.17; deeper workflow slices in 9.21 (initial assignments), 9.25 (remaining fields + basic state), 9.27 (basic state machine with verify/close), 9.28 (fuller: auto transitions, quick actions from list, estado UI). Full cross links deferred. See 9.4 + 9.17 + 9.21 + 9.25 + 9.27 + 9.28 plans.
-- [ ] Integration of mejora actions with Auditorias / Aspectos / Indicadores (cross links). Deeper workflow.
+- [x] Acciones de Mejora (legacy 68) — basic CRUD + relations in 9.4/9.17; deeper workflow slices in 9.21 (initial assignments), 9.25 (remaining fields + basic state), 9.27 (basic state machine with verify/close), 9.28 (fuller: auto transitions, quick actions from list, estado UI), 9.29 (Auditorías bidirectional cross-links: filter, reverse list, prefilled create). See 9.4 + 9.17 + 9.21 + 9.25 + 9.27 + 9.28 + 9.29 plans.
+- [x] Integration with Auditorías (first slice) — Stage 9.29. Aspectos / Indicadores cross links still deferred (no FK columns on acciones_mejora yet).
 
 ### Formación (Training)
 - [x] Formación basic (Planes) delivered in Stage 9.5. Cursos (9.20), Inscripciones (9.22) subs delivered. More (reqs, ficha etc.) deferred. See 9.5 + 9.20 + 9.22 plans.
@@ -127,8 +128,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
-- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` delivered in Stage 9.6. Execution first slice (auditorias table basic CRUD + programa link) delivered in Stage 9.19. Full execution (plan/horario, hallazgos, informes, Mejora links) deferred. See 9.6 + 9.19 plans.
-- [ ] Full execution + plan/horario + findings / follow-up (link to Mejora acciones). Integration with Indicadores + Aspectos.
+- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` delivered in Stage 9.6. Execution first slice (auditorias table basic CRUD + programa link) delivered in Stage 9.19. Mejora reverse links (counts + related list + create) in Stage 9.29. Full execution (plan/horario, hallazgos, informes) deferred. See 9.6 + 9.19 + 9.29 plans.
+- [ ] Full execution + plan/horario + findings / follow-up. Integration with Indicadores + Aspectos.
 
 ### Indicadores + Objetivos (KPIs)
 - [x] Indicadores basic (legacy 72) — core `indicadores` table delivered in Stage 9.9 (0027 patch + Pages/Indicadores using enhanced 9.8 bases + templates + routes + verify). Fields: nombre, definicion, valores (inicial/objetivo/tolerable), tecnica, responsables, frecuencias, activo, genera_objetivo. Charts/graphs, full calculations, metas_indicadores, objetivos and dashboard deferred. See 9.9 plan/playbook.
@@ -154,7 +155,7 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 ## Cross-Cutting / Non-Module Backlog (Important but Not "a Module")
 
 - [ ] Twig 1.x → 2/3 (or 3) proper upgrade (deferred repeatedly; vendor patches in place; will touch all templates + possibly custom extensions when we have many modules).
-- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules, 9.18 Aspectos, 9.19 vertical, 9.20 Formación sub, 9.21 Mejora deeper, 9.22 Formación sub, 9.23 Documentación, 9.24 workflows, 9.25 Mejora more, 9.26 content editor, 9.27 Mejora state, 9.28 Mejora state + getCurrentUserId + login id capture. See 9.8/9.13/9.15/9.16/9.17/9.18/9.19/9.20/9.21/9.22/9.23/9.24/9.25/9.26/9.27/9.28. Broader adoption remains open.
+- [x] More base class extraction — first delivery in Stage 9.8: enhanced CatalogListado + CatalogFormulario with protected helpers. 9.13 tree, 9.15 filters/relations, 9.16 full tree base (CatalogTree), 9.17 relations polish + getRelatedOptions + adoption in early modules, 9.18 Aspectos, 9.19 vertical, 9.20 Formación sub, 9.21 Mejora deeper, 9.22 Formación sub, 9.23 Documentación, 9.24 workflows, 9.25 Mejora more, 9.26 content editor, 9.27 Mejora state, 9.28 Mejora state + getCurrentUserId + login id capture, 9.29 getFilterParams auditoria + Mejora/Auditorías cross-nav. See 9.8–9.29. Broader adoption remains open.
 - [ ] PDF / Excel / report generation modernization (GenPDF, crearExcel, related generators — used by almost every vertical for "ficha", exports, compliance outputs).
 - [ ] Tree / arbol UI + generators (arbol_documentos.php, estructura_arbol.php, generador_arboles.php, dhtmlgoodies tree, saveNodes etc. — core for Documentación + Procesos; big but high leverage).
 - [ ] Questionnaire / checklist engine (cuestionario.php + procesa_cuestionario.php + procesa_Editor — used by Aspectos, Auditorias, possibly others; aspects/audits/reqs depend on it).

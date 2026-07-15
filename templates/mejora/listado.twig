@@ -15,8 +15,27 @@
 </div>
 
 <div style="padding: 20px;">
+    <form method="GET" action="/admin/mejora" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="auditoria" style="margin-right: 6px;">Auditoría</label>
+            <select class="form-control input-sm" id="auditoria" name="auditoria">
+                <option value="">-- Todas --</option>
+                {% for a in auditoria_options %}
+                    <option value="{{ a.id }}" {% if filter_auditoria == a.id %}selected{% endif %}>{{ a.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_auditoria %}
+            <a href="/admin/mejora" class="btn btn-link btn-sm">Quitar filtro</a>
+            <span class="text-muted" style="margin-left:8px;font-size:13px;">
+                Filtrado por: <strong>{{ filter_auditoria_label ?? filter_auditoria }}</strong>
+            </span>
+        {% endif %}
+    </form>
+
     {% if mejora is empty %}
-        <div class="alert alert-info">No hay acciones de mejora registradas.</div>
+        <div class="alert alert-info">No hay acciones de mejora registradas{% if filter_auditoria %} para esta auditoría{% endif %}.</div>
     {% else %}
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -34,7 +53,7 @@
                         <th>Auditoría</th>
                         <th>Área</th>
                         <th>Estado</th>
-                        <th style="width:140px;text-align:right;">Acciones</th>
+                        <th style="width:180px;text-align:right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +68,13 @@
                         <td>{{ m.usuario_verifica_label ?? (m.usuario_verifica ?? '-') }}<br/>{{ m.fecha_verifica ?? '' }}</td>
                         <td>{{ m.usuario_implantacion_label ?? (m.usuario_implantacion ?? '-') }}</td>
                         <td>{{ m.usuario_cerrado_label ?? (m.usuario_cerrado ?? '-') }}<br/>{{ m.fecha_cierre ?? '' }}</td>
-                        <td>{{ m.auditoria_label ?? (m.auditoria ?? '-') }}</td>
+                        <td>
+                            {% if m.auditoria %}
+                                <a href="/admin/auditorias/ejecucion/editar/{{ m.auditoria }}">{{ m.auditoria_label ?? m.auditoria }}</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                         <td>{{ m.area ?? '-' }}</td>
                         <td>{% if m.estado == 'Cerrada' %}<span class="label label-success">Cerrada</span>{% elseif m.estado == 'Verificada' %}<span class="label label-info">Verificada</span>{% else %}<span class="label label-default">Pendiente</span>{% endif %}</td>
                         <td style="text-align:right; white-space: nowrap;">
@@ -71,7 +96,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25 + 9.27 + 9.28). Full state machine: quick Verificar/Cerrar buttons + auto user+fecha on transitions. Computed states shown.
+        Acciones de Mejora (Stages 9.4–9.29). State machine + cross-links con Auditorías (filtro y enlaces). Aspectos/Indicadores deferred.
     </div>
 </div>
 {% endblock %}

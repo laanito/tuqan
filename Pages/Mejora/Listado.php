@@ -33,10 +33,32 @@ class Listado extends CatalogListado
         ];
     }
 
-    // 9.17 + 9.21 + 9.25: relations polish (tipo, cliente, users for workflow, auditoria)
+    // 9.17 + 9.21 + 9.25 relations; 9.27 estado; 9.29 filter by auditoria
     protected function fetchItems(): array
     {
-        $items = parent::fetchItems();
+        $filters = $this->getFilterParams();
+        $sql = "SELECT id, fecha, descripcion, area, cerrada, tipo, cliente, usuario_detectado, usuario_cerrado, auditoria, usuario_verifica, fecha_verifica, usuario_implantacion, fecha_cierre FROM {$this->table}";
+        $params = [];
+
+        if ($filters['auditoria'] !== null) {
+            $sql .= ' WHERE auditoria = ?';
+            $params[] = $filters['auditoria'];
+        }
+        $sql .= ' ORDER BY id';
+
+        $db = $this->getDb();
+        if ($params) {
+            $db->consultaPreparada($sql, $params);
+        } else {
+            $db->consulta($sql);
+        }
+
+        $items = [];
+        while ($row = $db->coger_Fila()) {
+            $items[] = $this->mapRow($row);
+        }
+        $db->desconexion();
+
         foreach ($items as &$item) {
             $item['tipo_label'] = $this->getRelatedLabel('tipoaccionesmejora', $item['tipo'] ?? null);
             $item['cliente_label'] = $this->getRelatedLabel('clientes', $item['cliente'] ?? null);
@@ -45,7 +67,6 @@ class Listado extends CatalogListado
             $item['auditoria_label'] = $this->getRelatedLabel('auditorias', $item['auditoria'] ?? null);
             $item['usuario_verifica_label'] = $this->getRelatedLabel('usuarios', $item['usuario_verifica'] ?? null);
             $item['usuario_implantacion_label'] = $this->getRelatedLabel('usuarios', $item['usuario_implantacion'] ?? null);
-            // Compute state for basic state machine
             if ($item['cerrada']) {
                 $item['estado'] = 'Cerrada';
             } elseif ($item['usuario_verifica']) {
@@ -56,5 +77,17 @@ class Listado extends CatalogListado
         }
         unset($item);
         return $items;
+    }
+
+    protected function buildListVariables(array $items): array
+    {
+        $vars = parent::buildListVariables($items);
+        $filters = $this->getFilterParams();
+        $vars['auditoria_options'] = $this->getRelatedOptions('auditorias', 'nombre');
+        $vars['filter_auditoria'] = $filters['auditoria'];
+        if ($filters['auditoria'] !== null) {
+            $vars['filter_auditoria_label'] = $this->getRelatedLabel('auditorias', $filters['auditoria']);
+        }
+        return $vars;
     }
 }

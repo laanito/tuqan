@@ -3458,6 +3458,71 @@ docker compose exec db psql -U qnova -d qnova -c "
 **Branch status:** Stage 9.28 on `feat/stage-9.28-mejora-full-state-machine`. Plan first. Docker-only. All via container.
 
 
+## Stage 9.29 — Mejora ↔ Auditorías cross-links (first slice)
+
+**Goal:** Bidirectional navigation between Acciones de Mejora and Auditorías ejecución using existing `acciones_mejora.auditoria` FK: filter Mejora by auditoría, reverse counts/list on ejecución, prefilled create from auditoría.
+
+**Selected scope (reviewable):**
+- Mejora list filter + clickable auditoría links.
+- Mejora form prefill `?auditoria=` + links.
+- Auditorías ejecución list: mejora_count + +Mejora button.
+- Auditorías ejecución form: related Mejora table + create button.
+- Patch 0039, verify, playbook, TODOS.
+- Light getFilterParams extension for auditoria.
+
+**Key changes:**
+- New: reference/stage-9.29-*-plan.md, data-patches/0039-*.sql
+- Modified: Pages/Mejora/*, Pages/Auditorias/Ejecucion/*, Pages/Catalog/CatalogListado.php (filter param), templates/mejora/*, templates/auditorias/ejecucion/*, scripts/verify-8.6.sh, .agents/*
+- Branch: feat/stage-9.29-mejora-auditorias-cross-links
+
+**todo_write items:**
+```json
+[
+  {"id":"9.29.1","content":"Commit plan first","status":"completed"},
+  {"id":"9.29.2","content":"Mejora Listado filter by auditoria","status":"completed"},
+  {"id":"9.29.3","content":"Mejora Formulario prefill + links","status":"completed"},
+  {"id":"9.29.4","content":"Auditorias Ejecucion reverse links","status":"completed"},
+  {"id":"9.29.5","content":"Templates","status":"completed"},
+  {"id":"9.29.6","content":"Patch 0039 + verify + docs","status":"in_progress"},
+  {"id":"9.29.7","content":"Full verify + push + PR","status":"pending"}
+]
+```
+
+**Validation Commands:**
+```bash
+docker compose --env-file .env.docker down -v
+docker compose --env-file .env.docker up -d
+docker compose exec app ./scripts/init-db.sh
+
+docker compose exec app php -l Pages/Mejora/Listado.php
+docker compose exec app php -l Pages/Mejora/Formulario.php
+docker compose exec app php -l Pages/Auditorias/Ejecucion/Listado.php
+docker compose exec app php -l Pages/Auditorias/Ejecucion/Formulario.php
+docker compose exec app php -l Pages/Catalog/CatalogListado.php
+docker compose exec app ./scripts/verify-8.6.sh
+
+docker compose exec db psql -U qnova -d qnova -c "
+  SELECT filename FROM data_patches WHERE filename LIKE '0039%';
+  SELECT COUNT(*) AS mejora_with_auditoria FROM acciones_mejora WHERE auditoria IS NOT NULL;
+  SELECT auditoria, COUNT(*) FROM acciones_mejora WHERE auditoria IS NOT NULL GROUP BY auditoria ORDER BY 1;
+"
+```
+
+**Browser flows:**
+- /admin/mejora — filter by auditoría dropdown; auditoría column links to ejecución edit.
+- /admin/mejora/nuevo?auditoria=1 — select prefilled; submit creates linked row.
+- /admin/auditorias/ejecucion — Mejora column counts + “+ Mejora” button; “N acciones” filters Mejora list.
+- /admin/auditorias/ejecucion/editar/{id} — related Mejora table + “Nueva acción de mejora”.
+- Round-trip links work; no regression on state machine buttons.
+
+**Evidence:** (post)
+
+**Next:**
+- Aspectos/Indicadores Mejora links if schema gains columns; Formación/Documentación; Auditorías hallazgos.
+
+**Branch status:** Stage 9.29 on `feat/stage-9.29-mejora-auditorias-cross-links`. Plan first. Docker-only.
+
+
 
 
 

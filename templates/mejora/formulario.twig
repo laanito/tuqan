@@ -93,6 +93,15 @@
                     <option value="{{ a.id }}" {% if a.id == mejora.auditoria %}selected{% endif %}>{{ a.nombre }}</option>
                 {% endfor %}
             </select>
+            {% if mejora.auditoria %}
+                <p class="help-block" style="margin-top:6px;">
+                    <a href="/admin/auditorias/ejecucion/editar/{{ mejora.auditoria }}">
+                        Ver auditoría{% if mejora.auditoria_label %}: {{ mejora.auditoria_label }}{% endif %}
+                    </a>
+                    ·
+                    <a href="/admin/mejora?auditoria={{ mejora.auditoria }}">Otras acciones de esta auditoría</a>
+                </p>
+            {% endif %}
         </div>
 
         <div class="form-group">
@@ -221,7 +230,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Acciones de Mejora (Stage 9.4 + 9.17 + 9.21 + 9.25 + 9.27 + 9.28). Full state machine: auto user/date on transitions, quick verify/cerrar buttons, estado display.
+            Acciones de Mejora (Stages 9.4–9.29). State machine + cross-links Auditorías (prefill ?auditoria=, enlaces). Aspectos/Indicadores deferred.
         </div>
     </form>
 </div>

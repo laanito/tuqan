@@ -56,3 +56,13 @@ Follows exact ritual.
 **Execution autonomous per AGENTS.md + testing strategy in STAGE-CHECKLISTS. Plan committed first. Docker-only. If git fails: retry.**
 
 **Plan written on the feature branch (first commit).**
+
+## Execution Evidence (9.29)
+
+- Plan committed first.
+- Clean room: down -v, up, init-db.sh — 0039 applied; 4 Mejora rows linked (auditoria 1×2, 2×1, 3×1).
+- php -l green on all touched PHP.
+- verify-8.6.sh passes with 0039 patch presence + mejora_with_auditoria.
+- Core: Mejora filter + prefill; Auditorías reverse count/list + create link; CatalogListado getFilterParams auditoria.
+- Docs: TODOS, STAGE-CHECKLISTS updated.
+- Ready for push + PR; browser gate remains human.
