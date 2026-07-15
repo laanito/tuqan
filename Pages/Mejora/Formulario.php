@@ -59,7 +59,26 @@ class Formulario extends CatalogFormulario
 
     protected function buildFormVariables(?array $item): array
     {
+        // 9.29: prefill auditoria from ?auditoria= when creating new
+        if ($item === null) {
+            $prefillAuditoria = (isset($_GET['auditoria']) && $_GET['auditoria'] !== '') ? (int)$_GET['auditoria'] : null;
+            if ($prefillAuditoria) {
+                $item = [
+                    'id' => null,
+                    'auditoria' => $prefillAuditoria,
+                    'fecha' => date('Y-m-d'),
+                    'requiere_tratamiento' => 1,
+                    'cerrada' => 0,
+                ];
+            }
+        }
+
         $vars = parent::buildFormVariables($item);
+        // Keep page title correct when we only prefilled (not a real edit)
+        if ($item && empty($item['id'])) {
+            $vars['isEdit'] = false;
+            $vars['pageTitle'] = "Nuevo {$this->title}";
+        }
 
         // 9.17 + 9.21 + 9.25 relations polish: options + labels for tipo/cliente + full workflow users/auditoria
         $vars['tipo_options'] = $this->getRelatedOptions('tipoaccionesmejora', 'nombre');

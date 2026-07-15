@@ -214,9 +214,11 @@ abstract class CatalogListado
     protected function getFilterParams(): array
     {
         return [
-            'activo' => array_key_exists('activo', $_GET) ? (int)$_GET['activo'] : null,
-            'area'   => $_GET['area'] ?? null,
-            'tipo'   => $_GET['tipo'] ?? null,
+            'activo'    => array_key_exists('activo', $_GET) ? (int)$_GET['activo'] : null,
+            'area'      => $_GET['area'] ?? null,
+            'tipo'      => $_GET['tipo'] ?? null,
+            // 9.29: FK filter for cross-module links (e.g. Mejora by auditoria)
+            'auditoria' => (isset($_GET['auditoria']) && $_GET['auditoria'] !== '') ? (int)$_GET['auditoria'] : null,
         ];
     }
 

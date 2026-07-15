@@ -68,8 +68,58 @@
             <a href="/admin/auditorias/ejecucion" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
         </div>
 
+        {% if isEdit and auditoria.id %}
+        <div style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="margin:0; font-size:16px;">Acciones de Mejora vinculadas</h4>
+                <div>
+                    <a href="/admin/mejora?auditoria={{ auditoria.id }}" class="btn btn-default btn-sm">Ver en listado</a>
+                    <a href="/admin/mejora/nuevo?auditoria={{ auditoria.id }}" class="btn btn-primary btn-sm">Nueva acción de mejora</a>
+                </div>
+            </div>
+            {% if mejora_relacionadas is empty %}
+                <div class="alert alert-info" style="margin-bottom:0;">No hay acciones de mejora ligadas a esta auditoría.</div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in mejora_relacionadas %}
+                            <tr>
+                                <td>{{ m.id }}</td>
+                                <td>{{ m.fecha ?? '-' }}</td>
+                                <td>{{ m.descripcion }}</td>
+                                <td>
+                                    {% if m.estado == 'Cerrada' %}
+                                        <span class="label label-success">Cerrada</span>
+                                    {% elseif m.estado == 'Verificada' %}
+                                        <span class="label label-info">Verificada</span>
+                                    {% else %}
+                                        <span class="label label-default">Pendiente</span>
+                                    {% endif %}
+                                </td>
+                                <td style="text-align:right;">
+                                    <a href="/admin/mejora/editar/{{ m.id }}" class="btn btn-xs btn-default">Editar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Auditorías ejecución (Stage 9.19 first slice). Campos avanzados (plan, horario, hallazgos, informes) y enlaces a Mejora diferidos.
+            Auditorías ejecución (9.19 + 9.29 Mejora cross-links). Plan/horario, hallazgos e informes deferred.
         </div>
     </form>
 </div>

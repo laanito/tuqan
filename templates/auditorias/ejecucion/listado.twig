@@ -28,7 +28,8 @@
                         <th>Fecha</th>
                         <th>Estado</th>
                         <th>Activo</th>
-                        <th style="width:140px;text-align:right;">Acciones</th>
+                        <th>Mejora</th>
+                        <th style="width:200px;text-align:right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,8 +41,16 @@
                         <td>{{ a.fecha ?? '-' }}</td>
                         <td>{{ a.estado ?? 0 }}</td>
                         <td>{% if a.activo %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
-                        <td style="text-align:right;">
+                        <td>
+                            {% if a.mejora_count > 0 %}
+                                <a href="/admin/mejora?auditoria={{ a.id }}">{{ a.mejora_count }} acción{{ a.mejora_count != 1 ? 'es' : '' }}</a>
+                            {% else %}
+                                <span class="text-muted">0</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/auditorias/ejecucion/editar/{{ a.id }}" class="btn btn-xs btn-default">Editar</a>
+                            <a href="/admin/mejora/nuevo?auditoria={{ a.id }}" class="btn btn-xs btn-primary" title="Crear acción de mejora ligada">+ Mejora</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -50,7 +59,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Auditorías ejecución (Stage 9.19 first slice). Plan/horario, hallazgos, informes y enlaces completos a Mejora diferidos.
+        Auditorías ejecución (9.19 + 9.29 cross-links Mejora). Plan/horario, hallazgos e informes deferred.
     </div>
 </div>
 {% endblock %}

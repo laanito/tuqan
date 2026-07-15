@@ -47,15 +47,54 @@ class Formulario extends CatalogFormulario
         $vars = parent::buildFormVariables($item);
 
         $vars['programa_options'] = $this->getRelatedOptions('programa_auditoria', 'nombre');
+        $vars['mejora_relacionadas'] = [];
 
         $key = strtolower($this->flashPrefix);
         if (!empty($vars[$key])) {
             $a = $vars[$key];
             $a['programa_label'] = $this->getRelatedLabel('programa_auditoria', $a['programa'] ?? null);
             $vars[$key] = $a;
+
+            // 9.29: reverse cross-link — Mejora actions for this auditoría
+            if (!empty($a['id'])) {
+                $vars['mejora_relacionadas'] = $this->fetchMejoraRelacionadas((int)$a['id']);
+            }
         }
 
         return $vars;
+    }
+
+    /**
+     * Linked acciones_mejora for reverse navigation (Stage 9.29).
+     */
+    protected function fetchMejoraRelacionadas(int $auditoriaId): array
+    {
+        $db = $this->getDb();
+        $db->consultaPreparada(
+            'SELECT id, fecha, descripcion, cerrada, usuario_verifica FROM acciones_mejora WHERE auditoria = ? ORDER BY id',
+            [$auditoriaId]
+        );
+        $items = [];
+        while ($row = $db->coger_Fila()) {
+            $cerrada = $row[3];
+            $verifica = $row[4] ?? null;
+            if ($cerrada) {
+                $estado = 'Cerrada';
+            } elseif ($verifica) {
+                $estado = 'Verificada';
+            } else {
+                $estado = 'Pendiente';
+            }
+            $items[] = [
+                'id'          => $row[0],
+                'fecha'       => $row[1],
+                'descripcion' => $row[2],
+                'cerrada'     => $cerrada,
+                'estado'      => $estado,
+            ];
+        }
+        $db->desconexion();
+        return $items;
     }
 
     protected function getPostData(): array

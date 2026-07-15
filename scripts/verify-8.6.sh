@@ -107,6 +107,11 @@ SELECT '0038-mejora-state-transitions.sql' AS patch, COUNT(*) FROM data_patches 
 SELECT COUNT(*) AS mejora_with_verifica_or_closed FROM acciones_mejora WHERE usuario_verifica IS NOT NULL OR cerrada = true;
 SELECT COUNT(*) AS mejora_pendientes FROM acciones_mejora WHERE COALESCE(cerrada, false) = false AND usuario_verifica IS NULL;
 
+-- 9.29 Mejora ↔ Auditorías cross-links evidence
+SELECT '0039-mejora-auditorias-cross-links.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0039-mejora-auditorias-cross-links.sql';
+SELECT COUNT(*) AS mejora_with_auditoria FROM acciones_mejora WHERE auditoria IS NOT NULL;
+SELECT auditoria, COUNT(*) AS n FROM acciones_mejora WHERE auditoria IS NOT NULL GROUP BY auditoria ORDER BY auditoria;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;
