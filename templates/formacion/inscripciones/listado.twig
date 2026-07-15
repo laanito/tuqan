@@ -7,7 +7,9 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0; font-size: 20px;">Inscripciones a Cursos</h2>
         <div>
-            <a href="/admin/formacion/inscripciones/nuevo" class="btn btn-primary btn-sm">
+            <a href="/admin/formacion" class="btn btn-default btn-sm">Planes</a>
+            <a href="/admin/formacion/cursos" class="btn btn-default btn-sm">Cursos</a>
+            <a href="/admin/formacion/inscripciones/nuevo{% if filter_curso %}?curso={{ filter_curso }}{% endif %}" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nueva Inscripción
             </a>
         </div>
@@ -15,8 +17,27 @@
 </div>
 
 <div style="padding: 20px;">
+    <form method="GET" action="/admin/formacion/inscripciones" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="curso" style="margin-right: 6px;">Curso</label>
+            <select class="form-control input-sm" id="curso" name="curso">
+                <option value="">-- Todos --</option>
+                {% for c in curso_options %}
+                    <option value="{{ c.id }}" {% if filter_curso == c.id %}selected{% endif %}>{{ c.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_curso %}
+            <a href="/admin/formacion/inscripciones" class="btn btn-link btn-sm">Quitar filtro</a>
+            <span class="text-muted" style="margin-left:8px;font-size:13px;">
+                Curso: <strong>{{ filter_curso_label ?? filter_curso }}</strong>
+            </span>
+        {% endif %}
+    </form>
+
     {% if inscripcion is empty %}
-        <div class="alert alert-info">No hay inscripciones registradas.</div>
+        <div class="alert alert-info">No hay inscripciones registradas{% if filter_curso %} para este curso{% endif %}.</div>
     {% else %}
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -35,7 +56,13 @@
                     <tr>
                         <td>{{ i.id }}</td>
                         <td>{{ i.usuario_label ?? (i.usuario ?? '-') }}</td>
-                        <td>{{ i.curso_label ?? (i.curso ?? '-') }}</td>
+                        <td>
+                            {% if i.curso %}
+                                <a href="/admin/formacion/cursos/editar/{{ i.curso }}">{{ i.curso_label ?? i.curso }}</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                         <td>{% if i.inscrito %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
                         <td>{% if i.verificado %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
                         <td style="text-align:right;">
@@ -48,7 +75,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Inscripciones (Stage 9.22). Solicitar plaza, asistentes, detalles y Excel diferidos.
+        Inscripciones (9.22 + 9.30 filter by curso + links). Solicitar plaza / Excel diferidos.
     </div>
 </div>
 {% endblock %}

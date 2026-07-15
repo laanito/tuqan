@@ -32,6 +32,17 @@
                     <option value="{{ p.id }}" {% if p.id == curso.plan %}selected{% endif %}>{{ p.nombre }}</option>
                 {% endfor %}
             </select>
+            {% if curso.plan %}
+                <p class="help-block" style="margin-top:6px;">
+                    <a href="/admin/formacion/editar/{{ curso.plan }}">Ver plan{% if curso.plan_label %}: {{ curso.plan_label }}{% endif %}</a>
+                    ·
+                    <a href="/admin/formacion/cursos?plan={{ curso.plan }}">Otros cursos del plan</a>
+                    {% if isEdit and curso.id %}
+                    ·
+                    <a href="/admin/formacion/inscripciones?curso={{ curso.id }}">Inscripciones</a>
+                    {% endif %}
+                </p>
+            {% endif %}
         </div>
 
         <div class="row">
