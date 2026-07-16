@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.30 on `feat/stage-9.30-formacion-cross-links` (Formación Planes↔Cursos↔Inscripciones + light PR sizing note). Previous: 9.29 Mejora↔Auditorías.
+**Last updated**: Stage 9.31 on `feat/stage-9.31-documentacion-estado-filter` (Documentación estado labels/filter). Previous: 9.30 Formación cross-links.
 
 ---
 
@@ -34,6 +34,12 @@ STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retr
    - **Suggested Next line format** (when adding open items):  
      `9.x — Title · In: … · Out: … · ~N files · patch? yes/no`
    - Plan.md first remains non-negotiable; docs/verify stay in the same PR.
+
+7. **`/admin` path vs reusable modules** (note, not a fork):
+   - Modern routes live under `/admin/*` as a **URL namespace**, not “admin-only product.” Domain code (`Pages/*`, `Catalog*`, tables, workflows) is **Aplicación module logic** and should stay reusable for non-admin entry later.
+   - Today: same classes often also mapped on `/administracion/*`; auth is company login only (legacy menu/perfil permisos **not** re-enforced on Phroute yet).
+   - Debt for later (do not reimplement modules): hard-coded `/admin/...` in templates, fixed `listRoute`, no role-based field/action surface, no dedicated non-admin chrome.
+   - Prefer: keep one class per module; add route aliases / path config / permission filter later — not a second Mejora/Formación stack.
 
 **Quick navigation**: Use your editor's outline / search for `### ` (area headers) or `[ ]` (open items).
 
@@ -93,10 +99,11 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Mejora full state machine polish**: Delivered in Stage 9.28 (auto user+fecha on transitions, quick Verificar/Cerrar routes+buttons from list, estado badge in form, login id hygiene + base helper). See 9.28 plan and STAGE-CHECKLISTS.
 - [x] **Mejora ↔ Auditorías cross-links first slice**: Delivered in Stage 9.29 (filter Mejora by auditoría, reverse counts/list on ejecución, prefilled create, clickable links both ways). See 9.29 plan and STAGE-CHECKLISTS.
 - [x] **Formación cross-links hub**: Delivered in Stage 9.30 (Planes curso counts, Cursos filter by plan + inscripción counts, Inscripciones filter by curso, prefills, nested list key fix, nav between subs). See 9.30 plan and STAGE-CHECKLISTS.
-- [ ] **Next** (sized picks — use format above when claiming):  
-  - Documentación estado/filter polish · In: list badges+filter, form estado display · Out: rich HTML editor, binario · ~12 files · patch? small  
+- [x] **Documentación estado/filter polish**: Delivered in Stage 9.31 (estado labels/badges from legacy codes, list filter estado+activo, form select + badge, EstadoHelper, patch 0041). See 9.31 plan and STAGE-CHECKLISTS.
+- [ ] **Next** (sized picks):  
   - Auditorías hallazgos first slice · In: hallazgos table shell linked to ejecución · Out: full plan/horario · ~15 files · patch? yes  
-  - Equipos revisiones shell · In: list+form revisiones · Out: calendario · ~12 files · patch? yes
+  - Equipos revisiones shell · In: list+form revisiones · Out: calendario · ~12 files · patch? yes  
+  - Documentación quick workflow actions · In: revisar/aprobar buttons like Mejora · Out: rich editor · ~12 files · patch? small
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -133,8 +140,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Revisiones + compliance records + maintenance workflows (tie to Auditorias / Mejora).
 
 ### Documentación (Core ISO — high value, likely larger)
-- [x] Documentación initial shell delivered in Stage 9.5. Tree in 9.12. Editor/perfiles in 9.23, workflows in 9.24, content editor (texto) in 9.26. Full rich editor, binario, more, PDF deferred. See 9.5 + 9.12 + 9.23 + 9.24 + 9.26 plans.
-- [ ] Full tree + editor modernization, perfiles, workflows, formats/plantillas.
+- [x] Documentación initial shell delivered in Stage 9.5. Tree in 9.12. Editor/perfiles in 9.23, workflows in 9.24, content editor (texto) in 9.26. Estado labels + list filter in 9.31. Full rich editor, binario, more, PDF deferred. See 9.5 + 9.12 + 9.23 + 9.24 + 9.26 + 9.31 plans.
+- [ ] Full tree + editor modernization, perfiles, workflows, formats/plantillas; quick revise/approve transitions.
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
@@ -174,6 +181,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] PHPStan level raises + more strict CI (after more surface is modern).
 - [ ] i18n completeness (catalan partial, more strings in modern templates, Locale/ maintenance).
 - [ ] Auth / permissions matrix full coverage + admin UX for assigning (Permisos module exists but depth?).
+- [ ] Modern route authz: re-apply menu/perfil permisos on Phroute (needed before non-admin multi-role use). See note §7 under How to Use.
+- [ ] Path/prefix config: reduce hard-coded `/admin/...` in templates; listRoute-driven links for future non-admin aliases (same Pages classes).
 - [ ] Main page / dashboard evolution (currently enhanced placeholder + tree; surface indicators, tasks, recent docs).
 
 These often make good "alongside a vertical" work or dedicated legs when a cluster of modules would benefit.

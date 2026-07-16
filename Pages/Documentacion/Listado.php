@@ -26,14 +26,60 @@ class Listado extends CatalogListado
         ];
     }
 
+    // 9.24 labels; 9.31 estado filter + labels
     protected function fetchItems(): array
     {
-        $items = parent::fetchItems();
+        $filters = $this->getFilterParams();
+        $sql = "SELECT id, nombre, codigo, estado, activo, revisado_por, aprobado_por FROM {$this->table}";
+        $params = [];
+        $where = [];
+
+        if ($filters['estado'] !== null) {
+            $where[] = 'estado = ?';
+            $params[] = $filters['estado'];
+        }
+        if (isset($filters['activo']) && $filters['activo'] !== null) {
+            $where[] = 'activo = ?';
+            $params[] = $filters['activo'] ? true : false;
+        }
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+        $sql .= ' ORDER BY id';
+
+        $db = $this->getDb();
+        if ($params) {
+            $db->consultaPreparada($sql, $params);
+        } else {
+            $db->consulta($sql);
+        }
+        $items = [];
+        while ($row = $db->coger_Fila()) {
+            $items[] = $this->mapRow($row);
+        }
+        $db->desconexion();
+
         foreach ($items as &$item) {
             $item['revisado_por_label'] = $this->getRelatedLabel('usuarios', $item['revisado_por'] ?? null);
             $item['aprobado_por_label'] = $this->getRelatedLabel('usuarios', $item['aprobado_por'] ?? null);
+            $item['estado_label'] = EstadoHelper::label($item['estado'] ?? null);
+            $item['estado_badge'] = EstadoHelper::badgeClass($item['estado'] ?? null);
         }
         unset($item);
         return $items;
+    }
+
+    protected function buildListVariables(array $items): array
+    {
+        $vars = parent::buildListVariables($items);
+        // templateDir is documentacion; keep that key (parent uses templateDir)
+        $filters = $this->getFilterParams();
+        $vars['estado_options'] = EstadoHelper::options();
+        $vars['filter_estado'] = $filters['estado'];
+        $vars['filter_activo'] = $filters['activo'];
+        if ($filters['estado'] !== null) {
+            $vars['filter_estado_label'] = EstadoHelper::label($filters['estado']);
+        }
+        return $vars;
     }
 }
