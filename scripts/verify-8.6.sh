@@ -47,7 +47,7 @@ export PGPASSWORD="${DB_PASS:-secret}"
 psql -h "${DB_HOST:-db}" -U qnova -d qnova -v ON_ERROR_STOP=1 -c "
 -- Tables (8.6 + 8.7 + 8.8 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 + 9.7 + 9.9)
 SELECT tablename FROM pg_tables 
-WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos','contenido_texto')
+WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos','contenido_texto','hallazgos_auditoria')
 ORDER BY tablename;
 
 -- Sedes rename evidence
@@ -123,6 +123,11 @@ SELECT curso, COUNT(*) AS n FROM alumnos WHERE curso IS NOT NULL GROUP BY curso 
 SELECT '0041-documentacion-estados.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0041-documentacion-estados.sql';
 SELECT estado, COUNT(*) AS n FROM documentos WHERE estado IS NOT NULL GROUP BY estado ORDER BY estado;
 SELECT COUNT(*) AS documentos_con_estado FROM documentos WHERE estado IS NOT NULL;
+
+-- 9.32 Auditorías hallazgos evidence
+SELECT '0042-auditorias-hallazgos.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0042-auditorias-hallazgos.sql';
+SELECT COUNT(*) AS hallazgos_rows FROM hallazgos_auditoria;
+SELECT auditoria, COUNT(*) AS n FROM hallazgos_auditoria GROUP BY auditoria ORDER BY auditoria;
 
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;

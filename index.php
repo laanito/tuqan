@@ -424,6 +424,13 @@ $router->addRoute('GET', '/admin/auditorias/ejecucion/editar/{id}', ['Tuqan\Page
 $router->addRoute('POST', '/admin/auditorias/ejecucion/nuevo', ['Tuqan\Pages\Auditorias\Ejecucion\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/auditorias/ejecucion/editar/{id}', ['Tuqan\Pages\Auditorias\Ejecucion\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
+// === Auditorías Hallazgos (Stage 9.32 first slice) ===
+$router->addRoute('GET', '/admin/auditorias/hallazgos', ['Tuqan\Pages\Auditorias\Hallazgos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/hallazgos/nuevo', ['Tuqan\Pages\Auditorias\Hallazgos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/hallazgos/editar/{id}', ['Tuqan\Pages\Auditorias\Hallazgos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/auditorias/hallazgos/nuevo', ['Tuqan\Pages\Auditorias\Hallazgos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/auditorias/hallazgos/editar/{id}', ['Tuqan\Pages\Auditorias\Hallazgos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
 // === Aspectos Ambientales (Stage 9.7 basic slice) ===
 $router->addRoute('GET', '/admin/aspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/aspectos/nuevo', ['Tuqan\Pages\Aspectos\Formulario', 'ShowPage'], ['before' => 'auth_company']);

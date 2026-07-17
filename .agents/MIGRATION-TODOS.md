@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.31 on `feat/stage-9.31-documentacion-estado-filter` (Documentación estado labels/filter). Previous: 9.30 Formación cross-links.
+**Last updated**: Stage 9.32 on `feat/stage-9.32-auditorias-hallazgos` (Auditorías hallazgos first slice). Previous: 9.31 Documentación estado.
 
 ---
 
@@ -100,10 +100,11 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Mejora ↔ Auditorías cross-links first slice**: Delivered in Stage 9.29 (filter Mejora by auditoría, reverse counts/list on ejecución, prefilled create, clickable links both ways). See 9.29 plan and STAGE-CHECKLISTS.
 - [x] **Formación cross-links hub**: Delivered in Stage 9.30 (Planes curso counts, Cursos filter by plan + inscripción counts, Inscripciones filter by curso, prefills, nested list key fix, nav between subs). See 9.30 plan and STAGE-CHECKLISTS.
 - [x] **Documentación estado/filter polish**: Delivered in Stage 9.31 (estado labels/badges from legacy codes, list filter estado+activo, form select + badge, EstadoHelper, patch 0041). See 9.31 plan and STAGE-CHECKLISTS.
+- [x] **Auditorías hallazgos first slice**: Delivered in Stage 9.32 (`hallazgos_auditoria` table, list/form, filter by auditoría, reverse links on ejecución, optional Mejora FK, patch 0042). See 9.32 plan and STAGE-CHECKLISTS.
 - [ ] **Next** (sized picks):  
-  - Auditorías hallazgos first slice · In: hallazgos table shell linked to ejecución · Out: full plan/horario · ~15 files · patch? yes  
   - Equipos revisiones shell · In: list+form revisiones · Out: calendario · ~12 files · patch? yes  
-  - Documentación quick workflow actions · In: revisar/aprobar buttons like Mejora · Out: rich editor · ~12 files · patch? small
+  - Documentación quick workflow actions · In: revisar/aprobar buttons like Mejora · Out: rich editor · ~12 files · patch? small  
+  - Auditorías plan/horario · In: horario_auditoria shell · Out: informes · ~12 files · patch? yes
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -145,8 +146,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
-- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` delivered in Stage 9.6. Execution first slice (auditorias table basic CRUD + programa link) delivered in Stage 9.19. Mejora reverse links (counts + related list + create) in Stage 9.29. Full execution (plan/horario, hallazgos, informes) deferred. See 9.6 + 9.19 + 9.29 plans.
-- [ ] Full execution + plan/horario + findings / follow-up. Integration with Indicadores + Aspectos.
+- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` delivered in Stage 9.6. Execution first slice (auditorias table basic CRUD + programa link) delivered in Stage 9.19. Mejora reverse links in Stage 9.29. Hallazgos first slice (`hallazgos_auditoria` + CRUD + links) in Stage 9.32. Plan/horario e informes still deferred. See 9.6 + 9.19 + 9.29 + 9.32 plans.
+- [ ] Full execution + plan/horario + informes / deeper follow-up. Integration with Indicadores + Aspectos.
 
 ### Indicadores + Objetivos (KPIs)
 - [x] Indicadores basic (legacy 72) — core `indicadores` table delivered in Stage 9.9 (0027 patch + Pages/Indicadores using enhanced 9.8 bases + templates + routes + verify). Fields: nombre, definicion, valores (inicial/objetivo/tolerable), tecnica, responsables, frecuencias, activo, genera_objetivo. Charts/graphs, full calculations, metas_indicadores, objetivos and dashboard deferred. See 9.9 plan/playbook.

@@ -116,10 +116,52 @@
                 </div>
             {% endif %}
         </div>
+
+        <div style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="margin:0; font-size:16px;">Hallazgos</h4>
+                <div>
+                    <a href="/admin/auditorias/hallazgos?auditoria={{ auditoria.id }}" class="btn btn-default btn-sm">Ver en listado</a>
+                    <a href="/admin/auditorias/hallazgos/nuevo?auditoria={{ auditoria.id }}" class="btn btn-primary btn-sm">Nuevo hallazgo</a>
+                </div>
+            </div>
+            {% if hallazgos_relacionados is empty %}
+                <div class="alert alert-info" style="margin-bottom:0;">No hay hallazgos registrados para esta auditoría.</div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Tipo</th>
+                                <th>Cerrado</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for h in hallazgos_relacionados %}
+                            <tr>
+                                <td>{{ h.id }}</td>
+                                <td>{{ h.fecha ?? '-' }}</td>
+                                <td>{{ h.descripcion }}</td>
+                                <td>{{ h.tipo ?? '-' }}</td>
+                                <td>{% if h.cerrado %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
+                                <td style="text-align:right;">
+                                    <a href="/admin/auditorias/hallazgos/editar/{{ h.id }}" class="btn btn-xs btn-default">Editar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
         {% endif %}
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Auditorías ejecución (9.19 + 9.29 Mejora cross-links). Plan/horario, hallazgos e informes deferred.
+            Auditorías ejecución (9.19 + 9.29 Mejora + 9.32 Hallazgos). Plan/horario e informes deferred.
         </div>
     </form>
 </div>
