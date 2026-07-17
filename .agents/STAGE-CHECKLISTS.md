@@ -3546,6 +3546,23 @@ docker compose exec db psql -U qnova -d qnova -c "
 **Branch status:** Stage 9.30 on `feat/stage-9.30-formacion-cross-links`. Plan first. Docker-only.
 
 
+## Stage 9.31 — Documentación estado/filter polish
+
+**Goal:** Human-readable document estados (legacy integer codes), list filters (estado + activo), form select + badge. Architecture note on `/admin` vs reusable modules.
+
+**Validation:**
+```bash
+docker compose exec app php -l Pages/Documentacion/Listado.php Pages/Documentacion/Formulario.php Pages/Documentacion/EstadoHelper.php Pages/Catalog/CatalogListado.php
+docker compose exec app ./scripts/init-db.sh   # or apply 0041
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT estado, COUNT(*) FROM documentos GROUP BY estado ORDER BY 1;"
+```
+
+**Browser:** /admin/documentacion — badges, filter Borrador/En vigor; edit form estado select + badge; Árbol link.
+
+**Branch status:** Stage 9.31 on `feat/stage-9.31-documentacion-estado-filter`.
+
+
 
 
 

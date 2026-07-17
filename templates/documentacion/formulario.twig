@@ -35,10 +35,25 @@
             <textarea class="form-control" id="contenido" name="contenido" rows="8">{{ documento.contenido ?? '' }}</textarea>
         </div>
 
+        {% if isEdit and documento.estado is not null %}
+        <div class="form-group">
+            <label>Estado actual</label>
+            <div>
+                <span class="label {{ documento.estado_badge|default('label-default') }}" style="font-size:14px;padding:4px 10px;">
+                    {{ documento.estado_label ?? documento.estado }}
+                </span>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="form-group">
             <label for="estado">Estado</label>
-            <input type="number" class="form-control" id="estado" name="estado"
-                   value="{{ documento.estado ?? '' }}">
+            <select class="form-control" id="estado" name="estado">
+                <option value="">-- Seleccionar --</option>
+                {% for e in estado_options %}
+                    <option value="{{ e.id }}" {% if e.id == documento.estado %}selected{% endif %}>{{ e.nombre }}</option>
+                {% endfor %}
+            </select>
         </div>
 
         <div class="form-group">
@@ -162,7 +177,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Documentación (Stage 9.5 + 9.23 + 9.24 + 9.26). Basic content editor (texto) added via contenido_texto. Full rich editor, workflows integration, etc. deferred.
+            Documentación (9.5–9.26 + 9.31). Estado con etiquetas (En vigor / Borrador / …). Rich editor / binario deferred.
         </div>
     </form>
 </div>

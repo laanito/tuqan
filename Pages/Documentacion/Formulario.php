@@ -63,10 +63,11 @@ class Formulario extends CatalogFormulario
     {
         $vars = parent::buildFormVariables($item);
 
-        // 9.23 + 9.24: perfiles + workflows (users for revisar/aprobar)
+        // 9.23 + 9.24: perfiles + workflows; 9.31 estado options/labels
         $vars['tipo_documento_options'] = $this->getRelatedOptions('tipodocumento', 'nombre');
         $vars['area_options'] = $this->getRelatedOptions('areas', 'nombre');
         $vars['usuario_options'] = $this->getRelatedOptions('usuarios', 'nombre');
+        $vars['estado_options'] = EstadoHelper::options();
 
         $key = strtolower($this->flashPrefix);
         if (!empty($vars[$key])) {
@@ -75,6 +76,8 @@ class Formulario extends CatalogFormulario
             $d['area_label'] = $this->getRelatedLabel('areas', $d['area'] ?? null);
             $d['revisado_por_label'] = $this->getRelatedLabel('usuarios', $d['revisado_por'] ?? null);
             $d['aprobado_por_label'] = $this->getRelatedLabel('usuarios', $d['aprobado_por'] ?? null);
+            $d['estado_label'] = EstadoHelper::label($d['estado'] ?? null);
+            $d['estado_badge'] = EstadoHelper::badgeClass($d['estado'] ?? null);
             $vars[$key] = $d;
         }
         return $vars;

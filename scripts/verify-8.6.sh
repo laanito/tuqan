@@ -119,6 +119,11 @@ SELECT plan, COUNT(*) AS n FROM cursos WHERE plan IS NOT NULL GROUP BY plan ORDE
 SELECT COUNT(*) AS alumnos_with_curso FROM alumnos WHERE curso IS NOT NULL;
 SELECT curso, COUNT(*) AS n FROM alumnos WHERE curso IS NOT NULL GROUP BY curso ORDER BY curso;
 
+-- 9.31 Documentación estado filter evidence
+SELECT '0041-documentacion-estados.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0041-documentacion-estados.sql';
+SELECT estado, COUNT(*) AS n FROM documentos WHERE estado IS NOT NULL GROUP BY estado ORDER BY estado;
+SELECT COUNT(*) AS documentos_con_estado FROM documentos WHERE estado IS NOT NULL;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

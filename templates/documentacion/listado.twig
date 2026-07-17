@@ -7,6 +7,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 style="margin: 0; font-size: 20px;">Documentación</h2>
         <div>
+            <a href="/admin/documentacion/arbol" class="btn btn-default btn-sm">Árbol</a>
             <a href="/admin/documentacion/nuevo" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nuevo Documento
             </a>
@@ -15,17 +16,46 @@
 </div>
 
 <div style="padding: 20px;">
-    <div class="alert alert-warning" style="margin-bottom:15px;font-size:13px;">
-        Shell inicial de Documentación (Stage 9.5). El árbol de documentos, editor, flujos de aprobación, permisos por perfil y la mayoría de sub-módulos (manual, política, vigentes, borradores, formatos, etc.) permanecen en legacy por ahora.
-    </div>
+    <form method="GET" action="/admin/documentacion" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="estado" style="margin-right: 6px;">Estado</label>
+            <select class="form-control input-sm" id="estado" name="estado">
+                <option value="">-- Todos --</option>
+                {% for e in estado_options %}
+                    <option value="{{ e.id }}" {% if filter_estado is not null and filter_estado == e.id %}selected{% endif %}>{{ e.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="activo" style="margin-right: 6px;">Activo</label>
+            <select class="form-control input-sm" id="activo" name="activo">
+                <option value="">-- Todos --</option>
+                <option value="1" {% if filter_activo is not null and filter_activo == 1 %}selected{% endif %}>Sí</option>
+                <option value="0" {% if filter_activo is not null and filter_activo == 0 %}selected{% endif %}>No</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_estado is not null or filter_activo is not null %}
+            <a href="/admin/documentacion" class="btn btn-link btn-sm">Quitar filtros</a>
+        {% endif %}
+    </form>
 
     {% if documentacion is empty %}
-        <div class="alert alert-info">No hay documentos registrados en la vista básica.</div>
+        <div class="alert alert-info">No hay documentos{% if filter_estado is not null or filter_activo is not null %} con estos filtros{% endif %}.</div>
     {% else %}
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
-                    <tr><th>ID</th><th>Nombre</th><th>Código</th><th>Estado</th><th>Revisado por</th><th>Aprobado por</th><th>Activo</th><th style="width:140px;text-align:right;">Acciones</th></tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Código</th>
+                        <th>Estado</th>
+                        <th>Revisado por</th>
+                        <th>Aprobado por</th>
+                        <th>Activo</th>
+                        <th style="width:140px;text-align:right;">Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for d in documentacion %}
@@ -33,7 +63,9 @@
                         <td>{{ d.id }}</td>
                         <td><strong>{{ d.nombre }}</strong></td>
                         <td>{{ d.codigo ?? '-' }}</td>
-                        <td>{{ d.estado ?? '-' }}</td>
+                        <td>
+                            <span class="label {{ d.estado_badge|default('label-default') }}">{{ d.estado_label ?? (d.estado ?? '—') }}</span>
+                        </td>
                         <td>{{ d.revisado_por_label ?? (d.revisado_por ?? '-') }}</td>
                         <td>{{ d.aprobado_por_label ?? (d.aprobado_por ?? '-') }}</td>
                         <td>{% if d.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
@@ -47,7 +79,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Documentación (Stage 9.5 + 9.23 + 9.24). Workflows (revisado/aprobado por) added. Full editor and more deferred.
+        Documentación (9.5–9.26 + 9.31 estado labels/filter). Rich editor / binario deferred.
     </div>
 </div>
 {% endblock %}
