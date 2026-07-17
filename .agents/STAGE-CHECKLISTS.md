@@ -3563,6 +3563,23 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT estado, COUNT(*) FROM d
 **Branch status:** Stage 9.31 on `feat/stage-9.31-documentacion-estado-filter`.
 
 
+## Stage 9.32 — Auditorías hallazgos first slice
+
+**Goal:** Modern hallazgos CRUD linked to auditoría ejecución (new table; no legacy hallazgos table in clean schema). Optional Mejora link. Reverse counts on ejecución.
+
+**Validation:**
+```bash
+docker compose exec app ./scripts/init-db.sh
+docker compose exec app php -l Pages/Auditorias/Hallazgos/Listado.php Pages/Auditorias/Hallazgos/Formulario.php Pages/Auditorias/Ejecucion/Listado.php Pages/Auditorias/Ejecucion/Formulario.php index.php
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM hallazgos_auditoria; SELECT auditoria, COUNT(*) FROM hallazgos_auditoria GROUP BY 1;"
+```
+
+**Browser:** /admin/auditorias/hallazgos; filter by auditoría; create from ejecución “+ Hallazgo”; edit form with Mejora select; ejecución form shows hallazgos section.
+
+**Branch status:** Stage 9.32 on `feat/stage-9.32-auditorias-hallazgos`.
+
+
 
 
 

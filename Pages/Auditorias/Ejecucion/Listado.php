@@ -26,13 +26,14 @@ class Listado extends CatalogListado
         ];
     }
 
-    // 9.19 programa relation; 9.29 reverse count of linked Mejora actions
+    // 9.19 programa; 9.29 Mejora count; 9.32 hallazgos count
     protected function fetchItems(): array
     {
         $items = parent::fetchItems();
         foreach ($items as &$item) {
             $item['programa_label'] = $this->getRelatedLabel('programa_auditoria', $item['programa'] ?? null);
             $item['mejora_count'] = $this->countMejoraForAuditoria((int)$item['id']);
+            $item['hallazgo_count'] = $this->countHallazgosForAuditoria((int)$item['id']);
         }
         unset($item);
         return $items;
@@ -51,5 +52,26 @@ class Listado extends CatalogListado
         $row = $db->coger_Fila();
         $db->desconexion();
         return (int)($row[0] ?? 0);
+    }
+
+    protected function countHallazgosForAuditoria(int $auditoriaId): int
+    {
+        if ($auditoriaId <= 0) {
+            return 0;
+        }
+        $db = $this->getDb();
+        // Table may not exist until patch 0042; fail soft for older DBs mid-migration
+        try {
+            $db->consultaPreparada(
+                'SELECT COUNT(*) FROM hallazgos_auditoria WHERE auditoria = ?',
+                [$auditoriaId]
+            );
+            $row = $db->coger_Fila();
+            $db->desconexion();
+            return (int)($row[0] ?? 0);
+        } catch (\Throwable $e) {
+            $db->desconexion();
+            return 0;
+        }
     }
 }

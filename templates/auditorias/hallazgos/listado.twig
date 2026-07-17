@@ -1,0 +1,85 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Hallazgos de Auditoría - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Hallazgos de Auditoría</h2>
+        <div>
+            <a href="/admin/auditorias/ejecucion" class="btn btn-default btn-sm">Ejecución</a>
+            <a href="/admin/auditorias/hallazgos/nuevo{% if filter_auditoria %}?auditoria={{ filter_auditoria }}{% endif %}" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo Hallazgo
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    <form method="GET" action="/admin/auditorias/hallazgos" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="auditoria" style="margin-right: 6px;">Auditoría</label>
+            <select class="form-control input-sm" id="auditoria" name="auditoria">
+                <option value="">-- Todas --</option>
+                {% for a in auditoria_options %}
+                    <option value="{{ a.id }}" {% if filter_auditoria == a.id %}selected{% endif %}>{{ a.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_auditoria %}
+            <a href="/admin/auditorias/hallazgos" class="btn btn-link btn-sm">Quitar filtro</a>
+        {% endif %}
+    </form>
+
+    {% if hallazgo is empty %}
+        <div class="alert alert-info">No hay hallazgos registrados{% if filter_auditoria %} para esta auditoría{% endif %}.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Auditoría</th>
+                        <th>Tipo</th>
+                        <th>Gravedad</th>
+                        <th>Mejora</th>
+                        <th>Cerrado</th>
+                        <th style="width:100px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for h in hallazgo %}
+                    <tr>
+                        <td>{{ h.id }}</td>
+                        <td>{{ h.fecha ?? '-' }}</td>
+                        <td><strong>{{ h.descripcion }}</strong></td>
+                        <td>
+                            {% if h.auditoria %}
+                                <a href="/admin/auditorias/ejecucion/editar/{{ h.auditoria }}">{{ h.auditoria_label ?? h.auditoria }}</a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>{{ h.tipo_label ?? h.tipo ?? '-' }}</td>
+                        <td>{{ h.gravedad_label ?? h.gravedad ?? '-' }}</td>
+                        <td>
+                            {% if h.accion_mejora %}
+                                <a href="/admin/mejora/editar/{{ h.accion_mejora }}">{{ h.mejora_label ?? h.accion_mejora }}</a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>{% if h.cerrado %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/auditorias/hallazgos/editar/{{ h.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Hallazgos (Stage 9.32 first slice). Plan/horario e informes deferred.
+    </div>
+</div>
+{% endblock %}

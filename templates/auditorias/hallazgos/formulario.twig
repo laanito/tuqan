@@ -1,0 +1,119 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/auditorias/hallazgos" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 780px;">
+    <form method="POST" action="{{ isEdit ? '/admin/auditorias/hallazgos/editar/' ~ hallazgo.id : '/admin/auditorias/hallazgos/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ hallazgo.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="auditoria">Auditoría</label>
+            <select class="form-control" id="auditoria" name="auditoria" required>
+                <option value="">-- Seleccionar --</option>
+                {% for a in auditoria_options %}
+                    <option value="{{ a.id }}" {% if a.id == hallazgo.auditoria %}selected{% endif %}>{{ a.nombre }}</option>
+                {% endfor %}
+            </select>
+            {% if hallazgo.auditoria %}
+                <p class="help-block" style="margin-top:6px;">
+                    <a href="/admin/auditorias/ejecucion/editar/{{ hallazgo.auditoria }}">Ver auditoría</a>
+                    ·
+                    <a href="/admin/auditorias/hallazgos?auditoria={{ hallazgo.auditoria }}">Otros hallazgos</a>
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input type="date" class="form-control" id="fecha" name="fecha" value="{{ hallazgo.fecha ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ hallazgo.descripcion ?? '' }}</textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="tipo">Tipo</label>
+                    <select class="form-control" id="tipo" name="tipo">
+                        {% for t in tipo_options %}
+                            <option value="{{ t.id }}" {% if t.id == hallazgo.tipo %}selected{% endif %}>{{ t.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="gravedad">Gravedad</label>
+                    <select class="form-control" id="gravedad" name="gravedad">
+                        {% for g in gravedad_options %}
+                            <option value="{{ g.id }}" {% if g.id == hallazgo.gravedad %}selected{% endif %}>{{ g.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="accion_mejora">Acción de mejora vinculada</label>
+            <select class="form-control" id="accion_mejora" name="accion_mejora">
+                <option value="">-- Ninguna --</option>
+                {% for m in mejora_options %}
+                    <option value="{{ m.id }}" {% if m.id == hallazgo.accion_mejora %}selected{% endif %}>{{ m.nombre }}</option>
+                {% endfor %}
+            </select>
+            {% if hallazgo.accion_mejora %}
+                <p class="help-block"><a href="/admin/mejora/editar/{{ hallazgo.accion_mejora }}">Abrir acción de mejora</a></p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones</label>
+            <textarea class="form-control" id="observaciones" name="observaciones" rows="2">{{ hallazgo.observaciones ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="cerrado" value="1" {% if hallazgo.cerrado %}checked{% endif %}>
+                    Cerrado
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1" {% if not isEdit or hallazgo.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Hallazgo' }}
+            </button>
+            <a href="/admin/auditorias/hallazgos" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Hallazgos de auditoría (Stage 9.32). Tabla moderna + enlace a ejecución y Mejora.
+        </div>
+    </form>
+</div>
+{% endblock %}

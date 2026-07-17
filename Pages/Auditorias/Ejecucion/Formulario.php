@@ -48,6 +48,7 @@ class Formulario extends CatalogFormulario
 
         $vars['programa_options'] = $this->getRelatedOptions('programa_auditoria', 'nombre');
         $vars['mejora_relacionadas'] = [];
+        $vars['hallazgos_relacionados'] = [];
 
         $key = strtolower($this->flashPrefix);
         if (!empty($vars[$key])) {
@@ -55,9 +56,10 @@ class Formulario extends CatalogFormulario
             $a['programa_label'] = $this->getRelatedLabel('programa_auditoria', $a['programa'] ?? null);
             $vars[$key] = $a;
 
-            // 9.29: reverse cross-link — Mejora actions for this auditoría
+            // 9.29 Mejora + 9.32 hallazgos reverse links
             if (!empty($a['id'])) {
                 $vars['mejora_relacionadas'] = $this->fetchMejoraRelacionadas((int)$a['id']);
+                $vars['hallazgos_relacionados'] = $this->fetchHallazgosRelacionados((int)$a['id']);
             }
         }
 
@@ -95,6 +97,35 @@ class Formulario extends CatalogFormulario
         }
         $db->desconexion();
         return $items;
+    }
+
+    /**
+     * Linked hallazgos_auditoria (Stage 9.32).
+     */
+    protected function fetchHallazgosRelacionados(int $auditoriaId): array
+    {
+        try {
+            $db = $this->getDb();
+            $db->consultaPreparada(
+                'SELECT id, fecha, descripcion, tipo, gravedad, cerrado FROM hallazgos_auditoria WHERE auditoria = ? ORDER BY id',
+                [$auditoriaId]
+            );
+            $items = [];
+            while ($row = $db->coger_Fila()) {
+                $items[] = [
+                    'id'          => $row[0],
+                    'fecha'       => $row[1],
+                    'descripcion' => $row[2],
+                    'tipo'        => $row[3],
+                    'gravedad'    => $row[4],
+                    'cerrado'     => $row[5],
+                ];
+            }
+            $db->desconexion();
+            return $items;
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
     protected function getPostData(): array
