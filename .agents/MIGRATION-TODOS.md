@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.33 on `feat/stage-9.33-equipos-revisiones` (Equipos revisiones / mantenimientos). Previous: 9.32 Auditorías hallazgos.
+**Last updated**: Stage 9.34 on `feat/stage-9.34-documentacion-workflow-actions` (Documentación Revisar/Aprobar quick actions). Previous: 9.33 Equipos revisiones.
 
 ---
 
@@ -102,10 +102,11 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Documentación estado/filter polish**: Delivered in Stage 9.31 (estado labels/badges from legacy codes, list filter estado+activo, form select + badge, EstadoHelper, patch 0041). See 9.31 plan and STAGE-CHECKLISTS.
 - [x] **Auditorías hallazgos first slice**: Delivered in Stage 9.32 (`hallazgos_auditoria` table, list/form, filter by auditoría, reverse links on ejecución, optional Mejora FK, patch 0042). See 9.32 plan and STAGE-CHECKLISTS.
 - [x] **Equipos revisiones shell**: Delivered in Stage 9.33 (`mantenimientos` list/form, filter by equipo, reverse counts, prefill, patch 0043). See 9.33 plan and STAGE-CHECKLISTS.
+- [x] **Documentación quick workflow actions**: Delivered in Stage 9.34 (A revisión / Revisar / Aprobar quick POSTs + form checkboxes, auto user/fecha, patch 0044). See 9.34 plan and STAGE-CHECKLISTS.
 - [ ] **Next** (sized picks):  
-  - Documentación quick workflow actions · In: revisar/aprobar buttons like Mejora · Out: rich editor · ~12 files · patch? small  
   - Auditorías plan/horario · In: horario_auditoria shell · Out: informes · ~12 files · patch? yes  
-  - Equipos calendario / plan mantenimiento · In: calendar view shell · Out: full preventivo workflows · ~15 files · patch? maybe
+  - Equipos calendario / plan mantenimiento · In: calendar view shell · Out: full preventivo workflows · ~15 files · patch? maybe  
+  - Documentación rich content / binario · In: richer content editor shell · Out: full GenPDF · ~15 files · patch? maybe
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -142,8 +143,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Calendario + plan mantenimiento / deeper maintenance workflows (tie to Auditorias / Mejora).
 
 ### Documentación (Core ISO — high value, likely larger)
-- [x] Documentación initial shell delivered in Stage 9.5. Tree in 9.12. Editor/perfiles in 9.23, workflows in 9.24, content editor (texto) in 9.26. Estado labels + list filter in 9.31. Full rich editor, binario, more, PDF deferred. See 9.5 + 9.12 + 9.23 + 9.24 + 9.26 + 9.31 plans.
-- [ ] Full tree + editor modernization, perfiles, workflows, formats/plantillas; quick revise/approve transitions.
+- [x] Documentación initial shell delivered in Stage 9.5. Tree in 9.12. Editor/perfiles in 9.23, workflows fields in 9.24, content editor (texto) in 9.26. Estado labels + list filter in 9.31. Quick Revisar/Aprobar transitions in 9.34. Full rich editor, binario, more, PDF deferred. See 9.5 + 9.12 + 9.23 + 9.24 + 9.26 + 9.31 + 9.34 plans.
+- [ ] Full tree + editor modernization, formats/plantillas; rich content / binario.
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)

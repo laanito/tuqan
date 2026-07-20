@@ -134,6 +134,12 @@ SELECT '0043-equipos-revisiones.sql' AS patch, COUNT(*) FROM data_patches WHERE 
 SELECT COUNT(*) AS mantenimientos_rows FROM mantenimientos;
 SELECT equipo, COUNT(*) AS n FROM mantenimientos GROUP BY equipo ORDER BY equipo;
 
+-- 9.34 Documentación workflow demo
+SELECT '0044-documentacion-workflow-demo.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0044-documentacion-workflow-demo.sql';
+SELECT COUNT(*) AS docs_revisados FROM documentos WHERE revisado_por IS NOT NULL;
+SELECT COUNT(*) AS docs_borrador_or_pend FROM documentos WHERE estado IN (2, 3);
+SELECT COUNT(*) AS docs_revisado_estado FROM documentos WHERE estado = 4;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

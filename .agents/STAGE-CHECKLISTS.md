@@ -3597,6 +3597,23 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM mantenimi
 **Branch status:** Stage 9.33 on `feat/stage-9.33-equipos-revisiones`.
 
 
+## Stage 9.34 — Documentación quick workflow actions
+
+**Goal:** One-click Enviar a revisión / Revisar / Aprobar (list + form checkboxes), auto current user + today; approve requires prior review.
+
+**Validation:**
+```bash
+docker compose exec app php -l Pages/Documentacion/Formulario.php index.php
+docker compose exec app ./scripts/init-db.sh
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT id, estado, revisado_por, aprobado_por FROM documentos ORDER BY id;"
+```
+
+**Browser:** /admin/documentacion — buttons by estado; A revisión → Revisar → Aprobar; form checkboxes; cannot approve without review.
+
+**Branch status:** Stage 9.34 on `feat/stage-9.34-documentacion-workflow-actions`.
+
+
 
 
 

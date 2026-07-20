@@ -1,5 +1,6 @@
 <?php
 namespace Tuqan\Pages\Documentacion;
+use Tuqan\Classes\Config;
 use Tuqan\Pages\Catalog\CatalogFormulario;
 class Formulario extends CatalogFormulario
 {
@@ -107,6 +108,10 @@ class Formulario extends CatalogFormulario
             'fecha_revision'   => trim($_POST['fecha_revision'] ?? ''),
             'fecha_aprobacion' => trim($_POST['fecha_aprobacion'] ?? ''),
             'contenido'        => trim($_POST['contenido'] ?? ''),
+            // 9.34 workflow action checkboxes
+            'accion_enviar_revision' => !empty($_POST['accion_enviar_revision']) ? 1 : 0,
+            'accion_revisar'         => !empty($_POST['accion_revisar']) ? 1 : 0,
+            'accion_aprobar'         => !empty($_POST['accion_aprobar']) ? 1 : 0,
         ];
     }
 
@@ -116,12 +121,46 @@ class Formulario extends CatalogFormulario
         if (($data['nombre'] ?? '') === '') {
             $errors[] = 'El nombre del documento es obligatorio.';
         }
+        // Cannot approve without prior review (form path)
+        if (!empty($data['accion_aprobar']) && empty($data['revisado_por']) && empty($data['accion_revisar'])) {
+            $errors[] = 'No se puede aprobar sin revisar primero.';
+        }
         return $errors;
     }
 
     protected function persist(array $data, $id)
     {
         $db = $this->getDb();
+        $today = date('Y-m-d');
+        $currentUser = $this->getCurrentUserId();
+
+        // 9.34 form workflow auto-apply
+        if (!empty($data['accion_enviar_revision'])) {
+            $data['estado'] = 3; // Pend. revisión
+        }
+        if (!empty($data['accion_revisar'])) {
+            if (empty($data['revisado_por'])) {
+                $data['revisado_por'] = $currentUser;
+            }
+            if (($data['fecha_revision'] ?? '') === '') {
+                $data['fecha_revision'] = $today;
+            }
+            $data['estado'] = 4; // Revisado
+        }
+        if (!empty($data['accion_aprobar'])) {
+            if (empty($data['aprobado_por'])) {
+                $data['aprobado_por'] = $currentUser;
+            }
+            if (($data['fecha_aprobacion'] ?? '') === '') {
+                $data['fecha_aprobacion'] = $today;
+            }
+            if (empty($data['revisado_por'])) {
+                $data['revisado_por'] = $currentUser;
+                $data['fecha_revision'] = $data['fecha_revision'] ?: $today;
+            }
+            $data['estado'] = 1; // En vigor
+        }
+
         $params = [
             $data['nombre'],
             $data['codigo'],
@@ -166,5 +205,118 @@ class Formulario extends CatalogFormulario
             [$doc_id, $data['contenido'], $data['contenido']]
         );
         $db->desconexion();
+    }
+
+    // --- Quick workflow actions (Stage 9.34) — one-click from list ---
+
+    public function EnviarRevision($id = null)
+    {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        Config::initialize();
+        $id = $id !== null ? (int)$id : (int)($_POST['id'] ?? $_GET['id'] ?? 0);
+        if ($id <= 0) {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        $db = $this->getDb();
+        $db->consultaPreparada("SELECT id FROM {$this->table} WHERE id = ?", [$id]);
+        $row = $db->coger_Fila();
+        if (!$row) {
+            $db->desconexion();
+            $_SESSION[$this->flashPrefix . '_form_error'] = 'Documento no encontrado.';
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        $db->consultaPreparada("UPDATE {$this->table} SET estado = 3 WHERE id = ?", [$id]);
+        $db->desconexion();
+        $_SESSION[$this->flashPrefix . '_flash_success'] = 'Documento enviado a revisión.';
+        header("Location: {$this->listRoute}");
+        exit;
+    }
+
+    public function Revisar($id = null)
+    {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        Config::initialize();
+        $id = $id !== null ? (int)$id : (int)($_POST['id'] ?? $_GET['id'] ?? 0);
+        if ($id <= 0) {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        $db = $this->getDb();
+        $db->consultaPreparada(
+            "SELECT revisado_por, fecha_revision FROM {$this->table} WHERE id = ?",
+            [$id]
+        );
+        $row = $db->coger_Fila();
+        $db->desconexion();
+        if (!$row) {
+            $_SESSION[$this->flashPrefix . '_form_error'] = 'Documento no encontrado.';
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        $today = date('Y-m-d');
+        $user = $this->getCurrentUserId();
+        $revUser = $row[0] ?: $user;
+        $revFecha = $row[1] ?: $today;
+        $db = $this->getDb();
+        $db->consultaPreparada(
+            "UPDATE {$this->table} SET revisado_por = ?, fecha_revision = ?, estado = 4 WHERE id = ?",
+            [$revUser, $revFecha, $id]
+        );
+        $db->desconexion();
+        $_SESSION[$this->flashPrefix . '_flash_success'] = 'Documento revisado.';
+        header("Location: {$this->listRoute}");
+        exit;
+    }
+
+    public function Aprobar($id = null)
+    {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        Config::initialize();
+        $id = $id !== null ? (int)$id : (int)($_POST['id'] ?? $_GET['id'] ?? 0);
+        if ($id <= 0) {
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        $db = $this->getDb();
+        $db->consultaPreparada(
+            "SELECT revisado_por, aprobado_por, fecha_aprobacion FROM {$this->table} WHERE id = ?",
+            [$id]
+        );
+        $row = $db->coger_Fila();
+        $db->desconexion();
+        if (!$row) {
+            $_SESSION[$this->flashPrefix . '_form_error'] = 'Documento no encontrado.';
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        if (empty($row[0])) {
+            $_SESSION[$this->flashPrefix . '_form_error'] = 'No se puede aprobar sin revisar primero. Use Revisar antes de Aprobar.';
+            header("Location: {$this->listRoute}");
+            exit;
+        }
+        $today = date('Y-m-d');
+        $user = $this->getCurrentUserId();
+        $aprUser = $row[1] ?: $user;
+        $aprFecha = $row[2] ?: $today;
+        $db = $this->getDb();
+        $db->consultaPreparada(
+            "UPDATE {$this->table} SET aprobado_por = ?, fecha_aprobacion = ?, estado = 1 WHERE id = ?",
+            [$aprUser, $aprFecha, $id]
+        );
+        $db->desconexion();
+        $_SESSION[$this->flashPrefix . '_flash_success'] = 'Documento aprobado y puesto en vigor.';
+        header("Location: {$this->listRoute}");
+        exit;
     }
 }

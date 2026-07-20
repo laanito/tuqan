@@ -57,6 +57,28 @@
         </div>
 
         <div class="form-group">
+            <label>Acciones de workflow (auto usuario actual + fecha de hoy si faltan)</label>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="accion_enviar_revision" value="1">
+                    Enviar a revisión (estado → Pend. revisión)
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="accion_revisar" value="1">
+                    Revisar ahora
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="accion_aprobar" value="1">
+                    Aprobar y poner en vigor (requiere revisado)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="revision">Revisión</label>
             <input type="text" class="form-control" id="revision" name="revision"
                    value="{{ documento.revision ?? '' }}">
@@ -177,7 +199,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Documentación (9.5–9.26 + 9.31). Estado con etiquetas (En vigor / Borrador / …). Rich editor / binario deferred.
+            Documentación (9.5–9.31 + 9.34). Workflow: enviar a revisión / revisar / aprobar. Rich editor deferred.
         </div>
     </form>
 </div>
