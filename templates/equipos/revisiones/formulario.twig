@@ -1,0 +1,86 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/equipos/revisiones" class="btn btn-default btn-sm">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 780px;">
+    <form method="POST" action="{{ isEdit ? '/admin/equipos/revisiones/editar/' ~ revision.id : '/admin/equipos/revisiones/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ revision.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="equipo">Equipo</label>
+            <select class="form-control" id="equipo" name="equipo" required>
+                <option value="">-- Seleccionar --</option>
+                {% for e in equipo_options %}
+                    <option value="{{ e.id }}" {% if e.id == revision.equipo %}selected{% endif %}>{{ e.nombre }}</option>
+                {% endfor %}
+            </select>
+            {% if revision.equipo %}
+                <p class="help-block" style="margin-top:6px;">
+                    <a href="/admin/equipos/editar/{{ revision.equipo }}">Ver equipo</a>
+                    ·
+                    <a href="/admin/equipos/revisiones?equipo={{ revision.equipo }}">Otras revisiones</a>
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <select class="form-control" id="tipo" name="tipo">
+                {% for t in tipo_options %}
+                    <option value="{{ t.id }}" {% if t.id == revision.tipo %}selected{% endif %}>{{ t.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha_prevista">Fecha prevista</label>
+                    <input type="date" class="form-control" id="fecha_prevista" name="fecha_prevista"
+                           value="{{ revision.fecha_prevista ?? '' }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha_realiza">Fecha realización</label>
+                    <input type="date" class="form-control" id="fecha_realiza" name="fecha_realiza"
+                           value="{{ revision.fecha_realiza ?? '' }}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="comentarios">Comentarios</label>
+            <textarea class="form-control" id="comentarios" name="comentarios" rows="3" required>{{ revision.comentarios ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="motivos">Motivos</label>
+            <textarea class="form-control" id="motivos" name="motivos" rows="2">{{ revision.motivos ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                {{ isEdit ? 'Guardar cambios' : 'Crear Revisión' }}
+            </button>
+            <a href="/admin/equipos/revisiones" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
+        </div>
+
+        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+            Revisiones de equipos (Stage 9.33). Tabla legacy <code>mantenimientos</code>.
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -340,6 +340,15 @@ $router->addRoute('POST', '/admin/equipos/editar/{id}', ['Tuqan\Pages\Equipos\Fo
 // Legacy routes for Equipos (from full legacy menu accions: equipos:listado:listado:ver + administracion variant)
 $router->addRoute('GET', '/administracion/equipos/listado/ver', ['Tuqan\Pages\Equipos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Equipos Revisiones / mantenimientos (Stage 9.33) ===
+$router->addRoute('GET', '/admin/equipos/revisiones', ['Tuqan\Pages\Equipos\Revisiones\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/equipos/revisiones/nuevo', ['Tuqan\Pages\Equipos\Revisiones\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/equipos/revisiones/editar/{id}', ['Tuqan\Pages\Equipos\Revisiones\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/equipos/revisiones/nuevo', ['Tuqan\Pages\Equipos\Revisiones\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/equipos/revisiones/editar/{id}', ['Tuqan\Pages\Equipos\Revisiones\Formulario', 'Procesar'], ['before' => 'auth_company']);
+// Legacy menu: equipos:revision:listado:ver
+$router->addRoute('GET', '/administracion/equipos/revision/listado/ver', ['Tuqan\Pages\Equipos\Revisiones\Listado', 'ShowPage'], ['before' => 'auth_company']);
+
 // === Mejora / Acciones de Mejora (Stage 9.4) ===
 $router->addRoute('GET', '/admin/mejora', ['Tuqan\Pages\Mejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/mejora/nuevo', ['Tuqan\Pages\Mejora\Formulario', 'ShowPage'], ['before' => 'auth_company']);
