@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.32 on `feat/stage-9.32-auditorias-hallazgos` (Auditorías hallazgos first slice). Previous: 9.31 Documentación estado.
+**Last updated**: Stage 9.33 on `feat/stage-9.33-equipos-revisiones` (Equipos revisiones / mantenimientos). Previous: 9.32 Auditorías hallazgos.
 
 ---
 
@@ -101,10 +101,11 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Formación cross-links hub**: Delivered in Stage 9.30 (Planes curso counts, Cursos filter by plan + inscripción counts, Inscripciones filter by curso, prefills, nested list key fix, nav between subs). See 9.30 plan and STAGE-CHECKLISTS.
 - [x] **Documentación estado/filter polish**: Delivered in Stage 9.31 (estado labels/badges from legacy codes, list filter estado+activo, form select + badge, EstadoHelper, patch 0041). See 9.31 plan and STAGE-CHECKLISTS.
 - [x] **Auditorías hallazgos first slice**: Delivered in Stage 9.32 (`hallazgos_auditoria` table, list/form, filter by auditoría, reverse links on ejecución, optional Mejora FK, patch 0042). See 9.32 plan and STAGE-CHECKLISTS.
+- [x] **Equipos revisiones shell**: Delivered in Stage 9.33 (`mantenimientos` list/form, filter by equipo, reverse counts, prefill, patch 0043). See 9.33 plan and STAGE-CHECKLISTS.
 - [ ] **Next** (sized picks):  
-  - Equipos revisiones shell · In: list+form revisiones · Out: calendario · ~12 files · patch? yes  
   - Documentación quick workflow actions · In: revisar/aprobar buttons like Mejora · Out: rich editor · ~12 files · patch? small  
-  - Auditorías plan/horario · In: horario_auditoria shell · Out: informes · ~12 files · patch? yes
+  - Auditorías plan/horario · In: horario_auditoria shell · Out: informes · ~12 files · patch? yes  
+  - Equipos calendario / plan mantenimiento · In: calendar view shell · Out: full preventivo workflows · ~15 files · patch? maybe
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -137,8 +138,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Homologacion / evaluation flows (common in ISO supplier management).
 
 ### Equipos (Equipment / Assets)
-- [x] Equipos (legacy 70) — basic listado + form (core fields: numero, descripcion, modelo, ubicacion, activo + supporting) in Stage 9.3. Followed catalog base + full routes (corrected pattern) + data patch 0021 + verify + playbook. Sub-flows (revisiones, calendario, plan mantenimiento, etc.) deferred to later legs. (See 9.3 plan and STAGE-CHECKLISTS.)
-- [ ] Revisiones + compliance records + maintenance workflows (tie to Auditorias / Mejora).
+- [x] Equipos (legacy 70) — basic listado + form (core fields: numero, descripcion, modelo, ubicacion, activo + supporting) in Stage 9.3. Revisiones shell (`mantenimientos` CRUD + links) in Stage 9.33. Calendario y plan mantenimiento deferred. (See 9.3 + 9.33 plans.)
+- [ ] Calendario + plan mantenimiento / deeper maintenance workflows (tie to Auditorias / Mejora).
 
 ### Documentación (Core ISO — high value, likely larger)
 - [x] Documentación initial shell delivered in Stage 9.5. Tree in 9.12. Editor/perfiles in 9.23, workflows in 9.24, content editor (texto) in 9.26. Estado labels + list filter in 9.31. Full rich editor, binario, more, PDF deferred. See 9.5 + 9.12 + 9.23 + 9.24 + 9.26 + 9.31 plans.

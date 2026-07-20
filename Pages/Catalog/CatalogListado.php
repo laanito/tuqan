@@ -223,6 +223,8 @@ abstract class CatalogListado
             'curso'     => (isset($_GET['curso']) && $_GET['curso'] !== '') ? (int)$_GET['curso'] : null,
             // 9.31: generic integer estado filter (Documentación, etc.)
             'estado'    => (isset($_GET['estado']) && $_GET['estado'] !== '') ? (int)$_GET['estado'] : null,
+            // 9.33: Equipos revisiones filter
+            'equipo'    => (isset($_GET['equipo']) && $_GET['equipo'] !== '') ? (int)$_GET['equipo'] : null,
         ];
     }
 

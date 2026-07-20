@@ -1,0 +1,77 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Revisiones de Equipos - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Revisiones de Equipos</h2>
+        <div>
+            <a href="/admin/equipos" class="btn btn-default btn-sm">Equipos</a>
+            <a href="/admin/equipos/revisiones/nuevo{% if filter_equipo %}?equipo={{ filter_equipo }}{% endif %}" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nueva Revisión
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    <form method="GET" action="/admin/equipos/revisiones" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="equipo" style="margin-right: 6px;">Equipo</label>
+            <select class="form-control input-sm" id="equipo" name="equipo">
+                <option value="">-- Todos --</option>
+                {% for e in equipo_options %}
+                    <option value="{{ e.id }}" {% if filter_equipo == e.id %}selected{% endif %}>{{ e.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_equipo %}
+            <a href="/admin/equipos/revisiones" class="btn btn-link btn-sm">Quitar filtro</a>
+        {% endif %}
+    </form>
+
+    {% if revision is empty %}
+        <div class="alert alert-info">No hay revisiones registradas{% if filter_equipo %} para este equipo{% endif %}.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Equipo</th>
+                        <th>Tipo</th>
+                        <th>Prevista</th>
+                        <th>Realizada</th>
+                        <th>Comentarios</th>
+                        <th style="width:100px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in revision %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>
+                            {% if r.equipo %}
+                                <a href="/admin/equipos/editar/{{ r.equipo }}">{{ r.equipo_label ?? r.equipo }}</a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>{{ r.tipo_label ?? r.tipo ?? '-' }}</td>
+                        <td>{{ r.fecha_prevista ?? '-' }}</td>
+                        <td>{{ r.fecha_realiza ?? '-' }}</td>
+                        <td>{{ r.comentarios }}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/equipos/revisiones/editar/{{ r.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Revisiones (Stage 9.33, tabla mantenimientos). Calendario y plan de mantenimiento deferred.
+    </div>
+</div>
+{% endblock %}

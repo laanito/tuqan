@@ -11,7 +11,6 @@ class Listado extends CatalogListado
     protected string $templateDir = 'equipos';
     protected string $flashPrefix = 'equipo';
 
-    // Override because the entity uses 'numero' + 'descripcion' (no 'nombre') and several extra columns.
     protected function getSelectSql(): string
     {
         return "SELECT id, numero, descripcion, modelo, ubicacion, activo FROM {$this->table} ORDER BY id";
@@ -27,5 +26,32 @@ class Listado extends CatalogListado
             'ubicacion'   => $row[4] ?? null,
             'activo'      => $row[5],
         ];
+    }
+
+    // 9.33: reverse count of revisiones (mantenimientos)
+    protected function fetchItems(): array
+    {
+        $items = parent::fetchItems();
+        foreach ($items as &$item) {
+            $item['revision_count'] = $this->countRevisionesForEquipo((int)$item['id']);
+        }
+        unset($item);
+        return $items;
+    }
+
+    protected function countRevisionesForEquipo(int $equipoId): int
+    {
+        if ($equipoId <= 0) {
+            return 0;
+        }
+        try {
+            $db = $this->getDb();
+            $db->consultaPreparada('SELECT COUNT(*) FROM mantenimientos WHERE equipo = ?', [$equipoId]);
+            $row = $db->coger_Fila();
+            $db->desconexion();
+            return (int)($row[0] ?? 0);
+        } catch (\Throwable $e) {
+            return 0;
+        }
     }
 }

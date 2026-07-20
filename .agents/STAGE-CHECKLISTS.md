@@ -3580,6 +3580,23 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM hallazgos
 **Branch status:** Stage 9.32 on `feat/stage-9.32-auditorias-hallazgos`.
 
 
+## Stage 9.33 — Equipos revisiones shell (mantenimientos)
+
+**Goal:** Modern list/form for equipo revisiones using legacy `mantenimientos` table; filter/prefill by equipo; reverse counts on equipos list.
+
+**Validation:**
+```bash
+docker compose exec app ./scripts/init-db.sh
+docker compose exec app php -l Pages/Equipos/Listado.php Pages/Equipos/Revisiones/Listado.php Pages/Equipos/Revisiones/Formulario.php index.php
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM mantenimientos; SELECT equipo, COUNT(*) FROM mantenimientos GROUP BY 1;"
+```
+
+**Browser:** /admin/equipos — revisiones counts + + Revisión; /admin/equipos/revisiones filter; create/edit; legacy path /administracion/equipos/revision/listado/ver.
+
+**Branch status:** Stage 9.33 on `feat/stage-9.33-equipos-revisiones`.
+
+
 
 
 
