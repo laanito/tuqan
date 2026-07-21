@@ -145,6 +145,13 @@ SELECT '0045-auditorias-horario.sql' AS patch, COUNT(*) FROM data_patches WHERE 
 SELECT COUNT(*) AS horario_rows FROM horario_auditoria;
 SELECT auditoria, COUNT(*) AS n FROM horario_auditoria WHERE auditoria IS NOT NULL GROUP BY auditoria ORDER BY auditoria;
 
+-- 9.36 Equipos calendario evidence (demo rows in current year)
+SELECT '0046-equipos-calendario.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0046-equipos-calendario.sql';
+SELECT COUNT(*) AS mantenimientos_current_year FROM mantenimientos
+ WHERE (fecha_prevista IS NOT NULL AND date_part('year', fecha_prevista) = date_part('year', CURRENT_DATE))
+    OR (fecha_realiza IS NOT NULL AND date_part('year', fecha_realiza) = date_part('year', CURRENT_DATE));
+SELECT COUNT(*) AS calendario_demo_rows FROM mantenimientos WHERE comentarios LIKE 'Calendario demo:%';
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

@@ -8,6 +8,7 @@
         <h2 style="margin: 0; font-size: 20px;">Revisiones de Equipos</h2>
         <div>
             <a href="/admin/equipos" class="btn btn-default btn-sm">Equipos</a>
+            <a href="/admin/equipos/calendario{% if filter_equipo %}?equipo={{ filter_equipo }}{% endif %}" class="btn btn-default btn-sm">Calendario</a>
             <a href="/admin/equipos/revisiones/nuevo{% if filter_equipo %}?equipo={{ filter_equipo }}{% endif %}" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nueva Revisión
             </a>
@@ -71,7 +72,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Revisiones (Stage 9.33, tabla mantenimientos). Calendario y plan de mantenimiento deferred.
+        Revisiones (Stage 9.33, tabla mantenimientos). Calendario anual en Stage 9.36.
     </div>
 </div>
 {% endblock %}

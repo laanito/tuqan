@@ -349,6 +349,11 @@ $router->addRoute('POST', '/admin/equipos/revisiones/editar/{id}', ['Tuqan\Pages
 // Legacy menu: equipos:revision:listado:ver
 $router->addRoute('GET', '/administracion/equipos/revision/listado/ver', ['Tuqan\Pages\Equipos\Revisiones\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Equipos Calendario (Stage 9.36) ===
+$router->addRoute('GET', '/admin/equipos/calendario', ['Tuqan\Pages\Equipos\Calendario', 'ShowPage'], ['before' => 'auth_company']);
+// Legacy menu: equipos:calendario:listado:ver
+$router->addRoute('GET', '/administracion/equipos/calendario/listado/ver', ['Tuqan\Pages\Equipos\Calendario', 'ShowPage'], ['before' => 'auth_company']);
+
 // === Mejora / Acciones de Mejora (Stage 9.4) ===
 $router->addRoute('GET', '/admin/mejora', ['Tuqan\Pages\Mejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/mejora/nuevo', ['Tuqan\Pages\Mejora\Formulario', 'ShowPage'], ['before' => 'auth_company']);

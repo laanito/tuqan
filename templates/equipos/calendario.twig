@@ -1,0 +1,152 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<style>
+.cal-year-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.cal-month { border: 1px solid #ddd; border-radius: 4px; background: #fff; overflow: hidden; }
+.cal-month h4 { margin: 0; padding: 8px 10px; background: #f5f5f5; border-bottom: 1px solid #ddd; font-size: 14px; }
+.cal-month table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
+.cal-month th { text-align: center; padding: 4px 0; color: #666; font-weight: 600; background: #fafafa; }
+.cal-month td { text-align: center; vertical-align: top; height: 36px; padding: 2px; border-top: 1px solid #f0f0f0; }
+.cal-day { display: block; min-height: 32px; border-radius: 3px; padding: 2px; }
+.cal-day-num { font-weight: 600; }
+.cal-day.is-today { background: #d9edf7; outline: 1px solid #5bc0de; }
+.cal-day.has-events { cursor: pointer; }
+.cal-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin: 0 1px; }
+.cal-tipo-revision { background: #337ab7; }
+.cal-tipo-preventivo { background: #5cb85c; }
+.cal-tipo-correctivo { background: #f0ad4e; }
+.cal-tipo-otro { background: #999; }
+.cal-legend span { margin-right: 12px; font-size: 12px; }
+.cal-legend .cal-dot { vertical-align: middle; margin-right: 4px; }
+</style>
+
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/equipos" class="btn btn-default btn-sm">Equipos</a>
+            <a href="/admin/equipos/revisiones{% if filter_equipo %}?equipo={{ filter_equipo }}{% endif %}" class="btn btn-default btn-sm">Revisiones</a>
+            <a href="/admin/equipos/revisiones/nuevo{% if filter_equipo %}?equipo={{ filter_equipo }}{% endif %}" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nueva Revisión
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    <form method="GET" action="/admin/equipos/calendario" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="year" style="margin-right: 6px;">Año</label>
+            <input type="number" class="form-control input-sm" id="year" name="year" value="{{ year }}" min="2000" max="2100" style="width: 90px;">
+        </div>
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="equipo" style="margin-right: 6px;">Equipo</label>
+            <select class="form-control input-sm" id="equipo" name="equipo">
+                <option value="">-- Todos --</option>
+                {% for e in equipo_options %}
+                    <option value="{{ e.id }}" {% if filter_equipo == e.id %}selected{% endif %}>{{ e.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Aplicar</button>
+        <a href="/admin/equipos/calendario?year={{ prev_year }}{% if filter_equipo %}&equipo={{ filter_equipo }}{% endif %}" class="btn btn-link btn-sm">← {{ prev_year }}</a>
+        <a href="/admin/equipos/calendario?year={{ next_year }}{% if filter_equipo %}&equipo={{ filter_equipo }}{% endif %}" class="btn btn-link btn-sm">{{ next_year }} →</a>
+        {% if filter_equipo %}
+            <a href="/admin/equipos/calendario?year={{ year }}" class="btn btn-link btn-sm">Quitar filtro equipo</a>
+        {% endif %}
+    </form>
+
+    <div class="cal-legend" style="margin-bottom: 12px;">
+        <span><i class="cal-dot cal-tipo-revision"></i> Revisión</span>
+        <span><i class="cal-dot cal-tipo-preventivo"></i> Preventivo</span>
+        <span><i class="cal-dot cal-tipo-correctivo"></i> Correctivo</span>
+        <span class="text-muted">· {{ event_count }} registro(s) en {{ year }}{% if filter_equipo_label %} · {{ filter_equipo_label }}{% endif %}</span>
+    </div>
+
+    <div class="cal-year-grid">
+        {% for month in months %}
+        <div class="cal-month">
+            <h4>{{ month.name }} {{ year }}</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>L</th><th>M</th><th>X</th><th>J</th><th>V</th><th>S</th><th>D</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for week in month.weeks %}
+                    <tr>
+                        {% for cell in week %}
+                        <td>
+                            {% if cell %}
+                            <div class="cal-day{% if cell.is_today %} is-today{% endif %}{% if cell.has %} has-events{% endif %}"
+                                 {% if cell.has %}title="{% for ev in cell.events %}{{ ev.tipo_label }} · {{ ev.equipo_label ?? 'Equipo' }} ({{ ev.date_kind }}){% if not loop.last %}&#10;{% endif %}{% endfor %}"{% endif %}>
+                                <span class="cal-day-num">{{ cell.day }}</span>
+                                {% if cell.has %}
+                                <div>
+                                    {% for ev in cell.events|slice(0, 3) %}
+                                    <a href="/admin/equipos/revisiones/editar/{{ ev.id }}" class="cal-dot {{ ev.tipo_class }}" title="{{ ev.tipo_label }} · {{ ev.equipo_label ?? '' }}"></a>
+                                    {% endfor %}
+                                    {% if cell.events|length > 3 %}<span class="text-muted">+</span>{% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h3 style="margin-top: 28px; font-size: 16px;">Registros del año {{ year }}</h3>
+    {% if events is empty %}
+        <div class="alert alert-info">No hay revisiones/mantenimientos con fecha en {{ year }}{% if filter_equipo %} para este equipo{% endif %}.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Equipo</th>
+                        <th>Tipo</th>
+                        <th>Prevista</th>
+                        <th>Realizada</th>
+                        <th>Comentarios</th>
+                        <th style="width:100px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in events %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>
+                            {% if r.equipo %}
+                                <a href="/admin/equipos/editar/{{ r.equipo }}">{{ r.equipo_label ?? r.equipo }}</a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td><span class="label label-default {{ r.tipo_class }}">{{ r.tipo_label ?? r.tipo ?? '-' }}</span></td>
+                        <td>{{ r.fecha_prevista ?? '-' }}</td>
+                        <td>{{ r.fecha_realiza ?? '-' }}</td>
+                        <td>{{ r.comentarios }}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/equipos/revisiones/editar/{{ r.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Calendario anual (Stage 9.36) sobre tabla <code>mantenimientos</code>. Auto-plan preventivo y export ICS deferred.
+    </div>
+</div>
+{% endblock %}
