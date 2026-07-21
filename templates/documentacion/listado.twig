@@ -16,6 +16,13 @@
 </div>
 
 <div style="padding: 20px;">
+    {% if flashSuccess %}
+        <div class="alert alert-success">{{ flashSuccess }}</div>
+    {% endif %}
+    {% if flashError %}
+        <div class="alert alert-danger">{{ flashError }}</div>
+    {% endif %}
+
     <form method="GET" action="/admin/documentacion" class="form-inline" style="margin-bottom: 15px;">
         <div class="form-group" style="margin-right: 8px;">
             <label for="estado" style="margin-right: 6px;">Estado</label>
@@ -54,7 +61,7 @@
                         <th>Revisado por</th>
                         <th>Aprobado por</th>
                         <th>Activo</th>
-                        <th style="width:140px;text-align:right;">Acciones</th>
+                        <th style="width:260px;text-align:right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,8 +76,23 @@
                         <td>{{ d.revisado_por_label ?? (d.revisado_por ?? '-') }}</td>
                         <td>{{ d.aprobado_por_label ?? (d.aprobado_por ?? '-') }}</td>
                         <td>{% if d.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
-                        <td style="text-align:right;">
+                        <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/documentacion/editar/{{ d.id }}" class="btn btn-xs btn-default">Editar</a>
+                            {% if d.estado is null or d.estado == 2 %}
+                                <form method="POST" action="/admin/documentacion/enviar-revision/{{ d.id }}" style="display:inline;margin-left:2px;">
+                                    <button type="submit" class="btn btn-xs btn-warning" title="Estado → Pend. revisión">A revisión</button>
+                                </form>
+                            {% endif %}
+                            {% if d.estado is null or d.estado == 2 or d.estado == 3 %}
+                                <form method="POST" action="/admin/documentacion/revisar/{{ d.id }}" style="display:inline;margin-left:2px;">
+                                    <button type="submit" class="btn btn-xs btn-info" title="Marcar revisado">Revisar</button>
+                                </form>
+                            {% endif %}
+                            {% if d.estado == 4 or d.estado == 5 or (d.revisado_por and d.estado != 1 and d.estado != 6) %}
+                                <form method="POST" action="/admin/documentacion/aprobar/{{ d.id }}" style="display:inline;margin-left:2px;">
+                                    <button type="submit" class="btn btn-xs btn-success" title="Aprobar y poner en vigor">Aprobar</button>
+                                </form>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -79,7 +101,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Documentación (9.5–9.26 + 9.31 estado labels/filter). Rich editor / binario deferred.
+        Documentación (9.5–9.31 + 9.34 workflow: A revisión / Revisar / Aprobar). Rich editor deferred.
     </div>
 </div>
 {% endblock %}

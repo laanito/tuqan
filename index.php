@@ -405,6 +405,11 @@ $router->addRoute('GET', '/admin/documentacion/editar/{id}', ['Tuqan\Pages\Docum
 $router->addRoute('POST', '/admin/documentacion/nuevo', ['Tuqan\Pages\Documentacion\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/documentacion/editar/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
+// Quick workflow actions (Stage 9.34)
+$router->addRoute('POST', '/admin/documentacion/enviar-revision/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'EnviarRevision'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/documentacion/revisar/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'Revisar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/documentacion/aprobar/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'Aprobar'], ['before' => 'auth_company']);
+
 // Key legacy for Documentación (vigor / borradores + general)
 $router->addRoute('GET', '/administracion/documentacion/docvigor/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/documentacion/docborrador/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
