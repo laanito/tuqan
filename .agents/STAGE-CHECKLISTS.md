@@ -3614,6 +3614,23 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT id, estado, revisado_po
 **Branch status:** Stage 9.34 on `feat/stage-9.34-documentacion-workflow-actions`.
 
 
+## Stage 9.35 — Auditorías horario first slice
+
+**Goal:** CRUD for `horario_auditoria` schedule slots linked to ejecución via modern `auditoria` FK; filter/prefill; reverse counts on ejecución.
+
+**Validation:**
+```bash
+docker compose exec app ./scripts/init-db.sh
+docker compose exec app php -l Pages/Auditorias/Horario/Listado.php Pages/Auditorias/Horario/Formulario.php Pages/Auditorias/Ejecucion/Listado.php Pages/Auditorias/Ejecucion/Formulario.php index.php
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM horario_auditoria; SELECT auditoria, COUNT(*) FROM horario_auditoria GROUP BY 1;"
+```
+
+**Browser:** /admin/auditorias/horario; filter; create from ejecución + Horario; edit form datetime-local.
+
+**Branch status:** Stage 9.35 on `feat/stage-9.35-auditorias-horario`.
+
+
 
 
 

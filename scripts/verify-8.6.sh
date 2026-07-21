@@ -47,7 +47,7 @@ export PGPASSWORD="${DB_PASS:-secret}"
 psql -h "${DB_HOST:-db}" -U qnova -d qnova -v ON_ERROR_STOP=1 -c "
 -- Tables (8.6 + 8.7 + 8.8 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 + 9.7 + 9.9)
 SELECT tablename FROM pg_tables 
-WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos','contenido_texto','hallazgos_auditoria','mantenimientos')
+WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos','contenido_texto','hallazgos_auditoria','mantenimientos','horario_auditoria')
 ORDER BY tablename;
 
 -- Sedes rename evidence
@@ -139,6 +139,11 @@ SELECT '0044-documentacion-workflow-demo.sql' AS patch, COUNT(*) FROM data_patch
 SELECT COUNT(*) AS docs_revisados FROM documentos WHERE revisado_por IS NOT NULL;
 SELECT COUNT(*) AS docs_borrador_or_pend FROM documentos WHERE estado IN (2, 3);
 SELECT COUNT(*) AS docs_revisado_estado FROM documentos WHERE estado = 4;
+
+-- 9.35 Auditorías horario evidence
+SELECT '0045-auditorias-horario.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0045-auditorias-horario.sql';
+SELECT COUNT(*) AS horario_rows FROM horario_auditoria;
+SELECT auditoria, COUNT(*) AS n FROM horario_auditoria WHERE auditoria IS NOT NULL GROUP BY auditoria ORDER BY auditoria;
 
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;

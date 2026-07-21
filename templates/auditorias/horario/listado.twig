@@ -1,0 +1,83 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Horario de Auditoría - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">Horario de Auditoría</h2>
+        <div>
+            <a href="/admin/auditorias/ejecucion" class="btn btn-default btn-sm">Ejecución</a>
+            <a href="/admin/auditorias/hallazgos" class="btn btn-default btn-sm">Hallazgos</a>
+            <a href="/admin/auditorias/horario/nuevo{% if filter_auditoria %}?auditoria={{ filter_auditoria }}{% endif %}" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nueva franja
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if flashSuccess %}<div class="alert alert-success">{{ flashSuccess }}</div>{% endif %}
+    {% if flashError %}<div class="alert alert-danger">{{ flashError }}</div>{% endif %}
+
+    <form method="GET" action="/admin/auditorias/horario" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="auditoria" style="margin-right: 6px;">Auditoría</label>
+            <select class="form-control input-sm" id="auditoria" name="auditoria">
+                <option value="">-- Todas --</option>
+                {% for a in auditoria_options %}
+                    <option value="{{ a.id }}" {% if filter_auditoria == a.id %}selected{% endif %}>{{ a.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_auditoria %}
+            <a href="/admin/auditorias/horario" class="btn btn-link btn-sm">Quitar filtro</a>
+        {% endif %}
+    </form>
+
+    {% if horario is empty %}
+        <div class="alert alert-info">No hay franjas de horario{% if filter_auditoria %} para esta auditoría{% endif %}.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Auditoría</th>
+                        <th>Requisito</th>
+                        <th>Auditor</th>
+                        <th>Área</th>
+                        <th style="width:100px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for h in horario %}
+                    <tr>
+                        <td>{{ h.id }}</td>
+                        <td>{{ h.horainicio_display ?? h.horainicio ?? '-' }}</td>
+                        <td>{{ h.horafin_display ?? h.horafin ?? '-' }}</td>
+                        <td>
+                            {% if h.auditoria %}
+                                <a href="/admin/auditorias/ejecucion/editar/{{ h.auditoria }}">{{ h.auditoria_label ?? h.auditoria }}</a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>{{ h.requisito ?? '-' }}</td>
+                        <td>{{ h.auditor ?? '-' }}</td>
+                        <td>{{ h.area_label ?? (h.area ?? '-') }}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/auditorias/horario/editar/{{ h.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Horario de auditoría (Stage 9.35). Informes PDF deferred.
+    </div>
+</div>
+{% endblock %}
