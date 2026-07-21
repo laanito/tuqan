@@ -34,6 +34,7 @@ class Listado extends CatalogListado
             $item['programa_label'] = $this->getRelatedLabel('programa_auditoria', $item['programa'] ?? null);
             $item['mejora_count'] = $this->countMejoraForAuditoria((int)$item['id']);
             $item['hallazgo_count'] = $this->countHallazgosForAuditoria((int)$item['id']);
+            $item['horario_count'] = $this->countHorarioForAuditoria((int)$item['id']);
         }
         unset($item);
         return $items;
@@ -71,6 +72,25 @@ class Listado extends CatalogListado
             return (int)($row[0] ?? 0);
         } catch (\Throwable $e) {
             $db->desconexion();
+            return 0;
+        }
+    }
+
+    protected function countHorarioForAuditoria(int $auditoriaId): int
+    {
+        if ($auditoriaId <= 0) {
+            return 0;
+        }
+        try {
+            $db = $this->getDb();
+            $db->consultaPreparada(
+                'SELECT COUNT(*) FROM horario_auditoria WHERE auditoria = ?',
+                [$auditoriaId]
+            );
+            $row = $db->coger_Fila();
+            $db->desconexion();
+            return (int)($row[0] ?? 0);
+        } catch (\Throwable $e) {
             return 0;
         }
     }

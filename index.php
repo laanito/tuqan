@@ -445,6 +445,13 @@ $router->addRoute('GET', '/admin/auditorias/hallazgos/editar/{id}', ['Tuqan\Page
 $router->addRoute('POST', '/admin/auditorias/hallazgos/nuevo', ['Tuqan\Pages\Auditorias\Hallazgos\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/auditorias/hallazgos/editar/{id}', ['Tuqan\Pages\Auditorias\Hallazgos\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
+// === Auditorías Horario (Stage 9.35 first slice) ===
+$router->addRoute('GET', '/admin/auditorias/horario', ['Tuqan\Pages\Auditorias\Horario\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/horario/nuevo', ['Tuqan\Pages\Auditorias\Horario\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/horario/editar/{id}', ['Tuqan\Pages\Auditorias\Horario\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/auditorias/horario/nuevo', ['Tuqan\Pages\Auditorias\Horario\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/auditorias/horario/editar/{id}', ['Tuqan\Pages\Auditorias\Horario\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
 // === Aspectos Ambientales (Stage 9.7 basic slice) ===
 $router->addRoute('GET', '/admin/aspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/aspectos/nuevo', ['Tuqan\Pages\Aspectos\Formulario', 'ShowPage'], ['before' => 'auth_company']);

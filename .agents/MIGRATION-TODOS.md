@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.34 on `feat/stage-9.34-documentacion-workflow-actions` (Documentación Revisar/Aprobar quick actions). Previous: 9.33 Equipos revisiones.
+**Last updated**: Stage 9.35 on `feat/stage-9.35-auditorias-horario` (Auditorías horario shell). Previous: 9.34 Documentación workflow.
 
 ---
 
@@ -103,10 +103,11 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Auditorías hallazgos first slice**: Delivered in Stage 9.32 (`hallazgos_auditoria` table, list/form, filter by auditoría, reverse links on ejecución, optional Mejora FK, patch 0042). See 9.32 plan and STAGE-CHECKLISTS.
 - [x] **Equipos revisiones shell**: Delivered in Stage 9.33 (`mantenimientos` list/form, filter by equipo, reverse counts, prefill, patch 0043). See 9.33 plan and STAGE-CHECKLISTS.
 - [x] **Documentación quick workflow actions**: Delivered in Stage 9.34 (A revisión / Revisar / Aprobar quick POSTs + form checkboxes, auto user/fecha, patch 0044). See 9.34 plan and STAGE-CHECKLISTS.
+- [x] **Auditorías plan/horario first slice**: Delivered in Stage 9.35 (`horario_auditoria` + modern auditoria FK, list/form, filter/prefill, ejecución reverse links, patch 0045). See 9.35 plan and STAGE-CHECKLISTS.
 - [ ] **Next** (sized picks):  
-  - Auditorías plan/horario · In: horario_auditoria shell · Out: informes · ~12 files · patch? yes  
   - Equipos calendario / plan mantenimiento · In: calendar view shell · Out: full preventivo workflows · ~15 files · patch? maybe  
-  - Documentación rich content / binario · In: richer content editor shell · Out: full GenPDF · ~15 files · patch? maybe
+  - Documentación rich content / binario · In: richer content editor shell · Out: full GenPDF · ~15 files · patch? maybe  
+  - Auditorías informes · In: informe fields/export shell · Out: GenPDF full · ~12 files · patch? small
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
@@ -148,8 +149,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] PDF ficha / export modernization (GenPDF.inc, related) — cross-cutting but surfaces here.
 
 ### Auditorías (Audits)
-- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` delivered in Stage 9.6. Execution first slice (auditorias table basic CRUD + programa link) delivered in Stage 9.19. Mejora reverse links in Stage 9.29. Hallazgos first slice (`hallazgos_auditoria` + CRUD + links) in Stage 9.32. Plan/horario e informes still deferred. See 9.6 + 9.19 + 9.29 + 9.32 plans.
-- [ ] Full execution + plan/horario + informes / deeper follow-up. Integration with Indicadores + Aspectos.
+- [x] Auditorías (legacy 71) basic slice — `programa_auditoria` delivered in Stage 9.6. Execution first slice (auditorias table basic CRUD + programa link) delivered in Stage 9.19. Mejora reverse links in Stage 9.29. Hallazgos first slice in Stage 9.32. Horario shell (`horario_auditoria` + FK) in Stage 9.35. Informes still deferred. See 9.6 + 9.19 + 9.29 + 9.32 + 9.35 plans.
+- [ ] Full execution + informes / deeper follow-up. Integration with Indicadores + Aspectos.
 
 ### Indicadores + Objetivos (KPIs)
 - [x] Indicadores basic (legacy 72) — core `indicadores` table delivered in Stage 9.9 (0027 patch + Pages/Indicadores using enhanced 9.8 bases + templates + routes + verify). Fields: nombre, definicion, valores (inicial/objetivo/tolerable), tecnica, responsables, frecuencias, activo, genera_objetivo. Charts/graphs, full calculations, metas_indicadores, objetivos and dashboard deferred. See 9.9 plan/playbook.

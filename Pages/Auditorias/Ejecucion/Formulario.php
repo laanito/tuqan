@@ -49,6 +49,7 @@ class Formulario extends CatalogFormulario
         $vars['programa_options'] = $this->getRelatedOptions('programa_auditoria', 'nombre');
         $vars['mejora_relacionadas'] = [];
         $vars['hallazgos_relacionados'] = [];
+        $vars['horario_relacionado'] = [];
 
         $key = strtolower($this->flashPrefix);
         if (!empty($vars[$key])) {
@@ -56,10 +57,11 @@ class Formulario extends CatalogFormulario
             $a['programa_label'] = $this->getRelatedLabel('programa_auditoria', $a['programa'] ?? null);
             $vars[$key] = $a;
 
-            // 9.29 Mejora + 9.32 hallazgos reverse links
+            // 9.29 Mejora + 9.32 hallazgos + 9.35 horario reverse links
             if (!empty($a['id'])) {
                 $vars['mejora_relacionadas'] = $this->fetchMejoraRelacionadas((int)$a['id']);
                 $vars['hallazgos_relacionados'] = $this->fetchHallazgosRelacionados((int)$a['id']);
+                $vars['horario_relacionado'] = $this->fetchHorarioRelacionado((int)$a['id']);
             }
         }
 
@@ -119,6 +121,34 @@ class Formulario extends CatalogFormulario
                     'tipo'        => $row[3],
                     'gravedad'    => $row[4],
                     'cerrado'     => $row[5],
+                ];
+            }
+            $db->desconexion();
+            return $items;
+        } catch (\Throwable $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Linked horario_auditoria slots (Stage 9.35).
+     */
+    protected function fetchHorarioRelacionado(int $auditoriaId): array
+    {
+        try {
+            $db = $this->getDb();
+            $db->consultaPreparada(
+                'SELECT id, horainicio, horafin, requisito, auditor FROM horario_auditoria WHERE auditoria = ? ORDER BY horainicio NULLS LAST, id',
+                [$auditoriaId]
+            );
+            $items = [];
+            while ($row = $db->coger_Fila()) {
+                $items[] = [
+                    'id'         => $row[0],
+                    'horainicio' => $row[1],
+                    'horafin'    => $row[2],
+                    'requisito'  => $row[3],
+                    'auditor'    => $row[4],
                 ];
             }
             $db->desconexion();

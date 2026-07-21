@@ -8,6 +8,7 @@
         <h2 style="margin: 0; font-size: 20px;">Auditorías (Ejecución)</h2>
         <div>
             <a href="/admin/auditorias/hallazgos" class="btn btn-default btn-sm">Hallazgos</a>
+            <a href="/admin/auditorias/horario" class="btn btn-default btn-sm">Horario</a>
             <a href="/admin/auditorias/ejecucion/nuevo" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nueva Auditoría
             </a>
@@ -31,7 +32,8 @@
                         <th>Activo</th>
                         <th>Mejora</th>
                         <th>Hallazgos</th>
-                        <th style="width:240px;text-align:right;">Acciones</th>
+                        <th>Horario</th>
+                        <th style="width:280px;text-align:right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,8 +59,16 @@
                                 <span class="text-muted">0</span>
                             {% endif %}
                         </td>
+                        <td>
+                            {% if a.horario_count > 0 %}
+                                <a href="/admin/auditorias/horario?auditoria={{ a.id }}">{{ a.horario_count }}</a>
+                            {% else %}
+                                <span class="text-muted">0</span>
+                            {% endif %}
+                        </td>
                         <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/auditorias/ejecucion/editar/{{ a.id }}" class="btn btn-xs btn-default">Editar</a>
+                            <a href="/admin/auditorias/horario/nuevo?auditoria={{ a.id }}" class="btn btn-xs btn-warning" title="Nueva franja">+ Horario</a>
                             <a href="/admin/auditorias/hallazgos/nuevo?auditoria={{ a.id }}" class="btn btn-xs btn-info" title="Nuevo hallazgo">+ Hallazgo</a>
                             <a href="/admin/mejora/nuevo?auditoria={{ a.id }}" class="btn btn-xs btn-primary" title="Crear acción de mejora ligada">+ Mejora</a>
                         </td>
@@ -69,7 +79,8 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Auditorías ejecución (9.19 + 9.29 Mejora + 9.32 Hallazgos). Plan/horario e informes deferred.
+        Auditorías ejecución (9.19–9.35: Mejora, Hallazgos, Horario). Informes deferred.
     </div>
 </div>
 {% endblock %}
+
