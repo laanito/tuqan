@@ -1,6 +1,6 @@
 # Stage 9.36 — Equipos calendario first slice
 
-**Status**: Planning (plan first)
+**Status**: Implemented (verify + PR)
 **Branch**: `feat/stage-9.36-equipos-calendario`
 **Driver**: Sized next after 9.35. Legacy menu `equipos:calendario:listado:ver` + `calendario.inc.php` year view marking mantenimiento dates. Revisiones CRUD already modern (9.33, table `mantenimientos`).
 

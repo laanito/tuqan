@@ -3630,6 +3630,22 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM horario_a
 
 **Branch status:** Stage 9.35 on `feat/stage-9.35-auditorias-horario`.
 
+## Stage 9.36 — Equipos calendario first slice
+
+**Goal:** Annual calendar shell for equipos maintenance dates (`mantenimientos` fecha_prevista / fecha_realiza); year + equipo filters; tipo color markers; year event list; nav from equipos/revisiones; demo patch 0046.
+
+**Validation:**
+```bash
+docker compose exec app ./scripts/init-db.sh
+docker compose exec app php -l Pages/Equipos/Calendario.php index.php
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM mantenimientos WHERE comentarios LIKE 'Calendario demo:%'; SELECT date_part('year', COALESCE(fecha_prevista, fecha_realiza)) AS y, COUNT(*) FROM mantenimientos GROUP BY 1 ORDER BY 1;"
+```
+
+**Browser:** `/admin/equipos/calendario`; change year; filter by equipo; click dots → revisiones edit; nav from listados.
+
+**Branch status:** Stage 9.36 on `feat/stage-9.36-equipos-calendario`.
+
 
 
 
