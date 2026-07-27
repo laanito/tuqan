@@ -457,6 +457,13 @@ $router->addRoute('GET', '/admin/auditorias/horario/editar/{id}', ['Tuqan\Pages\
 $router->addRoute('POST', '/admin/auditorias/horario/nuevo', ['Tuqan\Pages\Auditorias\Horario\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/auditorias/horario/editar/{id}', ['Tuqan\Pages\Auditorias\Horario\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
+// === Auditorías Informes (Stage 9.37 first slice) ===
+$router->addRoute('GET', '/admin/auditorias/informes/editar/{id}', ['Tuqan\Pages\Auditorias\Informe\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/auditorias/informes/editar/{id}', ['Tuqan\Pages\Auditorias\Informe\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/auditorias/informes/ver/{id}', ['Tuqan\Pages\Auditorias\Informe\Ficha', 'ShowPage'], ['before' => 'auth_company']);
+// Legacy menu-ish: auditorias:informeauditoria:formulario:editar
+$router->addRoute('GET', '/administracion/auditorias/informeauditoria/formulario/editar/{id}', ['Tuqan\Pages\Auditorias\Informe\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+
 // === Aspectos Ambientales (Stage 9.7 basic slice) ===
 $router->addRoute('GET', '/admin/aspectos', ['Tuqan\Pages\Aspectos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/aspectos/nuevo', ['Tuqan\Pages\Aspectos\Formulario', 'ShowPage'], ['before' => 'auth_company']);

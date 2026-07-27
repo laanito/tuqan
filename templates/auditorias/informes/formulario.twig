@@ -1,0 +1,117 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/auditorias/ejecucion" class="btn btn-default btn-sm">Ejecución</a>
+            {% if auditoria and auditoria.id %}
+            <a href="/admin/auditorias/ejecucion/editar/{{ auditoria.id }}" class="btn btn-default btn-sm">Editar auditoría</a>
+            <a href="/admin/auditorias/informes/ver/{{ auditoria.id }}" class="btn btn-info btn-sm">Ver ficha</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 820px;">
+    {% if not auditoria %}
+        <div class="alert alert-warning">Auditoría no encontrada. Abra el informe desde el listado de ejecución.</div>
+    {% else %}
+    <p class="text-muted" style="margin-top:0;">
+        Programa: <strong>{{ auditoria.programa_label ?? auditoria.programa ?? '—' }}</strong>
+        · Fecha plan: {{ auditoria.fecha ?? '—' }}
+        · ID {{ auditoria.id }}
+    </p>
+
+    <form method="POST" action="/admin/auditorias/informes/editar/{{ auditoria.id }}">
+        <input type="hidden" name="id" value="{{ auditoria.id }}">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="lugar_informe">Lugar del informe</label>
+                    <input type="text" class="form-control" id="lugar_informe" name="lugar_informe"
+                           value="{{ auditoria.lugar_informe ?? '' }}">
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="fecha_informe">Fecha informe</label>
+                    <input type="date" class="form-control" id="fecha_informe" name="fecha_informe"
+                           value="{{ auditoria.fecha_informe ?? '' }}">
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="fecha_realiza">Fecha realización</label>
+                    <input type="date" class="form-control" id="fecha_realiza" name="fecha_realiza"
+                           value="{{ auditoria.fecha_realiza ?? '' }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="conclusiones_informe">Conclusiones</label>
+            <textarea class="form-control" id="conclusiones_informe" name="conclusiones_informe" rows="5">{{ auditoria.conclusiones_informe ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="recomendaciones_informe">Recomendaciones</label>
+            <textarea class="form-control" id="recomendaciones_informe" name="recomendaciones_informe" rows="5">{{ auditoria.recomendaciones_informe ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group" style="margin-top: 16px;">
+            <button type="submit" class="btn btn-primary">Guardar informe</button>
+            <a href="/admin/auditorias/informes/ver/{{ auditoria.id }}" class="btn btn-default" style="margin-left:8px;">Cancelar / Ver ficha</a>
+        </div>
+    </form>
+
+    <div style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #eee;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h4 style="margin:0; font-size:16px;">Hallazgos vinculados ({{ hallazgos_relacionados|length }})</h4>
+            <a href="/admin/auditorias/hallazgos?auditoria={{ auditoria.id }}" class="btn btn-default btn-sm">Ver listado</a>
+        </div>
+        {% if hallazgos_relacionados is empty %}
+            <div class="alert alert-info" style="margin-bottom:0;">Sin hallazgos. Aparecerán en la ficha cuando existan.</div>
+        {% else %}
+            <ul class="list-group">
+                {% for h in hallazgos_relacionados %}
+                <li class="list-group-item">
+                    <a href="/admin/auditorias/hallazgos/editar/{{ h.id }}">#{{ h.id }}</a>
+                    — {{ h.descripcion }}
+                    <span class="text-muted">({{ h.tipo ?? '—' }}{% if h.cerrado %}, cerrado{% endif %})</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h4 style="margin:0; font-size:16px;">Acciones de mejora ({{ mejora_relacionadas|length }})</h4>
+            <a href="/admin/mejora?auditoria={{ auditoria.id }}" class="btn btn-default btn-sm">Ver listado</a>
+        </div>
+        {% if mejora_relacionadas is empty %}
+            <div class="alert alert-info" style="margin-bottom:0;">Sin acciones de mejora vinculadas.</div>
+        {% else %}
+            <ul class="list-group">
+                {% for m in mejora_relacionadas %}
+                <li class="list-group-item">
+                    <a href="/admin/mejora/editar/{{ m.id }}">#{{ m.id }}</a>
+                    — {{ m.descripcion }}
+                    <span class="label label-default">{{ m.estado }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+        Informe de auditoría (Stage 9.37). Ficha HTML imprimible; GenPDF deferred.
+    </div>
+</div>
+{% endblock %}
