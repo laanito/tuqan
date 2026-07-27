@@ -8,6 +8,10 @@
         <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
         <div>
             <a href="/admin/auditorias/ejecucion" class="btn btn-default btn-sm">Volver al listado</a>
+            {% if isEdit and auditoria.id %}
+            <a href="/admin/auditorias/informes/editar/{{ auditoria.id }}" class="btn btn-success btn-sm">Informe</a>
+            <a href="/admin/auditorias/informes/ver/{{ auditoria.id }}" class="btn btn-info btn-sm">Ver ficha</a>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -203,7 +207,8 @@
         {% endif %}
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Auditorías ejecución (9.19–9.35: Mejora, Hallazgos, Horario). Informes deferred.
+            Auditorías ejecución (9.19–9.37). Conclusiones y recomendaciones del informe en
+            <a href="{% if isEdit and auditoria.id %}/admin/auditorias/informes/editar/{{ auditoria.id }}{% else %}/admin/auditorias/ejecucion{% endif %}">Informe</a>.
         </div>
     </form>
 </div>

@@ -1,6 +1,6 @@
 # Stage 9.37 — Auditorías informes first slice
 
-**Status**: Planning (plan first)
+**Status**: Implemented (verify + PR)
 **Branch**: `feat/stage-9.37-auditorias-informes`
 **Driver**: Sized next after 9.36 (diversify from Equipos). Legacy `auditorias:informeauditoria` edits lugar/fecha/conclusiones/recomendaciones on `auditorias` and supports print. Modern ejecución already has lugar_informe + fecha_informe; conclusions/recommendations missing from 0031.
 

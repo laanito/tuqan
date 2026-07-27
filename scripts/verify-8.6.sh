@@ -152,6 +152,12 @@ SELECT COUNT(*) AS mantenimientos_current_year FROM mantenimientos
     OR (fecha_realiza IS NOT NULL AND date_part('year', fecha_realiza) = date_part('year', CURRENT_DATE));
 SELECT COUNT(*) AS calendario_demo_rows FROM mantenimientos WHERE comentarios LIKE 'Calendario demo:%';
 
+-- 9.37 Auditorías informes evidence
+SELECT '0047-auditorias-informes.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0047-auditorias-informes.sql';
+SELECT COUNT(*) AS auditorias_with_conclusiones FROM auditorias WHERE conclusiones_informe IS NOT NULL AND TRIM(conclusiones_informe) <> '';
+SELECT COUNT(*) AS auditorias_with_recomendaciones FROM auditorias WHERE recomendaciones_informe IS NOT NULL AND TRIM(recomendaciones_informe) <> '';
+SELECT id, lugar_informe, fecha_informe IS NOT NULL AS has_fecha FROM auditorias WHERE id = 1;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

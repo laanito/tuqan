@@ -1,0 +1,155 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<style>
+@media print {
+    .no-print, .page-header .btn, .sidebar, nav, .navbar { display: none !important; }
+    .ficha-print { box-shadow: none !important; border: none !important; }
+    body { background: #fff !important; }
+}
+.ficha-print { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 24px 28px; max-width: 900px; }
+.ficha-print h1 { margin-top: 0; font-size: 22px; }
+.ficha-print h2 { font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 6px; margin-top: 22px; }
+.ficha-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; font-size: 13px; margin-bottom: 8px; }
+.ficha-meta dt { font-weight: 600; color: #555; margin: 0; }
+.ficha-meta dd { margin: 0 0 6px 0; }
+.ficha-body { white-space: pre-wrap; font-size: 14px; line-height: 1.45; }
+</style>
+
+<div class="page-header no-print" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/auditorias/ejecucion" class="btn btn-default btn-sm">Ejecución</a>
+            <a href="/admin/auditorias/informes/editar/{{ auditoria.id }}" class="btn btn-default btn-sm">Editar informe</a>
+            <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">
+                <span class="glyphicon glyphicon-print"></span> Imprimir
+            </button>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    {% if flash_success %}
+        <div class="alert alert-success no-print">{{ flash_success }}</div>
+    {% endif %}
+
+    <div class="ficha-print">
+        <h1>Informe de Auditoría</h1>
+        <p style="color:#666;margin-top:-8px;">{{ auditoria.nombre }}</p>
+
+        <dl class="ficha-meta">
+            <div>
+                <dt>ID</dt>
+                <dd>{{ auditoria.id }}</dd>
+                <dt>Programa</dt>
+                <dd>{{ auditoria.programa_label ?? auditoria.programa ?? '—' }}</dd>
+                <dt>Tipo</dt>
+                <dd>{{ auditoria.interna_label ?? '—' }}</dd>
+                <dt>Fecha planificada</dt>
+                <dd>{{ auditoria.fecha ?? '—' }}</dd>
+            </div>
+            <div>
+                <dt>Fecha realización</dt>
+                <dd>{{ auditoria.fecha_realiza ?? '—' }}</dd>
+                <dt>Fecha informe</dt>
+                <dd>{{ auditoria.fecha_informe ?? '—' }}</dd>
+                <dt>Lugar</dt>
+                <dd>{{ auditoria.lugar_informe ?? '—' }}</dd>
+                <dt>Estado / activo</dt>
+                <dd>{{ auditoria.estado ?? 0 }} · {% if auditoria.activo %}Activo{% else %}Inactivo{% endif %}</dd>
+            </div>
+        </dl>
+
+        {% if auditoria.descripcion %}
+        <h2>Descripción</h2>
+        <div class="ficha-body">{{ auditoria.descripcion }}</div>
+        {% endif %}
+
+        {% if auditoria.alcance or auditoria.requisitos %}
+        <h2>Alcance y requisitos</h2>
+        {% if auditoria.alcance %}<p><strong>Alcance:</strong></p><div class="ficha-body">{{ auditoria.alcance }}</div>{% endif %}
+        {% if auditoria.requisitos %}<p><strong>Requisitos:</strong></p><div class="ficha-body">{{ auditoria.requisitos }}</div>{% endif %}
+        {% endif %}
+
+        <h2>Conclusiones</h2>
+        {% if auditoria.conclusiones_informe %}
+            <div class="ficha-body">{{ auditoria.conclusiones_informe }}</div>
+        {% else %}
+            <p class="text-muted"><em>Sin conclusiones registradas.</em></p>
+        {% endif %}
+
+        <h2>Recomendaciones</h2>
+        {% if auditoria.recomendaciones_informe %}
+            <div class="ficha-body">{{ auditoria.recomendaciones_informe }}</div>
+        {% else %}
+            <p class="text-muted"><em>Sin recomendaciones registradas.</em></p>
+        {% endif %}
+
+        {% if auditoria.observaciones %}
+        <h2>Observaciones</h2>
+        <div class="ficha-body">{{ auditoria.observaciones }}</div>
+        {% endif %}
+
+        <h2>Hallazgos ({{ hallazgos|length }})</h2>
+        {% if hallazgos is empty %}
+            <p class="text-muted">No hay hallazgos registrados.</p>
+        {% else %}
+            <table class="table table-condensed table-bordered" style="font-size:13px;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Tipo</th>
+                        <th>Cerrado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for h in hallazgos %}
+                    <tr>
+                        <td>{{ h.id }}</td>
+                        <td>{{ h.fecha ?? '—' }}</td>
+                        <td>{{ h.descripcion }}</td>
+                        <td>{{ h.tipo ?? '—' }}</td>
+                        <td>{% if h.cerrado %}Sí{% else %}No{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <h2>Acciones de mejora ({{ mejoras|length }})</h2>
+        {% if mejoras is empty %}
+            <p class="text-muted">No hay acciones de mejora vinculadas.</p>
+        {% else %}
+            <table class="table table-condensed table-bordered" style="font-size:13px;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in mejoras %}
+                    <tr>
+                        <td>{{ m.id }}</td>
+                        <td>{{ m.fecha ?? '—' }}</td>
+                        <td>{{ m.descripcion }}</td>
+                        <td>{{ m.estado }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <p class="text-muted" style="margin-top:28px;font-size:11px;">
+            Generado desde Tuqan · Stage 9.37 · Ficha HTML (GenPDF deferred)
+        </p>
+    </div>
+</div>
+{% endblock %}

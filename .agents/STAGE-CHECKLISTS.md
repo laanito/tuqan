@@ -3646,6 +3646,23 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM mantenimi
 
 **Branch status:** Stage 9.36 on `feat/stage-9.36-equipos-calendario`.
 
+## Stage 9.37 — Auditorías informes first slice
+
+**Goal:** Edit `conclusiones_informe` / `recomendaciones_informe` (+ lugar/fecha) on ejecución; printable HTML ficha with hallazgos + mejoras; links from ejecución list/form. Patch 0047.
+
+**Validation:**
+```bash
+docker compose exec app php -l Pages/Auditorias/Informe/Formulario.php Pages/Auditorias/Informe/Ficha.php index.php
+# apply 0047 if DB already initialized:
+docker compose exec -T db psql -U qnova -d qnova < docker/db-init/data-patches/0047-auditorias-informes.sql
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT id, lugar_informe, left(conclusiones_informe,40) FROM auditorias WHERE id=1;"
+```
+
+**Browser:** Ejecución → Informe → edit conclusions → save → ficha ver → Imprimir.
+
+**Branch status:** Stage 9.37 on `feat/stage-9.37-auditorias-informes`.
+
 
 
 
