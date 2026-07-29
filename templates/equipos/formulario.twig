@@ -64,6 +64,37 @@
             </div>
         </div>
 
+        <fieldset style="margin-top: 18px; padding-top: 12px; border-top: 1px solid #eee;">
+            <legend style="font-size: 14px; border:0; margin-bottom: 10px;">Plan de mantenimiento</legend>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="mantenimiento_cada">Mantenimiento cada</label>
+                        <input type="number" class="form-control" id="mantenimiento_cada" name="mantenimiento_cada"
+                               min="1" max="9999"
+                               value="{{ equipo.mantenimiento_cada ?? 90 }}">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Unidad</label>
+                        <div class="checkbox" style="margin-top: 8px;">
+                            <label>
+                                <input type="checkbox" name="dias" value="1"
+                                       {% if not isEdit or equipo.dias %}checked{% endif %}>
+                                En <strong>días</strong> (desmarcar = meses)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if isEdit and equipo.id %}
+            <p style="margin:0;">
+                <a href="/admin/equipos/plan/{{ equipo.id }}" class="btn btn-default btn-sm">Ver plan / programar preventivo</a>
+            </p>
+            {% endif %}
+        </fieldset>
+
         <div class="form-group" style="margin-top: 20px;">
             <button type="submit" class="btn btn-primary">
                 {{ isEdit ? 'Guardar cambios' : 'Crear Equipo' }}
@@ -72,7 +103,7 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Equipos (Stage 9.3). Los campos de mantenimiento (verificación interna, periodicidad, etc.) y los flujos de revisiones/calendario se añadirán en legs posteriores.
+            Equipos (9.3 + 9.38 plan). Periodicidad alimenta el cálculo de próximo preventivo en el plan.
         </div>
     </form>
 </div>

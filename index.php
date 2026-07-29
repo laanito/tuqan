@@ -354,6 +354,12 @@ $router->addRoute('GET', '/admin/equipos/calendario', ['Tuqan\Pages\Equipos\Cale
 // Legacy menu: equipos:calendario:listado:ver
 $router->addRoute('GET', '/administracion/equipos/calendario/listado/ver', ['Tuqan\Pages\Equipos\Calendario', 'ShowPage'], ['before' => 'auth_company']);
 
+// === Equipos Plan mantenimiento / auto-preventivo (Stage 9.38) ===
+$router->addRoute('GET', '/admin/equipos/plan/{id}', ['Tuqan\Pages\Equipos\Plan', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/equipos/plan/{id}/programar-preventivo', ['Tuqan\Pages\Equipos\Plan', 'ProgramarPreventivo'], ['before' => 'auth_company']);
+// Legacy: equipos:planmantenimiento:listado:ver:fila (id via query when used from modern nav)
+$router->addRoute('GET', '/administracion/equipos/planmantenimiento/listado/ver/{id}', ['Tuqan\Pages\Equipos\Plan', 'ShowPage'], ['before' => 'auth_company']);
+
 // === Mejora / Acciones de Mejora (Stage 9.4) ===
 $router->addRoute('GET', '/admin/mejora', ['Tuqan\Pages\Mejora\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/admin/mejora/nuevo', ['Tuqan\Pages\Mejora\Formulario', 'ShowPage'], ['before' => 'auth_company']);

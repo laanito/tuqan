@@ -51,20 +51,24 @@ class Formulario extends CatalogFormulario
             );
 
             $db->consultaPreparada(
-                "SELECT id, numero, descripcion, numero_serie, modelo, fabricante, ubicacion, activo FROM {$this->table} WHERE id = ?",
+                "SELECT id, numero, descripcion, numero_serie, modelo, fabricante, ubicacion, activo, mantenimiento_cada, dias FROM {$this->table} WHERE id = ?",
                 [$id]
             );
             $row = $db->coger_Fila();
             if ($row) {
+                $dias = $row[9] ?? false;
+                $isDays = ($dias === true || $dias === 't' || $dias === '1' || $dias === 1);
                 $item = [
-                    'id'            => $row[0],
-                    'numero'        => $row[1],
-                    'descripcion'   => $row[2],
-                    'numero_serie'  => $row[3] ?? null,
-                    'modelo'        => $row[4] ?? null,
-                    'fabricante'    => $row[5] ?? null,
-                    'ubicacion'     => $row[6] ?? null,
-                    'activo'        => $row[7],
+                    'id'                 => $row[0],
+                    'numero'             => $row[1],
+                    'descripcion'        => $row[2],
+                    'numero_serie'       => $row[3] ?? null,
+                    'modelo'             => $row[4] ?? null,
+                    'fabricante'         => $row[5] ?? null,
+                    'ubicacion'          => $row[6] ?? null,
+                    'activo'             => $row[7],
+                    'mantenimiento_cada' => $row[8] ?? 90,
+                    'dias'               => $isDays,
                 ];
             }
             $db->desconexion();
@@ -111,6 +115,15 @@ class Formulario extends CatalogFormulario
         $fabricante    = trim($_POST['fabricante'] ?? '');
         $ubicacion     = trim($_POST['ubicacion'] ?? '');
         $activo        = !empty($_POST['activo']) ? 1 : 0;
+        // 9.38: plan interval (legacy mantenimiento_cada + dias)
+        $mantenimiento_cada = isset($_POST['mantenimiento_cada']) ? (int)$_POST['mantenimiento_cada'] : 90;
+        if ($mantenimiento_cada < 1) {
+            $mantenimiento_cada = 1;
+        }
+        if ($mantenimiento_cada > 9999) {
+            $mantenimiento_cada = 9999;
+        }
+        $dias = !empty($_POST['dias']) ? 1 : 0; // 1 = días, 0 = meses
 
         $errors = [];
         if ($numero === '') {
@@ -143,15 +156,14 @@ class Formulario extends CatalogFormulario
 
         if ($id > 0) {
             $db->consultaPreparada(
-                "UPDATE {$this->table} SET numero = ?, descripcion = ?, numero_serie = ?, modelo = ?, fabricante = ?, ubicacion = ?, activo = ? WHERE id = ?",
-                [$numero, $descripcion, $numero_serie, $modelo, $fabricante, $ubicacion, $activo, $id]
+                "UPDATE {$this->table} SET numero = ?, descripcion = ?, numero_serie = ?, modelo = ?, fabricante = ?, ubicacion = ?, activo = ?, mantenimiento_cada = ?, dias = ? WHERE id = ?",
+                [$numero, $descripcion, $numero_serie, $modelo, $fabricante, $ubicacion, $activo, $mantenimiento_cada, $dias, $id]
             );
             $msg = "{$this->title} actualizado correctamente.";
         } else {
-            // Supply defaults for maintenance columns not exposed in this first-slice form
             $db->consultaPreparada(
-                "INSERT INTO {$this->table} (numero, descripcion, numero_serie, modelo, fabricante, ubicacion, ver_interna, mantenimiento_cada, dias, activo) VALUES (?, ?, ?, ?, ?, ?, false, 90, false, ?)",
-                [$numero, $descripcion, $numero_serie, $modelo, $fabricante, $ubicacion, $activo]
+                "INSERT INTO {$this->table} (numero, descripcion, numero_serie, modelo, fabricante, ubicacion, ver_interna, mantenimiento_cada, dias, activo) VALUES (?, ?, ?, ?, ?, ?, false, ?, ?, ?)",
+                [$numero, $descripcion, $numero_serie, $modelo, $fabricante, $ubicacion, $mantenimiento_cada, $dias, $activo]
             );
             $msg = "{$this->title} creado correctamente.";
         }
