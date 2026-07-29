@@ -1,6 +1,6 @@
 # Stage 9.39 — Documentación content / binario first slice
 
-**Status**: Planning (plan first)
+**Status**: Implemented (verify + PR)
 **Branch**: `feat/stage-9.39-documentacion-binario`
 **Driver**: Sized next after 9.38. Text content exists (9.26); legacy `contenido_binario` + `tipos_fichero` + muestrabinario not modernized. Tables missing from minimal DB.
 

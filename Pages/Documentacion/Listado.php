@@ -64,9 +64,27 @@ class Listado extends CatalogListado
             $item['aprobado_por_label'] = $this->getRelatedLabel('usuarios', $item['aprobado_por'] ?? null);
             $item['estado_label'] = EstadoHelper::label($item['estado'] ?? null);
             $item['estado_badge'] = EstadoHelper::badgeClass($item['estado'] ?? null);
+            $item['has_binario'] = $this->hasBinario((int)$item['id']);
         }
         unset($item);
         return $items;
+    }
+
+    // 9.39: presence of contenido_binario row
+    protected function hasBinario(int $docId): bool
+    {
+        if ($docId <= 0) {
+            return false;
+        }
+        try {
+            $db = $this->getDb();
+            $db->consultaPreparada('SELECT 1 FROM contenido_binario WHERE id = ?', [$docId]);
+            $row = $db->coger_Fila();
+            $db->desconexion();
+            return (bool)$row;
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 
     protected function buildListVariables(array $items): array

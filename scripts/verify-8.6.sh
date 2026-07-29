@@ -164,6 +164,15 @@ SELECT id, mantenimiento_cada, dias FROM equipos WHERE id IN (1, 2) ORDER BY id;
 SELECT COUNT(*) AS preventivos_equipo1 FROM mantenimientos WHERE equipo = 1 AND tipo = 'preventivo';
 SELECT COUNT(*) AS plan_demo_rows FROM mantenimientos WHERE comentarios LIKE 'Plan demo:%';
 
+-- 9.39 Documentación binario evidence
+SELECT '0049-documentacion-binario.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0049-documentacion-binario.sql';
+SELECT COUNT(*) AS tipos_fichero_rows FROM tipos_fichero;
+SELECT COUNT(*) AS contenido_binario_rows FROM contenido_binario;
+SELECT cb.id, cb.nombre_archivo, cb.size, tf.extension
+  FROM contenido_binario cb
+  LEFT JOIN tipos_fichero tf ON tf.id = cb.tipo_fichero
+ ORDER BY cb.id LIMIT 5;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

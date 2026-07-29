@@ -3679,6 +3679,22 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT id, mantenimiento_cada,
 
 **Branch status:** Stage 9.38 on `feat/stage-9.38-equipos-plan-preventivo`.
 
+## Stage 9.39 — Documentación content / binario first slice
+
+**Goal:** `tipos_fichero` + `contenido_binario` (BYTEA); form multipart upload; download + delete; list adjunto flag. Demo patch 0049.
+
+**Validation:**
+```bash
+docker compose exec app php -l Pages/Documentacion/Formulario.php Pages/Documentacion/Binario.php Pages/Documentacion/Listado.php index.php
+docker compose exec -T db psql -U qnova -d qnova < docker/db-init/data-patches/0049-documentacion-binario.sql
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM tipos_fichero; SELECT id, nombre_archivo, size FROM contenido_binario;"
+```
+
+**Browser:** `/admin/documentacion` → binario badge on doc 1 → Descargar; edit → replace/remove file.
+
+**Branch status:** Stage 9.39 on `feat/stage-9.39-documentacion-binario`.
+
 
 
 
