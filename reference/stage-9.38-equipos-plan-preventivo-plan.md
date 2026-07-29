@@ -1,6 +1,6 @@
 # Stage 9.38 — Equipos plan mantenimiento / auto-preventivo first slice
 
-**Status**: Planning (plan first)
+**Status**: Implemented (verify + PR)
 **Branch**: `feat/stage-9.38-equipos-plan-preventivo`
 **Driver**: Sized next after 9.37. Legacy plan mantenimiento shows equipo maintenance history and offers Mant. Preventivo (next date from `mantenimiento_cada` + `dias`) / Correctivo. Modern has revisiones + calendario; interval fields not on form; no "program next preventivo".
 

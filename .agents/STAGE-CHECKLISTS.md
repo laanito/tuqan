@@ -3663,6 +3663,22 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT id, lugar_informe, left
 
 **Branch status:** Stage 9.37 on `feat/stage-9.37-auditorias-informes`.
 
+## Stage 9.38 — Equipos plan mantenimiento / auto-preventivo
+
+**Goal:** Edit `mantenimiento_cada` + días/meses on equipo form; plan page shows next due + history; POST programar preventivo inserts `mantenimientos` row. Patch 0048 demo.
+
+**Validation:**
+```bash
+docker compose exec app php -l Pages/Equipos/Plan.php Pages/Equipos/Formulario.php index.php
+docker compose exec -T db psql -U qnova -d qnova < docker/db-init/data-patches/0048-equipos-plan-preventivo.sql
+docker compose exec app ./scripts/verify-8.6.sh
+docker compose exec db psql -U qnova -d qnova -c "SELECT id, mantenimiento_cada, dias FROM equipos WHERE id IN (1,2);"
+```
+
+**Browser:** `/admin/equipos` → Plan → check next due → Programar preventivo → appears in historial + calendario.
+
+**Branch status:** Stage 9.38 on `feat/stage-9.38-equipos-plan-preventivo`.
+
 
 
 

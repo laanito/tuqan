@@ -158,6 +158,12 @@ SELECT COUNT(*) AS auditorias_with_conclusiones FROM auditorias WHERE conclusion
 SELECT COUNT(*) AS auditorias_with_recomendaciones FROM auditorias WHERE recomendaciones_informe IS NOT NULL AND TRIM(recomendaciones_informe) <> '';
 SELECT id, lugar_informe, fecha_informe IS NOT NULL AS has_fecha FROM auditorias WHERE id = 1;
 
+-- 9.38 Equipos plan preventivo evidence
+SELECT '0048-equipos-plan-preventivo.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0048-equipos-plan-preventivo.sql';
+SELECT id, mantenimiento_cada, dias FROM equipos WHERE id IN (1, 2) ORDER BY id;
+SELECT COUNT(*) AS preventivos_equipo1 FROM mantenimientos WHERE equipo = 1 AND tipo = 'preventivo';
+SELECT COUNT(*) AS plan_demo_rows FROM mantenimientos WHERE comentarios LIKE 'Plan demo:%';
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

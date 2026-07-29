@@ -8,6 +8,9 @@
         <h2 style="margin: 0; font-size: 20px;">Revisiones de Equipos</h2>
         <div>
             <a href="/admin/equipos" class="btn btn-default btn-sm">Equipos</a>
+            {% if filter_equipo %}
+            <a href="/admin/equipos/plan/{{ filter_equipo }}" class="btn btn-default btn-sm">Plan</a>
+            {% endif %}
             <a href="/admin/equipos/calendario{% if filter_equipo %}?equipo={{ filter_equipo }}{% endif %}" class="btn btn-default btn-sm">Calendario</a>
             <a href="/admin/equipos/revisiones/nuevo{% if filter_equipo %}?equipo={{ filter_equipo }}{% endif %}" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nueva Revisión

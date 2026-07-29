@@ -9,6 +9,7 @@
         <div>
             <a href="/admin/equipos/revisiones" class="btn btn-default btn-sm">Revisiones</a>
             <a href="/admin/equipos/calendario" class="btn btn-default btn-sm">Calendario</a>
+
             <a href="/admin/equipos/nuevo" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nuevo Equipo
             </a>
@@ -52,6 +53,7 @@
                         <td>{% if e.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
                         <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/equipos/editar/{{ e.id }}" class="btn btn-xs btn-default">Editar</a>
+                            <a href="/admin/equipos/plan/{{ e.id }}" class="btn btn-xs btn-success" title="Plan de mantenimiento">Plan</a>
                             <a href="/admin/equipos/revisiones/nuevo?equipo={{ e.id }}" class="btn btn-xs btn-primary" title="Nueva revisión">+ Revisión</a>
                         </td>
                     </tr>
@@ -61,7 +63,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Equipos (9.3 + 9.33 revisiones + 9.36 calendario). Auto-plan preventivo deferred.
+        Equipos (9.3 + 9.33 revisiones + 9.36 calendario + 9.38 plan preventivo).
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,115 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/equipos" class="btn btn-default btn-sm">Equipos</a>
+            <a href="/admin/equipos/editar/{{ equipo.id }}" class="btn btn-default btn-sm">Editar equipo</a>
+            <a href="/admin/equipos/calendario?equipo={{ equipo.id }}" class="btn btn-default btn-sm">Calendario</a>
+            <a href="/admin/equipos/revisiones?equipo={{ equipo.id }}" class="btn btn-default btn-sm">Revisiones</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 960px;">
+    {% if flash_success %}
+        <div class="alert alert-success">{{ flash_success }}</div>
+    {% endif %}
+    {% if flash_error %}
+        <div class="alert alert-danger">{{ flash_error }}</div>
+    {% endif %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><strong>Periodicidad</strong></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p style="margin:0 0 6px;">
+                        <span class="text-muted">Equipo:</span>
+                        <strong>{{ equipo.numero }}</strong> — {{ equipo.descripcion }}
+                    </p>
+                    <p style="margin:0 0 6px;">
+                        <span class="text-muted">Ubicación / modelo:</span>
+                        {{ equipo.ubicacion ?? '—' }} · {{ equipo.modelo ?? '—' }}
+                    </p>
+                    <p style="margin:0;">
+                        <span class="text-muted">Estado:</span>
+                        {% if equipo.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p style="margin:0 0 6px;">
+                        <span class="text-muted">Mantenimiento cada:</span>
+                        <strong>{{ equipo.mantenimiento_cada }} {{ equipo.dias_label }}</strong>
+                        <a href="/admin/equipos/editar/{{ equipo.id }}" class="btn btn-link btn-xs">cambiar</a>
+                    </p>
+                    <p style="margin:0 0 6px;">
+                        <span class="text-muted">Último preventivo realizado:</span>
+                        {{ due.last_preventivo ?? '—' }}
+                    </p>
+                    <p style="margin:0;">
+                        <span class="text-muted">Próximo preventivo (calc.):</span>
+                        <strong class="text-primary">{{ due.next_due }}</strong>
+                        <span class="text-muted" style="font-size:12px;">(desde {{ due.base_label }})</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+            <form method="POST" action="/admin/equipos/plan/{{ equipo.id }}/programar-preventivo" style="display:inline;margin:0;">
+                <input type="hidden" name="id" value="{{ equipo.id }}">
+                <button type="submit" class="btn btn-primary btn-sm"
+                        onclick="return confirm('¿Programar preventivo para {{ due.next_due }}?');">
+                    Programar preventivo ({{ due.next_due }})
+                </button>
+            </form>
+            <a href="/admin/equipos/revisiones/nuevo?equipo={{ equipo.id }}" class="btn btn-warning btn-sm">
+                + Correctivo / revisión manual
+            </a>
+        </div>
+    </div>
+
+    <h3 style="font-size:16px;margin-top:24px;">Historial de mantenimientos</h3>
+    {% if historial is empty %}
+        <div class="alert alert-info">No hay registros de mantenimiento para este equipo.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Prevista</th>
+                        <th>Realizada</th>
+                        <th>Comentarios</th>
+                        <th style="width:90px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in historial %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>{{ r.tipo_label ?? r.tipo ?? '—' }}</td>
+                        <td>{{ r.fecha_prevista ?? '—' }}</td>
+                        <td>{{ r.fecha_realiza ?? '—' }}</td>
+                        <td>{{ r.comentarios }}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/equipos/revisiones/editar/{{ r.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Plan de mantenimiento (Stage 9.38). Intervalo = <code>mantenimiento_cada</code> + unidad días/meses.
+        Programar preventivo crea una fila en <code>mantenimientos</code>. Recordatorios masivos / ICS deferred.
+    </div>
+</div>
+{% endblock %}
