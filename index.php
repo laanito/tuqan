@@ -421,6 +421,10 @@ $router->addRoute('POST', '/admin/documentacion/enviar-revision/{id}', ['Tuqan\P
 $router->addRoute('POST', '/admin/documentacion/revisar/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'Revisar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/documentacion/aprobar/{id}', ['Tuqan\Pages\Documentacion\Formulario', 'Aprobar'], ['before' => 'auth_company']);
 
+// Binary attachment download / delete (Stage 9.39)
+$router->addRoute('GET', '/admin/documentacion/binario/{id}', ['Tuqan\Pages\Documentacion\Binario', 'Descargar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/documentacion/binario/{id}/eliminar', ['Tuqan\Pages\Documentacion\Binario', 'Eliminar'], ['before' => 'auth_company']);
+
 // Key legacy for Documentación (vigor / borradores + general)
 $router->addRoute('GET', '/administracion/documentacion/docvigor/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);
 $router->addRoute('GET', '/administracion/documentacion/docborrador/listado/ver', ['Tuqan\Pages\Documentacion\Listado', 'ShowPage'], ['before' => 'auth_company']);

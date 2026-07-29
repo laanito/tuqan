@@ -12,8 +12,9 @@
     </div>
 </div>
 
-<div style="padding: 20px; max-width: 700px;">
-    <form method="POST" action="{{ isEdit ? '/admin/documentacion/editar/' ~ documento.id : '/admin/documentacion/nuevo' }}">
+<div style="padding: 20px; max-width: 780px;">
+    <form method="POST" action="{{ isEdit ? '/admin/documentacion/editar/' ~ documento.id : '/admin/documentacion/nuevo' }}"
+          enctype="multipart/form-data">
         {% if isEdit %}
             <input type="hidden" name="id" value="{{ documento.id }}">
         {% endif %}
@@ -32,8 +33,38 @@
 
         <div class="form-group">
             <label for="contenido">Contenido (texto)</label>
-            <textarea class="form-control" id="contenido" name="contenido" rows="8">{{ documento.contenido ?? '' }}</textarea>
+            <textarea class="form-control" id="contenido" name="contenido" rows="12"
+                      style="font-family: Menlo, Monaco, Consolas, monospace; font-size: 13px;">{{ documento.contenido ?? '' }}</textarea>
+            <p class="help-block" style="margin-bottom:0;">
+                {{ documento.contenido_len ?? 0 }} caracteres · texto en <code>contenido_texto</code>
+            </p>
         </div>
+
+        <fieldset style="margin: 18px 0; padding-top: 12px; border-top: 1px solid #eee;">
+            <legend style="font-size: 14px; border:0; margin-bottom: 10px;">Adjunto binario</legend>
+            {% if isEdit and documento.has_binario and documento.binario %}
+                <div class="alert alert-success" style="padding:10px 12px;">
+                    <strong>{{ documento.binario.nombre_archivo ?? 'Adjunto' }}</strong>
+                    · {{ documento.binario.tipo_nombre ?? 'archivo' }}
+                    {% if documento.binario.extension %}(.{{ documento.binario.extension }}){% endif %}
+                    · {{ documento.binario.size_label }}
+                    · <a href="/admin/documentacion/binario/{{ documento.id }}">Descargar</a>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <button type="submit" form="form-eliminar-binario" class="btn btn-danger btn-xs"
+                            onclick="return confirm('¿Eliminar el adjunto?');">Eliminar adjunto</button>
+                </div>
+            {% elseif isEdit %}
+                <p class="text-muted">Sin adjunto binario todavía.</p>
+            {% else %}
+                <p class="text-muted">Puede adjuntar un archivo al crear el documento (máx. {{ max_upload_mb }} MB).</p>
+            {% endif %}
+            <div class="form-group" style="margin-bottom:0;">
+                <label for="archivo">{% if isEdit and documento.has_binario %}Reemplazar archivo{% else %}Subir archivo{% endif %}</label>
+                <input type="file" class="form-control" id="archivo" name="archivo">
+                <p class="help-block" style="margin-bottom:0;">PDF, TXT, PNG, JPG, DOCX u otros · máx. {{ max_upload_mb }} MB · tabla <code>contenido_binario</code></p>
+            </div>
+        </fieldset>
 
         {% if isEdit and documento.estado is not null %}
         <div class="form-group">
@@ -199,8 +230,12 @@
         </div>
 
         <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Documentación (9.5–9.31 + 9.34). Workflow: enviar a revisión / revisar / aprobar. Rich editor deferred.
+            Documentación (9.5–9.39). Texto + adjunto binario. WYSIWYG / GenPDF / large objects deferred.
         </div>
     </form>
+
+    {% if isEdit and documento.id and documento.has_binario %}
+    <form id="form-eliminar-binario" method="POST" action="/admin/documentacion/binario/{{ documento.id }}/eliminar" style="display:none;"></form>
+    {% endif %}
 </div>
 {% endblock %}

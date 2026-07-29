@@ -58,10 +58,11 @@
                         <th>Nombre</th>
                         <th>Código</th>
                         <th>Estado</th>
+                        <th>Adjunto</th>
                         <th>Revisado por</th>
                         <th>Aprobado por</th>
                         <th>Activo</th>
-                        <th style="width:260px;text-align:right;">Acciones</th>
+                        <th style="width:280px;text-align:right;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,11 +74,21 @@
                         <td>
                             <span class="label {{ d.estado_badge|default('label-default') }}">{{ d.estado_label ?? (d.estado ?? '—') }}</span>
                         </td>
+                        <td>
+                            {% if d.has_binario %}
+                                <a href="/admin/documentacion/binario/{{ d.id }}" class="label label-info" title="Descargar adjunto">binario</a>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
                         <td>{{ d.revisado_por_label ?? (d.revisado_por ?? '-') }}</td>
                         <td>{{ d.aprobado_por_label ?? (d.aprobado_por ?? '-') }}</td>
                         <td>{% if d.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
                         <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/documentacion/editar/{{ d.id }}" class="btn btn-xs btn-default">Editar</a>
+                            {% if d.has_binario %}
+                            <a href="/admin/documentacion/binario/{{ d.id }}" class="btn btn-xs btn-info">Descargar</a>
+                            {% endif %}
                             {% if d.estado is null or d.estado == 2 %}
                                 <form method="POST" action="/admin/documentacion/enviar-revision/{{ d.id }}" style="display:inline;margin-left:2px;">
                                     <button type="submit" class="btn btn-xs btn-warning" title="Estado → Pend. revisión">A revisión</button>
@@ -101,7 +112,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Documentación (9.5–9.31 + 9.34 workflow: A revisión / Revisar / Aprobar). Rich editor deferred.
+        Documentación (9.5–9.39: workflow + texto + adjunto binario). WYSIWYG / GenPDF deferred.
     </div>
 </div>
 {% endblock %}
