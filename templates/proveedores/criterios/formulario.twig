@@ -1,0 +1,49 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}{{ pageTitle }} - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
+        <div>
+            <a href="/admin/proveedores/criterios" class="btn btn-default btn-sm">Volver</a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px; max-width: 560px;">
+    <form method="POST" action="{{ isEdit ? '/admin/proveedores/criterios/editar/' ~ criterio.id : '/admin/proveedores/criterios/nuevo' }}">
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ criterio.id }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre"
+                   value="{{ criterio.nombre ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="valor">Valor (puntos)</label>
+            <input type="number" class="form-control" id="valor" name="valor"
+                   value="{{ criterio.valor ?? 0 }}" min="0">
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="activo" value="1"
+                           {% if not isEdit or criterio.activo %}checked{% endif %}>
+                    Activo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">{{ isEdit ? 'Guardar' : 'Crear' }}</button>
+            <a href="/admin/proveedores/criterios" class="btn btn-default" style="margin-left:8px;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

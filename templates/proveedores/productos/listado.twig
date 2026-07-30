@@ -1,0 +1,80 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}Productos de Proveedores - Tuqan{% endblock %}
+
+{% block content %}
+<div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <h2 style="margin: 0; font-size: 20px;">Productos de Proveedores</h2>
+        <div>
+            <a href="/admin/proveedores" class="btn btn-default btn-sm">Proveedores</a>
+            <a href="/admin/proveedores/criterios" class="btn btn-default btn-sm">Criterios</a>
+            <a href="/admin/proveedores/productos/nuevo{% if filter_proveedor %}?proveedor={{ filter_proveedor }}{% endif %}" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span> Nuevo Producto
+            </a>
+        </div>
+    </div>
+</div>
+
+<div style="padding: 20px;">
+    <form method="GET" action="/admin/proveedores/productos" class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group" style="margin-right: 8px;">
+            <label for="proveedor" style="margin-right: 6px;">Proveedor</label>
+            <select class="form-control input-sm" id="proveedor" name="proveedor">
+                <option value="">-- Todos --</option>
+                {% for p in proveedor_options %}
+                    <option value="{{ p.id }}" {% if filter_proveedor == p.id %}selected{% endif %}>{{ p.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default btn-sm">Filtrar</button>
+        {% if filter_proveedor %}
+            <a href="/admin/proveedores/productos" class="btn btn-link btn-sm">Quitar filtro</a>
+        {% endif %}
+    </form>
+
+    {% if producto is empty %}
+        <div class="alert alert-info">No hay productos{% if filter_proveedor %} para este proveedor{% endif %}.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Proveedor</th>
+                        <th>Umbral</th>
+                        <th>Homologado</th>
+                        <th>Revisión</th>
+                        <th>Activo</th>
+                        <th style="width:100px;text-align:right;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in producto %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td><strong>{{ r.nombre }}</strong></td>
+                        <td>
+                            {% if r.proveedor %}
+                                <a href="/admin/proveedores/editar/{{ r.proveedor }}">{{ r.proveedor_label ?? r.proveedor }}</a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>{{ r.valor ?? 0 }}</td>
+                        <td>{% if r.homologado %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
+                        <td>{{ r.fecha_revision ?? '—' }}</td>
+                        <td>{% if r.activo %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
+                        <td style="text-align:right;">
+                            <a href="/admin/proveedores/productos/editar/{{ r.id }}" class="btn btn-xs btn-default">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
+        Productos (Stage 9.40). Umbral/valor listo para scoring multi-criterio (deferred).
+    </div>
+</div>
+{% endblock %}

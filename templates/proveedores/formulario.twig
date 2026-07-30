@@ -4,15 +4,21 @@
 
 {% block content %}
 <div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <h2 style="margin: 0; font-size: 20px;">{{ pageTitle }}</h2>
         <div>
             <a href="/admin/proveedores" class="btn btn-default btn-sm">Volver al listado</a>
+            {% if isEdit and proveedor.id %}
+            <a href="/admin/proveedores/productos?proveedor={{ proveedor.id }}" class="btn btn-default btn-sm">Productos</a>
+            {% endif %}
         </div>
     </div>
 </div>
 
-<div style="padding: 20px; max-width: 600px;">
+<div style="padding: 20px; max-width: 720px;">
+    {% if flash_success %}<div class="alert alert-success">{{ flash_success }}</div>{% endif %}
+    {% if flash_error %}<div class="alert alert-danger">{{ flash_error }}</div>{% endif %}
+
     <form method="POST" action="{{ isEdit ? '/admin/proveedores/editar/' ~ proveedor.id : '/admin/proveedores/nuevo' }}">
         {% if isEdit %}
             <input type="hidden" name="id" value="{{ proveedor.id }}">
@@ -24,11 +30,69 @@
                    value="{{ proveedor.nombre ?? '' }}" required>
         </div>
 
-        <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" name="telefono"
-                   value="{{ proveedor.telefono ?? '' }}">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" class="form-control" id="telefono" name="telefono"
+                           value="{{ proveedor.telefono ?? '' }}">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="cif">CIF</label>
+                    <input type="text" class="form-control" id="cif" name="cif"
+                           value="{{ proveedor.cif ?? '' }}">
+                </div>
+            </div>
         </div>
+
+        <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion"
+                   value="{{ proveedor.direccion ?? '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="web">Web</label>
+            <input type="text" class="form-control" id="web" name="web"
+                   value="{{ proveedor.web ?? '' }}">
+        </div>
+
+        <fieldset style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee;">
+            <legend style="font-size: 14px; border:0; margin-bottom: 10px;">Homologación</legend>
+            {% if isEdit %}
+            <p>
+                Estado:
+                <span class="label {{ proveedor.homologacion_badge|default('label-default') }}">
+                    {{ proveedor.homologacion_label ?? '—' }}
+                </span>
+            </p>
+            {% endif %}
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="fecha_homologacion">Fecha homologación</label>
+                        <input type="date" class="form-control" id="fecha_homologacion" name="fecha_homologacion"
+                               value="{{ proveedor.fecha_homologacion ?? '' }}">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="ultima_revision">Última revisión</label>
+                        <input type="date" class="form-control" id="ultima_revision" name="ultima_revision"
+                               value="{{ proveedor.ultima_revision ?? '' }}">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="fecha_deshomologacion">Fecha deshomologación</label>
+                        <input type="date" class="form-control" id="fecha_deshomologacion" name="fecha_deshomologacion"
+                               value="{{ proveedor.fecha_deshomologacion ?? '' }}">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
 
         <div class="form-group">
             <div class="checkbox">
@@ -45,11 +109,49 @@
                 {{ isEdit ? 'Guardar cambios' : 'Crear Proveedor' }}
             </button>
             <a href="/admin/proveedores" class="btn btn-default" style="margin-left: 8px;">Cancelar</a>
-        </div>
-
-        <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
-            Proveedores (Stage 9.2). Sub-entidades (contactos, incidencias, productos) en legs posteriores.
+            {% if isEdit and proveedor.id %}
+                {% if not proveedor.homologado %}
+                <button type="submit" formaction="/admin/proveedores/homologar/{{ proveedor.id }}" class="btn btn-success" style="margin-left:8px;">Homologar ahora</button>
+                {% else %}
+                <button type="submit" formaction="/admin/proveedores/deshomologar/{{ proveedor.id }}" class="btn btn-warning" style="margin-left:8px;"
+                        onclick="return confirm('¿Deshomologar?');">Deshomologar</button>
+                {% endif %}
+            {% endif %}
         </div>
     </form>
+
+    {% if isEdit and proveedor.id %}
+    <div style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #eee;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h4 style="margin:0; font-size:16px;">Productos ({{ productos_relacionados|length }})</h4>
+            <div>
+                <a href="/admin/proveedores/productos?proveedor={{ proveedor.id }}" class="btn btn-default btn-sm">Ver listado</a>
+                <a href="/admin/proveedores/productos/nuevo?proveedor={{ proveedor.id }}" class="btn btn-primary btn-sm">Nuevo producto</a>
+            </div>
+        </div>
+        {% if productos_relacionados is empty %}
+            <div class="alert alert-info" style="margin-bottom:0;">Sin productos. Puede dar de alta productos homologados o pendientes.</div>
+        {% else %}
+            <table class="table table-condensed table-striped">
+                <thead><tr><th>ID</th><th>Nombre</th><th>Umbral</th><th>Homologado</th><th></th></tr></thead>
+                <tbody>
+                {% for pr in productos_relacionados %}
+                    <tr>
+                        <td>{{ pr.id }}</td>
+                        <td>{{ pr.nombre }}</td>
+                        <td>{{ pr.valor }}</td>
+                        <td>{% if pr.homologado %}<span class="label label-success">Sí</span>{% else %}<span class="label label-default">No</span>{% endif %}</td>
+                        <td style="text-align:right;"><a href="/admin/proveedores/productos/editar/{{ pr.id }}" class="btn btn-xs btn-default">Editar</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="alert alert-info" style="margin-top: 20px; font-size: 13px;">
+        Proveedores homologación (Stage 9.40). Scoring multi-criterio sobre productos deferred.
+    </div>
 </div>
 {% endblock %}

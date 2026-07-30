@@ -1,6 +1,6 @@
 # Stage 9.40 — Proveedores homologación first slice
 
-**Status**: Planning (plan first)
+**Status**: Implemented (verify + PR)
 **Branch**: `feat/stage-9.40-proveedores-homologacion`
 **Driver**: Sized next after 9.39. Proveedores shell is nombre/telefono only (9.2). Legacy has fecha_homologacion/deshomologacion, productos.homologado, criterios_homologacion.
 

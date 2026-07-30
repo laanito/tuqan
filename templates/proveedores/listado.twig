@@ -4,9 +4,11 @@
 
 {% block content %}
 <div class="page-header" style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #fff;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
         <h2 style="margin: 0; font-size: 20px;">Proveedores</h2>
         <div>
+            <a href="/admin/proveedores/productos" class="btn btn-default btn-sm">Productos</a>
+            <a href="/admin/proveedores/criterios" class="btn btn-default btn-sm">Criterios</a>
             <a href="/admin/proveedores/nuevo" class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-plus"></span> Nuevo Proveedor
             </a>
@@ -15,13 +17,24 @@
 </div>
 
 <div style="padding: 20px;">
+    {% if flashSuccess %}
+        <div class="alert alert-success">{{ flashSuccess }}</div>
+    {% endif %}
     {% if proveedores is empty %}
         <div class="alert alert-info">No hay proveedores registrados.</div>
     {% else %}
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
-                    <tr><th>ID</th><th>Nombre</th><th>Teléfono</th><th>Estado</th><th style="width:140px;text-align:right;">Acciones</th></tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Homologación</th>
+                        <th>Productos</th>
+                        <th>Activo</th>
+                        <th style="width:280px;text-align:right;">Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for p in proveedores %}
@@ -29,9 +42,31 @@
                         <td>{{ p.id }}</td>
                         <td><strong>{{ p.nombre }}</strong></td>
                         <td>{{ p.telefono ?? '-' }}</td>
+                        <td>
+                            <span class="label {{ p.homologacion_badge|default('label-default') }}">{{ p.homologacion_label ?? '—' }}</span>
+                            {% if p.fecha_homologacion %}<div class="text-muted" style="font-size:11px;">desde {{ p.fecha_homologacion }}</div>{% endif %}
+                        </td>
+                        <td>
+                            {% if p.producto_count > 0 %}
+                                <a href="/admin/proveedores/productos?proveedor={{ p.id }}">{{ p.producto_count }}</a>
+                            {% else %}
+                                <span class="text-muted">0</span>
+                            {% endif %}
+                        </td>
                         <td>{% if p.activo %}<span class="label label-success">Activo</span>{% else %}<span class="label label-default">Inactivo</span>{% endif %}</td>
-                        <td style="text-align:right;">
+                        <td style="text-align:right; white-space: nowrap;">
                             <a href="/admin/proveedores/editar/{{ p.id }}" class="btn btn-xs btn-default">Editar</a>
+                            <a href="/admin/proveedores/productos/nuevo?proveedor={{ p.id }}" class="btn btn-xs btn-info">+ Producto</a>
+                            {% if not p.homologado %}
+                            <form method="POST" action="/admin/proveedores/homologar/{{ p.id }}" style="display:inline;margin:0;">
+                                <button type="submit" class="btn btn-xs btn-success">Homologar</button>
+                            </form>
+                            {% else %}
+                            <form method="POST" action="/admin/proveedores/deshomologar/{{ p.id }}" style="display:inline;margin:0;">
+                                <button type="submit" class="btn btn-xs btn-warning"
+                                        onclick="return confirm('¿Deshomologar este proveedor?');">Deshomologar</button>
+                            </form>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -40,7 +75,7 @@
         </div>
     {% endif %}
     <div class="alert alert-info" style="margin-top:15px;font-size:13px;">
-        Proveedores (Stage 9.2). Contactos, incidencias y productos homologados se gestionarán en seguimientos posteriores.
+        Proveedores (9.2 + 9.40 homologación). Contactos e incidencias deferred. Scoring multi-criterio de productos deferred.
     </div>
 </div>
 {% endblock %}

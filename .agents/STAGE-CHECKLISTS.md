@@ -3695,6 +3695,21 @@ docker compose exec db psql -U qnova -d qnova -c "SELECT COUNT(*) FROM tipos_fic
 
 **Branch status:** Stage 9.39 on `feat/stage-9.39-documentacion-binario`.
 
+## Stage 9.40 — Proveedores homologación first slice
+
+**Goal:** Homologation fields + quick Homologar/Deshomologar on proveedores; productos CRUD (filter by proveedor); criterios_homologacion catalog; patch 0050.
+
+**Validation:**
+```bash
+docker compose exec app php -l Pages/Proveedores/Formulario.php Pages/Proveedores/Listado.php Pages/Proveedores/Productos/Listado.php Pages/Proveedores/Criterios/Listado.php index.php
+docker compose exec -T db psql -U qnova -d qnova < docker/db-init/data-patches/0050-proveedores-homologacion.sql
+docker compose exec app ./scripts/verify-8.6.sh
+```
+
+**Browser:** `/admin/proveedores` → Homologar/Deshomologar; Productos filter; Criterios CRUD.
+
+**Branch status:** Stage 9.40 on `feat/stage-9.40-proveedores-homologacion`.
+
 
 
 
