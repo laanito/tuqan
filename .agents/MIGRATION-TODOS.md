@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.39 on `feat/stage-9.39-documentacion-binario` (Documentación binario shell). Previous: 9.38 Equipos plan.
+**Last updated**: Stage 9.40 on `feat/stage-9.40-proveedores-homologacion` (Proveedores homologación shell). Previous: 9.39 Documentación binario.
 
 ---
 
@@ -108,9 +108,10 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Auditorías informes first slice**: Delivered in Stage 9.37 (conclusiones/recomendaciones columns, informe edit + printable HTML ficha, links from ejecución, patch 0047). See 9.37 plan and STAGE-CHECKLISTS.
 - [x] **Equipos plan / auto-preventivo first slice**: Delivered in Stage 9.38 (interval fields on form, plan view, programar preventivo from mantenimiento_cada/dias, patch 0048). See 9.38 plan and STAGE-CHECKLISTS.
 - [x] **Documentación binario first slice**: Delivered in Stage 9.39 (`tipos_fichero` + `contenido_binario`, upload/download/delete, list flag, patch 0049). See 9.39 plan and STAGE-CHECKLISTS.
+- [x] **Proveedores homologación first slice**: Delivered in Stage 9.40 (proveedor dates + Homologar/Deshomologar, productos, criterios catalog, patch 0050). See 9.40 plan and STAGE-CHECKLISTS.
 - [ ] **Next** (sized picks):  
   - Auditorías GenPDF / formal export · In: PDF from ficha · Out: full GenPDF suite · ~10 files · patch? no  
-  - Proveedores homologación · In: evaluation shell · Out: full supplier workflow · ~12 files · patch? maybe  
+  - Proveedores contactos / incidencias · In: sub-entity shell · Out: full supplier suite · ~12 files · patch? maybe  
   - Documentación WYSIWYG / GenPDF ficha · In: richer editor · Out: full plantillas · ~12 files · patch? maybe
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
@@ -140,8 +141,8 @@ Aim for a mix: one "close the small gaps" + one "new vertical" per couple of leg
 - [ ] Link to Empleados / RRHH concepts if present in legacy (ficha personal); remaining Formación subs beyond the three modern tables.
 
 ### Proveedores (Suppliers)
-- [x] Proveedores (legacy 67) — basic listado + form (nombre + telefono + activo) in Stage 9.2. Followed catalog base + full routes + data patch + verify + playbook. Sub-entities (contactos, incidencias, productos/homologados) deferred to later legs. (See 9.2 plan and STAGE-CHECKLISTS.)
-- [ ] Homologacion / evaluation flows (common in ISO supplier management).
+- [x] Proveedores (legacy 67) — basic listado + form (nombre + telefono + activo) in Stage 9.2. Homologación (dates, productos, criterios) in Stage 9.40. (See 9.2 + 9.40 plans.)
+- [ ] Contactos / incidencias; multi-criterio scoring + historico_productos.
 
 ### Equipos (Equipment / Assets)
 - [x] Equipos (legacy 70) — basic listado + form (core fields: numero, descripcion, modelo, ubicacion, activo + supporting) in Stage 9.3. Revisiones shell (`mantenimientos` CRUD + links) in Stage 9.33. Calendario anual shell in Stage 9.36. Plan + auto-preventivo from `mantenimiento_cada`/`dias` in Stage 9.38. (See 9.3 + 9.33 + 9.36 + 9.38 plans.)

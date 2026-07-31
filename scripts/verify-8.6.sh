@@ -173,6 +173,13 @@ SELECT cb.id, cb.nombre_archivo, cb.size, tf.extension
   LEFT JOIN tipos_fichero tf ON tf.id = cb.tipo_fichero
  ORDER BY cb.id LIMIT 5;
 
+-- 9.40 Proveedores homologación evidence
+SELECT '0050-proveedores-homologacion.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0050-proveedores-homologacion.sql';
+SELECT COUNT(*) AS proveedores_homologados FROM proveedores WHERE fecha_homologacion IS NOT NULL AND (fecha_deshomologacion IS NULL OR fecha_homologacion > fecha_deshomologacion);
+SELECT COUNT(*) AS criterios_homologacion_rows FROM criterios_homologacion;
+SELECT COUNT(*) AS productos_rows FROM productos;
+SELECT COUNT(*) AS productos_homologados FROM productos WHERE homologado = true;
+
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
 SELECT COUNT(*) AS documentos_rows FROM documentos;

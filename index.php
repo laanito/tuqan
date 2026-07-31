@@ -325,8 +325,26 @@ $router->addRoute('GET', '/admin/proveedores/editar/{id}', ['Tuqan\Pages\Proveed
 $router->addRoute('POST', '/admin/proveedores/nuevo', ['Tuqan\Pages\Proveedores\Formulario', 'Procesar'], ['before' => 'auth_company']);
 $router->addRoute('POST', '/admin/proveedores/editar/{id}', ['Tuqan\Pages\Proveedores\Formulario', 'Procesar'], ['before' => 'auth_company']);
 
+// Homologar / Deshomologar (Stage 9.40)
+$router->addRoute('POST', '/admin/proveedores/homologar/{id}', ['Tuqan\Pages\Proveedores\Formulario', 'Homologar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/proveedores/deshomologar/{id}', ['Tuqan\Pages\Proveedores\Formulario', 'Deshomologar'], ['before' => 'auth_company']);
+
+// Productos + Criterios homologación (Stage 9.40)
+$router->addRoute('GET', '/admin/proveedores/productos', ['Tuqan\Pages\Proveedores\Productos\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/proveedores/productos/nuevo', ['Tuqan\Pages\Proveedores\Productos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/proveedores/productos/editar/{id}', ['Tuqan\Pages\Proveedores\Productos\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/proveedores/productos/nuevo', ['Tuqan\Pages\Proveedores\Productos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/proveedores/productos/editar/{id}', ['Tuqan\Pages\Proveedores\Productos\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
+$router->addRoute('GET', '/admin/proveedores/criterios', ['Tuqan\Pages\Proveedores\Criterios\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/proveedores/criterios/nuevo', ['Tuqan\Pages\Proveedores\Criterios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/admin/proveedores/criterios/editar/{id}', ['Tuqan\Pages\Proveedores\Criterios\Formulario', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/proveedores/criterios/nuevo', ['Tuqan\Pages\Proveedores\Criterios\Formulario', 'Procesar'], ['before' => 'auth_company']);
+$router->addRoute('POST', '/admin/proveedores/criterios/editar/{id}', ['Tuqan\Pages\Proveedores\Criterios\Formulario', 'Procesar'], ['before' => 'auth_company']);
+
 // Legacy routes for Proveedores (from full legacy menu accions)
 $router->addRoute('GET', '/administracion/proveedores/listado/ver', ['Tuqan\Pages\Proveedores\Listado', 'ShowPage'], ['before' => 'auth_company']);
+$router->addRoute('GET', '/administracion/proveedores/phomologados/listado/ver', ['Tuqan\Pages\Proveedores\Productos\Listado', 'ShowPage'], ['before' => 'auth_company']);
 
 // === Equipos (Stage 9.3) ===
 $router->addRoute('GET', '/admin/equipos', ['Tuqan\Pages\Equipos\Listado', 'ShowPage'], ['before' => 'auth_company']);
