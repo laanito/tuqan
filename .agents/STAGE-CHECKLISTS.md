@@ -3710,6 +3710,22 @@ docker compose exec app ./scripts/verify-8.6.sh
 
 **Branch status:** Stage 9.40 on `feat/stage-9.40-proveedores-homologacion`.
 
+## User QA — Post Stage 9.40 plateau
+
+**Goal:** Human cross-module verification of the modern ISO day-to-day suite before GenPDF / WYSIWYG / deeper sub-entities.
+
+**Checklist (source of truth):** [`reference/USER-QA-CHECKLIST-post-9.40.md`](../reference/USER-QA-CHECKLIST-post-9.40.md)
+
+**Prep:**
+```bash
+docker compose --env-file .env.docker exec app ./scripts/verify-8.6.sh
+# optional clean room: down -v, up, init-db.sh (patches through 0050)
+```
+
+**Pass rule:** All P0 items Pass; log P1+; decide Go / Go-with-fixes / No-go at end of checklist §9.
+
+**After QA:** Fix blockers in small PRs; then resume Suggested Next from MIGRATION-TODOS.
+
 
 
 
