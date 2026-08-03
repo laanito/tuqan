@@ -5,7 +5,7 @@ MIGRATION-PLAN.md = architecture, constraints, high-level stages + history.
 STAGE-CHECKLISTS.md = detailed per-leg playbooks, exact commands, evidence, retrospective lessons.  
 **This file** = scannable "what is left, how big is it, what should the next PR be?" + handoff package for other agents.
 
-**Last updated**: Stage 9.40 on `feat/stage-9.40-proveedores-homologacion` (Proveedores homologación shell). Previous: 9.39 Documentación binario.
+**Last updated**: Post-9.40 **User QA checklist** added (`reference/USER-QA-CHECKLIST-post-9.40.md`). Feature tip: Stage 9.40 Proveedores homologación.
 
 ---
 
@@ -109,10 +109,12 @@ Pick 1-2 related items that together form a reviewable PR. Update this list when
 - [x] **Equipos plan / auto-preventivo first slice**: Delivered in Stage 9.38 (interval fields on form, plan view, programar preventivo from mantenimiento_cada/dias, patch 0048). See 9.38 plan and STAGE-CHECKLISTS.
 - [x] **Documentación binario first slice**: Delivered in Stage 9.39 (`tipos_fichero` + `contenido_binario`, upload/download/delete, list flag, patch 0049). See 9.39 plan and STAGE-CHECKLISTS.
 - [x] **Proveedores homologación first slice**: Delivered in Stage 9.40 (proveedor dates + Homologar/Deshomologar, productos, criterios catalog, patch 0050). See 9.40 plan and STAGE-CHECKLISTS.
-- [ ] **Next** (sized picks):  
+- [ ] **User QA plateau (post-9.40)** — run human pass before GenPDF/WYSIWYG deep work:  
+  **`reference/USER-QA-CHECKLIST-post-9.40.md`** (smoke + journeys: Doc, Auditorías↔Mejora↔Informe, Formación, Equipos, Proveedores; shell-only Aspectos/Indicadores/Procesos). Fix P0s first, then resume features.
+- [ ] **Next** (sized picks after QA):  
   - Auditorías GenPDF / formal export · In: PDF from ficha · Out: full GenPDF suite · ~10 files · patch? no  
   - Proveedores contactos / incidencias · In: sub-entity shell · Out: full supplier suite · ~12 files · patch? maybe  
-  - Documentación WYSIWYG / GenPDF ficha · In: richer editor · Out: full plantillas · ~12 files · patch? maybe
+  - Documentación WYSIWYG / GenPDF ficha · In: richer editor · Out: full plantillas · ~12 files · patch? maybe  
 
 Aim for a mix: one "close the small gaps" + one "new vertical" per couple of legs. Keep delivering working, reviewable increments.
 
