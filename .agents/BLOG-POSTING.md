@@ -55,7 +55,7 @@ Image: /assets/images/tuqan-stage-2-hero.webp
 - **Series_Slug**: `tuqan-modernization`
 - Always increment `Series_Order` based on the last Tuqan post (check the live series on the blog for the current highest number).
 
-The authoritative list of Tuqan articles lives in the "Tuqan — Modernización" series on the blog itself (praderasblog). As of June 2026 the series has reached Series_Order 10 (full legacy menu import, collapsible sidebar, first real module + public self-critique on recurring debugging patterns). Do not rely on the static list below — it is historical.
+The authoritative list of Tuqan articles lives in the "Tuqan — Modernización" series on the blog itself (praderasblog). As of August 2026 the series has reached **Series_Order 17** (post-9.40 user QA plateau + P0 hotfixes). Do not rely on the static list below — it is historical.
 
 ## Hero Images
 
