@@ -103,7 +103,14 @@ class Formulario extends CatalogFormulario
 
         // 9.23 + 9.24: perfiles + workflows; 9.31 estado options/labels
         $vars['tipo_documento_options'] = $this->getRelatedOptions('tipodocumento', 'nombre');
-        $vars['area_options'] = $this->getRelatedOptions('areas', 'nombre');
+        // areas is legacy full-schema; modern data-patches path adds it via 0051.
+        // Soft-fail so the form still loads if the table is absent mid-migration.
+        $vars['area_options'] = [];
+        try {
+            $vars['area_options'] = $this->getRelatedOptions('areas', 'nombre');
+        } catch (\Throwable $e) {
+            // ignore missing areas table
+        }
         $vars['usuario_options'] = $this->getRelatedOptions('usuarios', 'nombre');
         $vars['estado_options'] = EstadoHelper::options();
         $vars['max_upload_mb'] = (int)(Binario::MAX_BYTES / 1048576);
@@ -112,7 +119,11 @@ class Formulario extends CatalogFormulario
         if (!empty($vars[$key])) {
             $d = $vars[$key];
             $d['tipo_documento_label'] = $this->getRelatedLabel('tipodocumento', $d['tipo_documento'] ?? null);
-            $d['area_label'] = $this->getRelatedLabel('areas', $d['area'] ?? null);
+            try {
+                $d['area_label'] = $this->getRelatedLabel('areas', $d['area'] ?? null);
+            } catch (\Throwable $e) {
+                $d['area_label'] = null;
+            }
             $d['revisado_por_label'] = $this->getRelatedLabel('usuarios', $d['revisado_por'] ?? null);
             $d['aprobado_por_label'] = $this->getRelatedLabel('usuarios', $d['aprobado_por'] ?? null);
             $d['estado_label'] = EstadoHelper::label($d['estado'] ?? null);

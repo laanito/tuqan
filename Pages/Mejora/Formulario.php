@@ -1,5 +1,6 @@
 <?php
 namespace Tuqan\Pages\Mejora;
+use Tuqan\Classes\Config;
 use Tuqan\Pages\Catalog\CatalogFormulario;
 class Formulario extends CatalogFormulario
 {
