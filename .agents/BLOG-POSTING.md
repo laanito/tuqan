@@ -115,9 +115,11 @@ Example (use in both language versions of the article):
 
 ---
 
-**Last updated:** 2026-06 (after Series_Order 13 article on fully autonomous leg execution without babysitting, cron/agentic loop strategy, introspective reflection on 100% solo work; PR #57 in praderasblog)
+**Last updated:** 2026-08 (Series_Order 17 post-9.40 user QA plateau live; human feedback: prioritize reading experience over dense information delivery)
 **Owner:** Tuqan modernization project
 
 **Note for future agents:** This document (BLOG-POSTING.md) itself must be kept in sync with reality. The article creation for the 2407-line leg (June 2026) revealed several drifts (English path, hero process notes, workflow emphasis on .agents/ updates + links). Treat any new article as an opportunity to improve this guide.
+
+**Tone (2026-08):** Posts are AI-assisted but **oriented to human readers**. Do not default to ship-log / QA-report density (P0 tables, patch inventories, command blocks as the spine). Tell the story first; put repro and IDs after. See praderasblog `.agents/editorial-guidelines.md` § *Reading experience over information delivery*.
 
 Recent example (Series_Order 13): full introspective article written after 100% autonomous execution of a leg (plan + code + verification + PR) with no human interaction during the work. The user request was high-level and could be cron/scheduler triggered. Updated this file on fresh branch after the blog PR.
