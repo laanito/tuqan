@@ -94,4 +94,13 @@ class Listado extends CatalogListado
             return 0;
         }
     }
+
+    // Nested templateDir is "auditorias/ejecucion"; listado.twig expects "auditoria"
+    // (same pattern as Hallazgos/Cursos/Productos nested listados).
+    protected function buildListVariables(array $items): array
+    {
+        $vars = parent::buildListVariables($items);
+        $vars['auditoria'] = $items;
+        return $vars;
+    }
 }

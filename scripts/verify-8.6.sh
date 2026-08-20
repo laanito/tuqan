@@ -47,7 +47,7 @@ export PGPASSWORD="${DB_PASS:-secret}"
 psql -h "${DB_HOST:-db}" -U qnova -d qnova -v ON_ERROR_STOP=1 -c "
 -- Tables (8.6 + 8.7 + 8.8 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 + 9.7 + 9.9)
 SELECT tablename FROM pg_tables 
-WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos','contenido_texto','hallazgos_auditoria','mantenimientos','horario_auditoria')
+WHERE schemaname='public' AND tablename IN ('sedes','clientes','criterios','tiposmejora','empresas','tipoaccionesmejora','tiposareas','tipodocumento','tiposamb','tiposimp','tipocursos','proveedores','equipos','acciones_mejora','plan_formacion','documentos','programa_auditoria','aspectos','indicadores','procesos','contenido_procesos','auditorias','cursos','alumnos','contenido_texto','hallazgos_auditoria','mantenimientos','horario_auditoria','areas')
 ORDER BY tablename;
 
 -- Sedes rename evidence
@@ -179,6 +179,11 @@ SELECT COUNT(*) AS proveedores_homologados FROM proveedores WHERE fecha_homologa
 SELECT COUNT(*) AS criterios_homologacion_rows FROM criterios_homologacion;
 SELECT COUNT(*) AS productos_rows FROM productos;
 SELECT COUNT(*) AS productos_homologados FROM productos WHERE homologado = true;
+
+-- 9.41 areas catalog (Documentación / Horario FK labels on minimal path)
+SELECT '0051-areas-table-and-seed.sql' AS patch, COUNT(*) FROM data_patches WHERE filename = '0051-areas-table-and-seed.sql';
+SELECT COUNT(*) AS areas_rows FROM areas;
+SELECT id, nombre, activo FROM areas ORDER BY id LIMIT 5;
 
 -- 9.5 Formación (Planes) + Documentación evidence
 SELECT COUNT(*) AS plan_formacion_rows FROM plan_formacion;
